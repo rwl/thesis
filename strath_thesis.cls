@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{classes/strath_thesis}
+\ProvidesClass{strath_thesis}
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
 
@@ -13,7 +13,7 @@
 \usepackage{ifpdf}
 \usepackage{setspace}
 
-\usepackage[ pdftex, plainpages = false, pdfpagelabels, 
+\usepackage[ pdftex, plainpages = false, pdfpagelabels,
                  pdfpagelayout = useoutlines,
                  bookmarks,
                  bookmarksopen = true,
@@ -66,12 +66,16 @@
 
 % The year and term the degree will be officially conferred
 \def\degreedate#1{\gdef\@degreedate{#1}}
+
 % The full (unabbreviated) name of the degree
 \def\degree#1{\gdef\@degree{#1}}
+
 % The name of your college or department(eg. Trinity, Pembroke, Maths, Physics)
 \def\collegeordept#1{\gdef\@collegeordept{#1}}
+
 % The name of your University
 \def\university#1{\gdef\@university{#1}}
+
 % Defining the crest
 \def\crest#1{\gdef\@crest{#1}}
 
