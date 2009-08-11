@@ -1,0 +1,13 @@
+\BOOKMARK [1][]{section.0.1}{0.1 Introduction}{}
+\BOOKMARK [2][]{subsection.0.1.1}{0.1.1 Conventional national power systems}{section.0.1}
+\BOOKMARK [2][]{subsection.0.1.2}{0.1.2 Highly distributed national power systems}{section.0.1}
+\BOOKMARK [1][]{section.0.2}{0.2 Methodology}{}
+\BOOKMARK [2][]{subsection.0.2.1}{0.2.1 Electricity network model}{section.0.2}
+\BOOKMARK [1][]{section.0.3}{0.3 Market participant model}{}
+\BOOKMARK [2][]{subsection.0.3.1}{0.3.1 Software agents}{section.0.3}
+\BOOKMARK [2][]{subsection.0.3.2}{0.3.2 Reinforcement learning}{section.0.3}
+\BOOKMARK [1][]{section.0.4}{0.4 Literature Review}{}
+\BOOKMARK [1][]{section.0.5}{0.5 Theory}{}
+\BOOKMARK [2][]{subsection.0.5.1}{0.5.1 Power Flow}{section.0.5}
+\BOOKMARK [2][]{subsection.0.5.2}{0.5.2 Optimal Power Flow}{section.0.5}
+\BOOKMARK [2][]{subsection.0.5.3}{0.5.3 Reinforcement Learning}{section.0.5}

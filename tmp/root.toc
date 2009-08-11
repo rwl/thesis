@@ -1,0 +1,23 @@
+\contentsline {section}{\numberline {0.1}Introduction}{7}{section.0.1}
+\contentsline {subsection}{\numberline {0.1.1}Conventional national power systems}{7}{subsection.0.1.1}
+\contentsline {subsection}{\numberline {0.1.2}Highly distributed national power systems}{8}{subsection.0.1.2}
+\contentsline {subsubsection}{Increased source granularity}{9}{section*.3}
+\contentsline {subsubsection}{Inversion of control}{9}{section*.4}
+\contentsline {subsubsection}{Reduced network reticulation}{10}{section*.5}
+\contentsline {subsubsection}{Dual objective optimisation}{10}{section*.6}
+\contentsline {section}{\numberline {0.2}Methodology}{11}{section.0.2}
+\contentsline {subsection}{\numberline {0.2.1}Electricity network model}{11}{subsection.0.2.1}
+\contentsline {subsubsection}{Power Flow}{11}{section*.7}
+\contentsline {subsubsection}{Common Information Model}{11}{section*.8}
+\contentsline {subsubsection}{Energy market model}{12}{section*.9}
+\contentsline {subsubsection}{Transmission capacity rights}{12}{section*.10}
+\contentsline {subsubsection}{Transmission charging}{12}{section*.11}
+\contentsline {subsubsection}{Extended bids/offers}{12}{section*.12}
+\contentsline {section}{\numberline {0.3}Market participant model}{13}{section.0.3}
+\contentsline {subsection}{\numberline {0.3.1}Software agents}{13}{subsection.0.3.1}
+\contentsline {subsection}{\numberline {0.3.2}Reinforcement learning}{13}{subsection.0.3.2}
+\contentsline {section}{\numberline {0.4}Literature Review}{14}{section.0.4}
+\contentsline {section}{\numberline {0.5}Theory}{15}{section.0.5}
+\contentsline {subsection}{\numberline {0.5.1}Power Flow}{15}{subsection.0.5.1}
+\contentsline {subsection}{\numberline {0.5.2}Optimal Power Flow}{15}{subsection.0.5.2}
+\contentsline {subsection}{\numberline {0.5.3}Reinforcement Learning}{15}{subsection.0.5.3}
