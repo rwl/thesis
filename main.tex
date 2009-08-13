@@ -23,7 +23,9 @@ Electrical Engineering}}
 \maketitle
 \newpage
 
-\frontmatter   % use with book class
+%\frontmatter   % use with book class
+\setcounter{page}{1}
+\pagenumbering{roman}
 
 \thispagestyle{plain}
 \begin{quote}
@@ -59,9 +61,15 @@ Abstract goes here...
 \end{quote}
 
 \tableofcontents
+\newpage
 \listoffigures
+\newpage
+\listoftables
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
 
-\mainmatter   % use with book class
+%\mainmatter   % use with book class
 
 %\onehalfspacing
 %\pagestyle{fancy}

@@ -5,7 +5,7 @@
 
 \ProcessOptions
 
-\LoadClass[pdftex, a4paper]{book}
+\LoadClass[pdftex, a4paper]{report}
 
 
 \usepackage[pdftex]{graphicx}
@@ -14,21 +14,21 @@
 \usepackage{setspace}
 
 \usepackage[ pdftex, plainpages = false, pdfpagelabels,
-                 pdfpagelayout = useoutlines,
-                 bookmarks,
-                 bookmarksopen = true,
-                 bookmarksnumbered = true,
-                 breaklinks = true,
-                 linktocpage,
-                 pagebackref,
-                 colorlinks = true,
-                 linkcolor = black,
-                 urlcolor  = black,
-                 citecolor = black,
-                 anchorcolor = green,
-                 hyperindex = true,
-                 hyperfigures
-                 ]{hyperref}
+             pdfpagelayout = useoutlines,
+             bookmarks,
+             bookmarksopen = true,
+             bookmarksnumbered = true,
+             breaklinks = true,
+             linktocpage,
+             pagebackref,
+             colorlinks = true,
+             linkcolor = black,
+             urlcolor  = black,
+             citecolor = black,
+             anchorcolor = green,
+             hyperindex = true,
+             hyperfigures
+             ]{hyperref}
 
 % Margin settings
 
@@ -44,20 +44,23 @@
 %\setlength{\footskip}{2.36cm}
 
 % Page styling
-\pagestyle{fancy}
-\renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\thechapter. #1 }}{}}
-\renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
-\fancyhf{}
-\fancyhead[RO]{\rightmark}
-\fancyhead[L]{}
-\fancyfoot[C]{\thepage}
-%\renewcommand{\headrulewidth}{0.5pt}
-%\renewcommand{\footrulewidth}{0pt}
-\addtolength{\headheight}{2pt}
-\fancypagestyle{plain}{
-  \fancyhead{}
-  \renewcommand{\headrulewidth}{0pt}
-}
+\pagestyle{plain}
+% \pagestyle{fancy}
+%
+% \renewcommand{\chaptermark}[1]{\markboth{\MakeUppercase{\thechapter. #1 }}{}}
+% \renewcommand{\sectionmark}[1]{\markright{\thesection\ #1}}
+% \fancyhf{}
+% \fancyhead[RO]{\rightmark}
+% \fancyhead[L]{}
+% \fancyfoot[C]{\thepage}
+% %\renewcommand{\headrulewidth}{0.5pt}
+% %\renewcommand{\footrulewidth}{0pt}
+% \addtolength{\headheight}{2pt}
+%
+% \fancypagestyle{plain}{
+%   \fancyhead{}
+%   \renewcommand{\headrulewidth}{0pt}
+% }
 
 % DECLARATIONS
 %
