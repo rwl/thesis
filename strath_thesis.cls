@@ -13,6 +13,8 @@
 \usepackage{ifpdf}
 \usepackage{setspace}
 
+\usepackage{apacite}
+
 \usepackage[ pdftex, plainpages = false, pdfpagelabels,
              pdfpagelayout = useoutlines,
              bookmarks,
