@@ -5,7 +5,7 @@
 
 \ProcessOptions
 
-\LoadClass[pdftex, a4paper]{report}
+\LoadClass[pdftex, a4paper]{book}
 
 
 \usepackage[pdftex]{graphicx}

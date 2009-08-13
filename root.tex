@@ -23,10 +23,13 @@ Electrical Engineering}}
 \maketitle
 \newpage
 
-%\frontmatter   % use with book class
+\frontmatter   % use with book class
 
 \thispagestyle{plain}
 \begin{quote}
+This thesis is the result of the author's original research.  It has been
+composed by the author and has not been previously submitted for examination
+which has led to the award of a degree.
 The copyright of this thesis belongs to the author under the terms of the
 United Kingdom Copyright Acts as qualified by University of Strathclyde
 Regulation 3.51. Due acknowledgement must always be made of the use of any
@@ -58,19 +61,34 @@ Abstract goes here...
 \tableofcontents
 \listoffigures
 
-%\mainmatter   % use with book class
+\mainmatter   % use with book class
 
-\onehalfspacing
-\pagestyle{fancy}
+%\onehalfspacing
+%\pagestyle{fancy}
 
+% Set the scene and problem statement. Introduce structure of thesis, state
+% contributions (3-5).
 \include{introduction}
-\include{methodology}
-\include{literature_review}
-\include{theory}
+
+% Demonstrate wider appreciation (context). Provide motivation.
+\include{background}
+
+% Survey and critical assessment. Relation to own work.
+\include{related_work}
+
+%\include{problem_statement}
+
+% Analysis, design, implementation and interpretation of results.
+\include{core}
+
+% Critical assessment of own work. State hypothesis. Further Work. Restate
+% contribution.
+\include{conclusion}
 
 \bibliographystyle{abbrv}
-\renewcommand{\bibname}{References}
+%\renewcommand{\bibname}{References}
 \bibliography{references}
-\addcontentsline{toc}{chapter}{References}
+\addcontentsline{toc}{chapter}{Bibliography}
 
+%\backmatter
 \end{document}

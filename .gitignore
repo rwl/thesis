@@ -1,4 +1,10 @@
 tmp/
 *.out
 *.brf
+*.aux
+*.bbl
+*.blg
+*.lof
+*.log
+*.toc
 *~

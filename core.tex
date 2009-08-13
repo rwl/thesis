@@ -1,4 +1,4 @@
-\section{Methodology}
+\chapter{Methodology}
 Societies reliance on secure energy supplies and the high volumes of
 electricity typically consumed render it impractical to experiment with
 radically new approaches to energy trade on real systems.  This section
@@ -8,21 +8,21 @@ systems, that deliver electricity to consumers, were modeled is given, as well
 as for the mechanisms that facilitate trade and participants that utilise
 these mechanisms.
 
-\subsection{Electricity network model}
+\section{Electricity network model}
 High voltage transmission and distribution networks are the mechanisms by which
 traded electric energy is delivered to consumers.  Limits to line/cable power
 flows, outages and reactive power availability can impose constraints on
 particular trades.  As such, certain technical characteristics of the networks
 are fundamental to energy market operation and must be duly modeled.
 
-\subsubsection{Power Flow}
+\subsection{Power Flow}
 The problem to be solved is finding the steady-state operating point of the
 network when given levels of generation and load are present.  The primary
 constraints in a power system are the branch flow limits and the voltage
 limits at each bus.  The system must be operated such that these constraints
 are not violated.
 
-\subsubsection{Common Information Model}
+\subsection{Common Information Model}
 Many tools exist for steady-state analysis of balanced three-phase AC networks
 and most are centred around bespoke models that describe the power system
 data.  Several attempts have been made in the past to standardise the format
@@ -43,7 +43,7 @@ and magnitude at each bus is determined the power flows on each branch may be
 calculated.
 
 
-\subsubsection{Energy market model}
+\subsection{Energy market model}
 Mechanisms for facilitating competitive trade between electricity producers and
 consumers differ greatly in the specifics of their implementations in coutries
 throughout the world.  However, fundamentally they either provide a
@@ -64,7 +64,7 @@ generators[Neuhoff].
 There are a number of alternative approaches to congestion
 resolution\cite{neuhoff:power}.
 
-\subsubsection{Transmission capacity rights}
+\subsection{Transmission capacity rights}
 One approach is to issue contracts for transmission capacity rights or
 equivalent financial rights.  The maximum available transmission capacity
 being auctioned for certain periods of time and firm contracts made entitling
@@ -78,11 +78,11 @@ plus the monthly auction of Financial Transmission Rights to provide a hedging
 mechanism against future congestion charges.
 
 
-\subsubsection{Transmission charging}
+\subsection{Transmission charging}
 Impose delivery charges which increase as network constraints are approached.
 
 
-\subsubsection{Extended bids/offers}
+\subsection{Extended bids/offers}
 Request extended bids and offers which include costs associated with the
 adjustment of participant's desired position.
 
@@ -120,3 +120,7 @@ a wide variety of problems\cite{suttonbarto:reinforcement}.  To allow the same
 learning algorithms developed for traditional, academic reinforcement learning
 problems (chess, backgammon, lift scheduling etc.) to be applied to models of
 energy markets (and vice versa) a modular machine learning library is used.
+
+\chapter{Results}
+
+\chapter{Discussion}
