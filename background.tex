@@ -49,15 +49,15 @@ parameters \cite{Sutton99policygradient}.  The function approximator is updated
 according to the gradient of expected reward with respect to these parameters.
 
 \subsection{Sarsa}
-The Sarsa algorithm is an on-policy Temporal Difference control method.  The
+Sarsa is an on-policy Temporal Difference control method.  The
 policy is represented by a $M \times N$ table, where $M$ and $N$ are
 arbitrary positive numbers equal to the total number of feasible states and
 actions. The action-value update for agent $j$ is defined by
 
 \begin{equation}
 Q_j(s_{jt},a_{jt}) + \alpha [r_{jt+1} + \gamma Q_j(s_{jt+1},a_{jt+1}) -
-Q_j(s_{jt},a_{jt})]
-\end{equation}.
+Q_j(s_{jt},a_{jt})].
+\end{equation}
 
 While the Q-learning algorithm updates action-values using a greedy policy,
 which is different to that being followed, Sarsa uses the discounted future

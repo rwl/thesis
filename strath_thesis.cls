@@ -7,7 +7,7 @@
 
 \LoadClass[pdftex, a4paper]{report}
 
-
+\usepackage[cmex10]{amsmath}
 \usepackage[pdftex]{graphicx}
 \usepackage{fancyhdr}
 \usepackage{ifpdf}
