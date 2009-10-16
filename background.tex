@@ -12,5 +12,25 @@ $
 $
 
 \section{Reinforcement Learning}
+This section provides an introduction to the reinforcement learning problem and
+the algorithms that are later applied to power trade implementations of it.
+For a comprehensive introduction to reinforcement learning with
+thorough evaluations of algorithm designs through mathematical analysis and
+computations experiments the intersted reader is directed to the seminal work
+by Barto and Sutton \cite{suttonbarto:1998}.
 
-TD-Gammon\cite{tesauro:gammon}. ENAC\cite{peters:enac}.
+\subsection{Introduction}
+The problem of learning how best to interact with an environment so as to
+maximise some long-term reward is one that arises in many aspect of life.
+Reinforcement learning is a term that is typically applied to solving this
+problem through computational approaches.  Unlike with the majority of Machine
+Learning techinques, the alorithms are not instructed as to which actions to
+take, but must learn to maximise the long-term reward through trial-and-error.
+
+Reinforcement learning starts with an interactive, goal-seeking agent with an
+associated environment.  Agents must have the ability to sense aspects
+of their environment, perform actions that influence the state of their
+environment and accept a reward as a response to their chosen action.
+
+
+TD-Gammon \cite{tesauro:gammon}. ENAC \cite{peters:enac}.
