@@ -13,24 +13,55 @@ $
 
 \section{Reinforcement Learning}
 This section provides an introduction to the reinforcement learning problem and
-the algorithms that are later applied to power trade implementations of it.
-For a comprehensive introduction to reinforcement learning with
-thorough evaluations of algorithm designs through mathematical analysis and
-computations experiments the intersted reader is directed to the seminal work
-by Barto and Sutton \cite{suttonbarto:1998}.
+some of the associated terminology.  Definitions for the value-function and
+policy gradient algorithms, that are later applied to power trade
+implementations of the problem, are given.
+
+For a comprehensive introduction to reinforcement learning with evaluations of
+algorithm designs through mathematical analysis and computational experiments
+the intersted reader is directed to the seminal work by Barto and Sutton
+\cite{suttonbarto:1998}.
 
 \subsection{Introduction}
 The problem of learning how best to interact with an environment so as to
 maximise some long-term reward is one that arises in many aspect of life.
-Reinforcement learning is a term that is typically applied to solving this
-problem through computational approaches.  Unlike with the majority of Machine
-Learning techinques, the alorithms are not instructed as to which actions to
-take, but must learn to maximise the long-term reward through trial-and-error.
+Reinforcement learning is a term that is typically applied to
+understanding, automating and solving this problem through computational
+approaches. Unlike with the majority of Machine Learning techinques, the
+algorithms are not instructed as to which actions to take, but must learn to
+maximise the long-term reward through trial-and-error.
 
-Reinforcement learning starts with an interactive, goal-seeking agent with an
-associated environment.  Agents must have the ability to sense aspects
-of their environment, perform actions that influence the state of their
-environment and accept a reward as a response to their chosen action.
+Reinforcement learning starts with an interactive, goal-seeking individual and
+an associated environment.  The individuals require the ability to sense
+aspects of their environment, perform actions that influence the state of their
+environment and be assigned rewards as a response to their chosen action.  An
+agent is said to follow a particular \textit{policy} when mapping the
+perceived state of its environment to an action choice.
 
+\textit{Value-based} methods attempt to find the optimal policy by
+approximating a \textit{value-function} which returns the total reward an
+agent can expect to accumulate, given an initial state and following the
+current policy thereafter.
 
-TD-Gammon \cite{tesauro:gammon}. ENAC \cite{peters:enac}.
+\textit{Policy-gradient} methods are an alternative to this which
+represent a policy using a learned function approximator with its own
+parameters \cite{Sutton99policygradient}.  The function approximator is updated
+according to the gradient of expected reward with respect to these parameters.
+
+\subsection{Sarsa}
+The Sarsa algorithm is an on-policy Temporal Difference control method.  The
+policy is represented by a $M \times N$ table, where $M$ and $N$ are
+arbitrary positive numbers equal to the total number of feasible states and
+actions. The action-value update for agent $j$ is defined by
+
+\begin{equation}
+Q_j(s_{jt},a_{jt}) + \alpha [r_{jt+1} + \gamma Q_j(s_{jt+1},a_{jt+1}) -
+Q_j(s_{jt},a_{jt})]
+\end{equation}.
+
+While the Q-learning algorithm updates action-values using a greedy policy,
+which is different to that being followed, Sarsa uses the discounted future
+reward of the next state-action observation following the original policy.
+
+%TD-Gammon \cite{tesauro:gammon} .
+%ENAC \cite{peters:enac} .
