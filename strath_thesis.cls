@@ -15,23 +15,23 @@
 
 \usepackage{apacite}
 
-\usepackage[pdftex,
-            plainpages=false,
-            pdfpagelabels,
-            pdfpagelayout=useoutlines,
-            bookmarks,
-            bookmarksopen=true,
-            bookmarksnumbered=true,
-            breaklinks=true,
-            linktocpage,
-            pagebackref,
-            colorlinks=true,
-            linkcolor=black,
-            urlcolor=black,
-            citecolor=black,
-            anchorcolor=green,
-            hyperindex=true,
-            hyperfigures]{hyperref}
+% \usepackage[pdftex,
+%             plainpages=false,
+%             pdfpagelabels,
+%             pdfpagelayout=useoutlines,
+%             bookmarks,
+%             bookmarksopen=true,
+%             bookmarksnumbered=true,
+%             breaklinks=true,
+%             linktocpage,
+%             pagebackref,
+%             colorlinks=true,
+%             linkcolor=black,
+%             urlcolor=black,
+%             citecolor=black,
+%             anchorcolor=green,
+%             hyperindex=true,
+%             hyperfigures]{hyperref}
 
 % Margin settings
 

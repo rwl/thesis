@@ -6,5 +6,6 @@ tmp/
 *.blg
 *.lof
 *.log
+*.lot
 *.toc
 *~
