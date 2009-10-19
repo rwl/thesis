@@ -1,190 +1,258 @@
 \chapter{Introduction}
-Industrialised societies have become increasingly reliant on the supply of
-electric energy since the connection of large power stations began in 1938.
-The extent to which this is true can be seen in the financial impact that loss
-of supply has on society.
+This thesis describes the application of value-function and policy gradient
+reinforcement learning algorithms to the electric energy trade problem.  This
+chapter introduces the problem and explains the motivation for the research.
+The goals of the research are stated along with the principle contributions.
+Finally, a reading guide is provided that provides an overview of the remaining
+chapters.
 
+\section{Motivation/Setting the scene}
+Free market democracy has underpinned the transformation of large western
+economies in the post war era and continues to be relied upon.  Towards the
+end of the nineteenth century the principals of competitive trade were
+successfully applied to electric power industries, beginning in the UK in March
+1990 with the creation of The Electricity Pool.
 
-In June 2004 the United Kingdom (UK) became a net importer of natural gas for
-the first time in 8 years[EIA DOE].  Since energy industry privatisation by
-the Conservatives in the 1980s, use of domestic gas reserves for electricity
-generation has been encouraged and exploited.
+\section{Problem statement/Aims \& Objectives/Problem Description}
 
-% Insert dash for gas pie-chart here.
+% \begin{quotation}
+%  ``Every scientist knows the rule called Occam's Razor:  Faced with several
+%  competing hypotheses, prefer the simplest one.  There is also an unspoken
+%  corollary that might be called Occam's Castle:  Faced with several competing
+%  places to build a new science, prefer the simplest one\ldots  Where the
+%  foundation is firmest, the castle will rise highest.  Where the ground is
+%  solid, build there, and the universe is so constructed that you will have a
+%  view.''\cite{weiner:tlm}
+% \end{quotation}
 
-As UK natural gas production has now peaked and consumption continues to grow,
-concern over reliance on imports from less stable regions has increased.
+Engineers must strive for complexity in their work.  Rarely will a simple
+solution will perform a function to a higher degree than a more complex one.
+Certainly, where a function is either performed or not performed, prefer the
+simpler one, but most often problems can be solved to varying degrees.
 
-The UK is hugely reliant on fossil fuels.  More than three quarters of UK
-electricity is generated from a relatively small number of large coal and gas
-fired power stations[Energy Digest].  Of the 298 stations with capacity over
-1MW in the UK, 63 gas fuelled (including CCGT) and 13 coal fired stations
-supply over 290 TWh of the UK's 393TWh annual electric energy
-production[DUKES].  Much of the remainder is generated through nuclear
-fission.
+The broad aim of the research presented in this thesis is to prove that the
+above conjecture applies to reinforcement learning algorithms for power trade.
+Previous research in this field (See Chapter~\ref{ch:related_work} below) has
+used very simple algorithms in relation to those from the latest advances in
+artificial intelligence (See Sections~\ref{sec:enac}~and~\ref{sec:reinforce}
+below).  The goal is to prove that policy gradient methods, using artificial
+neural networks for policy function approximation, are better suited to
+learning the complex dynamics of a power system.
 
-
-Concerns over climate change and security of supply have caused the UK
-government to pursue self-sustainable sources of electric energy.  This is
-illustrated by the government?s recent decision to make a legally binding
-commitment to an 80\% reduction in carbon dioxide emissions by 2050, relative
-to 1990 levels[].
-
-
-Relative to most other commodities, trade of electric energy is still in its
-infancy.  Liberalisation and unbundling of electricity supply industries costs
-many millions of pounds to implement[].  Countries, having made this
-investment, continue to restructure and adjust their energy markets in the
-hope of further reducing costs to the consumer and promoting innovation and
-efficiency through competition.
-
-
-\section{Conventional national power systems}
-Economies of scale prompted construction of the first large-scale power
-stations in the UK at the beginning of the twentieth century.  Following the
-introduction of the Electricity (Supply) Act 1926 the largest and most
-efficient of these were connected by a series of regional high-voltage
-three-phase AC grids synchronised at 50 Hertz.  Integration was completed and
-a national transmission system made operational in the UK for the first time
-in 1938.  This approach to electricity supply is largely the same as that
-still employed throughout the UK to the present day.  Alternating current,
-mainly from rotating synchronous machines, is transformed to high voltages for
-bulk transmission over long distances with high efficiency.  Power from the
-transmission system is fed through distribution networks in a uni-directional
-fashion at lower voltages before final usage.
-
-While maintenance and extension of the transmission system and of distribution
-networks is an everyday activity for energy utilities, many power system
-components have extremely long operational lifetimes[].  This and the
-magnitude of the capital investment made post-war in construction of the
-electricity networks suggests that there is likely to be little change in the
-topology of the system of wires in the foreseeable future.  This is further
-compounded by the fact that distribution networks are often radial in their
-structure.  Reliability and protection are major issues in the operation of
-power systems and the task of detecting and isolating a fault is often more
-difficult in systems that are meshed.
-
-Large-scale thermal power stations operate steam and gas turbines around 13
-metres in length, approximately 400 tons in weight and rotate at up to 3600
-revolutions per minute[SIEMENS].  The kinetic energy stored in these turbines
-and the connected synchronous machines is vast and the associated flywheel
-effect plays an important role in smoothing short-term imbalances in supply
-and demand[].
-
-Synchronous machines used in large thermal power stations invariably use a
-rotor winding that is excited and a magnetic flux created by a DC current.
-Controlling the magnitude of the rotor field current allows the reactive power
-provided or absorbed by the machine to be adjusted.  Reactive power is
-essential in maintaining system voltage within permissable limits[].
-
-\section{Highly distributed national power systems}
-The highly distributed power system is a conceptual future for the UK's
-national energy network.  It is capable of meeting current targets for reduced
-greenhouse gas emissions[] and reduces reliance on foreign fuel imports.  It
-is a system in which all but the least polluting fossil fuelled power stations
-have been decommissioned.  Their output supplanted by distributed generation,
-supported with demand-side management measures and advances in energy storage
-technology.
-
-Distributed (or embedded) generation is most easily defined as electricity
-production plant connected to the national electricity network at the
-distribution level[DG Book].  The transmission system being defined as that
-which operates at of above 275kV in England and Wales or at or above 132kV in
-Scotland.  This encompasses most small-scale plant, but there exist exceptions
-such as large-scale wind farms.
-
-Hydro-electric dams, biomass fuelled power stations and wind farms are the
-three sources of renewable energy currently available in the UK with
-capacities equivalent to that of fossil fuelled plant.  Hydro-electric power
-stations are often large-scale and transmission connected for bulk transport
-of power to load centres.  The low energy density of biomass fuels, relative
-to that of fossil fuels, often dictates that related generating plant is
-located close the fuel source origin and connected to a distribution network.
-The time varying nature of wind energy necessitates the use of induction
-machines for generation.  These are typically sinks of reactive power and
-require support for operation and maintenance of voltage.
-
-\subsection{Increased source granularity}
-In terms of demand the UK power system is already highly distributed.  The
-number of generators, controllable loads and storage systems is expected to be
-much greater in a HDPS.  However, there are at present already around 260
-generators supplying energy to consumers and the mechanisms currently in place
-to facilitate the trade of their power may be adaptable.
-
-Consumers and owners of small-scale generation will continue to desire
-protection from the risks associated with the wholesale marketplace.  Today?s
-typical domestic and commercial supply contracts between consumers and energy
-retailers offer such protection.  As the penetration of DER grows the role of
-energy retailers offering aggregation services will likely grow as more plant
-owners come to desire representation in the marketplace.  While there are a
-great many ways in which this aggregation may be arranged it remains
-essentially a contractual arrangement. A much larger challenge lies in the
-operation and control of a system in which the state of plant is principally
-determined by a decentralised free market.  The network may be divided
-into ?cells? for the provision of a single point of control, but each cell may
-contain individual items of plant being aggregated by different companies.
-Controlling the DER, so as to adhere to system constraints, must be done in
-the most economically efficient, in the least environmentally damaging manner
-and according to contracted access arrangements.  Also, the details of any
-control measures undertaken must be fed back to the marketplace such that they
-may be taken into consideration during the settlement process.  This interface
-between the technical domain and the commercial mechanisms remains an open
-research topic.
-
-\subsection{Inversion of control}
-Consumers have grown accustomed to using power from the grid at will.  System
-loads are by and large passive and, with the exception of dual rate white
-metered loads, only the largest make adjustments to their consumption
-according to price signals or system conditions.  It is likely that the
-fluctuating nature of the power output from generators exploiting renewable
-energy sources will necessitate an increase in the adoption of active loads.
-As control shifts from being almost purely supply-side, an opportunity opens
-for the energy marketplace to offer appropriate consumer choice, not only in
-terms of cost, but Quality of Service (QoS) also. Advances in smart metering
-promise to support such a migration.
-
-\subsection{Reduced network reticulation}
-The connection of controllable energy resources to lower voltage and less
-reticulated areas of the network may also offer new possibilities for
-structuring the relationship between the market and the system for management
-of network constraints.  There are generally three options for power system
-constraint management.
+\section{Research contributions}
+The research presented in this thesis pertains to the academic fields of power
+engineering, artificial intelligence and economics.  The principle
+contributions in these areas are
 
 \begin{itemize}
-  \item Only permit the formation of energy trades if delivery is physically
-  feasible.
-  \item Impose delivery charges which increase as network constraints are
-   approached.
-  \item Request extended bids and offers which include costs associated with
-  the adjustment of participant?s desired position.
+  \item The proof that policy gradient reinforcement learning algorithms
+  outperform value-function algorithms when applied to the power trade problem,
+  \item A novel coupling of power system models and optimal power flow
+  algorithm results with agents capable of handling discrete and continuous
+  sensor and action spaces,
+  \item Implementations of Roth-Erev reinforcement learning algorithms and
+  continuous versions of Q-learning and Q($\lambda$) for the open source
+  PyBrain library,
+  \item Open source implementations of power flow and optimal power flow
+  algorithms in the Python programming language, preserving sparsity throughout
+  the optimisation using the open source CVXOPT library.
 \end{itemize}
 
-The third option most closely describes the method currently used in the United
-Kingdom.  In a highly reticulated network it is difficult to determine the
-direction of each participant?s energy flows.  In turn, this poses
-difficulties in determining if a particular delivery is feasible and which
-participants are responsible for congesting the network.  Distribution
-networks are typically less reticulated than the transmission network to which
-the majority of generation is connected at present.  Therefore, there may be
-opportunities to utilise options one or two in an energy marketplace for an
-HDPS.
+\section{Thesis structure/Overview/Reading guide}
+This thesis is focussed on the application of standard and advanced
+reinforcement learning algorithms to a particular problem domain.  The reader
+will require a certain degree of prior knowledge, or must be willing to read
+much of the referenced material, to fully understand the methodology taken.
+The intended audience is engineering and economics researchers interested in
+the application of reinforcement learning algorithms to the problem of trading
+energy in electric power systems.
 
-Furthermore, the lower voltage of distribution networks may open up
-opportunities for more widespread use of power electronics technologies such
-as FACTS and phase shifting devices.  These would provide a limited ability to
-direct the flow of electrical energy.  How this might be managed on a wide
-scale and how efficient interaction with the marketplace might be achieved is
-open to investigation
-
-\subsection{Dual objective optimisation}
-Along with concern over the UK's dependence on natural gas imports, concern
-over the environmental impact of electricity generation is a primary motivator
-for a move to HDPS.  The energy market is expected to simultaneously minimise
-costs to the consumer and encourage reduced emission of greenhouse gasses.
-
-The European Union Greenhouse Gas Emission Trading Scheme (EU ETS) is an
-example of how a second marketplace running parallel to electricity trade, in
-this case trading allowances, may give weight to this new objective.  There
-are other ways in which the greenhouse gas output of certain technologies may
-be taken into consideration and this remains an open and important research
-topic.
+% Industrialised societies have become increasingly reliant on the supply of
+% electric energy since the connection of large power stations began in 1938.
+% The extent to which this is true can be seen in the financial impact that loss
+% of supply has on society.
+%
+%
+% In June 2004 the United Kingdom (UK) became a net importer of natural gas for
+% the first time in 8 years[EIA DOE].  Since energy industry privatisation by
+% the Conservatives in the 1980s, use of domestic gas reserves for electricity
+% generation has been encouraged and exploited.
+%
+% % Insert dash for gas pie-chart here.
+%
+% As UK natural gas production has now peaked and consumption continues to grow,
+% concern over reliance on imports from less stable regions has increased.
+%
+% The UK is hugely reliant on fossil fuels.  More than three quarters of UK
+% electricity is generated from a relatively small number of large coal and gas
+% fired power stations[Energy Digest].  Of the 298 stations with capacity over
+% 1MW in the UK, 63 gas fuelled (including CCGT) and 13 coal fired stations
+% supply over 290 TWh of the UK's 393TWh annual electric energy
+% production[DUKES].  Much of the remainder is generated through nuclear
+% fission.
+%
+%
+% Concerns over climate change and security of supply have caused the UK
+% government to pursue self-sustainable sources of electric energy.  This is
+% illustrated by the government?s recent decision to make a legally binding
+% commitment to an 80\% reduction in carbon dioxide emissions by 2050, relative
+% to 1990 levels[].
+%
+%
+% Relative to most other commodities, trade of electric energy is still in its
+% infancy.  Liberalisation and unbundling of electricity supply industries costs
+% many millions of pounds to implement[].  Countries, having made this
+% investment, continue to restructure and adjust their energy markets in the
+% hope of further reducing costs to the consumer and promoting innovation and
+% efficiency through competition.
+%
+%
+% \section{Conventional national power systems}
+% Economies of scale prompted construction of the first large-scale power
+% stations in the UK at the beginning of the twentieth century.  Following the
+% introduction of the Electricity (Supply) Act 1926 the largest and most
+% efficient of these were connected by a series of regional high-voltage
+% three-phase AC grids synchronised at 50 Hertz.  Integration was completed and
+% a national transmission system made operational in the UK for the first time
+% in 1938.  This approach to electricity supply is largely the same as that
+% still employed throughout the UK to the present day.  Alternating current,
+% mainly from rotating synchronous machines, is transformed to high voltages for
+% bulk transmission over long distances with high efficiency.  Power from the
+% transmission system is fed through distribution networks in a uni-directional
+% fashion at lower voltages before final usage.
+%
+% While maintenance and extension of the transmission system and of distribution
+% networks is an everyday activity for energy utilities, many power system
+% components have extremely long operational lifetimes[].  This and the
+% magnitude of the capital investment made post-war in construction of the
+% electricity networks suggests that there is likely to be little change in the
+% topology of the system of wires in the foreseeable future.  This is further
+% compounded by the fact that distribution networks are often radial in their
+% structure.  Reliability and protection are major issues in the operation of
+% power systems and the task of detecting and isolating a fault is often more
+% difficult in systems that are meshed.
+%
+% Large-scale thermal power stations operate steam and gas turbines around 13
+% metres in length, approximately 400 tons in weight and rotate at up to 3600
+% revolutions per minute[SIEMENS].  The kinetic energy stored in these turbines
+% and the connected synchronous machines is vast and the associated flywheel
+% effect plays an important role in smoothing short-term imbalances in supply
+% and demand[].
+%
+% Synchronous machines used in large thermal power stations invariably use a
+% rotor winding that is excited and a magnetic flux created by a DC current.
+% Controlling the magnitude of the rotor field current allows the reactive power
+% provided or absorbed by the machine to be adjusted.  Reactive power is
+% essential in maintaining system voltage within permissable limits[].
+%
+% \section{Highly distributed national power systems}
+% The highly distributed power system is a conceptual future for the UK's
+% national energy network.  It is capable of meeting current targets for reduced
+% greenhouse gas emissions[] and reduces reliance on foreign fuel imports.  It
+% is a system in which all but the least polluting fossil fuelled power stations
+% have been decommissioned.  Their output supplanted by distributed generation,
+% supported with demand-side management measures and advances in energy storage
+% technology.
+%
+% Distributed (or embedded) generation is most easily defined as electricity
+% production plant connected to the national electricity network at the
+% distribution level[DG Book].  The transmission system being defined as that
+% which operates at of above 275kV in England and Wales or at or above 132kV in
+% Scotland.  This encompasses most small-scale plant, but there exist exceptions
+% such as large-scale wind farms.
+%
+% Hydro-electric dams, biomass fuelled power stations and wind farms are the
+% three sources of renewable energy currently available in the UK with
+% capacities equivalent to that of fossil fuelled plant.  Hydro-electric power
+% stations are often large-scale and transmission connected for bulk transport
+% of power to load centres.  The low energy density of biomass fuels, relative
+% to that of fossil fuels, often dictates that related generating plant is
+% located close the fuel source origin and connected to a distribution network.
+% The time varying nature of wind energy necessitates the use of induction
+% machines for generation.  These are typically sinks of reactive power and
+% require support for operation and maintenance of voltage.
+%
+% \subsection{Increased source granularity}
+% In terms of demand the UK power system is already highly distributed.  The
+% number of generators, controllable loads and storage systems is expected to be
+% much greater in a HDPS.  However, there are at present already around 260
+% generators supplying energy to consumers and the mechanisms currently in place
+% to facilitate the trade of their power may be adaptable.
+%
+% Consumers and owners of small-scale generation will continue to desire
+% protection from the risks associated with the wholesale marketplace.  Today?s
+% typical domestic and commercial supply contracts between consumers and energy
+% retailers offer such protection.  As the penetration of DER grows the role of
+% energy retailers offering aggregation services will likely grow as more plant
+% owners come to desire representation in the marketplace.  While there are a
+% great many ways in which this aggregation may be arranged it remains
+% essentially a contractual arrangement. A much larger challenge lies in the
+% operation and control of a system in which the state of plant is principally
+% determined by a decentralised free market.  The network may be divided
+% into ?cells? for the provision of a single point of control, but each cell may
+% contain individual items of plant being aggregated by different companies.
+% Controlling the DER, so as to adhere to system constraints, must be done in
+% the most economically efficient, in the least environmentally damaging manner
+% and according to contracted access arrangements.  Also, the details of any
+% control measures undertaken must be fed back to the marketplace such that they
+% may be taken into consideration during the settlement process.  This interface
+% between the technical domain and the commercial mechanisms remains an open
+% research topic.
+%
+% \subsection{Inversion of control}
+% Consumers have grown accustomed to using power from the grid at will.  System
+% loads are by and large passive and, with the exception of dual rate white
+% metered loads, only the largest make adjustments to their consumption
+% according to price signals or system conditions.  It is likely that the
+% fluctuating nature of the power output from generators exploiting renewable
+% energy sources will necessitate an increase in the adoption of active loads.
+% As control shifts from being almost purely supply-side, an opportunity opens
+% for the energy marketplace to offer appropriate consumer choice, not only in
+% terms of cost, but Quality of Service (QoS) also. Advances in smart metering
+% promise to support such a migration.
+%
+% \subsection{Reduced network reticulation}
+% The connection of controllable energy resources to lower voltage and less
+% reticulated areas of the network may also offer new possibilities for
+% structuring the relationship between the market and the system for management
+% of network constraints.  There are generally three options for power system
+% constraint management.
+%
+% \begin{itemize}
+%   \item Only permit the formation of energy trades if delivery is physically
+%   feasible.
+%   \item Impose delivery charges which increase as network constraints are
+%    approached.
+%   \item Request extended bids and offers which include costs associated with
+%   the adjustment of participant?s desired position.
+% \end{itemize}
+%
+% The third option most closely describes the method currently used in the United
+% Kingdom.  In a highly reticulated network it is difficult to determine the
+% direction of each participant?s energy flows.  In turn, this poses
+% difficulties in determining if a particular delivery is feasible and which
+% participants are responsible for congesting the network.  Distribution
+% networks are typically less reticulated than the transmission network to which
+% the majority of generation is connected at present.  Therefore, there may be
+% opportunities to utilise options one or two in an energy marketplace for an
+% HDPS.
+%
+% Furthermore, the lower voltage of distribution networks may open up
+% opportunities for more widespread use of power electronics technologies such
+% as FACTS and phase shifting devices.  These would provide a limited ability to
+% direct the flow of electrical energy.  How this might be managed on a wide
+% scale and how efficient interaction with the marketplace might be achieved is
+% open to investigation
+%
+% \subsection{Dual objective optimisation}
+% Along with concern over the UK's dependence on natural gas imports, concern
+% over the environmental impact of electricity generation is a primary motivator
+% for a move to HDPS.  The energy market is expected to simultaneously minimise
+% costs to the consumer and encourage reduced emission of greenhouse gasses.
+%
+% The European Union Greenhouse Gas Emission Trading Scheme (EU ETS) is an
+% example of how a second marketplace running parallel to electricity trade, in
+% this case trading allowances, may give weight to this new objective.  There
+% are other ways in which the greenhouse gas output of certain technologies may
+% be taken into consideration and this remains an open and important research
+% topic.
