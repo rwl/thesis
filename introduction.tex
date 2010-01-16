@@ -7,14 +7,102 @@ Finally, a reading guide is provided that provides an overview of the remaining
 chapters.
 
 \section{Motivation/Setting the scene}
-Free market democracy has underpinned the transformation of large western
-economies in the post war era and continues to be relied upon.  Towards the
-end of the nineteenth century the principals of competitive trade were
-successfully applied to electric power industries, beginning in the UK in March
-1990 with the creation of The Electricity Pool.
+% Free market democracy has underpinned the transformation of large western
+% economies in the post war era and continues to be relied upon.  Towards the
+% end of the nineteenth century the principals of competitive trade were
+% successfully applied to electric power industries, beginning in the UK in March
+% 1990 with the creation of The Electricity Pool.
+Two trends characterise modern power systems Engineering:
+Increased liberalisation of the industry through competitive energy trade and
+increased presence of renewable energy generation on the network.  As the
+number and variety of electricity sources becomes greater, the necessity for
+automated trade of their power increases.  Control algorithms may draw sensor
+input from data networks and other sources and use some relevant measure of
+performance, such as profitability, to learn from trading decisions.
+% \IEEEPARstart{E}{nergy} consumers will often not switch suppliers despite
+% apparent benefits of doing so, or mistakenly switch to more expensive
+% contracts[].  Energy companies are thus unlikely to reduce prices as this
+% can not be expected to result in new contracts.  One possible solution to this
+% problem is to give the responsibility for buying energy to autonomous,
+% learning control algorithms.  Drawing information from the internet and using
+% standardised messaging [CIM] to form contracts, energy bots have the potential
+% to introduce greater liquidity to energy markets and promote reduction of
+% costs to the consumer.
+
+Methods including learning classifier systems, genetic algorithms and
+reinforcement learning have been successfully used to research the
+charateristics of energy markets in the past\cite{anke:2008}.  This an
+alternative to the traditional closed-form equilibrium approaches to game
+theory research in which behavior emerges from the interactions of many
+separable, self-serving agents. Typically in these studies, an agent is
+associated with a portfolio of generating units and/or dispatchable
+loads. Interaction with the environment involves submission of offers to sell
+or bids to buy\footnote{Beware that certain authors may use the term ``bid''
+to refer to an offer to sell when discussing single-sided auctions.} a
+quantity of power at a specified price in a particular time period.  The
+learning algorithms typically use revenue or earnings as a reward signal and
+adjust the policy used to select offer/bid price and quantity values.
+
+Research into energy trade using reinforcement learning typically
+involves discretization the action domain, often into incremental markups
+on marginal cost \cite{anke:2008}. Also, either sensor domains are discretized
+or state information is disregarded altogether.  Despite these simplifications,
+authors have been drawn many practical conclusions from this approach[ref].
+
+In the field of robotic control, environment state, action and observation
+spaces are often continuous or mixed.
+% Learning methods using function approximation techniques such as connectionist
+% systems have been developed for operation in such domains[ref].
+Traditional reinforcement learning algorithms such as Sarsa and Q-learning can
+be applied to systems with continuous domains by using connectionist systems
+for value function approximation\cite{barto:neuron}. However, feedback
+between policy updates and value function changes can result in oscillations
+or divergence in these algorithms even when applied to simple
+systems\cite{peters:enac}.  In response to this, policy-gradient methods,
+pioneered by Williams\cite{williams:reinforce}, which search directly in the
+policy space have been developed and applied in many real-life
+settings\cite{barto:policy,shaal:robots,moody:direct,peshkin:routing}.
+
+% \IEEEPARstart{D}{ynamic} competitive markets will be key in the transition
+% to a low carbon economy\cite{decc:transition}.  Fluctuations in global oil
+% prices have recently raised questions over the functioning of the energy
+% market.  Energy industries in the UK contribute 4.8\% of 2.13
+% trillion dollar gross domestic product.  The UK electricity industry supplies
+% \~26 million customers with \~350TWh of energy each year at a cost of 3.5--9.0
+% p/kWh. The New York blackout in August, 2003 resulted in the loss of 61.8
+% GW of electric load associated with 50 million consumers.  Supply by was
+% largely restored within two days and the event is estimated to have cost
+% \$7--\$10 billion.  Small improvements in the design of markets associated with
+% this industry can have an impact greatly upon the welfare of society and
+% conversely also. To understand the complex dynamics of these systems it is
+% possible to simulate them computationally.  One alternative to the game
+% theoretic models typically employed in computational economics is the study
+% of emergent behaviour in collections of individual autonomous actors.
+%
+% Representing competitive behaviour is key to the simulation of markets in this
+% way. Simple heurisitc approaches have been taken in the study of
+% \ldots[ConzelmannEMCAS].  While more complex machine learning techniques such
+% as state vector machines have been employed in the study of market efficiency
+% and market power[Bunn, Bagnall].  Reinforcement Learning (RL) is an
+% unsupervised machine learning technique, most commonly applied to control
+% problems, and as such is well suited to this
+% application [Acrobot]\cite{suttonbarto:reinforcement}. [TD()]. In this paper
+% RL is used to control the output and price of generating units and
+% despatchable loads connected in a balanced three-phase high-voltage power
+% system. RL has been applied before in a very similar manner to the energy
+% trading problem using the Roth-Erev algorithm[TesfatsoRE].  The software
+% implementation for this algorithm used in the simulations for this paper was
+% translated from[TesfatsoAMES].
+
+% Game theoretic models are commonly associated with economics and attempt to
+% capture behaviour in strategic situations mathematically.  They have been
+% applied to electric energy problems of many forms, including but not limited to
+% analysis of market structure, market liquidity, pricing methodologies,
+% regulatory structure, plant positioning and network congestion.  More recently,
+% agent-based simulation has received a certain degree of attention from
+% researchers and has been applied in some of these fields.
 
 \section{Problem statement/Aims \& Objectives/Problem Description}
-
 % \begin{quotation}
 %  ``Every scientist knows the rule called Occam's Razor:  Faced with several
 %  competing hypotheses, prefer the simplest one.  There is also an unspoken
@@ -40,23 +128,50 @@ neural networks for policy function approximation, are better suited to
 learning the complex dynamics of a power system.
 
 \section{Research contributions}
-The research presented in this thesis pertains to the academic fields of power
-engineering, artificial intelligence and economics.  The principle
-contributions in these areas are
-
+% The research presented in this thesis pertains to the academic fields of power
+% engineering, artificial intelligence and economics.  The principle
+% contributions in these areas are
+%
+% \begin{itemize}
+%   \item The proof that policy gradient reinforcement learning algorithms
+%   outperform value-function algorithms when applied to the power trade problem,
+%   \item A novel coupling of power system models and optimal power flow
+%   algorithm results with agents capable of handling discrete and continuous
+%   sensor and action spaces,
+%   \item Implementations of Roth-Erev reinforcement learning algorithms and
+%   continuous versions of Q-learning and Q($\lambda$) for the open source
+%   PyBrain library,
+%   \item Open source implementations of power flow and optimal power flow
+%   algorithms in the Python programming language, preserving sparsity throughout
+%   the optimisation using the open source CVXOPT library.
+% \end{itemize}
+This paper compares policy-gradient reinforcement learning algorithms
+REINFORCE and ENAC with value-function methods Roth-Erev, Q($\lambda$) and
+Sarsa in their relative ability to trade electricity competitively.  Power
+systems are modelled as balanced three-phase AC networks in the steady-state.
+Offers/bids for active and reactive power from agent participants are cleared
+using AC optimal power flow with an auction interface that returns single
+period revenue and earnings values. Through individual and multi-player
+experiments the methods are compared in their ability to learn quickly, compete
+in large systems and exploit characteristics of the power system. It is shown
+that, in electricity trade, policy-gradient methods:
 \begin{itemize}
-  \item The proof that policy gradient reinforcement learning algorithms
-  outperform value-function algorithms when applied to the power trade problem,
-  \item A novel coupling of power system models and optimal power flow
-  algorithm results with agents capable of handling discrete and continuous
-  sensor and action spaces,
-  \item Implementations of Roth-Erev reinforcement learning algorithms and
-  continuous versions of Q-learning and Q($\lambda$) for the open source
-  PyBrain library,
-  \item Open source implementations of power flow and optimal power flow
-  algorithms in the Python programming language, preserving sparsity throughout
-  the optimisation using the open source CVXOPT library.
+  \item converge successfully on an optimal policy,
+  \item are slower to converge than value-function algorithms,
+  \item can learn more complicated characteristics of the power system than
+  value-function algorithms,
+  \item scale better when applied to larger systems and reactive power markets.
 \end{itemize}
+Section~\ref{sec:opf} of this paper presents the power system model, the
+optimal power flow formulation and the auction interface from \matpower.
+Reinforcement learning methods Sarsa, Q($\lambda$), Roth-Erev, REINFORCE and
+ENAC are defined in Section~\ref{sec:rl}. Section~\ref{ch:method} introduces
+the three experiments used to compare the aforementioned methods. Numerical
+results from these experiments are reported in Section \ref{ch:results} and
+an interpretation and critical analysis of them is given in
+Section~\ref{ch:discuss}.  Finally, a review of related research is presented
+in Section~\ref{sec:related} and Section~\ref{ch:conclusion} provides a
+conclusion.
 
 \section{Thesis structure/Overview/Reading guide}
 This thesis is focussed on the application of standard and advanced

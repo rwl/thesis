@@ -1,11 +1,37 @@
 \documentclass{strath_thesis}
 
-\usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage{ifpdf}
 \usepackage{apacite}
+\usepackage{amsmath}
+\usepackage{ifpdf}
 
-\pagestyle{plain}
+\ifpdf
+  \usepackage[pdftex]{graphicx}
+  \graphicspath{{./pdf/}{./jpg/}}
+  \DeclareGraphicsExtensions{.pdf,.jpg,.png}
+\else
+  \usepackage[dvips]{graphicx}
+  \graphicspath{{./eps/}}
+  \DeclareGraphicsExtensions{.eps}
+\fi
+
+\usepackage[ruled]{algorithm}
+\usepackage{algorithmic}
+
+\usepackage[T1]{fontenc} % small caps
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,calc}
+\tikzset{
+>=stealth', % standard arrow tip
+help lines/.style={dashed, thick}, % different line styles
+axis/.style={<->},
+important line/.style={thick},
+connection/.style={thick, dotted},
+}
+
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\diag}{\mathop{\mathbf{diag}}}
+\newcommand{\matpower}{M\textsc{ATPOWER~}}
 
 \ifpdf
 \pdfinfo{/Author (Richard W. Lincoln)
@@ -22,6 +48,8 @@
 \degree{Doctor of Philosophy}
 \degreedate{2010}
 
+\pagestyle{plain}
+
 \begin{document}
 
 \maketitle
@@ -36,13 +64,14 @@
 This thesis is the result of the author's original research.  It has been
 composed by the author and has not been previously submitted for examination
 which has led to the award of a degree.
+
 The copyright of this thesis belongs to the author under the terms of the
 United Kingdom Copyright Acts as qualified by University of Strathclyde
 Regulation 3.51. Due acknowledgement must always be made of the use of any
 material contained in, or derived from, this thesis.
 
-\vspace{1cm}
-Signed:\hspace{7.6cm} Date: \today
+% \vspace{1cm}
+% Signed:\hspace{7.6cm} Date: \today
 \end{quote}
 \newpage
 
@@ -64,7 +93,18 @@ I would like to acknowledge ...
 \end{center}
 \vspace{0.5cm}
 \begin{quote}
-Abstract goes here...
+Connectionist reinforcement learning methods approximating value-functions
+offer few convergence guarantees, even in simple systems.  Reinforcement
+learning has been applied previously to agent-based simulation of energy
+markets using only discrete action and sensor domains. If learning algorithms
+are to deliver on their potential for application in operational settings,
+modelling continuous domains is necessary.  The contribution of this paper is
+to show that policy-gradient reinforcement learning algorithms can be applied
+to continuous representations of energy trading problems and that their
+superior use of sensor data results in improved performance over previously
+applied value-function methods.  From this it follows that algorithms which
+search directly in the policy space will be better suited to decision support
+applications and automated energy trade.
 \end{quote}
 
 \tableofcontents

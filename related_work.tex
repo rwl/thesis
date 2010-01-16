@@ -1,28 +1,98 @@
 \chapter{Related Work}
 \label{ch:related_work}
-Game theoretic models are commonly associated with economics and attempt to
-capture behaviour in strategic situations mathematically.  They have been
-applied to electric energy problems of many forms, including but not limited
-to analysis of market structure, market liquidity, pricing methodologies,
-regulatory structure, plant positioning and network congestion.  More
-recently, agent-based simulation has received a certain degree of attention
-from researchers and has been applied in some of these fields also.
+\label{sec:related}
+Relative to the traditional closed-form equilibrium approaches, agent-based
+simulation of (electricity) markets is a new field of research.  For
+comprehensive reviews and surveys of the many different techniques that have
+been applied in recent years the interested reader is directed to
+\cite{anke:2008,tesfatsi:handbook,visud:thesis}.  This section will focus on
+reviewing literature from the field in which reinforcement learning techniques
+were applied in combination with explicit power system models.  A short review
+is also provided of some more general applications of reinforcement learning
+with connectionist systems and policy-gradient methods.
 
-While popular and seemingly promising, agent-based simulation is still centred
-around abstracted models.  The assumptions made is this abstraction must be
-subjected to the same verification and validation as with equation-based
-models.  Verification of assumptions and model validation are often overlooked
-in agent-based simulations of energy markets, yet they are possibly the most
-important steps in the model building process.  Techniques used to develop,
-debug and maintain large computer programs can often be used to verify that a
-model does what it is intended to do.
+% Game theoretic models are commonly associated with economics and attempt to
+% capture behaviour in strategic situations mathematically.  They have been
+% applied to electric energy problems of many forms, including but not limited
+% to analysis of market structure, market liquidity, pricing methodologies,
+% regulatory structure, plant positioning and network congestion.  More
+% recently, agent-based simulation has received a certain degree of attention
+% from researchers and has been applied in some of these fields also.
+%
+% While popular and seemingly promising, agent-based simulation is still centred
+% around abstracted models.  The assumptions made is this abstraction must be
+% subjected to the same verification and validation as with equation-based
+% models.  Verification of assumptions and model validation are often overlooked
+% in agent-based simulations of energy markets, yet they are possibly the most
+% important steps in the model building process.  Techniques used to develop,
+% debug and maintain large computer programs can often be used to verify that a
+% model does what it is intended to do.
+%
+% Validation of an energy market model is more difficult.  It can be accomplished
+% using the intuition of experts or through comparison of simulation results
+% with either historical market data or theoretical results from more abstract
+% representations of the model.  Finding verifyable trends in existing markets
+% is a very large challenge.  To then prove that a computational model
+% replicates these characteristics with suitable fidelity is yet more
+% challenging still.  Only when a model is suitably verified and validated can
+% any conclusions be drawn from results obtained through implementation and
+% simulation of suitable scenarios.
 
-Validation of an energy market model is more difficult.  It can be accomplished
-using the intuition of experts or through comparison of simulation results
-with either historical market data or theoretical results from more abstract
-representations of the model.  Finding verifyable trends in existing markets
-is a very large challenge.  To then prove that a computational model
-replicates these characteristics with suitable fidelity is yet more
-challenging still.  Only when a model is suitably verified and validated can
-any conclusions be drawn from results obtained through implementation and
-simulation of suitable scenarios.
+\section{Learning algorithm comparison}
+
+\section{Q-learning}
+Krause et al.\ have published agent-based energy market research in which
+Q-learning methods were applied while considering physical system properties.
+In a comparison between Nash equilibrium analysis and agent-based simulation,
+the suitability of bottom-up modelling for the assessment of market evolution
+was assessed\cite{krause:nash}.  This is built upon in subsequent publications
+which evaluate the influence on market power and social welfare of three
+congestion management schemes and which analyse strategic behavior in combined
+gas and electricity markets\cite{krause:cong,krause:gas}.  Power Transmission
+Distribution Factors (PTDF) are used in place of explicit power flow equations
+in determining line flows.  The action domain of generating agents is limited
+to 0\%, 5\% and 10\% markups on true marginal costs.  The implementation of the
+Q-learning method used does not differentiate between environment states when
+selecting actions. This is a modification to the traditional formulation that
+still results in convincing conclusions, as with the popular Roth-Erev method.
+
+There are similar applications of Q-learning in which states \textit{are}
+defined, but none model the AC transmission system.  A common approach is to
+use categorised market price from the previous period as state
+information\cite{bakirtzis:psce,xiong:discrim}.
+
+\section{Roth-Erev}
+The AMES (Agent-based Modeling of Electricity Systems) power market test bed is
+a software package that models core features of the Wholesale Power Market
+Platform (WPMP) -- a market design proposed by the US Federal Energy Regulatory
+Commission (FERC) in April 2003 for common adoption in regions of the
+US\cite{tesfatsi:wpmp}. The design features:
+\begin{itemize}
+  \item a centralised structure managed by an independent market operator,
+  \item parallel day-ahead and real-time markets and
+  \item locational marginal pricing.
+\end{itemize}
+Learning agents may represent load serving entities or generating companies and
+learn using implementations of the Roth-Erev method (See sections
+\ref{sec:rotherev} and \ref{sec:variant}, above) built on the Repast agent
+simulation toolkit\cite{gieseler:thesis}.  The permissive license under which
+the source code for these algorithms has been released allowed direct
+translation of them for use in this study.  Agents learn from the solutions of
+hourly bid/offer based DC-OPF problems formulated as quadratic programs and
+solved using QuadProgJ\cite{tesfatsi:dcopf}.
+
+The ability of generator agents to learn particular supply offers has been
+demonstrated along with the plotting and data handling capabilities of AMES
+using a 5-bus network model\cite{tesfatsi:pes09}.  The same network has been
+used to investigate strategic capacity withholding in FERC wholesale power
+market design\cite{tesfasi:psce}.  Generator agents report linear marginal cost
+functions to the market operator and supply functions are formed through linear
+interpolation between the prices at minimum and maximum production limits.
+Load serving agents submit combinations of fixed demand bids and
+price-sensitive bid functions, the ratio between which is varied between 0.0 and
+1.0 to test physical and economic capacity withholding potential.  Comparing
+results from a benchmark case (in which true production costs are reported,
+but higher than marginal cost functions may be reported) and cases in which
+reported production limits may be less than the true values, the authors find,
+that with sufficient capacity reserve, no evidence to suggest potential for
+inducing higher net earnings through capacity withholding in the WPMP.

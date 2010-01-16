@@ -1,21 +1,323 @@
 \chapter{Background}
 
-\section{Power Flow}
-
 \section{Optimal Power Flow}
+\label{sec:opf}
+Computation of the generator dispatch points is executed using parts of the
+of the optimal power flow formulation from MATPOWER \cite{zimmerman:mp_pes}.
+In order that the optimal power flow routine could be coupled with agents from
+the machine learning library PyBrain, the
+MATLAB\textsuperscript{\texttrademark} source code from \matpower was
+translated to the Python programming language.  With the permission of the
+\matpower developers the resulting package has been released under the terms of
+version 2 of the GNU General Public License as a project named
+PYLON \cite{lincoln:pyreto}. Sparse matrix objects from the convex
+optimisation library CVXOPT were used to allow the implementation to scale well to solving for very large systems.
 
-$
-  \begin{array}{ll}
-  \mbox{minimize}   & \sum_i c_i (P_i) \\
-  \mbox{subject to} & B_{bus} \theta = P_g - P_d - P_{bus,shift} - G_{sh}
-  \end{array}
-$
+This section describes parts of the optimal power flow formulation,
+unit-decommitment algorithm and auction interface from \matpower that were used
+to represent a centralised electricity market.  The full optimal power flow
+forumlation is available in \cite{pserc:mp_manual}.  The power system model is
+described by defining the bus, branch and generator objects.  The power flow
+equations associated with a network of these components are subsequently
+defined. The constrained cost variable approach to modelling generator cost
+functions from \cite{zimmerman:ccv} is introduced, from which the optimal power
+flow formulation follows.  Since the formulation does not facilitate shutting
+down expensive generators a unit-decommitment algorithm is provided.  Finally,
+to provide an interface to agent participants that resembles that of real
+electricity market, an auction wrapper around the optimal power flow is
+described.
+
+\subsection{Power system model}
+The power system is assumed to be a three-phase AC system operating in the
+steady-state and under balanced conditions in which it may be represented by a
+single phase network of busbars connected by branch objects.
+
+\subsubsection{Branches}
+Each branch is modelled as a medium length transmission line in series with a
+transformer at the \textit{from} end.  A nominal-$\pi$ model with total series
+admittance $y_s = 1/(r_s+jx_s)$ and total shunt capacitance $b_c$ is
+used to represent the transmission line.  The transformer is assumed to be
+ideal and both phase-shifting and tap-changing, with the ratio between primary
+winding voltage $v_{f}$ and secondary winding voltage $N = \tau
+e^{j\theta_{ph}}$ where $\tau$ is the tap ratio and $\theta_{ph}$ is the phase
+shift angle.  From Kirchhoff's current law the current in the series impedance
+is
+\begin{equation}
+\label{eq:iseries}
+i_s = \frac{b_c}{2}v_t - i_t
+\end{equation}
+and from Kirchhoff's voltage law the voltage across the secondary winding of
+the transformer is
+\begin{equation}
+\frac{v_{f}}{N} = v_t + \frac{i_s}{y_s}
+\end{equation}
+Substituting $i_s$ from (\ref{eq:iseries}), gives
+\begin{equation}
+\label{eq:vfrom}
+\frac{v_{f}}{N} = v_t - \frac{i_t}{y_s} + v_t\frac{b_c}{2y_s}
+\end{equation}
+and rearranging in terms if $i_t$, gives
+\begin{equation}
+\label{eq:ito}
+i_t = v_s \left( \frac{-y_s}{\tau e^{\theta_{ph}}} \right) +
+v_r \left( y_s + \frac{b_c}{2} \right)
+\end{equation}
+The current through the secondary winding of the transformer is
+\begin{equation}
+N^*i_f = i_s + \frac{b_c}{2}\frac{v_{f}}{N}
+\end{equation}
+Substituting $i_s$ from (\ref{eq:iseries}), gives
+\begin{equation}
+N^*i_f = \frac{b_c}{2}v_t - i_t + \frac{b_c}{2}\frac{v_{f}}{N}
+\end{equation}
+Substituting $\frac{v_{f}}{N}$ from (\ref{eq:vfrom}) and rearranging, gives
+\begin{equation}
+\label{eq:ifrom}
+i_s = v_s \left( \frac{1}{\tau^2} \left(y_s + \frac{b_c}{2}\right) \right) +
+v_r \left(\frac{y_s}{\tau e^{-j\theta}}\right)
+\end{equation}
+
+\subsubsection{Generators}
+Each generator $i$ is modelled as an apparent power source $s^i_g = p^i_g +
+jq^i_g$ at a specific bus $k$, where $p^i_g$ is the active power injection and
+$q^i_g$ the reactive power injection, each expressed in per-unit to the system
+base MVA. Upper and lower limits on $p^i_g$ are specified by $p^i_{max}$ and
+$p^i_{min}$, respectively, where $p^i_{max} > p^i_{min} \geq 0$.  Similarly,
+upper and lower limits on $q^i_g$ are specified by $q_{max}^i$ and
+$q_{min}^i$, respectively, where $q^i_{max} > q^i_{min}$.
+
+\subsubsection{Buses and loads}
+At each bus $k$, constant active power demand is specified by
+$p^k_d$ and reactive power demand by $q^k_d$.  Upper and lower
+limits on the voltage magnitude at the bus are defined by $v_m^{k,max}$ and
+$v_m^{k,min}$, respectively.  For one bus with an associated generator,
+designated the \textit{reference} bus, the voltage angle is $\theta^{ref}_k$
+and typically valued zero.
+Dispatchable loads are modelled as generators with negative $p^i_g$, where
+$p^i_{min} < p^i_{max} = 0$. %TODO: Constant power factor.
+
+\subsection{AC Power flow equations}
+For a network of $n_b$ buses, $n_l$ branches and $n_g$ generators, let $Cg$ be
+the $n_b \times n_g$ bus-generator connection matrix such that the $(i,j)^{th}$
+element of $C_{g}$ is $1$ if generator $j$ is connected to bus $i$.  The
+$n_b \times 1$ vector of complex power injections from generators at all buses
+is
+\begin{equation}
+S_{g,bus} = C_g \cdot S_g
+\end{equation}
+where $S_g = P_g + jQ_g$ is the $n_g \times 1$ vector with the $i^{th}$ element
+equal to $s^i_g$.
+
+Combining (\ref{eq:ifrom}) and (\ref{eq:ito}), the \textit{from} and
+\textit{to} end complex current injections for branch $l$ are
+\begin{equation}
+\begin{bmatrix}
+i_f^l\\
+i_t^l
+\end{bmatrix}
+=
+\begin{bmatrix}
+y_{ff}^l& y_{ft}^l\\
+y_{tf}^l& y_{tt}^l
+\end{bmatrix}
+\begin{bmatrix}
+v_f^l\\
+v_t^l
+\end{bmatrix}
+\end{equation}
+where
+\begin{eqnarray}
+y_{ff}^l& =& \frac{1}{\tau^2} \left(y_s + \frac{b_c}{2}\right)\\
+y_{ft}^l& =& \frac{y_s}{\tau e^{-j\theta}}\\
+y_{tf}^l& =& \frac{-y_s}{\tau e^{\theta_{ph}}}\\
+y_{tt}^l& =& y_s + \frac{b_c}{2}
+\end{eqnarray}
+Let $Y_{ff}$, $Y_{ft}$, $Y_{tf}$ and $Y_{tt}$ be $n_l \times 1$ vectors where
+the $l$-th element of each corresponds to $y_{ff}^l$, $y_{ft}^l$, $y_{tf}^l$
+and $y_{tt}^l$, respectively.  Furthermore, let $C_f$ and $C_t$ be the
+$n_l \times n_b$ branch-bus connection matrices, where $C_{f_{i,j}} = 1$ and
+$C_{t_{i,k}} = 1$ if branch $i$ connects \textit{from} bus $j$ \textit{to} bus
+$k$.  The $n_l \times n_b$ branch admittance matrices are
+\begin{eqnarray}
+Y_f& =& \diag(Y_{ff})C_f + \diag(Y_{ft})C_t\\
+Y_t& =& \diag(Y_{tf})C_f + \diag(Y_{tt})C_t
+\end{eqnarray}
+and relate the complex bus voltages $V$ to the branch \textit{from} and
+\textit{to} end current vectors
+\begin{eqnarray}
+I_{f}& =& Y_{f}V\\
+I_{t}& =& Y_{t}V
+\end{eqnarray}
+The $n_b \times n_b$ bus admittance matrix is
+\begin{eqnarray}
+Y_{bus}& =& C_f^\mathsf{T} Y_f + C_t^\mathsf{T}
+\end{eqnarray}
+and it relates the complex bus voltages to the nodal current injections
+\begin{eqnarray}
+I_{bus}& =& Y_{bus}V
+\end{eqnarray}
+The complex power losses from all branches are expressed as a non-linear
+function of $V$
+\begin{eqnarray}
+S_{bus}(V)& =& \diag(V)I_{bus}^* \nonumber \\
+\label{eq:sbus}
+&= & \diag(V)Y_{bus}^*V^*
+\end{eqnarray}
+The complex power injections at the \textit{from} and \textit{to} ends of all
+branches are also expressed as a non-linear functions of $V$
+\begin{eqnarray}
+S_{f}(V)& =& \diag(C_fV)I_f^* \nonumber \\
+\label{eq:sf_loss}
+& =& \diag(C_fV)Y_f^*V^*\\
+S_{t}(V)& =& \diag(C_tV)I_t^* \nonumber \\
+\label{eq:st_loss}
+& =& \diag(C_tV)Y_t^*V^*
+\end{eqnarray}
+
+\subsubsection{AC OPF Formulation}
+Generator active and, optionally, reactive power output costs are defined by
+convex $n$-segment piecewise linear cost functions.
+\begin{equation}
+c^{(i)}(x) = m_ip + c_i
+\end{equation}
+for $p_i \leq p \leq p_{i+1}$, $i = 1,2,\dotsc n$ where $m_{i+1} \geq m_i$ and
+$p_{i+1} > p_i$.  Since these costs are non-differentiable the constrained
+cost variable approach from \cite{zimmerman:ccv} is used to make the
+optimisation problem smooth.  For each generator $i$ a helper cost variable
+$y_i$ added to the objective function.  Inequality constraints
+\begin{equation}
+y_i \geq m_{i,j}(p-p_j) + c_j, \quad j = 1\dotsc n
+\end{equation}
+require $y_i$ to lie on the epigraph of $c^{(i)}(x)$.  The objective of the
+optimal power flow problem is to minimise the sum of the cost variables for all
+generators.
+\begin{equation}
+\min_{\theta, V_m, P_g, Q_g, y} \sum_{i=1}^{n_g}y_i
+\end{equation}
+Equality constraints enforce the balance between generator complex power
+injections $S_g$ and the sum of apparent power demand $S_d$ and the branch
+losses expressed in (\ref{eq:sbus}).
+\begin{equation}
+S_{bus}(V) + S_d - S_g = 0
+\end{equation}
+Branch complex power flow limits $S_{max}$ are enforced by the inequality
+constraints
+\begin{eqnarray}
+\abs{S_f(V)} - S_{max}& \leq &0\\
+\abs{S_f(V)} - S_{max}& \leq &0
+\end{eqnarray}
+The reference bus voltage angle $\theta_i$ is fixed by the equality
+constraint
+\begin{equation}
+\theta_i^{ref} \leq \theta_i \leq \theta_i^{ref}, \quad i \in \mathcal{I}_{ref}
+\end{equation}
+Upper and lower limits on the optimisation variables $V_m$, $P_g$ and $Q_g$ are
+enforced by the inequality constraints
+\begin{eqnarray}
+v_m^{i,min} \leq v_m^i \leq v_m^{i,max},& \quad i= 1 \dotsc n_b&\\
+p_g^{i,min} \leq p_g^i \leq p_q^{i,max},& \quad i= 1 \dotsc n_g&\\
+q_g^{i,min} \leq q_g^i \leq q_q^{i,max},& \quad i= 1 \dotsc n_g&
+\end{eqnarray}
+
+% Generator dispatch points are used with the associated cost functions to
+% compute the objective function value -- the total system cost.  The power
+% balance Lagrangian multipliers are the shadow prices or system nodal prices and
+% equal the cost to the system of supplying one more unit of load at that bus.
+
+\subsection{Unit Decommitment}
+In the OPF formulation above (See section \ref{sec:opf}) the solver must
+attempt to dispatch generators within their minimum and maximum power limits.
+Expensive generators can not be completely shutdown even if doing so would
+result in a lower total system cost.  To achieve this an implementation of the
+\textit{unit decommitment} algorithm (See Algorithm \ref{alg:ud}, below) from
+\matpower was used\cite[p. 20]{pserc:mp_manual}.  The algorithm finds the least
+cost dispatch by solving repeated OPF problems with different combinations of
+generating units at their minimum active power limit deactivated.  The lowest
+cost solution is returned when no further improvement can be made and no
+candidate generators remain.
+\begin{algorithm}[H]
+\caption{Unit decommitment}
+\label{alg:ud}
+\begin{algorithmic}[1]
+\STATE $\text{initialise}~N \leftarrow 0$
+\STATE $\text{solve initial OPF}$
+\STATE $L_{tot} \leftarrow \text{total load capacity}$
+\WHILE{$\text{total min gen.\ capacity} > L_{tot}$}
+	\STATE $N \leftarrow N + 1$
+\ENDWHILE
+
+\REPEAT
+	\FOR{c in candidates}
+		\STATE $\text{solve OPF}$
+	\ENDFOR
+\UNTIL{$\text{done} = \text{True}$}
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Auction Interface}
+Solving the optimisation problem defined above (See section \ref{sec:opf}) is
+intended to represent the function of a pool market operator.  To present
+agents participating in this market with a simpler interface, more
+representative of a pool market an implementation of the ``smart market''
+auction clearing mechanism from \matpower was used\cite[p. 31]{pserc:mp_manual}.
+Using this interface the OPF problem is formulated from a list of offers to
+sell and bids to buy power.
+
+An offer/bid specifies a quantity of power in MW and a price for that power in
+\$/MWh, to be traded over a particular period of time.  The market
+accepts sets of offers and bids and uses the solution of the unit decommitment
+algorithm to return sets of \textit{cleared} offer and bids.  The cleared
+offers/bids can then be used to produce dispatch orders from which values of
+revenue and earnings/losses may be determined.
+
+The market features the ability to set maximum offer price limits and minimum
+bids price limits.  The process of clearing the market begins by withholding
+offers/bids outwith these limits, along with those specifying non-positive
+quantities.  Valid offers/bids for each generator are then sorted into
+non-decreasing/increasing order and used to form new piecewise-linear cost
+functions and adjust the generator's active power limits.
+% TODO: Provide an example.
+
+The dispatch points and nodal prices from solving a unit decommitment OPF with
+the newly configured generators as input are used in the auction clearing
+mechanism to determine the proportion of each offer/bid block that should be
+cleared and the associated price for each.
+
+Different pricing options arise from the fact that a gap in which any price is
+acceptable to all participants may exist between the last accepted offer price
+and the last accepted bid price (See Figure X).  This allows, for example,
+the prevention of bids setting the price, even when they are marginal, by
+selecting the \textit{last accepted offer} auction type.
+
+\begin{figure}
+\label{fig:aution_types}
+\centering
+\begin{tikzpicture}[scale=0.75]
+%    \draw[step=1.0cm,color=gray] (0,0) grid (8,5);
+    \coordinate (y) at (0,5);
+    \coordinate (x) at (8,0);
+    \draw[axis] (y) -- node[left] {Price \$/MWh} (0,0) -- node[below] {Quantity (MW)} (x);
+    \coordinate (offprca) at ($0.8*(y)$);
+    \coordinate (offprcb) at ($0.533*(y)$);
+    \coordinate (offqtya) at ($.6*(x)$);
+    \coordinate (offqtyb) at ($.9*(x)$);
+    \draw[] let \p1=(offprca), \p2=(offqtya) in
+    (\p1) node[left] {$\alpha$} -- (\p2);
+\end{tikzpicture}
+\caption{Acceptable price range}
+\end{figure}
 
 \section{Reinforcement Learning}
-This section provides an introduction to the reinforcement learning problem and
-some of the associated terminology.  Definitions for the value-function and
-policy gradient algorithms, that are later applied to power trade
-implementations of the problem, are given.
+\label{sec:rl}
+This section describes agent's policies that represent a store of experience
+and the learning algorithms that its modify parameters. Together these
+components form models of individual behavior which are used to determine the
+actions to be performed in the agent's environment and to learn from received
+rewards.
+% This section provides an introduction to the reinforcement learning problem and
+% some of the associated terminology.  Definitions for the value-function and
+% policy gradient algorithms, that are later applied to power trade
+% implementations of the problem, are given.
 
 For a comprehensive introduction to reinforcement learning with evaluations of
 algorithm designs through mathematical analysis and computational experiments
@@ -48,26 +350,213 @@ represent a policy using a learned function approximator with its own
 parameters %\cite{sutton:99}.  The function approximator is updated
 according to the gradient of expected reward with respect to these parameters.
 
-\subsection{Sarsa}
-Sarsa is an on-policy Temporal Difference control method.  The
-policy is represented by a $M \times N$ table, where $M$ and $N$ are
-arbitrary positive numbers equal to the total number of feasible states and
-actions. The action-value update for agent $j$ is defined by
+\subsection{Basic Roth-Erev}
+\label{sec:rotherev}
+The Roth-Erev reinforcement learning algorithm uses a stateless policy to
+select actions from a discrete domain\cite{roth:games,roth:aer}.  The dataset
+stored by each agent, $j$, contains an array of length $K$, where $K$ is the
+number of feasible actions $k$. Each value in the array represents the
+propensity for selection of the associated action in all states of the
+environment.  Following interaction $t$ in which agent $j$ performed on the
+environment action $k^\prime$, for arbitrary positive $t$, a reward,
+$r_{jk^\prime}(t)$, is calculated.  The propensity for agent $j$ to select
+action $k$ for interaction $t+1$ is
+
+\begin{equation}
+q_{jk}(t+1) =
+\begin{cases}
+(1-\phi)q_{ik}(t) + r_{jk^\prime}(t)(1-\epsilon), & \text{$k = k^\prime$} \\
+(1-\phi)q_{ik}(t) + r_{jk^\prime}(t)(\frac{\epsilon}{K-1}), & \text{$k \ne
+k^\prime$}
+\end{cases}
+\end{equation}
+
+where $\phi$ and $\epsilon$ denote \textit{recency} and
+\textit{experimentation} parameters, respectively. The recency (forgetting)
+parameter degrades the propensity for all actions and prevents the value from
+going unbounded.  It is intended to represent the tendency for players to
+forget older action choices and to prioritise more recent experience.  The
+experimentation parameter prevents the probability of choosing an action from
+going to zero and thus encourages exploration of the action space.
+
+Erev and Roth proposed that actions be selected according to a discrete
+probability distribution function where action $k$ is selected for interaction
+$t+1$ with probability:
+
+\begin{equation}
+p_{jk}(t+1) = \frac{q_{jk}(t+1)}{\sum_{l=0}^K q_{jl}(t+1)}
+\end{equation}
+
+Since $\sum_{l=0}^K q_{jl}(t+1)$ increases with $t$, a reward $r_{jk}(t)$ for
+performing action $k$ will have a greater effect on the probability
+$p_{jk}(t+1)$ during early interactions while $t$ is small.  This is intended
+to represent Psychology's \textit{Power Law of Practice} in which it is
+qualitatively stated that, with practice, learning occurs at a decaying
+expoential rate and that a learning curve will eventually flatten out.
+
+This algorithm may alternatively use a form of the \textit{softmax} method
+\cite{suttonbarto:1998} using the Gibbs, or Boltzmann, distribution to select
+action $k$ for the $t+1$th interaction with probability
+
+\begin{equation}
+p_{jk}(t+1) = \frac{e^{q_{jk}(t+1)/\tau}}{\sum_{l=0}^K e^{q_{jl}(t+1)/\tau}}
+\end{equation}
+
+where $\tau$ is the \textit{temperature} parameter.  This parameter may be
+decreased in value over the course of an experiment since high values give all
+actions similar probability and encourage exploration of the action space,
+while low values promote exploitation of past experience.
+
+\subsection{Variant Roth-Erev}
+\label{sec:variant}
+Two shortcomings of the basic Roth-Erev algorithm (\S\ref{sec:rotherev}) have
+been identified and a variant formulation proposed\cite{nicolaisen:2001}. The
+problems are that the values by which propensities are updated can be zero or
+very small for certain combinations of the experimentation parameter
+$\epsilon$ and the total number of feasible actions $K$.  Also, all
+propensity values are decreased by the same amount when the reward,
+$r_{jk^\prime}(t)$ is zero.  Under the variant algorithm the propensity of
+agent $j$ to select action $k$ for interaction $t+1$ becomes:
+
+\begin{equation}
+q_{jk}(t+1) =
+\begin{cases}
+(1-\phi)q_{ik}(t) + r_{jk^\prime}(t)(1-\epsilon), & \text{$k = k^\prime$} \\
+(1-\phi)q_{ik}(t) + q_{jk}(t)(\frac{\epsilon}{K-1}), & \text{$k \ne
+k^\prime$}
+\end{cases}
+\end{equation}
+
+As with the basic Roth-Erev algorithm, the propensity for the action that the
+reward is associated with is adjusted by the experimentation parameter.  All
+other action propensities are adjusted by a small proportion of their current
+value.
+
+\subsection{SARSA}
+\label{sec:sarsa}
+% Sarsa is an on-policy Temporal Difference control method.  The
+% policy is represented by a $M \times N$ table, where $M$ and $N$ are
+% arbitrary positive numbers equal to the total number of feasible states and
+% actions. The action-value update for agent $j$ is defined by
+%
+% \begin{equation}
+% Q_j(s_{jt},a_{jt}) + \alpha [r_{jt+1} + \gamma Q_j(s_{jt+1},a_{jt+1}) -
+% Q_j(s_{jt},a_{jt})].
+% \end{equation}
+%
+% While the Q-learning algorithm updates action-values using a greedy policy,
+% which is different to that being followed, Sarsa uses the discounted future
+% reward of the next state-action observation following the original policy.
+The SARSA algorithm is an on-policy Temporal Difference control method, similar
+to Q-learning.  The action-value update for agent $j$ is defined by
 
 \begin{equation}
 Q_j(s_{jt},a_{jt}) + \alpha [r_{jt+1} + \gamma Q_j(s_{jt+1},a_{jt+1}) -
-Q_j(s_{jt},a_{jt})].
+Q_j(s_{jt},a_{jt})] \text{.}
 \end{equation}
 
 While the Q-learning algorithm updates action-values using a greedy policy,
-which is different to that being followed, Sarsa uses the discounted future
-reward of the next state-action observation following the original policy.
+which is a different policy to that being followed, SARSA uses the discounted
+future reward of the next state-action observation following the original
+policy.
 
-%TD-Gammon \cite{tesauro:gammon} .
+\subsection{Q-Learning}
+\label{sec:qlearning}
+The formulation of the Q-learning algorithm used is that of the original
+off-policy Temporal Difference algorithm developed by
+Watkins\cite{watkins:1989}.  The action-value function, $Q(s,a)$, returns
+values from a $M \times N$ matrix where $M$ and $N$ are arbitrary positive
+numbers equal to the total number of feasible states and actions, respectively.
+Each value represents the \textit{quality} of taking a particular action, $a$,
+in state $s$.  Actions are selected using either the $\epsilon$-greedy or
+softmax (See section \ref{sec:rotherev}) methods.  The $\epsilon$-greedy method
+either selects the action (or one of the actions) with the highest estimated
+value or it selects an action at random, uniformly, independently of the
+estimated values with, typically small, probability $\epsilon$.
+
+Agent $j$ will observe a reward, $r_{jt}$, and a new state, $s_{jt+1}$,
+after taking action $a_{jt}$ at step $t$ when in state $s_{jt}$.  The
+state-action value, $Q_j(s_{jt},a_{jt})$, is updated according to the
+maximum value of available actions in state $s_{t+1}$ and becomes
+
+\begin{equation}
+\label{eq:qlearning}
+Q_j(s_{jt},a_{jt}) + \alpha [r_{jt+1} + \gamma\max_{a} Q_j(s_{jt+1},a_{jt}) -
+Q_j(s_{jt},a_{jt})]
+\end{equation}
+
+where $\alpha$ and $\gamma$ are the learning rate, $0\leq\alpha\leq1$, and
+discount factor, $0\leq\gamma\leq1$, respectively.  The learning rate determines
+the extent to which new rewards will override the effect of older rewards.
+The discount factor allows the balance between maximising immediate rewards and
+future rewards to be set.
+
+\subsection{Q($\lambda$)}
+\label{sec:qlambda}
+With the Q-learning formulation, described in equation \ref{eq:qlearning}, only
+the quality associated with the previous state, $s_{jt}$, is updated.  However,
+the preceding states can also, in general, be said to be associated with the
+reward $r_{jt+1}$.  Eligibility traces are a mechanism for facilitating this
+effect and in algorithms such as Q($\lambda$), the $\lambda$ refers to it. The
+eligibility trace for a state $e(s)$ represents how eligible the state $s$ is
+to receive credit or blame for the error.  The term ``trace'' refers to fact
+that only recently visited states become eligible.  The eligibility value for
+the current state is increased, while for all other states it is attenuated by
+a factor $\lambda$.
+
+The off-policy nature of Q-learning requires special care to be taken when
+implementing eligibility traces.  While the algorithm may learn a greedy
+policy, in which the action with the maximum value would always be taken,
+typically a policy with some degree of exploration will be followed when
+choosing actions.  If an exploratory (pseudo-random) step is taken the
+preceding states can no longer be considered eligible for credit or blame.
+Setting $\lambda$ to $0$ for non-greedy actions removes much of the benefit of
+using eligibility traces if exploratory actions are frequent.  A solution to
+this has been developed, but requires a very complex implementation
+\cite{peng:1996}.  A na\"ive approach can be taken, where the effect of
+exploratory actions is ignored, but the results of this are unexplored.
+
 \subsection{REINFORCE}
 \label{sec:reinforce}
+The previously defined learning methods typically rely upon discretisation of
+the sensor and action spaces so the associated values may be stored in tables.
+The memory requirements for this restrict the application of these methods to
+only small environments.  Many environments, particularly from real
+applications, exhibit continuous sensor and/or action spaces and require
+generalisation techniques to be employed to provide a more compact policy
+representation.
+
+REINFORCE is an associative reinforcement learning algorithm that determines
+a policy by modifying the parameters of a policy function approximator, rather
+than approximating a value function \cite{williams:reinforce}.  Commonly,
+feedforward artificial neural networks are used to represent the policy, where
+the input is a representation of the state and the output is action selection
+probabilities.  In learning, a \textit{policy gradient} approach is taken where
+the weights of the network are adjusted in the direction of the gradient of
+expected reinforcement.
+
+Defining the network, let $\mathbf{x}^i$ denote the vector of inputs to the
+$i$th unit and $y_i$ denote output of the unit.  In the input layer of the
+network the elements $x_j$ of $\mathbf{x}^i$ are normalised sensor values from
+the environment and in the output layer, or in any hidden layers, they are
+outputs from the $j$ unit in the preceding layer.  Let $\mathbf{w}^i$ denote
+the vector of the weights, $w_{ij}$, on the connections to the $i$th unit.  The
+output of the $i$th unit is dependant on the vector of inputs, $\mathbf{x}^i$,
+and the associated weights, $\mathbf{w}^i$.
+
+For each interaction of the agent with the environment, each parameter $w_{ij}$
+is incremented by
+
+\begin{equation}
+\label{eq:reinforce}
+\Delta w_{ij} = \alpha_{ij}(r - b_{ij})\frac{\partial\ln\rho_i}{\partial
+w_{ij}}
+\end{equation}
+
+where $\alpha_{ij}$ is the \textit{learning factor}, $b_{ij}$ is the
+\textit{reinforcement baseline} and $\rho_i$ is the performance of the policy
+(e.g., the average reward per interaction).
 
 \subsection{ENAC}
 \label{sec:enac}
-Watkins \cite{dommel:opf} and \cite{zimmerman:ccv}.
-%ENAC \cite{peters:enac}.
+ToDo: Episodic Natural Actor Critic\cite{peters:enac}.

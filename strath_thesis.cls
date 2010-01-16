@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesClass{strath_thesis}[2010/01/16 Strathclyde LaTeX PhD Class]
 \RequirePackage{setspace}
-\ExecuteOptions{a4paper,oneside,11pt,onecolumn,final}
+\ExecuteOptions{a4paper,oneside,12pt,onecolumn,final}
 
 % \DeclareOption{draft}{%
 %  \PassOptionsToPackage{all}{draftcopy}%
@@ -77,19 +77,21 @@
     \thispagestyle{empty}
 %  \null\vfill
   \begin{center}
-    { \Huge \vspace*{12mm} {\bfseries {\@title}} \par}
-%    {\large \vspace*{35mm} {{\@crest} \par} \vspace*{25mm}}
-	{\large \vspace*{11cm}}
-    {{\Large \@author} \par}
-    {\large \vspace*{1ex}
+    \vspace*{1ex}
+    {{\Large \@university} \par}
+    {\large \vspace*{2ex}
     {{\@collegeordept} \par}
-\vspace*{1ex}
-    {{\@university} \par}
-\vspace*{25mm}
-    {A thesis submitted for the degree of \par}
-\vspace*{1ex}
+    { \Huge \vspace*{25mm} {\bfseries {\@title}} \par}
+%    {\large \vspace*{35mm} {{\@crest} \par} \vspace*{25mm}}
+	{\large \vspace*{8cm}}
+	{\small by \par \vspace{5mm}}
+    {{\Large \@author} \par}
+    \vspace*{25mm}
+    {A thesis presented in fulfilment of
+    the\\ requirements for the degree of
+    \par} \vspace*{2ex}
     {\it {\@degree} \par}
-\vspace*{2ex}
+    \vspace*{4ex}
     {\@degreedate}}
   \end{center}
   \null\vfill}
