@@ -1,21 +1,26 @@
-\documentclass[oneside,11pt]{strath_thesis}
+\documentclass{strath_thesis}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{ifpdf}
+\usepackage{apacite}
+
+\pagestyle{plain}
 
 \ifpdf
-\pdfinfo{
-  /Author (Richard W. Lincoln)
-  /Title  (Reinforcement Learning for Power Trade)
-  /Subject (Electrical Power Engineering)
-}
+\pdfinfo{/Author (Richard W. Lincoln)
+  		 /Title  (Reinforcement Learning for Power Trade)
+         /Subject (Electrical Power Engineering)}
 \fi
 
-\title{Reinforcement Learning for Power Trade}
+\title{Learning to Trade Power}
 \author{Richard W. Lincoln}
 
 \collegeordept{Department of Electronic and Electrical Engineering}
-\crest{\includegraphics[width=50mm]{figures/strath_crest-mono.pdf}}
+\crest{\includegraphics[width=80mm]{figures/strath_logo-mono}}
 \university{University of Strathclyde}
 \degree{Doctor of Philosophy}
-\degreedate{2009}
+\degreedate{2010}
 
 \begin{document}
 
@@ -35,6 +40,9 @@ The copyright of this thesis belongs to the author under the terms of the
 United Kingdom Copyright Acts as qualified by University of Strathclyde
 Regulation 3.51. Due acknowledgement must always be made of the use of any
 material contained in, or derived from, this thesis.
+
+\vspace{1cm}
+Signed:\hspace{7.6cm} Date: \today
 \end{quote}
 \newpage
 
@@ -92,7 +100,7 @@ Abstract goes here...
 % contribution.
 \input{conclusion}
 
-\bibliographystyle{plain}
+\bibliographystyle{apacite}
 %\bibliographystyle{apacite}
 %\renewcommand{\bibname}{References}
 \bibliography{literature}
