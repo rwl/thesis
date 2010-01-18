@@ -53,46 +53,18 @@ connection/.style={thick, dotted},
 \begin{document}
 
 \maketitle
-\newpage
 
-%\frontmatter   % use with book class
 \setcounter{page}{1}
 \pagenumbering{roman}
 
-\thispagestyle{plain}
-\begin{quote}
-This thesis is the result of the author's original research.  It has been
-composed by the author and has not been previously submitted for examination
-which has led to the award of a degree.
+\declaration
 
-The copyright of this thesis belongs to the author under the terms of the
-United Kingdom Copyright Acts as qualified by University of Strathclyde
-Regulation 3.51. Due acknowledgement must always be made of the use of any
-material contained in, or derived from, this thesis.
+\begin{acknowledgements}
+The research reported in the present thesis was funded by the United Kingdom
+Engineering and Physical Research Council under grant GR/T28836/01.
+\end{acknowledgements}
 
-% \vspace{1cm}
-% Signed:\hspace{7.6cm} Date: \today
-\end{quote}
-\newpage
-
-\thispagestyle{plain}
-\begin{center}
-\vspace*{1.5cm}
-{\Large \bfseries Acknowledgements}
-\end{center}
-\vspace{0.5cm}
-\begin{quote}
-I would like to acknowledge ...
-\end{quote}
-\newpage
-
-\thispagestyle{plain}
-\begin{center}
-  \vspace*{1.5cm}
-  {\Large \bfseries  Abstract}
-\end{center}
-\vspace{0.5cm}
-\begin{quote}
+\begin{abstract}
 Connectionist reinforcement learning methods approximating value-functions
 offer few convergence guarantees, even in simple systems.  Reinforcement
 learning has been applied previously to agent-based simulation of energy
@@ -105,7 +77,7 @@ superior use of sensor data results in improved performance over previously
 applied value-function methods.  From this it follows that algorithms which
 search directly in the policy space will be better suited to decision support
 applications and automated energy trade.
-\end{quote}
+\end{abstract}
 
 \tableofcontents
 \newpage
@@ -113,13 +85,11 @@ applications and automated energy trade.
 \newpage
 \listoftables
 \newpage
+
 \pagenumbering{arabic}
 \setcounter{page}{1}
 
-%\mainmatter   % use with book class
-
 \onehalfspacing
-%\pagestyle{fancy}
 
 % Set the scene and problem statement. Introduce structure of thesis, state
 % contributions (3-5).
@@ -131,8 +101,6 @@ applications and automated energy trade.
 % Survey and critical assessment. Relation to own work.
 \input{related_work}
 
-%\input{problem_statement}
-
 % Analysis, design, implementation and interpretation of results.
 \input{core}
 
@@ -141,10 +109,8 @@ applications and automated energy trade.
 \input{conclusion}
 
 \bibliographystyle{apacite}
-%\bibliographystyle{apacite}
-%\renewcommand{\bibname}{References}
+\renewcommand{\bibname}{Bibliography}
 \bibliography{literature}
-\addcontentsline{toc}{chapter}{Bibliography}
+%\addcontentsline{toc}{chapter}{Bibliography}
 
-%\backmatter
 \end{document}
