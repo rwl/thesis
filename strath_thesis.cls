@@ -130,7 +130,7 @@ material contained in, or derived from, this thesis.
     { \Huge \vspace*{25mm} {\bfseries {\@title}} \par}
 %    {\large \vspace*{35mm} {{\@crest} \par} \vspace*{25mm}}
 	{\large \vspace*{8cm}}
-	{{\small by} \par} \vspace{5mm}
+	{{\small by} \par} \vspace*{5mm}
     {{\Large \@author} \par}
     \vspace*{25mm}
     {{\submittedtext} \par} \vspace*{2ex}

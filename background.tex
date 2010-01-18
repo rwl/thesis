@@ -36,7 +36,7 @@ Finally, to provide an interface to agent participants that resembles that of
 real electricity market, MATPOWER's auction wrapper for the optimal power flow
 routine is described.
 
-\subsection{Power system model}
+\subsection{Power System Model}
 The power system is assumed to be a three-phase AC system operating in the
 steady-state and under balanced conditions in which it may be represented by a
 single phase network of busbars connected by branch objects.
@@ -95,7 +95,7 @@ $p^i_{min}$, respectively, where $p^i_{max} > p^i_{min} \geq 0$.  Similarly,
 upper and lower limits on $q^i_g$ are specified by $q_{max}^i$ and
 $q_{min}^i$, respectively, where $q^i_{max} > q^i_{min}$.
 
-\subsubsection{Buses and loads}
+\subsubsection{Buses and Loads}
 At each bus $k$, constant active power demand is specified by
 $p^k_d$ and reactive power demand by $q^k_d$.  Upper and lower
 limits on the voltage magnitude at the bus are defined by $v_m^{k,max}$ and
@@ -105,7 +105,7 @@ and typically valued zero.
 Dispatchable loads are modelled as generators with negative $p^i_g$, where
 $p^i_{min} < p^i_{max} = 0$. %TODO: Constant power factor.
 
-\subsection{AC power flow equations}
+\subsection{AC Power Flow Equations}
 For a network of $n_b$ buses, $n_l$ branches and $n_g$ generators, let $Cg$ be
 the $n_b \times n_g$ bus-generator connection matrix such that the $(i,j)^{th}$
 element of $C_{g}$ is $1$ if generator $j$ is connected to bus $i$.  The
@@ -188,7 +188,7 @@ S_{t}(V)& =& \diag(C_tV)I_t^* \nonumber \\
 & =& \diag(C_tV)Y_t^*V^*
 \end{eqnarray}
 
-\subsection{DC power flow equations}
+\subsection{DC Power Flow Equations}
 The same power system model is used in the formulation of the linearised DC
 power flow equations, but the following additional assumptions are made:
 \begin{itemize}
@@ -250,12 +250,19 @@ B_{bus}& = &(C_f-C_t)^\mathsf{T}B_f
 \end{eqnarray}
 then the real power bus injections are
 \begin{equation}
+\label{eq:bbus}
 P_{bus}(\Theta) = B_{bus}\Theta + P_{bus,ph}
 \end{equation}
 where $\Theta$ is the $n_b \times 1$ vector of bus voltage angles and
 \begin{equation}
 P_{bus,ph} = (C_f-C_t)^\mathsf{T} + P_{f,ph}
 \end{equation}
+The active power flows at the branch \textit{from} ends are
+\begin{equation}
+\label{eq:pf_loss}
+P_f(\Theta) = B_f\Theta + P_{f,ph}
+\end{equation}
+and $P_t = -P_f$ since branches are assumed to be lossless.
 
 \subsection{AC OPF Formulation}
 Generator active and, optionally, reactive power output costs are defined by
@@ -292,15 +299,44 @@ constraints
 The reference bus voltage angle $\theta_i$ is fixed by the equality
 constraint
 \begin{equation}
+\label{eq:refbusang}
 \theta_i^{ref} \leq \theta_i \leq \theta_i^{ref}, \quad i \in \mathcal{I}_{ref}
 \end{equation}
 Upper and lower limits on the optimisation variables $V_m$, $P_g$ and $Q_g$ are
 enforced by the inequality constraints
 \begin{eqnarray}
 v_m^{i,min} \leq v_m^i \leq v_m^{i,max},& \quad i= 1 \dotsc n_b&\\
+\label{eq:pglim}
 p_g^{i,min} \leq p_g^i \leq p_q^{i,max},& \quad i= 1 \dotsc n_g&\\
 q_g^{i,min} \leq q_g^i \leq q_q^{i,max},& \quad i= 1 \dotsc n_g&
 \end{eqnarray}
+
+\subsection{DC OPF Formulation}
+Piecewise linear cost functions are also used to define generator active power
+costs in the DC optimal power flow formulation.  Since the power flow equations
+are linearised, following assumptions (\ref{eq:lossless}), (\ref{eq:oneperunit})
+and (\ref{eq:busangdiff}), the optimal power flow problem simplifies to a
+linear program.  The voltage magnitude variables $V_m$ and generator reactive
+power set-point variable $Q_g$ are eliminated following assumption
+(\ref{eq:busangdiff}) since branch reactive power flows depend on bus voltage
+angle differences.  The objective function reduces to
+\begin{equation}
+\min_{\theta, P_g, y} \sum_{i=1}^{n_g}y_i
+\end{equation}
+Combining the nodal real power injections, expressed as a function of $\Theta$,
+from (\ref{eq:bbus}) with active power generation $P_g$ and active demand $P_d$,
+the power balance constraint is
+\begin{equation}
+B_{bus}\Theta + P_{bus,ph} + P_d - C_gP_g = 0
+\end{equation}
+Limits on branch active power flows $B_f\Theta$ and $B_t\Theta$ are enforced by
+inequality constraints
+\begin{eqnarray}
+B_f\Theta + P_{f,ph} - F_{max}& \leq& 0\\
+-B_f\Theta + P_{f,ph} - F_{max}& \leq& 0
+\end{eqnarray}
+The reference bus voltage angle equality constraint from (\ref{eq:refbusang})
+and the $p_g$ limit constraint from (\ref{eq:pglim}) are applied also.
 
 % Generator dispatch points are used with the associated cost functions to
 % compute the objective function value -- the total system cost.  The power
