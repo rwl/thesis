@@ -3,20 +3,16 @@
 \RequirePackage{setspace}
 \ExecuteOptions{a4paper,oneside,12pt,onecolumn,final}
 
-% \DeclareOption{draft}{%
-%  \PassOptionsToPackage{all}{draftcopy}%
-%  \PassOptionsToClass{draft}{report}%
-%  \AtEndOfClass{%
-%    \RequirePackage{draftcopy}%
-%    % I wanted to print timestamp of each file, but I don't see
-%    % how to do that...
-%    \draftcopyName{DRAFT: \today}{60 } % text for overprinting if in "draft" mode
-%    }%
-% }
-
-\DeclareOption*{%
-  \PassOptionsToClass{\CurrentOption}{report}
+\DeclareOption{draft}{%
+  \PassOptionsToPackage{all}{draftcopy}%
+  \PassOptionsToClass{draft}{report}%
+  \AtEndOfClass{%
+    \RequirePackage{draftcopy}%
+    \draftcopyName{DRAFT: \today}{60 } % text for overprinting in "draft" mode
+    }%
 }
+
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{report}}
 
 \ProcessOptions
 
@@ -25,7 +21,7 @@
 \RequirePackage[
 	plainpages=false,
     pdfpagelabels,
-    pdfpagelayout=useoutlines,
+    pdfpagelayout=SinglePage,
     bookmarks,
     bookmarksopen=true,
     bookmarksnumbered=true,
@@ -40,27 +36,28 @@
     hyperindex=true,
     hyperfigures]{hyperref}
 
-%\setlength{\evensidemargin}{25mm}
-\setlength{\oddsidemargin}{15.6mm}
-\setlength{\topmargin}{-4.4mm}
-%\setlength{\headheight}{1.36cm}
-%\setlength{\headsep}{1.00cm}
-\setlength{\textheight}{224mm}
-\setlength{\textwidth}{143mm}
-%\setlength{\marginparsep}{1mm}
-%\setlength{\marginparwidth}{3cm}
-%\setlength{\footskip}{2.36cm}
+% %\setlength{\evensidemargin}{25mm}
+% \setlength{\oddsidemargin}{15.6mm}
+% \setlength{\topmargin}{-4.4mm}
+% %\setlength{\headheight}{1.36cm}
+% %\setlength{\headsep}{1.00cm}
+% \setlength{\textheight}{224mm}
+% \setlength{\textwidth}{143mm}
+% %\setlength{\marginparsep}{1mm}
+% %\setlength{\marginparwidth}{3cm}
+% %\setlength{\footskip}{2.36cm}
 
-% \RequirePackage[
-%     top=1.0in,
-%     bottom=1.0in,
-%     inner=1.5in,
-%     outer=1.0in,
-%     ]
-%     {geometry}
+\RequirePackage[
+    top=20mm,
+    bottom=40mm,
+    inner=40mm,
+    outer=25mm,]{geometry}
 
 % clearemptydoublepage from page 92 of The LaTeX Companion 1993.
 \newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}\cleardoublepage}}
+
+\newcommand{\submittedtext}{{A thesis presented in fulfilment of the\\
+requirements for the degree of}}
 
 \newcommand{\declaration}{%
 \clearemptydoublepage
@@ -88,8 +85,8 @@ material contained in, or derived from, this thesis.
  \begin{center}
   \section*{Acknowledgements}
  \end{center}
- \begingroup
-}{\newpage\endgroup\singlespacing}
+ \begin{quote}
+}{\newpage\end{quote}\singlespacing}
 
 \renewenvironment{abstract}%
 {\clearemptydoublepage
@@ -104,14 +101,18 @@ material contained in, or derived from, this thesis.
  \begingroup
 }{\newpage\endgroup\end{quote}\singlespacing}
 
-% The year and term the degree will be officially conferred
+% Year and term the degree will be officially conferred
 \def\degreedate#1{\gdef\@degreedate{#1}}
-% The full (unabbreviated) name of the degree
+\global\def\@degreedate{\number\year}
+% Full (unabbreviated) name of the degree
 \def\degree#1{\gdef\@degree{#1}}
-% The name of your college or department(eg. Trinity, Pembroke, Maths, Physics)
-\def\collegeordept#1{\gdef\@collegeordept{#1}}
-% The name of your University
+\global\def\@degree{Doctor of Philosophy}
+% Name of department
+\def\department#1{\gdef\@department{#1}}
+\global\def\@department{Department of Electronic and Electrical Engineering}
+% Name of University
 \def\university#1{\gdef\@university{#1}}
+\global\def\@university{University of Strathclyde}
 % Defining the crest
 \def\crest#1{\gdef\@crest{#1}}
 
@@ -122,24 +123,27 @@ material contained in, or derived from, this thesis.
     \thispagestyle{empty}
 %  \null\vfill
   \begin{center}
-    \vspace*{1ex}
+    \vspace*{10mm}
     {{\Large \@university} \par}
     {\large \vspace*{2ex}
-    {{\@collegeordept} \par}
+    {{\@department} \par}
     { \Huge \vspace*{25mm} {\bfseries {\@title}} \par}
 %    {\large \vspace*{35mm} {{\@crest} \par} \vspace*{25mm}}
 	{\large \vspace*{8cm}}
-	{\small by \par \vspace{5mm}}
+	{{\small by} \par} \vspace{5mm}
     {{\Large \@author} \par}
     \vspace*{25mm}
-    {A thesis presented in fulfilment of
-    the\\ requirements for the degree of
-    \par} \vspace*{2ex}
+    {{\submittedtext} \par} \vspace*{2ex}
     {\it {\@degree} \par}
     \vspace*{4ex}
     {\@degreedate}}
   \end{center}
-  \null\vfill}
+  \null\vfill
+}
+
+\newenvironment{romanpages}
+{\cleardoublepage\setcounter{page}{1}\renewcommand{\thepage}{\roman{page}}}
+{\cleardoublepage\renewcommand{\thepage}{\arabic{page}}\setcounter{page}{1}}
 
 % end of file:
 %\endinput
