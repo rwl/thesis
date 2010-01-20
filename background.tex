@@ -1,430 +1,30 @@
 \chapter{Background}
+This chapter provides an introduction to optimal power flow and reinforcement
+learning.  Different formulations of the optimal power flow problem are
+explained along with the principles behind interior-point methods, common used
+to find their solutions.  Reinforcement learning is also a generic term and
+Section \ref{sec:rl} introduces computational approaches to learning to maximise
+long term reward.  Definitions are provided for the valued-based and direct
+search algorithms compared in subsequent chapters.
 
 \section{Optimal Power Flow}
 \label{sec:opf}
-Computation of the generator dispatch points is executed using parts of the
-of the optimal power flow formulation from MATPOWER \cite{zimmerman:mp_pes}.
-In order that the optimal power flow routine could be coupled with agents from
-the machine learning library PyBrain, the
-MATLAB\textsuperscript{\texttrademark} source code from \matpower was
-translated to the Python programming language.  With the permission of the
-\matpower developers the resulting package has been released under the terms of
-version 2 of the GNU General Public License as a project named
-PYLON \cite{lincoln:pyreto}. Sparse matrix objects from the convex
-optimisation library CVXOPT were used to allow the implementation to scale well to solving for very large systems.
-
-This section describes parts of the optimal power flow formulation,
-unit-decommitment algorithm and auction interface from \matpower that were used
-to represent a centralised electricity market.  Notable components of the full
-optimal power flow forumlation (available in \cite{pserc:mp_manual}) that have
-been ignored are shunt capacitors and inductors, generator P-Q capability
-curves and dispatchable loads. The power system model is described by defining
-the bus, branch and generator objects.  The power flow equations associated with a network of these components are subsequently defined. The constrained cost variable approach to modelling generator cost
-functions from \cite{zimmerman:ccv} is introduced, from which the optimal power
-flow formulation follows.
-
-The experiments described in Section \ref{ch:method} require an optimal power
-flow problem to be solved at each step.  To accelerate the simulation process
-for certain experiments the option to use a linearised DC formulation is used,
-the formulation of which is provided also.  The tradeoffs between using DC
-models over AC have been examined in \cite{overbye:acdc} and found reasonable
-for locational marginal price calculations.
-
-Since the optimal power flow formulations do not facilitate shutting down
-expensive generators, the unit-decommitment algorithm from MATPOWER is defined.
-Finally, to provide an interface to agent participants that resembles that of
-real electricity market, MATPOWER's auction wrapper for the optimal power flow
-routine is described.
-
-\subsection{Power System Model}
-The power system is assumed to be a three-phase AC system operating in the
-steady-state and under balanced conditions in which it may be represented by a
-single phase network of busbars connected by branch objects.
-
-\subsubsection{Branches}
-Each branch is modelled as a medium length transmission line in series with a
-transformer at the \textit{from} end.  A nominal-$\pi$ model with total series
-admittance $y_s = 1/(r_s+jx_s)$ and total shunt capacitance $b_c$ is
-used to represent the transmission line.  The transformer is assumed to be
-ideal and both phase-shifting and tap-changing, with the ratio between primary
-winding voltage $v_{f}$ and secondary winding voltage $N = \tau
-e^{j\theta_{ph}}$ where $\tau$ is the tap ratio and $\theta_{ph}$ is the phase
-shift angle.  From Kirchhoff's current law the current in the series impedance
-is
+Optimal power flow is a term used to describe a broad class of problems in
+which an objective function is optimised while constraints on the optimisation
+variables, which represent physical characterisitcs of the electric power
+system, are satisfied.  Optimisation techniques typically solve problems of the
+form
 \begin{equation}
-\label{eq:iseries}
-i_s = \frac{b_c}{2}v_t - i_t
+\min_x f(x)
 \end{equation}
-and from Kirchhoff's voltage law the voltage across the secondary winding of
-the transformer is
-\begin{equation}
-\frac{v_{f}}{N} = v_t + \frac{i_s}{y_s}
-\end{equation}
-Substituting $i_s$ from (\ref{eq:iseries}), gives
-\begin{equation}
-\label{eq:vfrom}
-\frac{v_{f}}{N} = v_t - \frac{i_t}{y_s} + v_t\frac{b_c}{2y_s}
-\end{equation}
-and rearranging in terms if $i_t$, gives
-\begin{equation}
-\label{eq:ito}
-i_t = v_s \left( \frac{-y_s}{\tau e^{\theta_{ph}}} \right) +
-v_r \left( y_s + \frac{b_c}{2} \right)
-\end{equation}
-The current through the secondary winding of the transformer is
-\begin{equation}
-N^*i_f = i_s + \frac{b_c}{2}\frac{v_{f}}{N}
-\end{equation}
-Substituting $i_s$ from (\ref{eq:iseries}), gives
-\begin{equation}
-N^*i_f = \frac{b_c}{2}v_t - i_t + \frac{b_c}{2}\frac{v_{f}}{N}
-\end{equation}
-Substituting $\frac{v_{f}}{N}$ from (\ref{eq:vfrom}) and rearranging, gives
-\begin{equation}
-\label{eq:ifrom}
-i_s = v_s \left( \frac{1}{\tau^2} \left(y_s + \frac{b_c}{2}\right) \right) +
-v_r \left(\frac{y_s}{\tau e^{-j\theta}}\right)
-\end{equation}
-
-\subsubsection{Generators}
-Each generator $i$ is modelled as an apparent power source $s^i_g = p^i_g +
-jq^i_g$ at a specific bus $k$, where $p^i_g$ is the active power injection and
-$q^i_g$ the reactive power injection, each expressed in per-unit to the system
-base MVA. Upper and lower limits on $p^i_g$ are specified by $p^i_{max}$ and
-$p^i_{min}$, respectively, where $p^i_{max} > p^i_{min} \geq 0$.  Similarly,
-upper and lower limits on $q^i_g$ are specified by $q_{max}^i$ and
-$q_{min}^i$, respectively, where $q^i_{max} > q^i_{min}$.
-
-\subsubsection{Buses and Loads}
-At each bus $k$, constant active power demand is specified by
-$p^k_d$ and reactive power demand by $q^k_d$.  Upper and lower
-limits on the voltage magnitude at the bus are defined by $v_m^{k,max}$ and
-$v_m^{k,min}$, respectively.  For one bus with an associated generator,
-designated the \textit{reference} bus, the voltage angle is $\theta^{ref}_k$
-and typically valued zero.
-Dispatchable loads are modelled as generators with negative $p^i_g$, where
-$p^i_{min} < p^i_{max} = 0$. %TODO: Constant power factor.
-
-\subsection{AC Power Flow Equations}
-For a network of $n_b$ buses, $n_l$ branches and $n_g$ generators, let $Cg$ be
-the $n_b \times n_g$ bus-generator connection matrix such that the $(i,j)^{th}$
-element of $C_{g}$ is $1$ if generator $j$ is connected to bus $i$.  The
-$n_b \times 1$ vector of complex power injections from generators at all buses
-is
-\begin{equation}
-S_{g,bus} = C_g \cdot S_g
-\end{equation}
-where $S_g = P_g + jQ_g$ is the $n_g \times 1$ vector with the $i^{th}$ element
-equal to $s^i_g$.
-
-Combining (\ref{eq:ifrom}) and (\ref{eq:ito}), the \textit{from} and
-\textit{to} end complex current injections for branch $l$ are
-\begin{equation}
-\label{eq:ybranch}
-\begin{bmatrix}
-i_f^l\\
-i_t^l
-\end{bmatrix}
-=
-\begin{bmatrix}
-y_{ff}^l& y_{ft}^l\\
-y_{tf}^l& y_{tt}^l
-\end{bmatrix}
-\begin{bmatrix}
-v_f^l\\
-v_t^l
-\end{bmatrix}
-\end{equation}
-where
+subject to
 \begin{eqnarray}
-\label{eq:yff}
-y_{ff}^l& =& \frac{1}{\tau^2} \left(y_s + \frac{b_c}{2}\right)\\
-\label{eq:yft}
-y_{ft}^l& =& \frac{y_s}{\tau e^{-j\theta_{ph}}}\\
-\label{eq:ytf}
-y_{tf}^l& =& \frac{-y_s}{\tau e^{j\theta_{ph}}}\\
-\label{eq:ytt}
-y_{tt}^l& =& y_s + \frac{b_c}{2}
-\end{eqnarray}
-Let $Y_{ff}$, $Y_{ft}$, $Y_{tf}$ and $Y_{tt}$ be $n_l \times 1$ vectors where
-the $l$-th element of each corresponds to $y_{ff}^l$, $y_{ft}^l$, $y_{tf}^l$
-and $y_{tt}^l$, respectively.  Furthermore, let $C_f$ and $C_t$ be the
-$n_l \times n_b$ branch-bus connection matrices, where $C_{f_{i,j}} = 1$ and
-$C_{t_{i,k}} = 1$ if branch $i$ connects \textit{from} bus $j$ \textit{to} bus
-$k$.  The $n_l \times n_b$ branch admittance matrices are
-\begin{eqnarray}
-Y_f& =& \diag(Y_{ff})C_f + \diag(Y_{ft})C_t\\
-Y_t& =& \diag(Y_{tf})C_f + \diag(Y_{tt})C_t
-\end{eqnarray}
-and relate the complex bus voltages $V$ to the branch \textit{from} and
-\textit{to} end current vectors
-\begin{eqnarray}
-I_{f}& =& Y_{f}V\\
-I_{t}& =& Y_{t}V
-\end{eqnarray}
-The $n_b \times n_b$ bus admittance matrix is
-\begin{eqnarray}
-Y_{bus}& =& C_f^\mathsf{T} Y_f + C_t^\mathsf{T}
-\end{eqnarray}
-and it relates the complex bus voltages to the nodal current injections
-\begin{eqnarray}
-I_{bus}& =& Y_{bus}V
-\end{eqnarray}
-The complex power losses from all branches are expressed as a non-linear
-function of $V$
-\begin{eqnarray}
-S_{bus}(V)& =& \diag(V)I_{bus}^* \nonumber \\
-\label{eq:sbus}
-&= & \diag(V)Y_{bus}^*V^*
-\end{eqnarray}
-The complex power injections at the \textit{from} and \textit{to} ends of all
-branches are also expressed as a non-linear functions of $V$
-\begin{eqnarray}
-S_{f}(V)& =& \diag(C_fV)I_f^* \nonumber \\
-\label{eq:sf_loss}
-& =& \diag(C_fV)Y_f^*V^*\\
-S_{t}(V)& =& \diag(C_tV)I_t^* \nonumber \\
-\label{eq:st_loss}
-& =& \diag(C_tV)Y_t^*V^*
+g(x)& =& 0\\
+h(x)& \leq& 0\\
+x_{min}\leq& x& \leq x_{max}
 \end{eqnarray}
 
-\subsection{DC Power Flow Equations}
-The same power system model is used in the formulation of the linearised DC
-power flow equations, but the following additional assumptions are made:
-\begin{itemize}
-  \item The resistance $r_s$ and shunt capacitance $b_c$ of all branch can be
-  considered negligible.
-  \begin{equation}
-  \label{eq:lossless}
-  y_s \approx \frac{1}{jx_s}, b_c \approx 0
-  \end{equation}
-  \item Bus voltage magnitudes $v_{m,i}$, are all approximately 1 per-unit.
-  \begin{equation}
-  \label{eq:oneperunit}
-  v_i \approx 1e^{j\theta_i}
-  \end{equation}
-  \item The voltage angle difference between bus $i$ and bus $j$ is small enough
-  that
-  \begin{equation}
-  \label{eq:busangdiff}
-  \sin\theta_{ij} \approx \theta_{ij}
-  \end{equation}
-\end{itemize}
-Applying the assumption that branches are lossless from (\ref{eq:lossless}), the
-quadrants of the branch admittance matrix, (\ref{eq:yff}), (\ref{eq:yft}),
-(\ref{eq:ytf}) and (\ref{eq:ytt}), approximate to
-\begin{eqnarray}
-y_{ff}^l& =& \frac{1}{jx_s \tau^2}\\
-y_{ft}^l& =& \frac{-1}{jx_s \tau e^{-j\theta_{ph}}}\\
-y_{tf}^l& =& \frac{-1}{jx_s \tau e^{j\theta_{ph}}}\\
-y_{tt}^l& =& \frac{1}{jx_s}
-\end{eqnarray}
-Applying the uniform bus voltage magnitude assumption from \ref{eq:oneperunit}
-to (\ref{eq:ybranch}), the branch \textit{from} end current approximates to
-\begin{eqnarray}
-i_f& \approx& \frac{e^{j\theta_f}}{jx_s\tau^2} -
-\frac{e^{j\theta_t}}{jx_s \tau e^{-j\theta_{ph}}}\\
-& =& \frac{1}{jx_s\tau} ( \frac{1}{\tau}e^{j\theta_f} -
-e^{j(\theta_t + \theta_{ph})} )
-\end{eqnarray}
-% ToDo: Branch to end current derivation.
-The branch \textit{from} end complex power flow $s_f = v_f \dot i_f^*$
-therefore approximates to
-\begin{eqnarray}
-s_f& \approx& e^{j\theta_f} \cdot \frac{j}{x_s\tau}
-(\frac{1}{\tau}e^{-j\theta_f} - e^{j(\theta_t + \theta_{ph})})\\
-& =& \frac{1}{x_s\tau} \left[ \sin(\theta_f-\theta_t-\theta_{ph}) +
-j\left( \frac{1}{\tau} - \cos(\theta_f-\theta_t-\theta_{ph}) \right) \right]
-\end{eqnarray}
-Applying the voltage angle difference assumption from \ref{eq:busangdiff} yields
-the approximation
-\begin{equation}
-p_f \approx \frac{1}{x_s\tau}(\theta_f-\theta_t-\theta_{ph})
-\end{equation}
-Let $B_{ff}$ and $P_{f,ph}$ be the $n_l \times 1$ vectors where
-$B_{ff_i} = \frac{1}{x_s^i\tau^i}$ and $P_{f,ph_i} =
-\frac{-\theta_{ph}^i}{x_s^i\tau^i}$.  If the system $B$ matrices are
-\begin{eqnarray}
-B_f& =& \diag(Bff)(C_f-C_t)\\
-B_{bus}& = &(C_f-C_t)^\mathsf{T}B_f
-\end{eqnarray}
-then the real power bus injections are
-\begin{equation}
-\label{eq:bbus}
-P_{bus}(\Theta) = B_{bus}\Theta + P_{bus,ph}
-\end{equation}
-where $\Theta$ is the $n_b \times 1$ vector of bus voltage angles and
-\begin{equation}
-P_{bus,ph} = (C_f-C_t)^\mathsf{T} + P_{f,ph}
-\end{equation}
-The active power flows at the branch \textit{from} ends are
-\begin{equation}
-\label{eq:pf_loss}
-P_f(\Theta) = B_f\Theta + P_{f,ph}
-\end{equation}
-and $P_t = -P_f$ since branches are assumed to be lossless.
-
-\subsection{AC OPF Formulation}
-Generator active and, optionally, reactive power output costs are defined by
-convex $n$-segment piecewise linear cost functions.
-\begin{equation}
-c^{(i)}(x) = m_ip + c_i
-\end{equation}
-for $p_i \leq p \leq p_{i+1}$, $i = 1,2,\dotsc n$ where $m_{i+1} \geq m_i$ and
-$p_{i+1} > p_i$.  Since these costs are non-differentiable the constrained
-cost variable approach from \cite{zimmerman:ccv} is used to make the
-optimisation problem smooth.  For each generator $i$ a helper cost variable
-$y_i$ added to the objective function.  Inequality constraints
-\begin{equation}
-y_i \geq m_{i,j}(p-p_j) + c_j, \quad j = 1\dotsc n
-\end{equation}
-require $y_i$ to lie on the epigraph of $c^{(i)}(x)$.  The objective of the
-optimal power flow problem is to minimise the sum of the cost variables for all
-generators.
-\begin{equation}
-\min_{\theta, V_m, P_g, Q_g, y} \sum_{i=1}^{n_g}y_i
-\end{equation}
-Equality constraints enforce the balance between generator complex power
-injections $S_g$ and the sum of apparent power demand $S_d$ and the branch
-losses expressed in (\ref{eq:sbus}).
-\begin{equation}
-S_{bus}(V) + S_d - S_g = 0
-\end{equation}
-Branch complex power flow limits $S_{max}$ are enforced by the inequality
-constraints
-\begin{eqnarray}
-\abs{S_f(V)} - S_{max}& \leq &0\\
-\abs{S_f(V)} - S_{max}& \leq &0
-\end{eqnarray}
-The reference bus voltage angle $\theta_i$ is fixed by the equality
-constraint
-\begin{equation}
-\label{eq:refbusang}
-\theta_i^{ref} \leq \theta_i \leq \theta_i^{ref}, \quad i \in \mathcal{I}_{ref}
-\end{equation}
-Upper and lower limits on the optimisation variables $V_m$, $P_g$ and $Q_g$ are
-enforced by the inequality constraints
-\begin{eqnarray}
-v_m^{i,min} \leq v_m^i \leq v_m^{i,max},& \quad i= 1 \dotsc n_b&\\
-\label{eq:pglim}
-p_g^{i,min} \leq p_g^i \leq p_q^{i,max},& \quad i= 1 \dotsc n_g&\\
-q_g^{i,min} \leq q_g^i \leq q_q^{i,max},& \quad i= 1 \dotsc n_g&
-\end{eqnarray}
-
-\subsection{DC OPF Formulation}
-Piecewise linear cost functions are also used to define generator active power
-costs in the DC optimal power flow formulation.  Since the power flow equations
-are linearised, following assumptions (\ref{eq:lossless}), (\ref{eq:oneperunit})
-and (\ref{eq:busangdiff}), the optimal power flow problem simplifies to a
-linear program.  The voltage magnitude variables $V_m$ and generator reactive
-power set-point variable $Q_g$ are eliminated following assumption
-(\ref{eq:busangdiff}) since branch reactive power flows depend on bus voltage
-angle differences.  The objective function reduces to
-\begin{equation}
-\min_{\theta, P_g, y} \sum_{i=1}^{n_g}y_i
-\end{equation}
-Combining the nodal real power injections, expressed as a function of $\Theta$,
-from (\ref{eq:bbus}) with active power generation $P_g$ and active demand $P_d$,
-the power balance constraint is
-\begin{equation}
-B_{bus}\Theta + P_{bus,ph} + P_d - C_gP_g = 0
-\end{equation}
-Limits on branch active power flows $B_f\Theta$ and $B_t\Theta$ are enforced by
-inequality constraints
-\begin{eqnarray}
-B_f\Theta + P_{f,ph} - F_{max}& \leq& 0\\
--B_f\Theta + P_{f,ph} - F_{max}& \leq& 0
-\end{eqnarray}
-The reference bus voltage angle equality constraint from (\ref{eq:refbusang})
-and the $p_g$ limit constraint from (\ref{eq:pglim}) are applied also.
-
-% Generator dispatch points are used with the associated cost functions to
-% compute the objective function value -- the total system cost.  The power
-% balance Lagrangian multipliers are the shadow prices or system nodal prices and
-% equal the cost to the system of supplying one more unit of load at that bus.
-
-\subsection{Unit Decommitment}
-In the OPF formulation above (See section \ref{sec:opf}) the solver must
-attempt to dispatch generators within their minimum and maximum power limits.
-Expensive generators can not be completely shutdown even if doing so would
-result in a lower total system cost.  To achieve this an implementation of the
-\textit{unit decommitment} algorithm (See Algorithm \ref{alg:ud}, below) from
-\matpower was used\cite[p. 20]{pserc:mp_manual}.  The algorithm finds the least
-cost dispatch by solving repeated OPF problems with different combinations of
-generating units at their minimum active power limit deactivated.  The lowest
-cost solution is returned when no further improvement can be made and no
-candidate generators remain.
-\begin{algorithm}[H]
-\caption{Unit decommitment}
-\label{alg:ud}
-\begin{algorithmic}[1]
-\STATE $\text{initialise}~N \leftarrow 0$
-\STATE $\text{solve initial OPF}$
-\STATE $L_{tot} \leftarrow \text{total load capacity}$
-\WHILE{$\text{total min gen.\ capacity} > L_{tot}$}
-	\STATE $N \leftarrow N + 1$
-\ENDWHILE
-
-\REPEAT
-	\FOR{c in candidates}
-		\STATE $\text{solve OPF}$
-	\ENDFOR
-\UNTIL{$\text{done} = \text{True}$}
-\end{algorithmic}
-\end{algorithm}
-
-\subsection{Auction Interface}
-Solving the optimisation problem defined above (See section \ref{sec:opf}) is
-intended to represent the function of a pool market operator.  To present
-agents participating in this market with a simpler interface, more
-representative of a pool market an implementation of the ``smart market''
-auction clearing mechanism from \matpower was used\cite[p. 31]{pserc:mp_manual}.
-Using this interface the OPF problem is formulated from a list of offers to
-sell and bids to buy power.
-
-An offer/bid specifies a quantity of power in MW and a price for that power in
-\$/MWh, to be traded over a particular period of time.  The market
-accepts sets of offers and bids and uses the solution of the unit decommitment
-algorithm to return sets of \textit{cleared} offer and bids.  The cleared
-offers/bids can then be used to produce dispatch orders from which values of
-revenue and earnings/losses may be determined.
-
-The market features the ability to set maximum offer price limits and minimum
-bids price limits.  The process of clearing the market begins by withholding
-offers/bids outwith these limits, along with those specifying non-positive
-quantities.  Valid offers/bids for each generator are then sorted into
-non-decreasing/increasing order and used to form new piecewise-linear cost
-functions and adjust the generator's active power limits.
-% TODO: Provide an example.
-
-The dispatch points and nodal prices from solving a unit decommitment OPF with
-the newly configured generators as input are used in the auction clearing
-mechanism to determine the proportion of each offer/bid block that should be
-cleared and the associated price for each.
-
-Different pricing options arise from the fact that a gap in which any price is
-acceptable to all participants may exist between the last accepted offer price
-and the last accepted bid price (See Figure X).  This allows, for example,
-the prevention of bids setting the price, even when they are marginal, by
-selecting the \textit{last accepted offer} auction type.
-
-\begin{figure}
-\label{fig:aution_types}
-\centering
-\begin{tikzpicture}[scale=0.75]
-%    \draw[step=1.0cm,color=gray] (0,0) grid (8,5);
-    \coordinate (y) at (0,5);
-    \coordinate (x) at (8,0);
-    \draw[axis] (y) -- node[left] {Price \$/MWh} (0,0) -- node[below] {Quantity (MW)} (x);
-    \coordinate (offprca) at ($0.8*(y)$);
-    \coordinate (offprcb) at ($0.533*(y)$);
-    \coordinate (offqtya) at ($.6*(x)$);
-    \coordinate (offqtyb) at ($.9*(x)$);
-    \draw[] let \p1=(offprca), \p2=(offqtya) in
-    (\p1) node[left] {$\alpha$} -- (\p2);
-\end{tikzpicture}
-\caption{Acceptable price range}
-\end{figure}
+\subsection{Interior-Point Methods}
 
 \section{Reinforcement Learning}
 \label{sec:rl}
@@ -470,7 +70,15 @@ parameters %\cite{sutton:99}.
 The function approximator is updated according to the gradient of expected
 reward with respect to these parameters.
 
-\subsection{Basic Roth-Erev}
+% \subsection{Markov Decision Processes}
+% \subsection{Dynamic Programming}
+% \subsection{Monte-Carlo Methods}
+% \subsection{Temporal-Difference Learning}
+% \subsection{Artificial Neural-Networks}
+
+\subsection{Value Function Methods}
+
+\subsubsection{Basic Roth-Erev}
 \label{sec:rotherev}
 The Roth-Erev reinforcement learning algorithm uses a stateless policy to
 select actions from a discrete domain\cite{roth:games,roth:aer}.  The dataset
@@ -527,7 +135,7 @@ decreased in value over the course of an experiment since high values give all
 actions similar probability and encourage exploration of the action space,
 while low values promote exploitation of past experience.
 
-\subsection{Variant Roth-Erev}
+\subsubsection{Variant Roth-Erev}
 \label{sec:variant}
 Two shortcomings of the basic Roth-Erev algorithm (\S\ref{sec:rotherev}) have
 been identified and a variant formulation proposed\cite{nicolaisen:2001}. The
@@ -552,7 +160,7 @@ reward is associated with is adjusted by the experimentation parameter.  All
 other action propensities are adjusted by a small proportion of their current
 value.
 
-\subsection{SARSA}
+\subsubsection{SARSA}
 \label{sec:sarsa}
 % Sarsa is an on-policy Temporal Difference control method.  The
 % policy is represented by a $M \times N$ table, where $M$ and $N$ are
@@ -580,7 +188,7 @@ which is a different policy to that being followed, SARSA uses the discounted
 future reward of the next state-action observation following the original
 policy.
 
-\subsection{Q-Learning}
+\subsubsection{Q-Learning}
 \label{sec:qlearning}
 The formulation of the Q-learning algorithm used is that of the original
 off-policy Temporal Difference algorithm developed by
@@ -611,7 +219,7 @@ the extent to which new rewards will override the effect of older rewards.
 The discount factor allows the balance between maximising immediate rewards and
 future rewards to be set.
 
-\subsection{Q($\lambda$)}
+\subsubsection{Q($\lambda$)}
 \label{sec:qlambda}
 With the Q-learning formulation, described in equation \ref{eq:qlearning}, only
 the quality associated with the previous state, $s_{jt}$, is updated.  However,
@@ -636,7 +244,9 @@ this has been developed, but requires a very complex implementation
 \cite{peng:1996}.  A na\"ive approach can be taken, where the effect of
 exploratory actions is ignored, but the results of this are unexplored.
 
-\subsection{REINFORCE}
+\subsection{Policy Gradient Methods}
+
+\subsubsection{REINFORCE}
 \label{sec:reinforce}
 The previously defined learning methods typically rely upon discretisation of
 the sensor and action spaces so the associated values may be stored in tables.
@@ -677,6 +287,6 @@ where $\alpha_{ij}$ is the \textit{learning factor}, $b_{ij}$ is the
 \textit{reinforcement baseline} and $\rho_i$ is the performance of the policy
 (e.g., the average reward per interaction).
 
-\subsection{ENAC}
+\subsubsection{ENAC}
 \label{sec:enac}
 ToDo: Episodic Natural Actor Critic\cite{peters:enac}.

@@ -27,6 +27,10 @@ important line/.style={thick},
 connection/.style={thick, dotted},
 }
 
+\makeatletter
+\newcommand{\rmnum}[1]{\romannumeral #1}
+\newcommand{\Rmnum}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
 \newcommand{\abs}[1]{\lvert#1\rvert}
 \newcommand{\diag}{\mathop{\mathbf{diag}}}
 \newcommand{\matpower}{M\textsc{ATPOWER~}}
@@ -94,10 +98,12 @@ applications and automated energy trade.
 \input{related_work}
 
 % Analysis, design, implementation and interpretation of results.
-\input{core}
+\input{method}
 
-% Critical assessment of own work. State hypothesis. Further Work. Restate
-% contribution.
+% Critical assessment of own work.
+\input{results}
+
+% State hypothesis. Further Work. Restate contribution.
 \input{conclusion}
 
 \bibliographystyle{apacite}
