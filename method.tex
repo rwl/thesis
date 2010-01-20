@@ -160,6 +160,7 @@ v_r \left(\frac{y_s}{\tau e^{-j\theta}}\right)
 \end{equation}
 
 \subsubsection{Generators}
+\label{sec:generators}
 Each generator $i$ is modelled as an apparent power source $s^i_g = p^i_g +
 jq^i_g$ at a specific bus $k$, where $p^i_g$ is the active power injection and
 $q^i_g$ the reactive power injection, each expressed in per-unit to the system
@@ -411,6 +412,8 @@ B_f\Theta + P_{f,ph} - F_{max}& \leq& 0\\
 The reference bus voltage angle equality constraint from (\ref{eq:refbusang})
 and the $p_g$ limit constraint from (\ref{eq:pglim}) are applied also.
 
+\subsection{OPF Solution}
+\label{sec:opfsol}
 % Generator dispatch points are used with the associated cost functions to
 % compute the objective function value -- the total system cost.  The power
 % balance Lagrangian multipliers are the shadow prices or system nodal prices and
@@ -501,8 +504,94 @@ selecting the \textit{last accepted offer} auction type.
 
 \section{Multi-Agent System}
 \label{sec:mas}
+This section describes the implementation of agents and the coordination of
+their interactions in multi-agent systems.  A generic market environment, with
+which agents interact regardless of the learning method employed, is defined
+along with tasks that associate a purpose with an environment.  The design of
+connectionist systems and tables, used to represent agent policies, are given
+and the process by which they are modified by the agent's learning algorithm is
+explained.  Finally, the collection of agents and tasks into a multi-agent
+system and the sequence of interactions is illustrated.
 
 \subsection{Agent, Task \& Environment}
+
+\subsubsection{Environment}
+Each generator/dispatchable load in the power system model (See Section
+\ref{sec:generators}, above) is associated with an agent\footnote{Management of
+a portfolio of generators is also supported by the architecture used, but this
+feature has not been exploited.} via the agent's environment.  Each environment
+maintains an association with a singular market instance for submission of
+offers/bids.  Two main operations are supported by an agent's environment.
+
+For a power system with $n_b$ buses, $n_l$ and $n_g$ generators, the
+\texttt{getSensors} method returns a $n_s \times 1$ vector of sensor values
+$s^i_e$ for generator $i$ where $n_s = 2n_b + 2n_l + 3n_g$.  $s^i_g$ represents
+the visible state of the environment for the agent associated with generator
+$i$.  $s^i_e$ is composed of sensor values for all buses, branches and
+generators.
+\begin{equation}
+s^i_{e,l} =
+\begin{bmatrix}
+P_f\\
+Q_f\\
+P_t\\
+Q_t\\
+\mu_{S_f}\\
+\mu_{S_t}
+\end{bmatrix}, \quad
+s^i_{e,b} =
+\begin{bmatrix}
+V_m\\
+V_a\\
+\lambda_P\\
+\lambda_Q\\
+\mu_{v_{min}}\\
+\mu_{v_{max}}
+\end{bmatrix}, \quad
+s^i_{e,g} =
+\begin{bmatrix}
+P_g\\
+\mu_{p_{min}}\\
+\mu_{p_{max}}\\
+\mu_{q_{min}}\\
+\mu_{q_{max}}
+\end{bmatrix}\ \quad
+s^i_e =
+\begin{bmatrix}
+s^i_{e,b}\\
+s^i_{e,b}\\
+s^i_{e,g}
+\end{bmatrix}
+\end{equation}
+Not all values are used by the agent and the filtration is done according to
+the agent's task.
+
+The \texttt{performAction} method takes $n_a \times 1$ vector of action values
+$a_e$ if $s_{bid} = 0$, otherwise a $2n_a \times 1$ vector.  If $s_{bid} = 0$,
+the $i$-th element of $a_e$ is the offered/bid price in \$/MWh, where
+$i = 1,2,\dotsc n_{in}$.  If $s_{bid} = 1$, the $j$-th element of $a_e$ is the
+offered/bid price in \$/MWh, where $j = 1,3,5,\dotsc n_{in}-1$ and the $k$-th
+element of $a_e$ is the offered/bid quantity in MW where $j = 2,4,6,\dotsc
+n_{in}$.  The action vector is separated into offers/bids and submitted to the
+market.  If $s_{bid} = 0$, then $qty = p_{max}/n_{in}$.
+
+\subsubsection{Task}
+An agent does not interact directly with it's environment, but is associated
+with a particular task.  A task associates a purpose with an environment and
+defines what constitutes a reward.  Regardless of the learning method employed,
+the goal of an agent participant is to make a financial profit and the rewards
+are thus defined as the sum of earnings from the previous period $t$ as
+calcualted by the market.  Sensor data from the environment is filtered
+according to the task being performed.  Agents using the value-function methods
+under test have a tabular representation of their policy with one row per
+environment state.  Thus, observations consist of a single integer value $s_v$,
+where $s_v \leq n_s$ and $s_v \in \mathbb{Z}^+$.  Agents using the
+policy-gradient methods under test have policy functions represented by
+connectionist systems that use an input vector $w_i$ of arbitrary length where
+the $i$-th element $\in \mathbb{R}$.  Before input to the connectionist policy
+function approximator, sensor values are scaled to be between $-1$ and $1$.
+Outputs from the policy are denormalised using action limits before the
+action is performed on the environment.
 
 \subsection{Simulation Event Sequence}
 
