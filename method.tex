@@ -593,7 +593,68 @@ function approximator, sensor values are scaled to be between $-1$ and $1$.
 Outputs from the policy are denormalised using action limits before the
 action is performed on the environment.
 
+\subsubsection{Agent}
+Agent $i$ is defined as an entity capable of producing an action $a_i$
+based on previous observations of its environment $s_i$, where $a_i$ and $s_i$
+are vectors of arbitrary length.  As illustrated in Figure X, each agent is
+associated with a \textit{module}, a \textit{learner} and a \textit{dataset}.
+The module represents the agent's policy for action selection and returns an
+action vector $a_m$ when activated with observation $s_t$.  The value-function
+methods under test use modules which represent a $N \times M$ table, where $N$
+is the total number of states and $M$ is the total number of actions.
+\begin{equation}
+\begin{bmatrix}
+v_{1,1}& v_{1,2}& \dotsb& v_{1,m}\\
+v_{2,1}& \ddots& & \vdots\\
+\vdots& &\ddots& \vdots\\
+v_{n,1}& \dotsb& \dotsb& v_{n,m}
+\end{bmatrix}
+\end{equation}
+Whereas for the policy gradient methods, the module is a connectionist network
+of other modules as illustrated in Figure X.  The learner can use any
+reinforcement learning algorithm and modifies the values/parameters of the
+policy module to increase expected future reward.  The dataset stores
+state-action-reward tuples for each interaction between the agent and its
+environment.  The stored history is used by value-function learners when
+computing updates to the policy values.  Policy gradient learners search
+directly in the space of the policy network parameters.
+
+Value-function learners have an association with an explorer module which
+returns an explorative action $a_e$ when activated with the current state $s_t$
+and action $a_m$ from the policy module.  For example, the $\epsilon$-greedy
+explorer has a randomness parameter $\epsilon$ and a decay parameter $d$.  When
+the $\epsilon$-greedy explorer is activated, a random number $x_r$ is drawn
+where $0 \leq x_r \leq 1$.  If $x_r < \epsilon$ then a random vector of the same
+length as $a_e$ is returned, otherwise $a_e = a_m$.
+
 \subsection{Simulation Event Sequence}
+In each simulation of a system consisting of one or more task-agent pairs a
+sequence of interactions is coordinated, as illustrated in Figure X.
+
+At the beginning of each step/period the market is initialised and all
+offers/bids removed.  From each task-agent tuple $(T,A)$ an observation $s_t$
+is retrieved from $T$ and integrated into agent $A$.  When an action is
+requested from $A$ its module is activated with $s_t$ and the action $a_e$ is
+returned.  $a_e$ is performed on the environment of $A$ via its associated task
+$T$.  Recall, this process involves the submission of offer/bids to the market.
+Once all actions have been performed the offer/bids are cleared using the
+auction mechanism.  Each task $T$ is requested to return a reinforcement reward
+$r_t$. All cleared offers/bids associated with the generator in the environment
+of $T$ are retrieved from the market and $r_t$ is computed from the difference
+between revenue and cost values.
+\begin{equation}
+r_t = \mbox{revenue} - (c_{fixed} + c_{variable})
+\end{equation}
+The reward $r_t$ is given to agent $A$ and the value is stored under a new
+sample is the dataset, along with the last observation $s_t$ and the last action
+performed $a_e$.  Each agent is instructed to learn from its actions using
+$r_t$, at which point the values/parameters of the module of $A$ are updated
+according to the algorithm of the learner.
+
+This constitutes one step of the simulation and the process is repeated until
+the specified number of steps are complete.  Unless agents are reset, the
+complete history of states, actions and received rewards is stored in the
+dataset of each agent.
 
 \section{Experiment \Rmnum{1}: Basic Learning}
 \section{Experiment \Rmnum{2}: Competitive Trade}

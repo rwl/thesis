@@ -118,27 +118,33 @@ material contained in, or derived from, this thesis.
 
 % define title page layout
 \renewcommand{\maketitle}{%
-    \renewcommand{\footnotesize}{\small}
-    \renewcommand{\footnoterule}{\relax}
-    \thispagestyle{empty}
-%  \null\vfill
+%  \renewcommand{\footnotesize}{\small}
+%  \renewcommand{\footnoterule}{\relax}
+  \thispagestyle{empty}
+  %% Set the line spacing to 1 for the title page.
+  \begin{spacing}{1}
+  \begin{large}
   \begin{center}
     \vspace*{10mm}
-    {{\Large \@university} \par}
-    {\large \vspace*{2ex}
-    {{\@department} \par}
-    { \Huge \vspace*{25mm} {\bfseries {\@title}} \par}
+    {\Large \@university} \\
+    \vspace*{2ex}
+    {\@department} \\
+    {\Huge \vspace*{25mm} {\bfseries {\@title}}}\\
 %    {\large \vspace*{35mm} {{\@crest} \par} \vspace*{25mm}}
-	{\large \vspace*{8cm}}
-	{{\small by} \par} \vspace*{5mm}
-    {{\Large \@author} \par}
+    \vfill
+	{\small by}\\
+	\vspace*{5mm}
+    {\Large \@author}\\
     \vspace*{25mm}
-    {{\submittedtext} \par} \vspace*{2ex}
-    {\it {\@degree} \par}
+    {\submittedtext}\\
+    \vspace*{2ex}
+    {\it {\@degree}}\\
     \vspace*{4ex}
-    {\@degreedate}}
+    {\@degreedate}\\
+%    \vspace*{.2in}
   \end{center}
-  \null\vfill
+  \end{large}
+  \end{spacing}
 }
 
 \newenvironment{romanpages}
