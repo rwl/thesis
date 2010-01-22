@@ -1,11 +1,105 @@
-\chapter{Results}
+\chapter{Learning to Trade Power}
+To the best of the author's knowledge, this thesis presents the first case of
+policy gradient reinforcement learning methods being applied to electricity
+trading problems.  It must first be proven that these methods are capable of
+learning a basic power trading policy.  This section describes the method used
+to compare methods in their ability to do so.
+
+\section{Aims \& Objectives} The purpose of this first experiment is to
+compare the relative abilities of value-function and policy gradient methods in
+learning a basic policy for trading power.  The objective of the exercise is to
+examine:
+\begin{itemize}
+  \item Speed of convergence to an optimal policy,
+  \item Magnitude and variance of profit and,
+  \item Sensitivity to algorithm parameter changes.
+\end{itemize}
+
+\section{Method of Simulation}
+Each learning method is tested individually using a range of parameter
+configurations.  A power system model with one bus, one generator $k$ and
+one dispatchable load $l$, as illustrated in Figure X is used.  In this
+context, the market clearing process is equivalent to creating offer and bids
+stacks and finding the point of intersection.  A passive agent is associated
+with the dispatchable load.  This agent bids for $-p_{g,l}^{min}$ at marginal
+cost each period regardless of environment state or reward signal.  A
+dispathcable load is used instead of a constant load to allow a price to be
+set. Generator $k$ is given sufficient capacity to supply the demand
+of the dispatchable load, $p_{g,k}^{max} > -p_{g,l}^{min}$, and the marginal of
+the $k$ is half that of the load $l$.  The generator and dispatchable load
+attributes are given in Table X.  A price cap for the market is set to twice the
+marginal cost of the $l$ at full capacity, $p_{g,l}^{min}$.  The DC optimal
+power flow formulation (See Section \ref{sec:opf}, above) is used to clear the
+market and reactive power trade is omitted.  The Python code used to conduct the
+simulations is provided in Listing X.
+
+\section{Results}
+\section{Discussion}
+\section{Critical Analysis}
+
+
+\chapter{Competitive Power Trade}
+Having compared the learning methods in a one-player context, this section
+describes the method used to pit them against one and other and compare their
+performance.
+
+\section{Aims \& Objectives}
+Competition is fundamental to markets and this experiment aims to compare
+learning methods in a complex dynamic market environment with multiple
+competing participants.  The objective is to compare:
+\begin{itemize}
+  \item Performance, in terms of profitability, over a finite number of
+  periods,
+  \item Profitability when trading both active and reactive power.
+  \item Consistency of profit making and,
+  \item Sensitivity to algorithm parameter changes.
+\end{itemize}
+
+\section{Method of Simulation}
+Figure X illustrates the structure of the six bus power system model, from
+\cite{wood:pgoc}, with three generators and fixed demand at three of the buses
+used to provide a dynamic environment with typical system values.  Bus,
+branch and generator attribute values are stated in Tables X, Y, Z,
+respectively.  Three learning methods are compared in six simulations
+encapsulating all method--generator combinations.
+
+A price cap $c_{cap}$ of twice the marginal cost of the most expensive generator
+at full capacity is set by the market.  The simulations are repeated for with agents
+actions composing both price and quantity and with just price.  For the
+value-function methods, the state is defined by the market clearing price from
+the previous period, divided equally into $x_s$ discrete states between $0$ and
+$c_{cap}$.  The state vector $s_t$ for the policy gradient methods consists of
+the market clearing price and generator set-point from the previous period.
+\begin{equation}
+s_t =
+\begin{bmatrix}
+c_{mcp}\\
+p_g
+\end{bmatrix}
+\end{equation}
+The script used to conduct the simulation is provided in Listing X.
+
+\section{Results}
+\section{Discussion}
+\section{Critical Analysis}
+
+\chapter{System Constraint Exploitation}
 \label{ch:results}
+One of the main features of agents using policy gradient learning methods and
+artifical neural networks for policy function approximation is their ability to
+accept many signals of continuous sensor data.  This section describes an
+experiment in which the power system is severly constrained for certain
+periods, resulting in elevated nodal marginal prices in particular areas.  The
+methods are tested in their ability to exploit these constraints and improve
+their total accumulated reward.
 
-\section{Experiment \Rmnum{1}: Basic Learning}
-\section{Experiment \Rmnum{2}: Competitive Trade}
-\section{Experiment \Rmnum{3}: Constraint Exploitation}
+\section{Aims \& Objectives}
 
+% \section{Experiment \Rmnum{1}: Basic Learning}
+% \section{Experiment \Rmnum{2}: Competitive Trade}
+% \section{Experiment \Rmnum{3}: Constraint Exploitation}
+
+\section{Results}
 \section{Discussion}
 \label{sec:discuss}
-
 \section{Critical Analysis}

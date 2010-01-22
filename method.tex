@@ -1,4 +1,4 @@
-\chapter{Methodology}
+\chapter{Modelling}
 \label{ch:method}
 The present chapter concerns the approach taken in comparing methods for
 learning to trade power.  Transmission system constraints are accounted for and
@@ -655,41 +655,3 @@ This constitutes one step of the simulation and the process is repeated until
 the specified number of steps are complete.  Unless agents are reset, the
 complete history of states, actions and received rewards is stored in the
 dataset of each agent.
-
-\section{Experiment \Rmnum{1}: Basic Learning}
-To the best of the author's knowledge, this thesis presents the first case of
-policy gradient reinforcement learning methods being applied to electricity
-trading problems.  It must first be proven that these methods are capable of
-learning a basic power trading policy.  This section describes the method used
-to compare methods in their ability to do so.
-
-\subsection{Aims \& Objectives} The purpose of this first experiment is to
-compare the relative abilities of value-function and policy gradient methods in
-learning a basic policy for trading power.  The objective of the exercise is to
-examine:
-\begin{itemize}
-  \item Speed of convergence to an optimal policy,
-  \item Magnitude and variance of profit and,
-  \item Sensitivity to algorithm parameter changes.
-\end{itemize}
-
-\subsection{Method of Simulation}
-Each learning method is tested individually using a range of parameter
-configurations.  A power system model with one bus, one generator $k$ and
-one dispatchable load $l$, as illustrated in Figure X is used.  In this
-context, the market clearing process is equivalent to creating offer and bids
-stacks and finding the point of intersection.  A passive agent is associated
-with the dispatchable load.  This agent bids for $-p_{g,l}^{min}$ at marginal
-cost each period regardless of environment state or reward signal.  A
-dispathcable load is used instead of a constant load to allow a price to be
-set. Generator $k$ is given sufficient capacity to supply the demand
-of the dispatchable load, $p_{g,k}^{max} > -p_{g,l}^{min}$, and the marginal of
-the $k$ is half that of the load $l$.  The generator and dispatchable load
-attributes are given in Table X.  A price cap for the market is set to twice the
-marginal cost of the $l$ at full capacity, $p_{g,l}^{min}$.  The DC optimal
-power flow formulation (See Section \ref{sec:opf}, above) is used to clear the
-market and reactive power trade is omitted.  The Python code used to conduct the
-simulations is provided in Listing X.
-
-\section{Experiment \Rmnum{2}: Competitive Trade}
-\section{Experiment \Rmnum{3}: Constraint Exploitation}
