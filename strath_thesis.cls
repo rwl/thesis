@@ -81,6 +81,7 @@ material contained in, or derived from, this thesis.
 \newenvironment{acknowledgements}%
 {\clearemptydoublepage
 \thispagestyle{plain}
+%\addcontentsline{toc}{chapter}{Acknowledgements}
 \onehalfspacing
  \begin{center}
   \section*{Acknowledgements}
@@ -94,6 +95,7 @@ material contained in, or derived from, this thesis.
 \onehalfspacing
 \begin{center}
   \section*{Abstract}
+  \addcontentsline{toc}{chapter}{Abstract}
 % \textbf{\@title}\\
 % \@author
  \end{center}

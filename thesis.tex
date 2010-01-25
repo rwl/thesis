@@ -4,6 +4,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{ifpdf}
+\usepackage{multirow}
 
 \ifpdf
   \usepackage[pdftex]{graphicx}
@@ -35,6 +36,7 @@ connection/.style={thick, dotted},
 \newcommand{\abs}[1]{\lvert#1\rvert}
 \newcommand{\diag}{\mathop{\mathbf{diag}}}
 \newcommand{\matpower}{M\textsc{ATPOWER~}}
+\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
 
 \ifpdf
 \pdfinfo{/Author (Richard W. Lincoln)
@@ -78,9 +80,13 @@ applications and automated energy trade.
 
 \tableofcontents
 \newpage
+
 \listoffigures
+\addcontentsline{toc}{chapter}{List of Figures}
 \newpage
+
 \listoftables
+\addcontentsline{toc}{chapter}{List of Tables}
 \newpage
 
 \pagenumbering{arabic}

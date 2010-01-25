@@ -1,24 +1,201 @@
 \chapter{Introduction}
-This thesis describes the application of value-function and policy gradient
-reinforcement learning algorithms to the electric energy trade problem.  This
-chapter introduces the problem and explains the motivation for the research.
-The goals of the research are stated along with the principle contributions.
-Finally, a reading guide is provided that provides an overview of the remaining
-chapters.
+This thesis compares methods from the field of artificial intelligence in their
+ability to learn from reinforcement when trading electricity in simulated
+competitive marketplaces.  An introduction to electric energy and the
+associated markets is provided by the present chapter.  An explanation of the
+motivation for the research presented in this thesis follows, along with a
+statement of the principle contributions that have been made.  A outline of the
+remaining chapters is finally provided.
 
-\section{Motivation}%/Setting the scene}
+\section{Electricity}
+Electricity is a form of energy that has become the life-blood of modern
+societies.  The popularity of electricity stems from the ease with which it may
+be converted into light, heat and kinetic energy.  The average total demand for
+electricity in the UK is now approximately 50GW.  The cost of buying 1MW of
+electricity for one hour is around £40.  This equates to yearly transaction
+values of \pounds17.52 billion.  The New York black-out in August 2003 involved
+61.8GW of lost power supply to approximately 50 million consumers.  The majority
+of supplies were restored within two days and the event is estimated to have
+cost \$7-10 billion.
+
+Quality of life for a person is directly proportional to that person's
+electricity consumption[ref].  The world population is currently 6.7 billion
+and forecast to pass 9 billion by the year 2050.  Electricity production
+currently demands over $1/3$ of the annual primary energy extracted.  As people
+endevour to improve their quality of life, primary energy fuels will become
+increasingly scarce.  Competitive markets are a proven device for allocation
+of scarce resources.
+
+Commercialisation of electricity supply industries is a new practice, relative
+to other commodities, having begun in the early 1990s.  The inability to store
+electricity, once generated, in a commercially viable quantity prevents trade
+as a conventional commodity.  Trading mechanisms must be created to allow
+shortfalls in electric energy to be purchased a short notice from quickly
+dispatchable generators.  Different implementations have been tried in various
+countires and states and how best to structure electricity markets is an open
+field of research.  Electricity market designs are further complicated by the
+need to manage complex dynamic constraints in the power systems that deliver
+the traded product.
+
+\section{Electricity Markets}
+% The Electric Lighting Act 1882 began the development of the UK's electricity
+% supply industry by allowing persons, companies and local authorities to set up
+% supply systems\cite{wikipedia:timeline}, principally at the time for the purposes
+% of street lighting and trams\cite{eyles:bath}.  Under The Electricity Supply Act
+% 1926 the Central Electricity Board started operating the first grid of regional
+% networks interconnected and synchronised at 132kV, 50Hz in 1933.  This began
+% operation as a national system five years later in 1938 and was nationalised
+% under The Electricity Act 1947 with the merger of over 600 electricity companies
+% and the creation of the British Electricity Authority.  This was then dissolved
+% and replaced with the Central Electricity Generating Board (CEGB) and the
+% Electricity Council under The Electricity Act 1957.  The CEGB was responsible for
+% planning the network and generating sufficient electricity until the start of
+% privatisation in 1990 when it was split into The National Grid Company and three
+% generating companies: Powergen (now owned by German Utility E.ON), National Power
+% and Nuclear Electric (Nuclear Electric + Scottish Nuclear = British Energy).  The
+% Electricity Council set the prices for electricity according to financial targets
+% set by the government.
+%
+% \subsection{The Electricity Pool}
+% The privatisation of the UK electricity supply industry under Margaret Thatcher
+% saw the creation of The Electricity Pool in March 1990 for the trading of
+% electricity.  The control of the transmission system was transferred to The
+% National Grid Company which is now publically listed, but was originally owned by
+% twelve regional electricity companies.  The Pool was managed by the Pool
+% Executive Committee (PEC) and was essentially a multilateral contractual
+% arrangement between generators and suppliers, known as the Pool Settlement
+% Agreement (PSA), and did not itself buy or sell electricity.  Competition in
+% generation was introduced gradually, by only entitling customers with
+% consumption greater than or equal to 1MW to purchase electricity form any
+% listed supplier.  This limit was then lowered in April of 1994 to included
+% customers consuming 100kW or more and finally to include all customers in 1998.
+%
+% \subsubsection{Market Mechanism}
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=11.7cm]{figures/settlement_times}
+% 	\caption{England \& Wales Electricity Pool settlement timing
+% 	diagram}%\cite{elecpool:about}}
+% 	\label{fig:timing}
+% \end{figure}
+%
+% The England \& Wales Pool mechanism enabled competition in both generation and
+% retail supply, scheduling of generation was on a merit order basis at a day ahead
+% stage and set a wholesale electricity price for each half-hour period of the
+% schedule day.
+%
+% In The Pool forecasts, based on historic data and adjusted for factors such as
+% the weather, of Total Demand in MW for each Settlement Period (every 30 minutes
+% in this case) during the Availability Declaration Period (See Figure
+% \ref{fig:timing}) were used by generating companies and organisations with
+% interconnects to the England \& Wales grid such as Electricit\'e de France (EdF)
+% and Scottish Power, to put together bids that must be submitted to the grid
+% operator by 10:00 on the day before the Schedule Day.  These bids have a number
+% of components which are explained in detail in section \ref{sec:offers}.  They
+% are fed into a settlement computer program called GOAL (Generator Ordering and
+% Loading) which calculates an Unconstrained Schedule, that is one which does not
+% take into account the physical limitations of the transmission system, so as to
+% meet the forecast demand and requirements for reserve while minimising cost.
+% This is done using a merit order dispatch (cheapest bids up to the marginal point
+% accepted first) and generally the bid price from the Marginal Generator is used
+% to determine the System Marginal Price (SMP) for each Settlement Period.  The SMP
+% is then used to determine the prices paid by consumers and paid to the generators
+% (\S \ref{sec:prices}).  Variations in demand and changes in plant availability
+% are adjusted for by the grid operator who may call on generators that submitted
+% offers into the Pool or, more rarely, those that are contracted to provide
+% ancillary services to increase or reduce production.  Alternatively, the grid
+% operator may call upon large customers that have agreed to curtail their demand
+% on request to do so.
+%
+% \subsubsection{Generator offer data}
+% \label{sec:offers}
+%
+% \begin{figure}
+% 	\centering
+% 	\includegraphics[width=11.7cm]{figures/pool_bid_chart}
+% %	\caption{Diagram of the The Pools bid structure\cite{sweeting:pool}}
+% 	\label{fig:poolbids}
+% \end{figure}
+%
+% Bids submitted to The Pool consisted of five price parameters (See Figure
+% \ref{fig:poolbids}) and represented the avoidable cost of generation
+% \cite{sweeting:pool}.  The start-up price would represent the cost of starting
+% the generator up from cold.  The no-load price would be the cost in pounds of
+% keeping the generator running, regardless of its output and the three incremental
+% prices specify the cost per MWh of generation at different levels.  Bids
+% including this information would be submitted for each half hour settlement
+% period and any bids that do not conform to the standard or are not submitted are
+% substituted with values from the last valid declaration.
+%
+% \subsubsection{Price determination}
+% \label{sec:prices}
+%
+% Essentially, the bid from the marginal generator in the unconstrained schedule
+% would set the System Marginal Price (SMP) for a specific Settlement Period.
+% However, the prices paid by the consumers, the Pool Selling Price (PSP), and the
+% prices paid to the generators, the Pool Purchase Price (PPP) would be adjusted in
+% order that the costs of transmission be covered by the market and that the
+% availability of capacity be encouraged at certain times.
+%
+% The PPP is made equal to the System Marginal Price plus a capacity payment, which
+% is generally the Loss of Load Probability (LOLP) multiplied by the Value Of Loss
+% of Load (VOLL) minus the SMP.
+%
+% \begin{equation}
+% PPP = SMP + LOLP(VOLL-SMP)
+% \end{equation}
+%
+% The LOLP is an estimate of the probability that, due to a lack of spare
+% generation capacity, the system would fail and the VOLL is an estimate of the
+% financial loss that a customer would incur if supply was not possible.  This PPP
+% is the payment received by generators that were included in the original
+% unconstrained schedule and were called on to supply.
+%
+% \begin{table}
+% \doublespacing
+% 	\centering
+% 	\begin{tiny}
+% 	\begin{tabular}{|c|c|c|c|}
+% 	\hline
+% 	& & \multicolumn{2}{|c|}{Actual Schedule} \\
+% 	\hline
+% 	 & & In & Out \\
+% 	\hline
+% 	\multirow{2}{2cm}{Unconstrained Schedule} & In & $SMP + LOLP(VOLL - SMP)$ & $SMP - BID + LOLP(VOLL-SMP)$ \\
+% 	 & Out & $BID + LOLP(VOLL - BID)$ & $LOLP(VOLL - BID)$ \\
+% 	\hline
+% 	\end{tabular}
+% 	\end{tiny}
+% %	\caption{Payments to generators under The Pool\cite{ofgem:1998}}
+% 	\label{tab:payments}
+% \singlespacing
+% \end{table}
+%
+% Table \ref{tab:payments} shows the payments made to generators under other
+% circumstances.  Generators included in the unconstrained schedule but, due to
+% perhaps lower demand than forecast or constraints from the transmission system,
+% did not supply are paid the same minus their bid price.
+%
+% Generators may also receive payment for the provision of ancillary services
+% according to their contract with the grid operator\cite{sweeting:pool}.
+
+
+
+\section{Problem Statement}%/Aims \& Objectives}
 % Free market democracy has underpinned the transformation of large western
 % economies in the post war era and continues to be relied upon.  Towards the
 % end of the nineteenth century the principals of competitive trade were
 % successfully applied to electric power industries, beginning in the UK in March
 % 1990 with the creation of The Electricity Pool.
-Two trends characterise modern power systems Engineering:
-Increased liberalisation of the industry through competitive energy trade and
-increased presence of renewable energy generation on the network.  As the
-number and variety of electricity sources becomes greater, the necessity for
-automated trade of their power increases.  Control algorithms may draw sensor
-input from data networks and other sources and use some relevant measure of
-performance, such as profitability, to learn from trading decisions.
+
+% Two trends characterise modern power systems Engineering:
+% Increased liberalisation of the industry through competitive energy trade and
+% increased presence of renewable energy generation on the network.  As the
+% number and variety of electricity sources becomes greater, the necessity for
+% automated trade of their power increases.  Control algorithms may draw sensor
+% input from data networks and other sources and use some relevant measure of
+% performance, such as profitability, to learn from trading decisions.
+
 % \IEEEPARstart{E}{nergy} consumers will often not switch suppliers despite
 % apparent benefits of doing so, or mistakenly switch to more expensive
 % contracts[].  Energy companies are thus unlikely to reduce prices as this
@@ -101,8 +278,6 @@ settings\cite{barto:policy,shaal:robots,moody:direct,peshkin:routing}.
 % regulatory structure, plant positioning and network congestion.  More recently,
 % agent-based simulation has received a certain degree of attention from
 % researchers and has been applied in some of these fields.
-
-\section{Problem Statement}%/Aims \& Objectives}
 % \begin{quotation}
 %  ``Every scientist knows the rule called Occam's Razor:  Faced with several
 %  competing hypotheses, prefer the simplest one.  There is also an unspoken
