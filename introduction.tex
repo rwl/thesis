@@ -7,28 +7,7 @@ motivation for the research presented in this thesis follows, along with a
 statement of the principle contributions that have been made.  A outline of the
 remaining chapters is finally provided.
 
-\section{UK Electricity Supply Industry}
-The Electric Lighting Act 1882 began the development of the UK's electricity
-supply industry by allowing persons, companies and local authorities to set up
-supply systems, principally at the time for the purposes of street lighting and
-trams.  Under The Electricity Supply Act 1926 the Central Electricity Board
-started operating the first grid of regional networks interconnected and
-synchronised at 132kV, 50Hz in 1933.  This began operation as a national system
-five years later in 1938 and was nationalised under The Electricity Act 1947
-with the merger of over 600 electricity companies and the creation of the
-British Electricity Authority.  This was then dissolved and replaced with the
-Central Electricity Generating Board (CEGB) and the Electricity Council under
-The Electricity Act 1957.  The CEGB was responsible for planning the network
-and generating sufficient electricity until the start of privatisation in 1990
-(See Section \ref{sec:thepool}) when it was split into The National Grid
-Company and three generating companies.
-% : Powergen (now owned by German Utility E.ON), National Power and
-% Nuclear Electric (Nuclear Electric + Scottish Nuclear = British Energy).  The
-% Electricity Council set the prices for electricity according to financial
-% targets set by the government.
-
 \section{Motivation}
-
 The average total demand for electricity in the UK is now approximately 50GW.
 and the cost of buying 1MW for one hour is around \pounds40.  This equates to
 yearly transaction values of \pounds17.52 billion.  The importance of electricity to
@@ -107,66 +86,132 @@ be analysed as a single phase circuit (See Section
 
 \section{Electricity Markets}
 The United Kingdom was the first large country to privatise its electricity
-supply industry.  The England \& Wales Electricity Pool gradually introduced
-competition in generation and retail supply and the model has been followed in
-coutries around the world.  The Pool has since been replaced with trading
-arrangements in which market outcomes are no longer centrally determined, but
-arise largely from bilateral agreements between producers and suppliers.
+supply industry and the market structures that have since been adopted
+encapsulate the main principles behind electricity markets.
 
-\subsection{The Electricity Pool}
+The England \& Wales Electricity Pool was created to break apart the monolithic
+Central Electricity Generating Board and gradually introduced
+competition in generation and retail supply (See Section \ref{sec:thepool},
+below). As a result of early adoption, the United Kindom is host to the main
+European power and gas exchanges and boasts a relatively high degree of
+consumer switching, which deemed an essential aspect of a competitive
+marketplace. The Pool has since been replaced with the British Electricity
+Transmission and Trading Arrangements in which market outcomes are no longer
+centrally determined, but arise largely from bilateral agreements between
+producers and suppliers.
+
+\subsection{British Electricity Transmission and Trading Arrangements}
+\label{sec:betta}
+Concerns over exploitation of market power in The England \& Wales Electricity
+Pool and its effectiveness in encouraging reduced consumer electricity prices
+prompted introduction of the New Electricity Trading Arrangements (NETA) in
+March 2001 \cite{martoccia:pool}.  A very similar nationwide scheme was formed
+in April 2005 with the inclusion of the Scottish electricity industry in the
+British Electricity Transmission and Trading Arrangments (BETTA).  The aim was
+to provide greater choice to participants and improve trading efficiency.
+While The Pool operated a single daily auction and plant was dispatched
+centrally, under the new arrangements, market positions became determined
+through continuous bilateral trading between generators, suppliers, traders and
+consumers and participants became self-dispatching.
+
+Under BETTA, the majority of power is traded through long-term contracts
+that are customised to the requirements of each party.  These suit participants
+responsible for large power plants or those needing to purchase large volumes of
+power.  A relatively large ammount of time is required for long-term contracts
+to be aggreed upon and this has an associated transaction cost.  However, they
+reduce risk for large players and can provide a degree of flexibility through
+option contracts.
+
+Power is also traded directly between participants through over-the-counter
+(OTC) contracts that are usually of a standardised form.  Such contracts
+typically concern smaller volumes of power and have much lower associated
+transaction costs.  Often they are used by participants to refine their market
+position ahead of delivery time.
+
+Trading facilities, such as power exchanges, provide a means for participants to
+fine-tune their positions further through short-term transactions for relatively
+small quantities.  Modern exchanges are computerised and accept anonymous
+offers and bids submitted electronically.  A submitted offer/bid will be paired
+with any outstanding bids/offers in the system with compatible prices and
+quantities and the details are displayed for traders to observe.
+
+All bilateral trading must be completed before ``gate-closure'', which is point
+set before real-time that give the system operator the opportunity to balance
+supply and demand and mitigate breaches of system limits.  In keeping with the
+free market philosphy of the UK, a competitive spot market is used in the
+balancing process also.  A generator that is not fully loaded may offer a price
+at which it is willing to increase its output by a specified quantity.  The
+speed at which it is capable of doing so must be stated with the offer.
+Certain loads may also offer demand reductions at a price and can typically be
+implented very quickly.  Longer-term contracts for balancing services are also
+struck beteen the system operator and generators/suppliers in order to avoid
+the price volatility often associated with spot markets.
+
+\subsection{The England \& Wales Electricity Pool}
 \label{sec:thepool}
-Privatisation of the UK electricity supply industry under Prime Minister
-Margaret Thatcher resulted in the creation of The England \& Wales Electricity
-Pool in March 1990.  The control of the transmission system was transferred
-from the CEGB to The National Grid Company which is now publically listed, but
-was originally owned by twelve regional electricity companies.  The Pool was a
-multilateral contractual arrangement between generators and suppliers, known as
-the Pool Settlement Agreement, and did not itself buy or sell electricity.
-Competition in generation was introduced gradually, by only entitling customers with
-consumption greater than or equal to 1MW to purchase electricity form any
-listed supplier.  This limit was then lowered in April of 1994 to included
-customers consuming 100kW or more and finally to include all customers in 1998.
+The Electric Lighting Act 1882 began the development of the UK's electricity
+supply industry by allowing persons, companies and local authorities to set up
+supply systems, principally at the time for the purposes of street lighting and
+trams.  Under The Electricity Supply Act 1926 the Central Electricity Board
+started operating the first grid of regional networks interconnected and
+synchronised at 132kV, 50Hz in 1933.  This began operation as a national system
+five years later in 1938 and was nationalised under The Electricity Act 1947
+with the merger of over 600 electricity companies and the creation of the
+British Electricity Authority.  This was then dissolved and replaced with the
+Central Electricity Generating Board (CEGB) and the Electricity Council under
+The Electricity Act 1957.  The CEGB was responsible for planning the network
+and generating sufficient electricity until the start of privatisation in 1990.
 
-Scheduling of generation was on a merit order basis at a day ahead
-stage and set a wholesale electricity price for each half-hour period of the
-schedule day.
+Privatisation of the UK electricity supply industry under Prime Minister
+Margaret Thatcher created The England \& Wales Electricity Pool in March 1990.
+The control of the transmission system was transferred from the CEGB to The
+National Grid Company which was originally owned by twelve regional electricity
+companies and is now publically listed.  The Pool was a multilateral
+contractual arrangement between generators and suppliers and did not itself buy
+or sell electricity.  Competition in generation was introduced gradually, by
+only entitling customers with consumption greater than or equal to 1MW to
+purchase electricity form any listed supplier.  This limit was lowered in April
+1994 to included customers consuming 100kW or more and finally to include all
+customers in 1998.
+
+Scheduling of generation was on a merit order basis (cheapest first) at a day
+ahead stage and set a wholesale electricity price for each half-hour period of
+the schedule day.
 
 Forecasts of total demand in MW, based on historic data and adjusted for
-factors such as the weather, for each settlement period (every 30 minutes in
-this case) were used by generating companies and organisations with
-interconnects to the England \& Wales grid to formulate bids that had to be
-submitted to the grid operator by 10AM on the day before the schedule day.
+factors such as the weather, for each settlement period were used by generating
+companies and organisations with interconnects to the England \& Wales grid to
+formulate bids that had to be submitted to the grid operator by 10AM on the day
+before the schedule day.
 
-\begin{figure}
-	\centering
-	\includegraphics[width=14cm]{figures/pool_bid_chart}
-	\label{fig:poolbids}
-	\caption{Pools bid structure}
-\end{figure}
+% TODO: Insert Pool bids figure.
 
 Bids consisted of five price parameters as illustrated in Figure
-\ref{fig:poolbids} and represented the avoidable cost of generation.  Start-up
-prices would represent the cost of starting the generator from cold and no-load
-prices would be the cost in pounds of keeping the generator running regardless
-of its output. Three incremental prices specify the cost per MWh of generation
-between different set-points.
+%\ref{fig:poolbids}
+and represented the avoidable cost of generation. A start-up price would be
+included, representing the cost of turning on the generator from cold.  A
+no-load price $c_{noload}$ would equal the cost in pounds of keeping the
+generator running regardless of output. Three incremental prices $c_1$, $c_2$
+and $c_3$ specify the cost per MWh of generation between set-points $p_1$,
+$p_2$ and $p_3$.
 
-A settlement computer program would calculate an Unconstrained Schedule,
-not taking into account the physical limitations of the transmission system,
-meeting the forecast demand and requirements for reserve while minimising cost.
-Cheapest bids up to the marginal point get accepted first and generally the
-bid price from the marginal generator is used to determine the System Marginal
-Price (SMP) for each Settlement Period.  The SMP is then used to determine the
-prices paid by consumers and paid to the generators, the Pool Purchase Price,
-and the prices paid by the consumers, the Pool Selling Price.  These prices
-would be adjusted such that that the costs of transmission get covered by the
-market and that the availability of capacity is encouraged at certain times.
+A settlement computer program would calculate an unconstrained schedule (not
+accounting for the physical limitations of the transmission system), meeting
+the forecast demand and requirements for reserve while minimising cost.
+Cheapest bids up to the marginal point get accepted first and generally the bid
+price from the marginal generator is used to determine the system marginal
+price for each settlement period.  The system marginal price determines the
+prices paid by consumers and paid to the generators and the prices paid by the
+consumers that get adjusted such that that the costs of transmission are
+covered by the market and that the availability of capacity is encouraged at
+certain times.
 
 Variations in demand and changes in plant availability would be adjusted for by
-the grid operator by calling upon generators that submitted bids to increase or
-reduce production.  Alternatively, the grid operator could instruct large
-customers with contracts to curtail their demand to do so or or generators
-contracted to provide ancillary services to increase or reduce production.
+the grid operator, producing a constrained schedule.  Generators having
+submitted bids would bbe instructed to increase or reduce production as
+appropriate.  Alternatively, the grid operator could instruct large customers
+with contracts to curtail their demand to do so or instruct generators
+contracted to provide ancillary services to adjust production.
 
 \section{Electricity Market Simulation}
 
