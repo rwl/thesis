@@ -1,19 +1,23 @@
-\chapter{Background}
-This chapter provides an introduction to optimal power flow and reinforcement
-learning.  Different formulations of the optimal power flow problem are
-explained along with the principles behind interior-point methods, common used
-to find their solutions.  Reinforcement learning is also a generic term and
-Section \ref{sec:rl} introduces computational approaches to learning to maximise
-long term reward.  Definitions are provided for the valued-based and direct
-search algorithms compared in subsequent chapters.
+\chapter{Background Theory}
+This chapter provides introductions to optimal power flow and reinforcement
+learning.  The methods described are used to model competitive electricity
+trade as decribed in Chapter \ref{ch:method}, below.  Interior-point methods
+are commonly used to find solutions to optimal power flow problems and an
+introduction is provided.  Optimal power flow is one of the most widely studied
+subjects in Power Engineering and comprehensive literature reviews are
+available \cite{momoh:part1,momoh:part2}.  Learning through reinforcement is a
+broad concept and the theory has been explored and published in detail
+\cite{suttonbarto:1998,bertsekas:96}.
 
 \section{Optimal Power Flow}
 \label{sec:opf}
 Optimal power flow is a term used to describe a broad class of problems in
-which an objective function is optimised while constraints on the optimisation
-variables, which represent physical characterisitcs of the electric power
-system, are satisfied.  Optimisation techniques typically solve problems of the
-form
+which control variables are automatically changed to arrive at the ``best''
+solution with respect to a stated quantitative performance measure while
+satisfying constraints dictated by operational and pyhical characteristics of
+the electric power system.  It is the formulation of a numerical optimisation
+problem or mathmatical program using power system equations.   Optimisation
+problems have the general form:
 \begin{equation}
 \min_x f(x)
 \end{equation}
@@ -28,47 +32,24 @@ x_{min}\leq& x& \leq x_{max}
 
 \section{Reinforcement Learning}
 \label{sec:rl}
-This section describes agent's policies that represent a store of experience
-and the learning algorithms that its modify parameters. Together these
-components form models of individual behavior which are used to determine the
-actions to be performed in the agent's environment and to learn from received
-rewards.
-% This section provides an introduction to the reinforcement learning problem and
-% some of the associated terminology.  Definitions for the value-function and
-% policy gradient algorithms, that are later applied to power trade
-% implementations of the problem, are given.
-
-For a comprehensive introduction to reinforcement learning with evaluations of
-algorithm designs through mathematical analysis and computational experiments
-the intersted reader is directed to the seminal work by Barto and Sutton
-%\cite{suttonbarto:98}.
-
-\subsection{Introduction}
 The problem of learning how best to interact with an environment so as to
-maximise some long-term reward is one that arises in many aspect of life.
-Reinforcement learning is a term that is typically applied to
-understanding, automating and solving this problem through computational
-approaches. Unlike with the majority of Machine Learning techinques, the
+maximise some long-term reward is a general one.  Reinforcement learning is a
+term from the field of machine learning that is typically applied to
+understanding, automating and solving this problem through adaptive
+computational approaches.  Unlike many machine learning techinques, the
 algorithms are not instructed as to which actions to take, but must learn to
 maximise the long-term reward through trial-and-error.
 
-Reinforcement learning starts with an interactive, goal-seeking individual and
-an associated environment.  The individuals require the ability to sense
-aspects of their environment, perform actions that influence the state of their
-environment and be assigned rewards as a response to their chosen action.  An
-agent is said to follow a particular \textit{policy} when mapping the
-perceived state of its environment to an action choice.
-
-Value-based methods attempt to find the optimal policy by
-approximating a \textit{value-function} which returns the total reward an
-agent can expect to accumulate, given an initial state and following the
-current policy thereafter.
-
-Policy-gradient methods are an alternative to this which
-represent a policy using a learned function approximator with its own
-parameters %\cite{sutton:99}.
-The function approximator is updated according to the gradient of expected
-reward with respect to these parameters.
+Reinforcement learning starts with an interactive, goal-seeking individual
+agent existing in an environment.  The agent requires the ability to;
+\begin{itemize}
+  \item Sense aspects of its environment,
+  \item Perform actions that influence the state of its environment and
+  \item be assigned rewards as a response to their chosen action.
+\end{itemize}
+An agent follows a particular \textit{policy} when mapping the perceived state
+of its environment to an action choice.  Reinforcement learning methods adjust
+the agent's policy.
 
 % \subsection{Markov Decision Processes}
 % \subsection{Dynamic Programming}
@@ -77,19 +58,24 @@ reward with respect to these parameters.
 % \subsection{Artificial Neural-Networks}
 
 \subsection{Value Function Methods}
+\label{sec:valuebased}
+Value-based methods attempt to find the optimal policy by
+approximating a \textit{value-function} which returns the total reward an
+agent can expect to accumulate, given an initial state and following the
+current policy thereafter.  The policy is adjusted using the reinforcing
+signal and information from previous action choices.
 
 \subsubsection{Basic Roth-Erev}
 \label{sec:rotherev}
 The Roth-Erev reinforcement learning algorithm uses a stateless policy to
-select actions from a discrete domain\cite{roth:games,roth:aer}.  The dataset
+select actions from a discrete domain \cite{roth:games,roth:aer}.  The dataset
 stored by each agent, $j$, contains an array of length $K$, where $K$ is the
-number of feasible actions $k$. Each value in the array represents the
+number of feasible actions $k$.  Each value in the array represents the
 propensity for selection of the associated action in all states of the
-environment.  Following interaction $t$ in which agent $j$ performed on the
-environment action $k^\prime$, for arbitrary positive $t$, a reward,
-$r_{jk^\prime}(t)$, is calculated.  The propensity for agent $j$ to select
+environment.  Following interaction $t$ in which agent $j$ performed action
+$k^\prime$ on its environment, for arbitrary positive $t$, a reward
+$r_{jk^\prime}(t)$ is calculated.  The propensity for agent $j$ to select
 action $k$ for interaction $t+1$ is
-
 \begin{equation}
 q_{jk}(t+1) =
 \begin{cases}
@@ -98,14 +84,13 @@ q_{jk}(t+1) =
 k^\prime$}
 \end{cases}
 \end{equation}
-
 where $\phi$ and $\epsilon$ denote \textit{recency} and
-\textit{experimentation} parameters, respectively. The recency (forgetting)
-parameter degrades the propensity for all actions and prevents the value from
-going unbounded.  It is intended to represent the tendency for players to
+\textit{experimentation} parameters, respectively.  The recency (forgetting)
+parameter degrades the propensities for all actions and prevents the values
+from going unbounded.  It is intended to represent the tendency for players to
 forget older action choices and to prioritise more recent experience.  The
 experimentation parameter prevents the probability of choosing an action from
-going to zero and thus encourages exploration of the action space.
+going to zero and encourages exploration of the action space.
 
 Erev and Roth proposed that actions be selected according to a discrete
 probability distribution function where action $k$ is selected for interaction
@@ -131,21 +116,23 @@ p_{jk}(t+1) = \frac{e^{q_{jk}(t+1)/\tau}}{\sum_{l=0}^K e^{q_{jl}(t+1)/\tau}}
 \end{equation}
 
 where $\tau$ is the \textit{temperature} parameter.  This parameter may be
-decreased in value over the course of an experiment since high values give all
+lowered in value over the course of an experiment since high values give all
 actions similar probability and encourage exploration of the action space,
 while low values promote exploitation of past experience.
 
 \subsubsection{Variant Roth-Erev}
 \label{sec:variant}
-Two shortcomings of the basic Roth-Erev algorithm (\S\ref{sec:rotherev}) have
-been identified and a variant formulation proposed\cite{nicolaisen:2001}. The
-problems are that the values by which propensities are updated can be zero or
-very small for certain combinations of the experimentation parameter
-$\epsilon$ and the total number of feasible actions $K$.  Also, all
-propensity values are decreased by the same amount when the reward,
-$r_{jk^\prime}(t)$ is zero.  Under the variant algorithm the propensity of
-agent $j$ to select action $k$ for interaction $t+1$ becomes:
-
+Two shortcomings of the basic Roth-Erev algorithm have been identified and a
+variant formulation proposed \cite{nicolaisen:2001}.  The two issues are
+\begin{itemize}
+  \item The values by which propensities are updated can be zero or very small
+  for certain combinations of the experimentation parameter $\epsilon$ and
+  the total number of feasible actions $K$ and
+  \item all propensity values are decreased by the same amount when the reward,
+  $r_{jk^\prime}(t)$ is zero.
+\end{itemize}
+With the variant algorithm, the propensity of agent $j$ to select action $k$
+for interaction $t+1$ is:
 \begin{equation}
 q_{jk}(t+1) =
 \begin{cases}
@@ -154,11 +141,10 @@ q_{jk}(t+1) =
 k^\prime$}
 \end{cases}
 \end{equation}
-
-As with the basic Roth-Erev algorithm, the propensity for the action that the
-reward is associated with is adjusted by the experimentation parameter.  All
-other action propensities are adjusted by a small proportion of their current
-value.
+As with the basic Roth-Erev algorithm, the propensity for selection of the
+action that the reward is associated with is adjusted by the experimentation
+parameter.  All other action propensities are adjusted by a small proportion of
+their current value.
 
 \subsubsection{SARSA}
 \label{sec:sarsa}
@@ -175,62 +161,60 @@ value.
 % While the Q-learning algorithm updates action-values using a greedy policy,
 % which is different to that being followed, Sarsa uses the discounted future
 % reward of the next state-action observation following the original policy.
-The SARSA algorithm is an on-policy Temporal Difference control method, similar
-to Q-learning.  The action-value update for agent $j$ is defined by
-
+The SARSA algorithm is an on-policy Temporal Difference control method where
+the policy is typically represented by a $M \times N$ table, where $M$ and $N$
+are arbitrary positive numbers equal to the total number of feasible states and
+actions respectively.  The action-value update for agent $j$ is defined by
 \begin{equation}
 Q_j(s_{jt},a_{jt}) + \alpha [r_{jt+1} + \gamma Q_j(s_{jt+1},a_{jt+1}) -
-Q_j(s_{jt},a_{jt})] \text{.}
+Q_j(s_{jt},a_{jt})]
 \end{equation}
-
-While the Q-learning algorithm updates action-values using a greedy policy,
-which is a different policy to that being followed, SARSA uses the discounted
-future reward of the next state-action observation following the original
-policy.
+While the Q-learning method (See Section \ref{sec:qlearning}, below) updates
+action-values using a greedy policy, which is a different policy to that being
+followed, SARSA uses the discounted future reward of the next state-action
+observation following the original policy.
 
 \subsubsection{Q-Learning}
 \label{sec:qlearning}
-The formulation of the Q-learning algorithm used is that of the original
-off-policy Temporal Difference algorithm developed by
-Watkins\cite{watkins:1989}.  The action-value function, $Q(s,a)$, returns
-values from a $M \times N$ matrix where $M$ and $N$ are arbitrary positive
-numbers equal to the total number of feasible states and actions, respectively.
-Each value represents the \textit{quality} of taking a particular action, $a$,
-in state $s$.  Actions are selected using either the $\epsilon$-greedy or
-softmax (See section \ref{sec:rotherev}) methods.  The $\epsilon$-greedy method
-either selects the action (or one of the actions) with the highest estimated
-value or it selects an action at random, uniformly, independently of the
-estimated values with, typically small, probability $\epsilon$.
+This section describes the original off-policy Temporal Difference Q-learning
+method developed by Watkins \cite{watkins:1989}.  The action-value function,
+$Q(s,a)$, returns values from a $M \times N$ matrix where $M$ and $N$ are
+arbitrary positive numbers equal to the total number of feasible states and
+actions, respectively.  Each value represents the \textit{quality} of taking a
+particular action, $a$, in state $s$.  Actions are selected using either the
+$\epsilon$-greedy or softmax (See Section \ref{sec:rotherev}, above) methods.
+The $\epsilon$-greedy method either selects the action (or one of the actions)
+with the highest estimated value or it selects an action at random, uniformly,
+independently of the estimated values with (typically small) probability
+$\epsilon$.
 
 Agent $j$ will observe a reward, $r_{jt}$, and a new state, $s_{jt+1}$,
 after taking action $a_{jt}$ at step $t$ when in state $s_{jt}$.  The
 state-action value, $Q_j(s_{jt},a_{jt})$, is updated according to the
 maximum value of available actions in state $s_{t+1}$ and becomes
-
 \begin{equation}
 \label{eq:qlearning}
 Q_j(s_{jt},a_{jt}) + \alpha [r_{jt+1} + \gamma\max_{a} Q_j(s_{jt+1},a_{jt}) -
 Q_j(s_{jt},a_{jt})]
 \end{equation}
-
 where $\alpha$ and $\gamma$ are the learning rate, $0\leq\alpha\leq1$, and
-discount factor, $0\leq\gamma\leq1$, respectively.  The learning rate determines
-the extent to which new rewards will override the effect of older rewards.
-The discount factor allows the balance between maximising immediate rewards and
-future rewards to be set.
+discount factor, $0\leq\gamma\leq1$, respectively.  The learning rate
+determines the extent to which new rewards will override the effect of older
+rewards.  The discount factor allows the balance between maximising immediate
+rewards and future rewards to be set.
 
 \subsubsection{Q($\lambda$)}
 \label{sec:qlambda}
-With the Q-learning formulation, described in equation \ref{eq:qlearning}, only
+In the Q-learning formulation, described in equation \ref{eq:qlearning}, only
 the quality associated with the previous state, $s_{jt}$, is updated.  However,
 the preceding states can also, in general, be said to be associated with the
-reward $r_{jt+1}$.  Eligibility traces are a mechanism for facilitating this
-effect and in algorithms such as Q($\lambda$), the $\lambda$ refers to it. The
-eligibility trace for a state $e(s)$ represents how eligible the state $s$ is
-to receive credit or blame for the error.  The term ``trace'' refers to fact
-that only recently visited states become eligible.  The eligibility value for
-the current state is increased, while for all other states it is attenuated by
-a factor $\lambda$.
+reward $r_{jt+1}$.  Eligibility traces are a mechanism for representing this
+effect and in algorithms such as Q($\lambda$), they are what the $\lambda$
+refers to.  The eligibility trace for a state $e(s)$ represents how eligible
+the state $s$ is to receive credit or blame for the error.  The term ``trace''
+refers to fact that only recently visited states become eligible.  The
+eligibility value for the current state is increased while for all other
+states it is attenuated by a factor $\lambda$.
 
 The off-policy nature of Q-learning requires special care to be taken when
 implementing eligibility traces.  While the algorithm may learn a greedy
@@ -245,24 +229,29 @@ this has been developed, but requires a very complex implementation
 exploratory actions is ignored, but the results of this are unexplored.
 
 \subsection{Policy Gradient Methods}
+\label{sec:policybased}
+The value-function methods defined in Section \ref{sec:valuebased} typically
+rely upon discretisation of the sensor and action spaces so the associated
+values may be stored in tables.  The memory requirements for this restrict the
+application of these methods to small environments.  Many environments,
+particularly from real applications, exhibit continuous sensor and/or action
+spaces and require generalisation techniques to be employed to provide a more
+compact policy representation.
+
+Policy-gradient methods use only the reward signal and search directly in the
+space of the policy parameters.  The agent's policy function approximator is
+updated according to the gradient of expected reward with respect to its
+parameters.
 
 \subsubsection{REINFORCE}
 \label{sec:reinforce}
-The previously defined learning methods typically rely upon discretisation of
-the sensor and action spaces so the associated values may be stored in tables.
-The memory requirements for this restrict the application of these methods to
-only small environments.  Many environments, particularly from real
-applications, exhibit continuous sensor and/or action spaces and require
-generalisation techniques to be employed to provide a more compact policy
-representation.
-
-REINFORCE is an associative reinforcement learning algorithm that determines
+REINFORCE is an associative reinforcement learning method that determines
 a policy by modifying the parameters of a policy function approximator, rather
 than approximating a value function \cite{williams:reinforce}.  Commonly,
 feedforward artificial neural networks are used to represent the policy, where
 the input is a representation of the state and the output is action selection
-probabilities.  In learning, a \textit{policy gradient} approach is taken where
-the weights of the network are adjusted in the direction of the gradient of
+probabilities.  In learning, a policy gradient approach is taken where the
+weights of the network are adjusted in the direction of the gradient of
 expected reinforcement.
 
 Defining the network, let $\mathbf{x}^i$ denote the vector of inputs to the
@@ -276,13 +265,11 @@ and the associated weights, $\mathbf{w}^i$.
 
 For each interaction of the agent with the environment, each parameter $w_{ij}$
 is incremented by
-
 \begin{equation}
 \label{eq:reinforce}
 \Delta w_{ij} = \alpha_{ij}(r - b_{ij})\frac{\partial\ln\rho_i}{\partial
 w_{ij}}
 \end{equation}
-
 where $\alpha_{ij}$ is the \textit{learning factor}, $b_{ij}$ is the
 \textit{reinforcement baseline} and $\rho_i$ is the performance of the policy
 (e.g., the average reward per interaction).
