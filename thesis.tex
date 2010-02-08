@@ -1,4 +1,4 @@
-\documentclass[11pt]{strath_thesis}
+\documentclass[12pt]{strath_thesis}
 
 \usepackage{apacite}
 \usepackage{amsmath}
@@ -59,23 +59,39 @@ connection/.style={thick, dotted},
 \declaration
 
 \begin{acknowledgements}
-The research reported in the present thesis was funded by the United Kingdom
-Engineering and Physical Research Council under grant GR/T28836/01.
+This research was funded by the UK Engineering and Physical Sciences Research
+Council through the Supergen Highly Distributed Power Systems project under
+grant GR/T28836/01.
+%I take this opportunity to thank
+The guidance and scholarship of supervisors Prof.~Graeme~Burt and
+Dr~Stuart~Galloway is duly acknowledged.
+
+Much of this research relies upon software projects by researchers from other
+institutions made available as open source.  Optimal power flow formulations
+were translated from MATPOWER which is prinicpally developed by
+Ray~Zimmerman at Cornell University.  Learning methods and artificial neural
+networks were imported from PyBrain, developed by researchers from the Dalle
+Molle Institute for Artificial Intelligence (IDSIA) and the Technical University of
+Munich.  The Roth-Erev learning method was translated from JReLM (Java
+Reinforcement Learning Module) by Charles Gieseler from Iowa State University.
+Sparse matrices and linear and non-linear solvers from the convex optimization
+package, CVXOPT, by Joachim Dahl and Lieven Vandenberghe of the University of
+California were used extensively.
 \end{acknowledgements}
 
 \begin{abstract}
-Connectionist reinforcement learning methods approximating value-functions
+Connectionist reinforcement learning methods approximating value functions
 offer few convergence guarantees, even in simple systems.  Reinforcement
-learning has been applied previously to agent-based simulation of energy
-markets using only discrete action and sensor domains. If learning algorithms
+learning has been applied previously to agent-based simulation of electricity
+markets using discrete action and sensor domains. If learning algorithms
 are to deliver on their potential for application in operational settings,
 modelling continuous domains is necessary.  The contribution of this thesis is
 to show that policy-gradient reinforcement learning algorithms can be applied
-to continuous representations of energy trading problems and that their
-superior use of sensor data results in improved performance over previously
-applied value-function methods.  From this it follows that algorithms which
-search directly in the policy space will be better suited to decision support
-applications and automated energy trade.
+to continuous representations of electricity trading problems and that their
+superior use of sensor data results in improved overall performance compared to
+previously applied value-function methods.  From this it follows that
+algorithms which search directly in the policy space will be better suited to
+decision support applications and automated energy trade.
 \end{abstract}
 
 \tableofcontents

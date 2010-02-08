@@ -62,6 +62,10 @@ requirements for the degree of}}
 \newcommand{\declaration}{%
 \clearemptydoublepage
 \thispagestyle{plain}
+\onehalfspacing
+ \begin{center}
+  \section*{}
+ \end{center}
 \begin{quote}
 This thesis is the result of the author's original research.  It has been
 composed by the author and has not been previously submitted for examination
@@ -75,6 +79,7 @@ material contained in, or derived from, this thesis.
 % \vspace{1cm}
 % Signed:\hspace{7.6cm} Date: \today
 \end{quote}
+\singlespacing
 \newpage
 }
 
@@ -92,12 +97,10 @@ material contained in, or derived from, this thesis.
 \renewenvironment{abstract}%
 {\clearemptydoublepage
 \thispagestyle{plain}
+\addcontentsline{toc}{chapter}{Abstract}
 \onehalfspacing
 \begin{center}
   \section*{Abstract}
-  \addcontentsline{toc}{chapter}{Abstract}
-% \textbf{\@title}\\
-% \@author
  \end{center}
  \begin{quote}
  \begingroup

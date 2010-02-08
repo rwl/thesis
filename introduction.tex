@@ -1,50 +1,52 @@
 \chapter{Introduction}
 This thesis compares methods from the field of artificial intelligence in their
-ability to learn from reinforcement when trading electricity in simulated
-competitive marketplaces.  An introduction to electric energy and the
-associated markets is provided by the present chapter.  An explanation of the
-motivation for the research presented in this thesis follows, along with a
-statement of the principle contributions that have been made.  A outline of the
-remaining chapters is finally provided.
+ability to learn from reinforcement when trading electricity in a simulated
+competitive marketplace.  An introduction to electricity supply and the
+associated markets is provided in the present chapter.  The motivation for the
+research presented in this thesis follows, along with a statement of the
+principle research contributions that have been made.  Finally, a reading guide
+and outline of the remaining chapters is provided.
 
 \section{Motivation}
-The average total demand for electricity in the UK is now approximately 50GW.
-and the cost of buying 1MW for one hour is around \pounds40.  This equates to
-yearly transaction values of \pounds17.52 billion.  The importance of electricity to
-society is clearly evident when supply fails.  The New York black-out in August
-2003 involved 61.8GW of lost power supply to approximately 50 million
-consumers.  The majority of supplies were restored within two days and the
-event is estimated to have cost \$7-10 billion.
+The average total demand for electricity in the UK is approximately 45.7GW and
+the cost of buying 1MW for one hour is around \pounds40 \cite{decc:dukes09}.
+This equates to yearly transaction values of \pounds16 billion.  Supply
+failures highlight the value of electricity to societies also.  The New York
+black-out in August 2003 involved 61.8GW of lost power supply to approximately
+50 million consumers. The majority of supplies were restored within two days,
+but the event is estimated to have cost more than \$6~billion and to have
+contributed to 11~deaths \cite{minkel:2008,icf:2003}.
 
 Quality of life for a person is directly proportional to that person's
-electricity consumption[ref].  The world population is currently 6.7 billion
-and forecast to pass 9 billion by the year 2050.  Electricity production
-currently demands over $1/3$ of the annual primary energy extracted.  As people
-endevour to improve their quality of life, primary energy fuels will become
-increasingly scarce.  Competitive markets are a proven device for allocation
-of scarce resources.
+electricity consumption\cite{alam:qol}.  The world population is currently
+6.7~billion and forecast to pass 9~billion by the year 2050 \cite{un:pop}.
+Electricity production currently demands over $1/3$ of the annual primary energy extracted. As people endevour to improve their quality of life,
+finite primary energy fuel resources are becoming increasingly scarce.
+Competitive markets are an economic device for efficient allocation of scarce
+resources.
 
-Commercialisation of electricity supply industries is a new practice, relative
-to other commodities, having begun in the early 1990s.  The inability to store
-electricity, once generated, in a commercially viable quantity prevents trade
-as a conventional commodity.  Trading mechanisms must be created to allow
-shortfalls in electric energy to be purchased a short notice from quickly
-dispatchable generators.  Different implementations have been tried in various
-countires and states and how best to structure electricity markets is an open
-field of research.  Electricity market designs are further complicated by the
-need to manage complex dynamic constraints in the power systems that deliver
-the traded product.
+Commercialisation of electricity supply industries is a relatively new
+practice, having begun in the early 1990s.  The inability to store electricity,
+once generated, in a commercially viable quantity prevents trade as a
+conventional commodity.  Trading mechanisms must be created to allow shortfalls
+in electric energy to be purchased at short notice from quickly dispatchable
+generators.  Various mechanisms have been implemented in countries and states
+around the world.  How best to structure electricity markets is an active field
+of research.  Electricity market designs are also complicated by the need to
+manage complex dynamic constraints in the power systems that deliver the traded
+product.
 
 \section{Electric Power Systems}
-Generation and bulk movement of electricity takes place in a three-phase
-alternating current power system.  The three phases are high voltage waveforms,
-120$^\circ$ offset in time and oscillating at 50Hz.  Alternators or synchronous
-generators, typically rotating at 3600rpm or 1800rpm, generate apparent power
-$S$ and inject current $I_l$ at a line voltage $V_l$ typically between 11kV and
-25kV.  One of the prinicpal reasons that alternating current, and not direct
-current, systems are used to supply electricity is that the power can be
-transformed between voltages with very high efficiency.  The apparent power
-conducted by a line is the product of the line voltage and the line current,
+Generation and bulk movement of electricity in the UK takes place in a
+three-phase alternating current (AC) power system.  The phases are high voltage
+electrical waveforms, $120^\circ$ offset in time and oscillating 50 times per
+second.  Alternators or synchronous generators, typically rotating at 3600rpm
+or 1800rpm, generate apparent power $S$ and inject current $I_l$ into a line at
+a voltage $V_l$, typically between 11kV and 25kV.  One of the prinicpal reasons
+that alternating current, and not direct current (DC), systems are used to
+supply electricity is that the power can be transformed between voltages with
+very high efficiency.  The apparent power conducted by a line is the product of
+the line voltage and the line current,
 \begin{equation}
 S = \sqrt{3} V_l I_l
 \end{equation}
@@ -54,98 +56,100 @@ current,
 P_{r} = 3 I^2 R
 \end{equation}
 where $R$ is the resistance of the line.  Transmitting power at ultra-high
-voltages reduces the current flow, resulting in substantially reduced losses.
-One consequence of higher voltages is the larger extent and integrity
-of conductor insulation between one another, neutral and earth.  This results
-in large transmission towers and high costs for undergrounding systems.
+voltages reduces the current flow, resulting in substantial losses reductions.
+One drawback of higher voltages is the larger extent and integrity of conductor
+insulation required between one another, neutral and earth.  This results in
+the need for large transmission towers and high cable costs when undergrounding
+systems.
 
-The UK transmission systems operate at 400kV, 275kV or 132kV and systems upto
-and beyond 1000kV are in operation in larger countires.  For transmission over
-very long distances or undersea, high voltage direct current systems have
-become econmically viable in recent years.  The ability to transmit large
-amounts of power over long distances allows generation at high capacity
-stations, located away from large load centres, which offer economies of scale
-and lower operating costs.  It also allows electricity to be transmitted
-across country borders and from renewable energy plant in remote locations.
+UK transmission systems operate at 400kV, 275kV or 132kV, but systems upto
+and beyond 1000kV are in operation in larger countries.  For transmission over
+very long distances or undersea, high voltage DC systems have become
+econmically viable in recent years.  The ability to transform power between
+voltages and transmit large amounts of power over long distances allows
+generation at high capacity stations, located away from large load centres,
+which offer economies of scale and lower operating costs.  It also allows
+electricity to be transmitted across country borders and from plant generating
+power from renewable energy sources remote locations.
 
-From the transmission system, electric energy is transferred at a substation to
-the grid supply point of a distribution system for delivery to consumers.
-Distribution networks are also three-phase AC systems, but operate at lower
-voltages and differ in their general structure or topology from transmission
-networks.  Transmission networks are typically highly interconnected, providing
-several paths for power to flow in, whereas distribution networks, in rural
-areas, typically consist of long radial feeder (usually overhead lines) or, in
-urban areas, contain many ring circuits.  Three-phase transformers that step the
-voltage down to levels more convenient for general use (typically from 11kV or
-33kV to 400V) are spaced along the branches/rings.  All three-phases may be
-provided for industrial loads or individual phases at 230V supply typical
-domestic and commercial loads.  Splitting of phases is usually planned so that
-each is loaded equally as this produces a balanced symetrical system that may
-be analysed as a single phase circuit (See Section
-\ref{sec:power_system_model}).
+For delivery to typical consumers electric energy is transferred from the
+transmission system, at a substation, to the grid supply point of a
+distribution system.  Distribution networks are also three-phase AC systems,
+but operate at lower voltages and differ in their general structure or topology
+from transmission networks.  Transmission networks are typically highly
+interconnected, providing several paths for power flow, whereas distribution
+networks in rural areas typically consist of long radial feeders (usually
+overhead lines) or in urban areas consist of many ring circuits.  Three-phase
+transformers that step the voltage down to levels more convenient for general
+use (typically from 11kV or 33kV to 400V) are spaced along the branches/rings.
+All three-phases at 400V may be provided for industrial and commercial loads or
+individual phases at 230V supply typical domestic and other commercial loads.
+Splitting of phases is usually planned so that each is loaded equally.  This
+produces a balanced symetrical system that may be analysed as a single phase
+circuit (See Section \ref{sec:power_system_model}).
 
 \section{Electricity Markets}
 The United Kingdom was the first large country to privatise its electricity
 supply industry and the market structures that have since been adopted
 encapsulate the main principles behind electricity markets.
 
-The England \& Wales Electricity Pool was created to break apart the monolithic
-Central Electricity Generating Board and gradually introduced
+The England \& Wales Electricity Pool was created in 1990 to break apart the
+monolithic Central Electricity Generating Board and gradually introduce
 competition in generation and retail supply (See Section \ref{sec:thepool},
-below). As a result of early adoption, the United Kindom is host to the main
-European power and gas exchanges and boasts a relatively high degree of
-consumer switching, which deemed an essential aspect of a competitive
-marketplace. The Pool has since been replaced with the British Electricity
-Transmission and Trading Arrangements in which market outcomes are no longer
-centrally determined, but arise largely from bilateral agreements between
-producers and suppliers.
+below).  Early adoption of electrcity markets by the United Kindom has lead to
+it hosting the main European power and gas exchanges and the UK boasts a
+enviably high degree of consumer switching, deemed essential to a competitive
+marketplace.  The Pool has since been replaced by trading arrangements in which
+market outcomes are no longer centrally determined, but arise largely from
+bilateral agreements between producers and suppliers.
 
 \subsection{British Electricity Transmission and Trading Arrangements}
 \label{sec:betta}
 Concerns over exploitation of market power in The England \& Wales Electricity
-Pool and its effectiveness in encouraging reduced consumer electricity prices
-prompted introduction of the New Electricity Trading Arrangements (NETA) in
-March 2001 \cite{martoccia:pool}.  A very similar nationwide scheme was formed
-in April 2005 with the inclusion of the Scottish electricity industry in the
-British Electricity Transmission and Trading Arrangments (BETTA).  The aim was
-to provide greater choice to participants and improve trading efficiency.
-While The Pool operated a single daily auction and plant was dispatched
-centrally, under the new arrangements, market positions became determined
+Pool and its effectiveness in reducing consumer electricity prices prompted the
+introduction of the New Electricity Trading Arrangements (NETA) in March 2001
+\cite{martoccia:2005}.  The Scottish electricity industry was integrated into
+the nationwide British Electricity Transmission and Trading Arrangments (BETTA)
+in April 2005 by The Energy Act 2004.  The aim was to improve efficiency and
+provide greater choice to participants.  While The Pool operated a single daily
+auction and plant was dispatched centrally, under the new arrangements,
+participants became self-dispatching and market positions became determined
 through continuous bilateral trading between generators, suppliers, traders and
-consumers and participants became self-dispatching.
+consumers.
 
 Under BETTA, the majority of power is traded through long-term contracts
 that are customised to the requirements of each party.  These suit participants
-responsible for large power plants or those needing to purchase large volumes of
-power.  A relatively large ammount of time is required for long-term contracts
-to be aggreed upon and this has an associated transaction cost.  However, they
-reduce risk for large players and can provide a degree of flexibility through
-option contracts.
+responsible for large power plants or those purchasing large volumes of
+power for many customers.  A relatively large amount of time is required for
+long-term contracts to be agreed upon and this has an associated transaction
+cost.  However, they reduce risk for large players and a degree of flexibility
+can be provided through option contracts.
 
-Power is also traded directly between participants through over-the-counter
+Power is also traded directly between participants through over the counter
 (OTC) contracts that are usually of a standardised form.  Such contracts
 typically concern smaller volumes of power and have much lower associated
 transaction costs.  Often they are used by participants to refine their market
 position ahead of delivery time.
 
-Trading facilities, such as power exchanges, provide a means for participants to
-fine-tune their positions further through short-term transactions for relatively
-small quantities.  Modern exchanges are computerised and accept anonymous
-offers and bids submitted electronically.  A submitted offer/bid will be paired
-with any outstanding bids/offers in the system with compatible prices and
-quantities and the details are displayed for traders to observe.
+Trading facilities, such as power exchanges, provide a means for participants
+to fine-tune their positions further through short-term transactions for
+relatively small quantities of energy.  Modern exchanges are computerised and
+accept anonymous offers and bids submitted electronically.  A submitted
+offer/bid will be paired with any outstanding bids/offers in the system with
+compatible prices and quantities.  The details are then displayed for traders
+to observe and use to educate their decisions.
 
 All bilateral trading must be completed before ``gate-closure'', which is point
-set before real-time that give the system operator the opportunity to balance
+set before real-time that gives the system operator the opportunity to balance
 supply and demand and mitigate breaches of system limits.  In keeping with the
-free market philosphy of the UK, a competitive spot market is used in the
-balancing process also.  A generator that is not fully loaded may offer a price
-at which it is willing to increase its output by a specified quantity.  The
-speed at which it is capable of doing so must be stated with the offer.
-Certain loads may also offer demand reductions at a price and can typically be
-implented very quickly.  Longer-term contracts for balancing services are also
-struck beteen the system operator and generators/suppliers in order to avoid
-the price volatility often associated with spot markets.
+Uk's free market philosphy, a competitive market is used in the balancing
+process also.  A generator that is not fully loaded may offer a price at which
+it is willing to increase its output by a specified quantity.  The speed at
+which it is capable of doing so must be stated with the offer.  Certain loads
+may also offer demand reductions at a price and can typically be implemeted
+very quickly.  Longer-term contracts for balancing services are also struck
+between the system operator and generators/suppliers in order to avoid the
+price volatility often associated with spot markets.
 
 \subsection{The England \& Wales Electricity Pool}
 \label{sec:thepool}
@@ -162,17 +166,18 @@ Central Electricity Generating Board (CEGB) and the Electricity Council under
 The Electricity Act 1957.  The CEGB was responsible for planning the network
 and generating sufficient electricity until the start of privatisation in 1990.
 
-Privatisation of the UK electricity supply industry under Prime Minister
-Margaret Thatcher created The England \& Wales Electricity Pool in March 1990.
-The control of the transmission system was transferred from the CEGB to The
-National Grid Company which was originally owned by twelve regional electricity
-companies and is now publically listed.  The Pool was a multilateral
-contractual arrangement between generators and suppliers and did not itself buy
-or sell electricity.  Competition in generation was introduced gradually, by
-only entitling customers with consumption greater than or equal to 1MW to
+The UK electricity supply industry was privatised under Prime Minister
+Margaret Thatcher and The England \& Wales Electricity Pool was created in
+March 1990.  Control of the transmission system was transferred from the
+CEGB to The National Grid Company which was originally owned by twelve regional
+electricity companies and is now publically listed.  The Pool was a
+multilateral contractual arrangement between generators and suppliers and did
+not itself buy or sell electricity.  Competition in generation was introduced
+gradually, by only entitling customers with consumption greater than or equal
+to 1MW (approximately 45\% of the non-domestic market \cite{decc:dukes09}) to
 purchase electricity form any listed supplier.  This limit was lowered in April
-1994 to included customers consuming 100kW or more and finally to include all
-customers in 1998.
+1994 to included customers with peak loads of 100kW or more.  Finally, between
+September 1998 and March 1999 the market was opened to all customers.
 
 Scheduling of generation was on a merit order basis (cheapest first) at a day
 ahead stage and set a wholesale electricity price for each half-hour period of
@@ -186,53 +191,51 @@ before the schedule day.
 
 % TODO: Insert Pool bids figure.
 
-Bids consisted of five price parameters as illustrated in Figure
-%\ref{fig:poolbids}
-and represented the avoidable cost of generation. A start-up price would be
+Bids consisted of five price parameters as illustrated in Figure X and
+represented the avoidable cost of generation.  A start-up price was also
 included, representing the cost of turning on the generator from cold.  A
 no-load price $c_{noload}$ would equal the cost in pounds of keeping the
 generator running regardless of output. Three incremental prices $c_1$, $c_2$
 and $c_3$ specify the cost per MWh of generation between set-points $p_1$,
 $p_2$ and $p_3$.
 
-A settlement computer program would calculate an unconstrained schedule (not
-accounting for the physical limitations of the transmission system), meeting
-the forecast demand and requirements for reserve while minimising cost.
-Cheapest bids up to the marginal point get accepted first and generally the bid
-price from the marginal generator is used to determine the system marginal
-price for each settlement period.  The system marginal price determines the
-prices paid by consumers and paid to the generators and the prices paid by the
-consumers that get adjusted such that that the costs of transmission are
-covered by the market and that the availability of capacity is encouraged at
-certain times.
+A settlement computer program was used to calculate an unconstrained schedule
+(not accounting for the physical limitations of the transmission system),
+meeting the forecast demand and requirements for reserve while minimising cost.
+Cheapest bids up to the marginal point would get accepted first and the bid
+price from the marginal generator would generally determine the system marginal
+price for each settlement period.  The system marginal price determined the
+prices paid by consumers and paid to generators that get adjusted such that
+that the costs of transmission are covered by the market and that the
+availability of capacity is encouraged at certain times.
 
 Variations in demand and changes in plant availability would be adjusted for by
 the grid operator, producing a constrained schedule.  Generators having
-submitted bids would bbe instructed to increase or reduce production as
+submitted bids would get instructed to increase or reduce production as
 appropriate.  Alternatively, the grid operator could instruct large customers
 with contracts to curtail their demand to do so or instruct generators
 contracted to provide ancillary services to adjust production.
 
 \section{Electricity Market Simulation}
-The previous section have explained the dependence of modern societies on on
-electric energy and how its supply is trusted to unadministered bilateral
-trading arrangements.  Electricity supply involves technology, money, people,
-natural resources and the environment.  These aspects are all changing and the
-discipling must be constantly researched in order that system such as
+The previous sections have illustrated the dependence of modern societies on
+electric energy and explained how its supply is trusted to unadministered
+bilateral trading arrangements.  Electricity supply involves technology, money,
+people, natural resources and the environment.  These aspects are all changing
+and the discipling must be constantly researched in order that systems such as
 electricity markets are fit for purpose.  The value of electricity to society
-means that it is not feasible to experiment with radical changes to trading
-arrangements on real systems.  A practical alternative is to model them
-mathematically and simulate using a computer program.
+makes it infeasible to experiment with radical changes to trading arrangements
+on real systems.  A practical alternative is to model them mathematically and
+simulate the systems using a computer program.
 
 Game theory is a branch of applied mathematics in which behaviour in strategic
 situations is captured mathematically.  A common approach to doing this is to
 model the system and players as a numerical optimisation problem.  Section
-\ref{sec:opf} defines the optimal power flow problem which is a classical
+\ref{sec:opf} defines the optimal power flow problem, which is a classic
 optimisation problem from the field of Power Engineering.  Electricity markets
 are commonly modelled using variations on the optimal power flow problem with
-player strategies integrated.  The present thesis presents electricity market
-research using agent-based modelling, which is an alternative approach to the
-mathematics of games.
+player strategies integrated[ref].  The present thesis reports electricity
+market research using agent-based modelling, which is an alternative approach
+to the mathematics of games.
 
 \subsection{Agent-Based Modelling}
 Social systems, such as electricity markets, are inherently complex.  They
@@ -240,14 +243,15 @@ involve many interactions between different types of individual and between
 individuals and collective entities, such as organisations or groups, the
 behaviour of which is itself the result of individual interactions.  This
 degree of complexity drives classical closed-form equilibrium models to their
-limits.  Trading environments must of be highly stylised and limited to
-artificially small numbers of players with strong constraining assumptions on
-their behaviour.
+limits.  Trading environments are often highly stylised and limited to
+artificially small numbers of players with strong constraining assumptions
+made on their behaviour.
 
-Agent-based simulation, involves modelling interacting entities as separable,
-adaptive, purposeful objects that seek to act in their own perceived interests.
-Macro-level regularities arise from micro-level inter-play between agents as
-they adapt to their view of other agents.
+Agent-based simulation, involves modelling the interacting entities as
+separable, adaptive, purposeful objects that seek to act in their own perceived
+interests.  Macro level regularities arise from the micro level inter-play
+between agents as they adapt their behaviour according to their view of other
+agents.
 
 \subsubsection{Reinforcement Learning}
 
@@ -268,7 +272,7 @@ they adapt to their view of other agents.
 
 Research into electricity markets using reinforcement learning typically
 involves discretization the action domain, often into incremental markups
-on marginal cost. Also, either sensor domains are discretized or state
+on marginal cost.  Also, either sensor domains are discretized or state
 information is disregarded altogether.  Despite these simplifications, authors
 have been drawn many practical conclusions from this approach \cite{anke:2008}.
 If learning algorithms are to deliver on their potential for application in
@@ -385,7 +389,7 @@ value-function methods.
 \section{Research Contributions}
 The research presented in this thesis pertains to the academic fields of power
 engineering, artificial intelligence and economics.  The principle
-contributions in these areas are
+contributions in these areas are:
 
 \begin{itemize}
   \item The proof that policy gradient reinforcement learning algorithms
