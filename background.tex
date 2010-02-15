@@ -67,8 +67,8 @@ action choices.  A reinforcement learning agent must be able to:
 \end{itemize}
 In the classic model of agent--environment interaction, at each time step $t$
 in a sequence of discrete time steps $t = 1,2,3\dotsc$ an agent receives
-some form of the environment's state $s_t \in \mathcal{S}$, where $\mathcal{S}$
-is the set of possible states.  A set of actions $\mathcal{A}(s_t)$ are
+some form of the environment's state $s_t \in \mathscr{S}$, where $\mathscr{S}$
+is the set of possible states.  A set of actions $\mathscr{A}(s_t)$ are
 available to the agent in state $s_t$, from which the agent selects an action
 $a_t$ and performs it upon the environment.  The environment enters a new state
 $s_{t+1}$ in the next time step and the agent receives a scalar numerical
@@ -79,23 +79,23 @@ interaction.  Figure X diagrams the agent--environment interaction event
 sequence.
 
 \subsection{Markov Decision Processes}
-For a finite number of states $\mathcal{S}$, if all states are Markov, the
+For a finite number of states $\mathscr{S}$, if all states are Markov, the
 agent is interacting with a finite Markov decision process (MDP).  Informally,
 for a state to be Markov it must retain all relevant information about the
 complete sequence of positions leading up to the state, such that all future
 states and expected rewards can be predicted as well as would be possible given
 a complete history.  A particular MDP is defined for a discrete set of time
-steps by a state set $\mathcal{S}$, an action set $\mathcal{A}$, a set of state
-transition probabilities $\mathcal{P}$ and a set of expected reward values
-$\mathcal{R}$.  Given a state $s$ and an action $a$, the probability of
+steps by a state set $\mathscr{S}$, an action set $\mathscr{A}$, a set of state
+transition probabilities $\mathscr{P}$ and a set of expected reward values
+$\mathscr{R}$.  Given a state $s$ and an action $a$, the probability of
 transitioning to each possible next state $s^\prime$ is
 \begin{equation}
-\mathcal{P}^a_{ss^\prime} = \Pr \bigl\lbrace s_{t+1} = s^\prime \vert s_t=s,
+\mathscr{P}^a_{ss^\prime} = \Pr \bigl\lbrace s_{t+1} = s^\prime \vert s_t=s,
 a_t=a \bigr\rbrace .
 \end{equation}
 Given the next state $s^\prime$, the expected value of the next reward is
 \begin{equation}
-\mathcal{R}^a_{ss^\prime} = E \bigl\lbrace r_{t+1} \vert s_t=s, a_t=a,
+\mathscr{R}^a_{ss^\prime} = E \bigl\lbrace r_{t+1} \vert s_t=s, a_t=a,
 s_{t+1}=s^\prime \bigr\rbrace .
 \end{equation}
 In practice not all state signals are Markov, but should provide a good basis
@@ -114,7 +114,7 @@ performing actions.
 % signal and information from previous action choices.
 Any method that can optimise control of a MDP may be considered a reinforcement
 learning method.  All search for an optimal policy $\pi^*$ that maps state
-$s \in \mathcal{S}$ and action $a \in \mathcal{A}$ to the probability
+$s \in \mathscr{S}$ and action $a \in \mathscr{A}$ to the probability
 $\pi^*(s,a)$ of taking $a$ in $s$ and maxmimises the sum of rewards over the
 agents lifetime.
 
