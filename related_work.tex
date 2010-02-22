@@ -96,16 +96,16 @@ process converges to a Nash equilibrium.  The results also showed that
 significant increases in profit were possible by offering both standard and
 premium services.
 
-\section{Agent-Based Simulation}
-Relative to the traditional closed-form equilibrium approaches, agent-based
-simulation of (electricity) markets is a new field of research.  For
-comprehensive reviews and surveys of the many different techniques that have
-been applied in recent years the interested reader is directed to
-\cite{anke:2008,tesfatsi:handbook,visud:thesis}.  This section will focus on
-reviewing literature from the field in which reinforcement learning techniques
-were applied in combination with explicit power system models.  A short review
-is also provided of some more general applications of reinforcement learning
-with connectionist systems and policy-gradient methods.
+% \section{Agent-Based Simulation}
+% Relative to the traditional closed-form equilibrium approaches, agent-based
+% simulation of (electricity) markets is a new field of research.  For
+% comprehensive reviews and surveys of the many different techniques that have
+% been applied in recent years the interested reader is directed to
+% \cite{anke:2008,tesfatsi:handbook,visud:thesis}.  This section will focus on
+% reviewing literature from the field in which reinforcement learning techniques
+% were applied in combination with explicit power system models.  A short review
+% is also provided of some more general applications of reinforcement learning
+% with connectionist systems and policy-gradient methods.
 
 % Game theoretic models are commonly associated with economics and attempt to
 % capture behaviour in strategic situations mathematically.  They have been
@@ -134,33 +134,74 @@ with connectionist systems and policy-gradient methods.
 % any conclusions be drawn from results obtained through implementation and
 % simulation of suitable scenarios.
 
-\subsection{Learning Method Comparisons}
-\subsection{Heuristic Approaches}
-\subsection{Simulations Applying Genetic Algorithms}
-\subsection{Learning Classifier Systems}
+\section{Simulations Applying Q-learning}
+% Krause et al.\ have published agent-based energy market research in which
+% Q-learning methods were applied while considering physical system properties.
+% In a comparison between Nash equilibrium analysis and agent-based simulation,
+% the suitability of bottom-up modelling for the assessment of market evolution
+% was assessed\cite{krause:nash}.  This is built upon in subsequent publications
+% which evaluate the influence on market power and social welfare of three
+% congestion management schemes and which analyse strategic behavior in combined
+% gas and electricity markets\cite{krause:cong,krause:gas}.  Power Transmission
+% Distribution Factors (PTDF) are used in place of explicit power flow equations
+% in determining line flows.  The action domain of generating agents is limited
+% to 0\%, 5\% and 10\% markups on true marginal costs.  The implementation of the
+% Q-learning method used does not differentiate between environment states when
+% selecting actions. This is a modification to the traditional formulation that
+% still results in convincing conclusions, as with the popular Roth-Erev method.
+%
+% There are similar applications of Q-learning in which states \textit{are}
+% defined, but none model the AC transmission system.  A common approach is to
+% use categorised market price from the previous period as state
+% information\cite{bakirtzis:psce,xiong:discrim}.
+Agent-based simulation of electricity markets has been researched with
+participants behavioral aspects modelled using Q-learning methods.  The most
+prominent work in which this method has been is adopted has been conducted at
+the Swiss Federal Institutes of Technology in Zurich and Lausanne.  The
+foundations for this were laid in \cite{krause:nash04} with a
+comparison of agent-based modelling using reinforcement learning with Nash
+equilibrium analysis in assessing network constrained power pool market
+dynamics.  Parameter sensistivity of comparison results were later analysed in
+\cite{krause:nash06}.
 
-\subsection{Simulations Applying Q-learning}
-Krause et al.\ have published agent-based energy market research in which
-Q-learning methods were applied while considering physical system properties.
-In a comparison between Nash equilibrium analysis and agent-based simulation,
-the suitability of bottom-up modelling for the assessment of market evolution
-was assessed\cite{krause:nash}.  This is built upon in subsequent publications
-which evaluate the influence on market power and social welfare of three
-congestion management schemes and which analyse strategic behavior in combined
-gas and electricity markets\cite{krause:cong,krause:gas}.  Power Transmission
-Distribution Factors (PTDF) are used in place of explicit power flow equations
-in determining line flows.  The action domain of generating agents is limited
-to 0\%, 5\% and 10\% markups on true marginal costs.  The implementation of the
-Q-learning method used does not differentiate between environment states when
-selecting actions. This is a modification to the traditional formulation that
-still results in convincing conclusions, as with the popular Roth-Erev method.
+In the papers a mandatory spot market is modelled and cleared using a DC
+optimal power flow formulation.  A five bus power system model is defined with
+three generators and four inelastic and constant loads.  Linear marginal cost
+functions
+\begin{equation}
+C_{g,i}(P_{g,i}) = b_{g,i} + s_{g,i}P_{g,i}
+\end{equation}
+are assumed for each generator $i$ where $P_{g,i}$ is the active power output,
+$s_{g,i}$ is the slope of the cost function and $b_{g,i}$ is the cost when
+$P_{g,i} = 0$.  Suppliers are given the option to markup their bids to the
+market not by increasing the slope, but by increasing $b_{g,i}$ by 10\%, 20\%
+or 30\%.  A price cap of \$60/MW is set, but may not be exceeded by any of the
+available markups.
 
-There are similar applications of Q-learning in which states \textit{are}
-defined, but none model the AC transmission system.  A common approach is to
-use categorised market price from the previous period as state
-information\cite{bakirtzis:psce,xiong:discrim}.
+Nash equilibrium of the market is computed by clearing the market for all
+possible markup combinations and determining the actions for which no player is
+motivated to deviate from as it would result in a decrease in expected reward.
+Experiments are conducted in which there is a single Nash equilibrium and two
+equilibria.
 
-\subsection{Simulations Applying Roth-Erev}
+An $\epsilon$-greedy strategy is applied for action selection and a stateless
+action value function is updated at each time step $t$ according to
+\begin{equation}
+Q(a_t) \leftarrow Q(a_t) + \alpha(r_{t+1} - Q(a_t))
+\end{equation}
+where $\alpha$ is the learning rate.  Further to \cite{krause:nash04},
+simulations with discrete sets of values for the parameters $\alpha$ and
+$\epsilon$ were carried out in \cite{krause:nash06}.  While parameter
+variations affected the frequency of equilibrium oscillations, Nash equilibrium
+was still approached and the oscillatory behaviour observed for almost all
+combinations.
+
+The significance of this research is that is verifies that the agent-based
+approach settles at the same theoretical optimum as with closed-form equilibrium
+approaches and that exploratory policies result in the exploitation of multiple
+equlibria if they exist.
+
+\section{Simulations Applying Roth-Erev}
 The AMES (Agent-based Modeling of Electricity Systems) power market test bed is
 a software package that models core features of the Wholesale Power Market
 Platform (WPMP) -- a market design proposed by the US Federal Energy Regulatory
@@ -196,10 +237,16 @@ reported production limits may be less than the true values, the authors find,
 that with sufficient capacity reserve, no evidence to suggest potential for
 inducing higher net earnings through capacity withholding in the WPMP.
 
-\section{Closed-Form Equilibrium}
+
+% \subsection{Learning Method Comparisons}
+% \subsection{Heuristic Approaches}
+\section{Simulations Applying Genetic Algorithms}
+\section{Learning Classifier Systems}
+
+% \section{Closed-Form Equilibrium}
 % Hobbs, Neuhoff
 
-\section{Policy-Gradient Reinforcement Learning}
+% \section{Policy-Gradient Reinforcement Learning}
 % TD-Gammon
 
 \section{Open Source Power Engineering Software}
