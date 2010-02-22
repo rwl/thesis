@@ -12,24 +12,109 @@ broad concept and the theory has been explored and published in detail
 
 \section{Optimal Power Flow}
 \label{sec:opf}
-Optimal power flow is a term used to describe a broad class of problems in
-which control variables are automatically changed to arrive at the ``best''
-solution with respect to a stated quantitative performance measure while
-satisfying constraints dictated by operational and pyhical characteristics of
-the electric power system.  It is the formulation of a numerical optimisation
-problem or mathmatical program using power system equations.   Optimisation
-problems have the general form:
+Nationalised electricity supply industries are typically planned operated and
+controlled centrally.  A system operator determines which generators must
+operate and the required output of the operating units usch that demand is met
+and the overall cost of production is minimised.  In electric power engineering,
+this is termed the \textit{unit commitment} and \textit{economic dispatch}
+problem.
+
+In 1962 a unit commitment formulation was published that incorporated
+network constraints \cite{carpentier:opf}.  \textit{Optimal power flow} is the
+integration of both economic and power flow aspects of power systems into a
+mathematical optimisation problem.  The ability to solve centralised
+power system operation problems and determine prices in power pool markets has
+led to optimal power flow being one of the most widely studied subjects in the
+power systems community.
+
+\subsection{Power Flow Formulation}
+\label{sec:pf_form}
+Optimal power flow derives its name from the \textit{power flow}, or load flow,
+steady-state power system analysis technique.  Given sets of generator data,
+load data and a nodal admittance matrix $Y_{bus}$, a power flow study
+determines the voltage
+\begin{equation}
+V_i = \vert V_i \vert \angle\delta_i = \vert
+V_i\vert(\cos\delta_i + j\sin\delta_i)
+\end{equation}
+at each node $i$ in the power system.
+The structure of $Y_{bus}$ is dependant upon the transmission line, transformer
+and shunt capacitor models employed and any transformer tap settings.  A
+typical formulation of $Y$ is given in Section \ref{sec:acpf}.  Crucially, the
+relationship between nodal voltages and power entering the network is
+non-linear.  For a network of $n_b$ nodes, the current injected at node $i$ can
+be extracted as
+\begin{equation}
+I_i = \sum_{j=1}^{n_b} Y_{ij} V_j
+\end{equation}
+where $Y_{ij} = \vert Y_{ij}\vert \angle\theta_{ij}$ is the $(i,j)^{th}$ element
+if the, $n_b \times n_b$, $Y_{bus}$ matrix.  Hence, the apparent power entering
+the network at bus $i$ is
+\begin{equation}
+S_i = P_i+Q_i = V_iI_i^* = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \angle
+(\delta_i - \delta_j - \theta_{ij})
+\end{equation}
+Converting to polar coordinates and separating the real and imaginary part, the
+active power
+\begin{equation}
+P_i = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \cos(\delta_i - \delta_j -
+\theta_{ij})
+\end{equation}
+and the reactive power entering the network
+\begin{equation}
+Q_i = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \sin(\delta_i - \delta_j -
+\theta_{ij})
+\end{equation}
+at bus $i$ are non-linear functions of $V_i$, as indicated by the presence of
+the sine and cosine terms.  Kirchoff's Current Law requires that the net
+complex power injection (generation - load) at each bus equals the sum of
+complex power flows on each connected branch, given by the power balance
+equations
+\begin{equation}
+\label{eq:p_balance}
+P_{g,i} - P_{d,i} = P_i
+\end{equation}
+and
+\begin{equation}
+\label{eq:q_balance}
+Q_{g,i} - Q_{d,i} = Q_i .
+\end{equation}
+
+\subsection{Optimal Power Flow Formulation}
+Optimal power flow is formulated as a mathematical optimisation problem in
+which the complex power balance equations \ref{eq:p_balance} and
+\ref{eq:q_balance} must be satisfied.  Optimisation problems have the general
+form
 \begin{equation}
 \min_x f(x)
 \end{equation}
 subject to
 \begin{eqnarray}
+\label{eq:equality}
 g(x)& =& 0\\
-h(x)& \leq& 0\\
-x_{min}\leq& x& \leq x_{max}
+\label{eq:inequality}
+h(x)& \leq& 0
 \end{eqnarray}
+where $x$ is the optimisation variable, $f$ is the objective function and
+equations (\ref{eq:equality}) and (\ref{eq:inequality}) are sets of equality
+and inequality constraints on $x$, respectively.  Typical inequality
+constraints are bus voltage magnitude contingency state limits, generators
+output limits and branch power (or current) flow limits.  The optimisation
+variable $x$ may contain generator set-points, bus voltages, transformer tap
+settings.  If the optimisation variable $x$ is empty the formulation reduces to
+a power flow problem as described in Section \ref{sec:pf_form}, above.
 
-\subsection{Interior-Point Methods}
+A common objective of optimal power flow is total system cost minimisation.
+For and network of $n_g$ generators the objective function is
+\begin{equation}
+\min \sum_{k=1}^{n_g} C_k(P_{g,k})
+\end{equation}
+where $C_k$ is a cost function (typically quadratic) of the set-point $P_{g,k}$
+of generator $k$.  Alternative objectives may be to minimise losses, maxmimise
+the voltage stability margin or minimise deviation of an optimisation variable
+from a particular schedule.
+
+% \subsection{Interior-Point Methods}
 
 \section{Reinforcement Learning}
 \label{sec:rl}
