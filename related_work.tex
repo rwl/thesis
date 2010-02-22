@@ -1,6 +1,100 @@
 \chapter{Related Work}
 \label{ch:related_work}
-\label{sec:related}
+This thesis concerns methodological advancement in the field of agent-based
+electricity market simulation.  This chapter describes the research in the
+context of similar work with particular emphasis on the methods employed.  The
+bulk of the review focuses upon agent-based simulation with decision models
+based upon reinforcment learning.  However, simulations applying alternative
+methods, such as genetic algorithms and learning classifier systems, are also
+surveyed.  In the interests of repeatability, the software developed for
+this thesis has been released as open source and the project is described in
+the context of other open source electric power engineering tools.
+
+\section{Policy Gradient Reinforcement Learning}
+Direct policy search reinforcement learning methods have been sucessfully
+applied to financial decision making problems.  It is more common for
+supervised learning techniques to be trained on sample data and used to
+minimise errors in price forecasts.  However, in \cite{moody:98} a recurrent
+reinforcement learning method is used to optimise investment performance
+without forecasting prices.  The method is recurrent as it uses information
+related to past decisions as input.  The authors compare using direct profit
+and the Sharpe ratio \cite{sharpe:ratio66,sharpe:ratio94} as a reward signal.
+The Sharpe ratio is a measure of isk adjusted return defined as
+\begin{equation}
+S_t = \frac{\mbox{Average}(R_t)}{\mbox{Standard Deviation}(R_t)}
+\end{equation}
+where $R_t$ is the return for period $t$.
+% The parameters of the trading system $\theta$ are adjusted in the direction of
+% the gradient $\partial S_t / \partial \theta_t$.
+
+The trading system parameters $\theta$ are updated in the direction of the
+steepest accent of the gradient of some performance function $U_t$ with repect
+to $\theta$
+\begin{equation}
+\Delta\theta_t = \rho \frac{dU_t(\theta_t)}{d\theta_t}
+\end{equation}
+where $\rho$ is the learning rate.  Direct profit is the simplest performance
+function defined, but assumes traders are insensitive to risk.  Investors
+being, in general, sensitive to losses are willing to sacrifice potantial gains
+for reduced risk of loss.
+To allow on-line learning and parameter updates at each time period, the
+authors define a \textit{differential} Sharpe ratio.  By maintaining an
+exponential moving average of the Sharpe ratio, the need to compute return
+averages and standard deviations for the entire trading history at each period
+is avoided.  Alternative performance ratios including the \textit{information
+ratio}, \textit{appraisal ratio} and \textit{Sterling ratio} are mentioned.
+
+Simulations are conducted using artificial price data, equivalent to one year
+of hourly trade in a 24-hour market, and 45 years of monthly data from the
+Standard \& Poor (S\&P) 500 index and 3 month Treasury Bill (T-Bill) data. In a
+portfolio management simulation, in which trading systems invested proportions
+of their wealth among three different securities, it was shown that trading
+systems maximising the differential Sharpe ratio produced more consistent
+results and achieved higher risk adjusted returns than those trained to simply
+maximise profit.  This result is interesting as the majority of applications of
+reinforcement learning to electricity market simulation use profit as a reward
+signal and may benefit from using measures of risk adjusted return.
+
+In \cite{moody:direct} the recurrent reinforcement learning method from
+\cite{moody:98} is contrasted with value function based approaches.  In
+addition to the Sharpe ratio, the \textit{Downside Deviation} ratio is
+described and may also be of use in electricity market simulation.  Simulation
+results from trading systems trained on half-hourly USD/GBP foreign exchange
+rate data and again learning switching strategies between the S\&P 500 stock
+index and T-Bills are presented.  The results show that the recurrent
+reinforcement learning method outperforms the Q-learning in the S\&P 500/T-Bill
+allocation problem.  The authors also observe that the recurrent reinforcement
+learning method has a simpler functional form, the output is not discrete and
+easily maps to real valued actions and that the algorithm is more robust to
+noise in financial data and adapts quickly to non-stationary environments.
+
+In \cite{vengerov:grid} a marketplace for computational resources in
+envisioned.  The authors propse a market in which grid service suppliers offer
+to execute jobs submitted by customers for a price per CPU-hour.  The problem
+formulation requires customers to request a quote for computing a job $k$ for a
+time $\tau_k$ on $n_k$ CPUs.  The quote returned specifies a price $P_k$ at
+which the $k$ would be charged and a delay time $d_k$ for the job.  The service
+provider's goal is to learn a policy for pricing quotes that maximises long
+term revenue when competing in a market environment with other providers.  A
+differentiated pricing model is implemented where a standard service is priced
+at 1~\$/CPU-hour and a premium sercice a $P$~\$/CPU-hour, with premium jobs
+prioratised over standard jobs.  The state of the market environment is defined
+by the current expected delays in the standard and premium service classes and
+the product of the number of CPUs requested and the job execution time,
+$n_k \tau_k$.  The reward $r(s,a)$ for action $a$ in state $s$ is the total
+price paid for the job.  The policy gradient method employed is a modified
+version of Williams' REINFORCE where
+\begin{equation}
+Q(s_t,a_t) = \sum_{t=1}^T r(s_t,a_t) - \overline{r}_t
+\end{equation}
+and $\overline{r}_t$ is the current average reward.
+
+The authors recognise that their grid market model could be applied to any
+multi-seller retail market environment.  The experimental results show that if
+all grid service providers simultaneously use the learning algorithm then the
+process converges to a Nash equilibrium.  The results also showed that
+significant increases in profit were possible by offering both standard and
+premium services.
 
 \section{Agent-Based Simulation}
 Relative to the traditional closed-form equilibrium approaches, agent-based
