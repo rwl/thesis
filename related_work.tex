@@ -201,6 +201,118 @@ approach settles at the same theoretical optimum as with closed-form equilibrium
 approaches and that exploratory policies result in the exploitation of multiple
 equlibria if they exist.
 
+
+Having validated the suitability of an agent-based, bottom-up, approach to
+assessing evolution of market characteristics, the authors applied the technique
+in a comparison of congestion management schemes \cite{krause:cong}.  The first
+scheme considered was \textit{locational marginal pricing}, or nodal pricing,
+where congestion is managed by optimising the output of generators with respect to
+maximum social welfare.  Loading of branches to their flow limits results in
+non-uniform nodal marginal prices.  A nodal marginal price equals the
+increase in the total system cost (the value of the objective function) when
+generation at that node is increased by 1MW.  These prices are commonly used in
+electricity market analysis as they may be determined from the Lagrangian
+multipliers on the active power balance constraints in the optimal power flow
+formulation.  The second scheme considered, named \textit{market splitting}, is
+similar to locational marginal pricing, but the system gets subdivided into
+zones within which the nodal prices are uniform.  The final \textit{flow based
+market coupling} scheme also uses uniform zonal pricing, but requires a
+simplified representation of the network.  Power flows within zones are not
+represented and all lines within zones are aggregated into one equivalent
+interconnector.
+
+In a simpler alternative to the conventional DC optimal power flow formulation,
+the computation of line power flows is done using a matrix power transfer
+distribution factors.  The $(i,j)^{th}$ element of this matrix corresponds to
+the change in active power flow on line $j$ given an additional injection of
+1MW at the slack bus and corresponding withdrawl of 1MW at node $i$.
+
+The congestion management schemes are evaluated under perfect competition, where
+suppliers bid at marginal cost, and under oligopolistic competition, in which
+markups of 5\% and 10\% may be added to marginal cost.  The benefits obtained
+between reward at marginal cost and a maximum markup are used to assess market
+power.  The experimental results show different market power allocations under
+the three constraint management schemes.  The significance of this work is that
+it demonstrates an agent-based model being applied to an important problem in
+the electricity supply industry.
+
+The same Q-learning method is used in \cite{krause:gas} to analyse strategic
+behaviour in integrated electricity and gas markets.  Again, power flow are
+modelled using a power transfer distribution matrix.  Pipeline losses in the
+gas network are approximated using using a cubic function of the flow.  Three
+combined gas and electricity models are compared.  In the first model,
+operators of gas-fired power plant submit separate bid functions for gas and
+electricity.  Bids are then cleared as a single optimisation problem.  In model
+two, operators submit one offer for their capacity to convert gas to
+electricity.  In the final model, bids are submitted only to the electricity
+market, after which gas is purchased regardless of price.  Gas supply offers are
+modelled as a linear function with no strategic involvement.  The models are
+compared in terms of social welfare using a three bus power system model with
+three non-gas-fired power plants and one gas-fired plant.  The experimental
+results show little difference between electricity prices and social welfare
+prices between the models.
+
+However, this research illustrates the interest in and complexity associated
+with modelling relationships between markets.  The authors recognise the need
+for further and more detailed simulation in order to improve evaluation of
+market coupling models.
+
+
+Researchers at the Argonne Nationa Laboratory have published results from a
+preliminary study of interactions between \textit{emission} and electricity
+markets \cite{wang:09}.  A cap-and-trade system for emissions is modelled where
+generator companies are allocated with $\mbox{CO}_2$ allowances that may
+subsequently be traded.  Generator companies are assumed to be price takers in
+the emissions market and to have negligible influence on market clearing
+prices. Prices for allowances from the European Energy Exchange were used.
+Whereas in the electricity market, an oligopoly is assumed and bids are cleared
+using a DC optimal power flow formulation.  To improve selection of the
+$\epsilon$ parameter for exploratory action selection, a simulated annealing
+(SA) Q-learning method based on the Metropolis criterion is used \cite{guo:sa}.
+Under this method $\epsilon$ is changed at each simulation step to allow
+solutions to escape from local optima.  A two bus system is used to study cases
+in which, allowance trading is not used, allowances can be exchanged in the
+emission market and with variations in the allowance allocations.
+
+A one year, hourly load profile with a summer peak is used to represent changes
+in demand.  The electricity market is cleared each hour and the emissions market
+at the end of each simulated week.  The agents learn, when they have a defecit
+of allowances, to borrow future allowances in the summer when load and
+allowance prices are high.  Conversly, when they have a surplus they learn to
+sell at this time.  In the third case, the authors show the sensitivity of
+profits to initial allocations and conclude that the experimental results can
+not be generalised.  The authors cite further model validation and agent
+learning method improvements as necessary future work.
+
+The SA-Q-learning method is also used by researchers from the University of
+Thessaloniki in \cite{tellidou:tacit} to study capacity withholding and tacit
+collusion among electricity market participants.  A mandatory spot market is
+implemented, where bid quantities may be less than net capacity and bid prices
+may be marked up upon marginal cost by increasing the slope of a linear cost
+function.  Again market clearing is achieved using DC optimal power flow and
+locational marginal prices are used to calculate profits and reinforce the
+learning process.  Demand is assumed to be inelastic and transmission
+system parameters constant between simulation periods.  A simple two node
+power system model with two generators is used in three test cases.  In a
+reference case each generator bids full capacity at marginal cost.  In the
+second case, generators bid quantities in steps of 10MW and price markups in
+steps of 2 \euro/MWh.  In the final case the same generation capacity is split
+among eight identical generators to increase the level of competition.  the
+experimental results show that generators learn to withhold capacity and develop
+tacit collusion strategies to capture congestion profits.
+
+The convergence to Nash equilibrium shown in \cite{krause:nash04} is confirmed
+in \cite{sistani:06}.  Boltzman (soft-max) exploration is used for action
+selection with the temperature parameter adjusted during the simulations.  A
+modified version of the IEEE 30 bus test system is used with the number of
+generators reduced from nine to six.  No optimal power flow formulation or
+details of the reward signal are provided.  Generators are given a three step
+action space where the slope of a linear supply function may be less then, equal
+to or above marginal cost.  The experimental results show that with temperature
+parameter adjustment Nash equilibrium is achieved and oscillation associated
+with $\epsilon$-greedy action selection are avoided.
+
+
 \section{Simulations Applying Roth-Erev}
 The AMES (Agent-based Modeling of Electricity Systems) power market test bed is
 a software package that models core features of the Wholesale Power Market

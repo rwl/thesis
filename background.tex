@@ -40,8 +40,8 @@ V_i\vert(\cos\delta_i + j\sin\delta_i)
 at each node $i$ in the power system.
 The structure of $Y_{bus}$ is dependant upon the transmission line, transformer
 and shunt capacitor models employed and any transformer tap settings.  A
-typical formulation of $Y$ is given in Section \ref{sec:acpf}.  Crucially, the
-relationship between nodal voltages and power entering the network is
+typical formulation of $Y_{bus}$ is given in Section \ref{sec:acpf}.  Crucially,
+the relationship between nodal voltages and power entering the network is
 non-linear.  For a network of $n_b$ nodes, the current injected at node $i$ can
 be extracted as
 \begin{equation}
@@ -60,7 +60,7 @@ active power
 P_i = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \cos(\delta_i - \delta_j -
 \theta_{ij})
 \end{equation}
-and the reactive power entering the network
+and reactive power entering the network
 \begin{equation}
 Q_i = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \sin(\delta_i - \delta_j -
 \theta_{ij})
@@ -101,8 +101,8 @@ and inequality constraints on $x$, respectively.  Typical inequality
 constraints are bus voltage magnitude contingency state limits, generators
 output limits and branch power (or current) flow limits.  The optimisation
 variable $x$ may contain generator set-points, bus voltages, transformer tap
-settings.  If the optimisation variable $x$ is empty the formulation reduces to
-a power flow problem as described in Section \ref{sec:pf_form}, above.
+settings etc.  If the optimisation variable $x$ is empty the formulation reduces
+to a power flow problem as described in Section \ref{sec:pf_form}, above.
 
 A common objective of optimal power flow is total system cost minimisation.
 For and network of $n_g$ generators the objective function is

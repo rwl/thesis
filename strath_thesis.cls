@@ -27,7 +27,7 @@
     bookmarksnumbered=true,
     breaklinks=true,
     linktocpage,
-    pagebackref,
+%    pagebackref,
     colorlinks=true,
     linkcolor=black,
     urlcolor=black,
