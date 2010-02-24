@@ -101,7 +101,7 @@ premium services.
 % simulation of (electricity) markets is a new field of research.  For
 % comprehensive reviews and surveys of the many different techniques that have
 % been applied in recent years the interested reader is directed to
-% \cite{anke:2008,tesfatsi:handbook,visud:thesis}.  This section will focus on
+% \cite{weidlich:08,tesfatsi:handbook,visud:thesis}.  This section will focus on
 % reviewing literature from the field in which reinforcement learning techniques
 % were applied in combination with explicit power system models.  A short review
 % is also provided of some more general applications of reinforcement learning
@@ -451,6 +451,56 @@ three electricity generators who sell to four electricity retailers.  The
 results show a rise in market prices as reward interdependance is increased and
 greater profits for integrated firms.
 
+In \cite{weidlich:06} the modified Roth-Erev method is used to study
+interrelationships between contracts markets and balancing markets.  Bids on the
+day-ahead contracts market consist of a price and a volume, which are assumed to
+be the same for each hour of the day.  Demand is assumed to be fixed and
+inelastic.  Bids on the balancing market consist of a reserve price, a
+\textit{work} price and an offered quantity.  The reserve price is that which
+must be paid for the quantity to be kept on standby and the work price must be
+paid if that quantity is called upon for transmission system stabilisation.  No
+optimal power flow formulation or power system model is defined.  At the
+day-ahead stage contract market and balancing market (according to reserve
+price) bids and are cleared by stacking in order of ascending price until the
+forecast demand is met.  On the following day, accepted balancing bids are
+cleared according to work price such that requirements for researve dispatch
+are met.  Bid prices on the contracts market are stratified into 21 discrete
+values between 0 and 100 and bid quantities into six discrete values between 0
+and maximum capacity, giving 126 possible actions.  Bid quantities on the
+balancing market are equal to the capacity remaining after contract market
+participation.  21 discrete capacity prices between 0 and 500 and 5 work prices
+between 0 and 100 are permitted, giving 105 possible actions in the balancing
+market.  Separate instances of the modified Roth-Erev method are used to learn
+bidding strategies for each agent in each of the markets.
+
+Interrelationsships between the markets are studied using four scenarios in
+which the order of market execution and the balancing market pricing mechanism
+(discriminatory or pay-as-bid) are changed.  Clearing prices in the market
+executed first are shown to have a considerable effect on prices in the
+following market.  The authors find agent-based simulation to be a suitable
+tool for reproducing realistic market outcomes and recognise a need for more
+detailed models with larger action domains.
+
+In the same year, the authors collaborated with Jian Yao and Shnuel Oren from
+the University of California to study the dynamics between two settlement
+markets using the modified Roth-Erev method.  The markets are a forwards
+contract market, in which transmission constraints are ignored, and a spot
+market that is cleared using a DC optimal power flow formulation with line
+flows calculated using power transfer distribution factors.  Zonal prices are
+set in the forward market as weighted averages of nodal prices with repect to
+historical load shares.  Profits are dtermined using these zonal prices and
+nodal prices from optimisation of the spot market.  Demand is assumed
+inelastic to price, but different contingency states with peak and low demand
+levels are examined.  A 53 bus stylised model of the Belgian electricity
+system from \cite{yao:07,yao:08} is used to validate the results against those
+obtained using equilibrium methods.  The nineteen generators are divided among
+two firms which learn strategies for bid price and quantity selection using the
+modified Roth-Erev method with a set of fixed parameter values taken from
+\cite{roth:aer}.  The results show that the presence of a forward contracts
+market produces lower overall electricity prices and lower price volatility.
+The authors mention risk aversion to be included in suppliers utility
+functions in future work.
+
 % \subsection{Learning Method Comparisons}
 % \subsection{Heuristic Approaches}
 % \section{Simulations Applying Genetic Algorithms}
@@ -463,7 +513,22 @@ greater profits for integrated firms.
 % TD-Gammon
 
 \section{Open Source Power Engineering Software}
-% MATPOWER, OpenDSS
 % Feature matrix
+
+\subsection{MATPOWER}
+
+\subsection{Power System Analysis Toolbox}
+\subsection{UWPFLOW}
+Continuation and Direct Methods to Locate Fold Bifurcations in AC/DC/FACTS
+Power Systems
+
+\subsection{TEFTS}
+Transient Stability Program to Study Energy Functions and Voltage Stability
+(Bifurcation) Phenomena in AC/DC Power Systems
+
+\subsection{Voltage Stability Toolbox}
+
+\subsection{Distribution System Simulator}
+
 \subsection{Agent-based Modelling of Electricity Systems}
 \label{sec:ames}
