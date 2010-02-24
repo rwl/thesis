@@ -296,8 +296,8 @@ system parameters constant between simulation periods.  A simple two node
 power system model with two generators is used in three test cases.  In a
 reference case each generator bids full capacity at marginal cost.  In the
 second case, generators bid quantities in steps of 10MW and price markups in
-steps of 2 \euro/MWh.  In the final case the same generation capacity is split
-among eight identical generators to increase the level of competition.  the
+steps of \euro{2}/MWh.  In the final case the same generation capacity is
+split among eight identical generators to increase the level of competition.  the
 experimental results show that generators learn to withhold capacity and develop
 tacit collusion strategies to capture congestion profits.
 
@@ -314,46 +314,147 @@ with $\epsilon$-greedy action selection are avoided.
 
 
 \section{Simulations Applying Roth-Erev}
-The AMES (Agent-based Modeling of Electricity Systems) power market test bed is
-a software package that models core features of the Wholesale Power Market
-Platform (WPMP) -- a market design proposed by the US Federal Energy Regulatory
-Commission (FERC) in April 2003 for common adoption in regions of the
-US\cite{tesfatsi:wpmp}. The design features:
-\begin{itemize}
-  \item a centralised structure managed by an independent market operator,
-  \item parallel day-ahead and real-time markets and
-  \item locational marginal pricing.
-\end{itemize}
-Learning agents may represent load serving entities or generating companies and
-learn using implementations of the Roth-Erev method (See sections
-\ref{sec:rotherev} and \ref{sec:variant}, above) built on the Repast agent
-simulation toolkit\cite{gieseler:thesis}.  The permissive license under which
-the source code for these algorithms has been released allowed direct
-translation of them for use in this study.  Agents learn from the solutions of
-hourly bid/offer based DC-OPF problems formulated as quadratic programs and
-solved using QuadProgJ\cite{tesfatsi:dcopf}.
+% The AMES (Agent-based Modeling of Electricity Systems) power market test bed is
+% a software package that models core features of the Wholesale Power Market
+% Platform (WPMP) -- a market design proposed by the US Federal Energy Regulatory
+% Commission (FERC) in April 2003 for common adoption in regions of the
+% US\cite{tesfatsi:wpmp}. The design features:
+% \begin{itemize}
+%   \item a centralised structure managed by an independent market operator,
+%   \item parallel day-ahead and real-time markets and
+%   \item locational marginal pricing.
+% \end{itemize}
+% Learning agents may represent load serving entities or generating companies and
+% learn using implementations of the Roth-Erev method (See sections
+% \ref{sec:rotherev} and \ref{sec:variant}, above) built on the Repast agent
+% simulation toolkit\cite{gieseler:thesis}.  The permissive license under which
+% the source code for these algorithms has been released allowed direct
+% translation of them for use in this study.  Agents learn from the solutions of
+% hourly bid/offer based DC-OPF problems formulated as quadratic programs and
+% solved using QuadProgJ\cite{tesfatsi:dcopf}.
+%
+% The ability of generator agents to learn particular supply offers has been
+% demonstrated along with the plotting and data handling capabilities of AMES
+% using a 5-bus network model\cite{tesfatsi:pes09}.  The same network has been
+% used to investigate strategic capacity withholding in FERC wholesale power
+% market design\cite{tesfasi:psce}.  Generator agents report linear marginal cost
+% functions to the market operator and supply functions are formed through linear
+% interpolation between the prices at minimum and maximum production limits.
+% Load serving agents submit combinations of fixed demand bids and
+% price-sensitive bid functions, the ratio between which is varied between 0.0 and
+% 1.0 to test physical and economic capacity withholding potential.
+A reinforcement learning method based on empirical results obtained from
+observing how humans learn decision making strategies in games against multiple
+strategic players has received considerable attention from the agent-based
+electricity market simultaion community \cite{roth:games,roth:aer}.
 
-The ability of generator agents to learn particular supply offers has been
-demonstrated along with the plotting and data handling capabilities of AMES
-using a 5-bus network model\cite{tesfatsi:pes09}.  The same network has been
-used to investigate strategic capacity withholding in FERC wholesale power
-market design\cite{tesfasi:psce}.  Generator agents report linear marginal cost
-functions to the market operator and supply functions are formed through linear
-interpolation between the prices at minimum and maximum production limits.
-Load serving agents submit combinations of fixed demand bids and
-price-sensitive bid functions, the ratio between which is varied between 0.0 and
-1.0 to test physical and economic capacity withholding potential.  Comparing
-results from a benchmark case (in which true production costs are reported,
-but higher than marginal cost functions may be reported) and cases in which
-reported production limits may be less than the true values, the authors find,
-that with sufficient capacity reserve, no evidence to suggest potential for
-inducing higher net earnings through capacity withholding in the WPMP.
+In \cite{nicolaisen:2001} an agent-based model of a wholesale electricity market
+with both supply and demand side participation is constructed.  It is used to
+study market power and short-run market efficiency under discriminatory pricing
+through systematic variation of concentration and capacity conditions.  To model
+the power system, each trader is assigned values of available transmission
+capability (ATC) with respect to each other trader.  Offers from buyers and
+sellers are matched on a merit order basis, with quantities restricted by
+the ATCs.  Two issues with the original Roth-Erev method are observed and the
+modified version defined in Section \ref{sec:variant} above is proposed.
 
+A maximum markup (markdown) of \$40/MWh is specified for each seller (buyer).
+Traders are not permitted to make negative profits and the feasible price range
+is divided into 30 offer prices for 1000 auction rounds cases and 100 offer
+prices for 10000 aution round cases.  The parameters of the Roth-Erev method are
+calibrated using direct search within reasonable ranges.  Nine combinations of
+buyer and sellers numbers and total trading capacities are tested using the
+calibarated values and \textit{best-fit} parameter values determined by Erev \&
+Roth.
+
+The experimental results show that good market efficiency is achieved under all
+configurations and the sensitivity to method parameters is small.  Levels of
+market power are found to be strongly predictive and little difference is found
+between cases in which opportunistic price offers are permitted and when traders
+are forced to bid at marginal cost.  The results are compared with those from
+\cite{nicolaisen:2000}, in which genetic algorithms were used.  The authors
+conclude that the reinforcement learning approach leads to higher market
+efficiency due their adaption according to \textit{individual} profits.
+
+Further research from Iowa State University, involving the modified Roth-Erev
+method, has centered around the AMES wholesale electricity market test bed.  A
+detailed description of which is provided in Section \ref{sec:ames} below.
+
+In \cite{tesfatsi:psce} AMES is used to investigate strategic capacity
+withholding in a wholesale electricity market design proposed by U.S. Federal
+Energy Regulatory Commission in April 2003.  A five bus power system model with
+five generators and three dispatchable loads is defined and capacity withholding
+is represented by premitting traders to lower than true operating capacity and
+higher than true marginal costs.
+
+Comparing results from a benchmark case (in which true production costs are
+reported, but higher than marginal cost functions may be reported) and cases in
+which reported production limits may be less than the true values, the authors
+find, that with sufficient capacity reserve, no evidence to suggest potential
+for inducing higher net earnings through capacity withholding in the WPMP.
+
+Researchers from the University of Genoa have used the modified Roth-Erev
+method to study strategic behaviour in the Italian wholsale electricity market
+\cite{cincotti:09}.  The exact clearing procedure is replicated and a model of
+the Italian transmission system, including an interconnector to Sicily, with
+zonal subdivision, is defined.  Within each of the 11 zones, thermal plant is
+combined according to technology (coal, oil, combined cycle gas, turbo gas and
+repower) and associated with one of 16 generation companies according to the
+size of the companies share.  The resulting 53 agents are assumed to bid full
+capacity and may markup bid prices in steps of 5\%, with a maximum markup of
+300\%.  Bids are cleared using a DC optimal power flow formulation with
+generation capacity constraints and zone interconnector flow limits.  Agents are
+rewarded according to a uniform national price, computed as a weighted average
+of zonal prices with respect to zonal load.  Using actual hourly load data, it
+is shown that in experiments in which agents \textit{learn} their optimal
+strategy, histrorical trends were replicated in all but certain hours of peak
+load.  The authors state a desire to test different learning methods and perform
+further empirical validation.
+
+In \cite{micola:08} a multi-tier model of wholesale natural gas, wholesale
+electricity and retail electricity markets is studied using another variant of
+the Roth-Erev method.  Coordination between strategic business units (SBU)
+within the same firm, but participating in different markets, is varied
+systematically and profit differences observed.
+
+An initial two-tier model involves firms with two associated agents rewards,
+$r^1$ and $r^2$, are initially independant.  A \textit{reward independance}
+parameter $\alpha$ is used to control the fraction of profit from the other
+market that is used in rewarding the agent.  The total rewards are
+\begin{equation}
+R^1(t) = (1-\alpha)r^1(t) + \alpha r^2(t)
+\end{equation}
+and
+\begin{equation}
+R^2(t) = (1-\alpha)r^2(t) + \alpha r^1(t)
+\end{equation}
+Each action $a$ is a single price bid between zero and the price from the
+preceeding market.  The Roth-Erev method is modified such that similar
+actions, $a-1$ and $a+1$, are reinforced also.  For each agent, the action
+selection propensities in auction round $t$ are
+\begin{equation}
+p^i_a(t) = \begin{cases}
+(1-\gamma)p^i_a(t-1) + R^i(t)& \text{if $s=k$}\\
+(1-\gamma)p^i_a(t-1) + (1-\delta)R^i(t)& \text{if $s=k-1$ or $s=k+1$}\\
+(1-\gamma)p^i_a(t-1)& \text{if $s\neq k-1$, $s\neq k$ or $s\neq k+1$}
+\end{cases}
+\end{equation}
+where $\delta$, with $0\leq \delta \leq 1$, is the \textit{local
+experimentation} parameter, $\gamma$ is the discount parameter and $i\in \lbrace
+1,2 \rbrace$.  Actions whose probability of selection fall below a specified
+value are removed from the action space.
+
+The initial simulation consists of two wholesalers and three retailers and
+$\alpha$ is varied from $0$ to $0.5$ in $51$ discrete steps.  The experiment
+is repeated using a three tier model in which two natural gas shippers supply
+three electricity generators who sell to four electricity retailers.  The
+results show a rise in market prices as reward interdependance is increased and
+greater profits for integrated firms.
 
 % \subsection{Learning Method Comparisons}
 % \subsection{Heuristic Approaches}
-\section{Simulations Applying Genetic Algorithms}
-\section{Learning Classifier Systems}
+% \section{Simulations Applying Genetic Algorithms}
+% \section{Learning Classifier Systems}
 
 % \section{Closed-Form Equilibrium}
 % Hobbs, Neuhoff
@@ -364,3 +465,5 @@ inducing higher net earnings through capacity withholding in the WPMP.
 \section{Open Source Power Engineering Software}
 % MATPOWER, OpenDSS
 % Feature matrix
+\subsection{Agent-based Modelling of Electricity Systems}
+\label{sec:ames}
