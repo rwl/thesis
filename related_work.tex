@@ -483,59 +483,60 @@ functions in future work.
 % \section{Policy-Gradient Reinforcement Learning}
 % TD-Gammon
 
-\section{Open Source Electric Power Engineering Software}
+\newpage
+\section{Open Source Power Engineering Software}
 \label{sec:oss}
 In order to couple exisiting implementations of policy gradient reinforcement
 learning methods from the PyBrain machine learning library with scalable and
 extensible optimal power flow formulations, the
-MATLAB\footnote{MATLAB is a registered tradeamark of The Mathworks, Inc.}
-source code from MATPOWER was translated to the Python programming language.
-With permission from the MATPOWER developers, the resulting package has been
+\matlab\footnote{\matlab is a registered tradeamark of The Mathworks, Inc.}
+source code from \matpower was translated to the Python programming language.
+With permission from the \matpower developers, the resulting package has been
 released under the terms of the GNU General Public License (GPL) as a project
-named PYLON \cite{lincoln:pyreto}.   This section describes the project in the
-context of other open source electric power engineering software and
+named \textsc{Pylon} \cite{lincoln:pyreto}.   This section describes the
+project in the context of other open source electric power engineering software and
 demonstrates the contribution made.
 
 \subsection{MATPOWER}
 Since 1996, a team of researhers at the Power Systems Engineering Research
-Center at Cornell University have been developing MATPOWER -- a package of
-MATLAB workspace files for solving power flow and optimal power flow problems.
+Center at Cornell University have been developing \matpower -- a package of
+\matlab workspace files for solving power flow and optimal power flow problems.
 Initial developement was part of the PowerWeb project which is a power
 exchange auction market simulator that is accessed by multiple users
-simultaneously through a web interface.  MATPOWER is designed to be easy to use
+simultaneously through a web interface.  \matpower is designed to be easy to use
 and modify while also offering good performance.  It is available under a
 custom license that permits it to be used for any purpose providing the project
-and authors are cited.  MATPOWER is very popular in education and research and
+and authors are cited.  \matpower is very popular in education and research and
 an active mailing list is maintained by Ray Zimmerman.
 
-MATPOWER includes five power solvers for both AC and DC problems.  The default
+\matpower includes five power solvers for both AC and DC problems.  The default
 solver uses Newton's method \cite{tinney:67} with the full Jacobian matrix
 updated at each iteration.  Two variations on the fast decoupled method
 \cite{stott:74} described in \cite{amerongen:89} provide faster convergence in
 certain networks.  The standard Gauss-Seidel method \cite{glimn:57} is provided
 largely for academic reasons and the DC solver provides non-iterative
-method.  The properties of MATLAB sparse matrices are exploited, allowing the
+method.  The properties of \matlab sparse matrices are exploited, allowing the
 solvers to scale well to very large systems.  All functions are run from the
-MATLAB command line or from within users programs and no graphical user
+\matlab command line or from within users programs and no graphical user
 interface is provided.
 
-Starting with the first beta release of version 4.0, MATPOWER includes a pure
-MATLAB primal dual interior point method (PDIPM) that can be used for solving
+Starting with the first beta release of version 4.0, \matpower includes a pure
+\matlab primal dual interior point method (PDIPM) that can be used for solving
 DC and AC optimal power flow problems \cite{zimmerman:ccv}.  Previously,
-FMINCON from the MATLAB Optimization Toolbox\footnote{Optimization Toolbox is a registered trademark
-of The Mathworks, Inc.} was required or one of a suite of high performance
-closed-source solvers.  TSPOPF is a collection of three AC optimal power flow
-solvers, implemented in the C programming language and released as MATLAB MEX
-files.  It includes the original implementation of the step-controlled PDIPM
-from which the pure MATLAB version was derived.  MINOPF provides an interface
-to the Fortran based MINOS\footnote{MINOS is trademark of Stanford Business
-Software, Inc.} solver developed at the Systems Optimization Laboratory at
-Stanford University and is often the fastest solver for MATPOWER, but is
+\textsc{Fmincon} from the \matlab Optimization Toolbox\footnote{Optimization
+Toolbox is a registered trademark of The Mathworks, Inc.} was required or one
+of a suite of high performance closed-source solvers.  \textsc{Tspopf} is a
+collection of three AC optimal power flow solvers, implemented in the C
+programming language and released as \matlab MEX files.  It includes
+the original implementation of the step-controlled PDIPM from which the pure
+\matlab version was derived.  \textsc{Minopf} provides an interface to the
+Fortran based \textsc{Minos}\footnote{\textsc{Minos} is trademark of Stanford
+Business Software, Inc.} solver developed at the Systems Optimization Laboratory at Stanford University and is often the fastest solver for \matpower, but is
 available only for educational and research purposes.  DC optimal power flow
-problems can alternatively be solved using a MEX interface to BPMPD -- a
-commercial interior point method for linear and quadratic programming.
+problems can alternatively be solved using a MEX interface to \textsc{Bpmpd} --
+a commercial interior point method for linear and quadratic programming.
 
-MATPOWER has an \textit{extensible} optimal power flow formulation that allows
+\matpower has an \textit{extensible} optimal power flow formulation that allows
 additional optimisation variable and problem constraints to be introduced by
 the user.  The is used internally to extend the standard optimisation problem
 to supprt piecewise linear cost functions, dispatchable loads, generator PQ
@@ -543,41 +544,43 @@ capability curves and branch angle difference limit constraints.  Examples of
 additional extensions include: reserve requirements, environmental costs and
 contingency constraints.
 
-MATPOWER currently requires MATLAB, version 6.5 or greater, which is a
+\matpower currently requires \matlab, version 6.5 or greater, which is a
 commercial software product from The Mathworks, Inc that is supported on all
 major platforms.  However, with the recent inclusion of a native PDIPM it
-should be possible to run MATPOWER on GNU/Octave with minimal alteration.
+should be possible to run \matpower on \textsc{Gnu}/Octave with minimal
+alteration.
 
 \subsection{MATDYN}
-MatDyn is an extension to MATPOWER developed by Stijn Cole from the Katholieke
-Universiteit Leuven for dynamic analysis of electric power systems.  It has
-been released under the same license as MATPOWER and has the same style of
-code.  The MATPOWER case format is extended with structs for dynamic and event
-data.  MatDyn uses MATPOWER to obtain a power flow solution that is then used
-in solving the system of differential algrbraic equations that represent the
-power system.  Results for MatDyn are validated against those obtained from
-PSS/E\footnote{PSS/E is a registered trademark of Siemens Power Transmission \&
-Distribution, Inc. Power Technologies International.} and PSAT (An open source
-tool described in Section \ref{sec:psat}, below) and show good correspondance.
+\textsc{Matdyn} is an extension to \matpower developed by Stijn Cole from the
+Katholieke Universiteit Leuven for dynamic analysis of electric power systems.
+It was first released in 2009 under the same license as \matpower and uses the
+same coding style.  The \matpower case format is extended with structs
+for dynamic and event data.  \textsc{Matdyn} uses \matpower to obtain a power flow solution that is then used in solving the system of differential algrbraic equations that represent the
+power system.  Results for \textsc{Matdyn} are validated against those obtained from
+\textsc{Pss/e}\footnote{\textsc{Pss/e} is a registered trademark of Siemens Power
+Transmission \& Distribution, Inc. Power Technologies International.} and
+\psat (A power system analysis toolbox described in Section \ref{sec:psat},
+below) and show good correspondance.
 
 \subsection{Power System Analysis Toolbox}
 \label{sec:psat}
-The Power System Analysis Toolbox (PSAT) is a MATLAB toolbox for static and
+The Power System Analysis Toolbox (PSAT) is a \matlab toolbox for static and
 dynamic analysis of electric power systems developed by Federico Milano,
 currently at the University of Castilla in La Mancha, Spain.  It is released
-under the terms of the GNU GPL version 2 and offers routines for:  power flow,
-bifurcation analysis, optimal power flow, small signal stability anlysis, time
+under the terms of the GPL version 2 and offers routines for:
+power flow, bifurcation analysis, optimal power flow, small signal stability anlysis, time
 domain simulation and phasor measurement unit placement.  A large number of
 input data formats are supported using Perl scripts and simulation reports can
-be exported plain text, Excel spreadsheets or \LaTeX~code.  PSAT may be run
-from the MATLAB commandline or from a MATLAB based graphical user interface
+be exported plain text, Excel spreadsheets or \LaTeX~code.  \psat may be run
+from the \matlab commandline or from a \matlab based graphical user interface
 with support for network design using Simulink\footnote{Simulink is a
 registered trademark of The Mathworks, Inc.}.  A slightly modified version of
-PSAT that can be run from the GNU/Octave commandline is also available.
+\psat that can be run from the \textsc{Gnu}/Octave commandline is also
+available.
 
 Optimal power flow problems are solved via an interface to the General
-Algebraic Modeling System (GAMS).  GAMS defines optimisation problems using a
-high-level modelling language and has a large solver portfolio, including all
+Algebraic Modeling System (GAMS).  GAMS defines optimisation
+problems using a high-level modelling language and has a large solver portfolio, including all
 of the major commercial and academic solvers.  The interface can be used for
 solving single period optimal power flow problems where the objective function
 can represent maximisation of social benefit, maximisation of the distance to
@@ -588,25 +591,76 @@ maximisation of social welfare, but is extended to include startup and
 shutdown costs.
 
 Power flow and dynamic data are typically separated in electric power
-simulation tools, but in PSAT they are integrated.  This combined with the
-large number of routines supported by PSAT can make the code base difficult to
+simulation tools, but in \psat they are integrated.  This combined with the
+large number of routines supported by \psat can make the code base difficult to
 understand and modify.  However, comprehensive documentation is included with
-PSAT and the mailing list is extremely active.  The majority of correspondance
-on the list concerns PSAT's dynamic simulation features.  The price of
+\psat and the mailing list is extremely active.  The majority of correspondance
+on the list concerns \psat's dynamic simulation features.  The price of
 GAMS licenses and the need for optimal power flow problems to be converted to
 the GAMS language can be barriers to its use.
 
 \subsection{UWPFLOW}
-Continuation and Direct Methods to Locate Fold Bifurcations in AC/DC/FACTS
-Power Systems
+% Continuation and Direct Methods to Locate Fold Bifurcations in AC/DC/FACTS
+% Power Systems
+UWPFLOW is a research tool for voltage stability analysis developed at the
+University of Waterloo, Ontario, and the University of Wisconsin-Madison.  It
+is written in ANSI-C and available as open source for research purposes only.
+The program is run with the terminal command
+\begin{center}
+\begin{verbatim}
+$ uwpflow [-options] input_file
+\end{verbatim}
+\end{center}
+where \texttt{input\_file} is the path to a data file in the IEEE common data
+format (CDF) \cite{cdf:73} that may contain High-Voltage Direct Current (HVDC)
+and Flexible Alternating Current Transmission System (FACTS) device data.
+Output is also in the CDF and can include additional data for post-processing,
+including values for nose curve plots.  An interface to UWPFLOW is used by \psat
+for bifurcation analysis.
 
 \subsection{TEFTS}
-Transient Stability Program to Study Energy Functions and Voltage Stability
-(Bifurcation) Phenomena in AC/DC Power Systems
+% Transient Stability Program to Study Energy Functions and Voltage Stability
+% (Bifurcation) Phenomena in AC/DC Power Systems
+The University of Waterloo also hosts TEFTS -- a transient stability program
+for studying energy functions and voltage stability phenomena in AC/HVDC
+dynamic power system models.  It too is written in ANSI-C and is licensed for
+research purposes only.  An executable file for DOS is provided and the source
+package contains a simple example.
 
 \subsection{Voltage Stability Toolbox}
+The Voltage Stability Toolbox (VST) is a \matlab toolbox, developed at the
+Center for Electric Power Engineering at Drexel University in Philidelphia, for
+investigating stability and bifurcation issues in power systems.  The source
+may be used for any purpose providing the authors are properly cited.  VST
+supports: power flow, time domain simulation, static and dynamic bifurcation
+analysis, singularity analysis and eigenvalue analysis.  The feature matrix in
+Figure shows that VST has similar capabilities to PSAT.  It was developed
+around a similar time and has the same goals for educational and research
+applications, but does not have the same quality of documentation nor such an
+active community of users and developers as PSAT.
 
 \subsection{Distribution System Simulator}
+In November 2008, the Open Distribution System Simulator (OpenDSS) was released
+as open source by the Electric Power Research Institute (EPRI).  Development of
+OpenDSS began in April 1997 and it has been used in many distributed generation
+impact assessment applications.  It is the only open source software designed
+for both distribution and transmission system simulation.  OpenDSS supports
+steady-state analyses in the frequency domain such as power flow, harmonics and
+dynamics.  Arbitrary n-phase unbalanced circuit analysis is supported using an
+object orientated data model.  Circuit elements are defined in Object Pascal
+and solutions are found using a linear sparse matrix solver written in C and
+C++.  OpenDSS is available under the Berkeley Software Distribution (BSD)
+license which allows use for almost any purpose.  Circuits are defined in
+scripts, using a domain specific language, that may be executed through a
+graphical user interface or a Common Object Model (COM) interface.  The user
+interface also provides circuit data editing, plotting and power flow
+visualisation tools.
+
+The power flow solver is very fast and can be configured for repeated studies
+using daily, yearly or duty-cycle data.  The multi-phase circuit model allows
+complex fault conditions to be defined and three short-circuit analysis methods
+are provided.  The heritage of OpenDSS is in harmonics and dynamics analysis
+and it does not support any system optimisation techniques.
 
 \subsection{Agent-based Modelling of Electricity Systems}
 \label{sec:ames}
@@ -637,5 +691,16 @@ is released under the the GNU General Public license version 2.
 
 \subsection{DCOPFJ}
 \label{sec:dcopfj}
+To solve market problems defined in AMES, researchers at Iowa State University
+developed a stand-alone DC optimal power flow solver in Java named DCOPFJ [].
+It formulates optimal power flow problems as convex quadratic programs and
+solves using QuadProgJ.  The same researcher developed QuadProgJ as an
+stand-alone solver that uses the dual active set strictly convex quadratic
+programming algorithm [Goldfarb, Fletcher, Idnani 83].  DCOPFJ requires
+generator costs to be modelled as polynomial functions, of second order or
+less and no sparse matrix techniques are employed to allow application to large
+systems.
 
-\subsection{PyBrain}
+%\subsection{PyBrain}
+
+\subsection{Summary}
