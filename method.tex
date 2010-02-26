@@ -77,15 +77,6 @@ abilities.
 \section{Electricity Market Model}
 Computation of the generator dispatch points is executed using parts of the
 of the optimal power flow formulation from MATPOWER \cite{zimmerman:mp_pes}.
-In order that the optimal power flow routine could be coupled with agents from
-the machine learning library PyBrain, the
-MATLAB\textsuperscript{\texttrademark} source code from \matpower was
-translated to the Python programming language.  With the permission of the
-\matpower developers the resulting package has been released under the terms of
-version 2 of the GNU General Public License as a project named
-PYLON \cite{lincoln:pyreto}. Sparse matrix objects from the convex
-optimisation library CVXOPT were used to allow the implementation to scale well to solving for very large systems.
-
 This section describes parts of the optimal power flow formulation,
 unit-decommitment algorithm and auction interface from \matpower that were used
 to represent a centralised electricity market.  Notable components of the full
