@@ -7,16 +7,18 @@
 \usepackage{ifpdf}
 \usepackage{multirow}
 \usepackage{eurosym}
+\usepackage{rotating}
+\usepackage{pdflscape}
 
-\ifpdf
-  \usepackage[pdftex]{graphicx}
-  \graphicspath{{./pdf/}{./jpg/}}
-  \DeclareGraphicsExtensions{.pdf,.jpg,.png}
-\else
-  \usepackage[dvips]{graphicx}
-  \graphicspath{{./eps/}}
-  \DeclareGraphicsExtensions{.eps}
-\fi
+% \ifpdf
+%   \usepackage[pdftex]{graphicx}
+%   \graphicspath{{./pdf/}{./jpg/}}
+%   \DeclareGraphicsExtensions{.pdf,.jpg,.png}
+% \else
+%   \usepackage[dvips]{graphicx}
+%   \graphicspath{{./eps/}}
+%   \DeclareGraphicsExtensions{.eps}
+% \fi
 
 \usepackage[ruled]{algorithm}
 \usepackage{algorithmic}
@@ -40,6 +42,9 @@ connection/.style={thick, dotted},
 \newcommand{\matpower}{\textsc{Matpower~}}
 \newcommand{\matlab}{Matlab~}
 \newcommand{\psat}{\textsc{Psat~}}
+\newcommand{\pylon}{\textsc{Pylon~}}
+\newcommand{\stable}{$\bullet$}
+\newcommand{\unstable}{$\bullet$}
 \providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
 
 \ifpdf
