@@ -1,30 +1,29 @@
 \chapter{Background Theory}
 \label{ch:background}
-This chapter provides introductions to optimal power flow and reinforcement
-learning.  The methods described are used to model competitive electricity
-trade as decribed in Chapter \ref{ch:method}, below.  Interior-point methods
-are commonly used to find solutions to optimal power flow problems and an
-introduction is provided.  Optimal power flow is one of the most widely studied
-subjects in Power Engineering and comprehensive literature reviews are
-available \cite{momoh:part1,momoh:part2}.  Learning through reinforcement is a
-broad concept and the theory has been explored and published in detail
+This chapter provides an introduction to optimal power flow and reinforcement
+learning.  The methods described are used in Chapter \ref{ch:method} below to
+model electricity markets and market participant behaviour.  Optimal power
+flow is one of the most widely studied subjects in electric power Engineering
+and a comprehensive literature review is available in
+\cite{momoh:part1,momoh:part2}.  For detailed definitions and analysis
+reinforcement learning methods the interested reader is referred to
 \cite{suttonbarto:1998,bertsekas:96}.
 
 \section{Optimal Power Flow}
 \label{sec:opf}
 Nationalised electricity supply industries are typically planned operated and
 controlled centrally.  A system operator determines which generators must
-operate and the required output of the operating units usch that demand is met
-and the overall cost of production is minimised.  In electric power engineering,
-this is termed the \textit{unit commitment} and \textit{economic dispatch}
-problem.
+operate and the required output of the operating units such that demand and
+reserve requirements are met and the overall cost of production is minimised.
+In electric power Engineering, this is termed the \textit{unit commitment} and
+\textit{economic dispatch} problem.
 
-In 1962 a unit commitment formulation was published that incorporated
-network constraints \cite{carpentier:opf}.  \textit{Optimal power flow} is the
-integration of both economic and power flow aspects of power systems into a
-mathematical optimisation problem.  The ability to solve centralised
-power system operation problems and determine prices in power pool markets has
-led to optimal power flow being one of the most widely studied subjects in the
+In 1962 a unit commitment formulation was published with network constraints
+included \cite{carpentier:opf}.  \textit{Optimal power flow} is this
+integration of economic and power flow aspects of power systems into a
+mathematical optimisation problem.  Its ability to solve centralised power
+system operation problems and determine prices in power pool markets has led
+to optimal power flow being one of the most widely studied subjects in the
 power systems community.
 
 \subsection{Power Flow Formulation}
@@ -37,13 +36,13 @@ determines the voltage
 V_i = \vert V_i \vert \angle\delta_i = \vert
 V_i\vert(\cos\delta_i + j\sin\delta_i)
 \end{equation}
-at each node $i$ in the power system.
-The structure of $Y_{bus}$ is dependant upon the transmission line, transformer
-and shunt capacitor models employed and any transformer tap settings.  A
-typical formulation of $Y_{bus}$ is given in Section \ref{sec:acpf}.  Crucially,
-the relationship between nodal voltages and power entering the network is
-non-linear.  For a network of $n_b$ nodes, the current injected at node $i$ can
-be extracted as
+at each node $i$ in the power system \cite{grainger:psa}. $Y_{bus}$ describes
+the electrical network and its formulation is dependant upon the transmission
+line, transformer and shunt models employed\footnote{The $Y_{bus}$
+formulation used in this thesis is defined in Section \ref{sec:acpf}.}.
+Importantly, the relationship between nodal voltages and power entering the
+network is non-linear.  For a network of $n_b$ nodes, the current injected at
+node $i$ is
 \begin{equation}
 I_i = \sum_{j=1}^{n_b} Y_{ij} V_j
 \end{equation}
@@ -54,13 +53,13 @@ the network at bus $i$ is
 S_i = P_i+Q_i = V_iI_i^* = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \angle
 (\delta_i - \delta_j - \theta_{ij})
 \end{equation}
-Converting to polar coordinates and separating the real and imaginary part, the
-active power
+Converting to polar coordinates and separating the real and imaginary parts,
+the active power
 \begin{equation}
 P_i = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \cos(\delta_i - \delta_j -
 \theta_{ij})
 \end{equation}
-and reactive power entering the network
+and the reactive power entering the network
 \begin{equation}
 Q_i = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \sin(\delta_i - \delta_j -
 \theta_{ij})
@@ -68,23 +67,24 @@ Q_i = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \sin(\delta_i - \delta_j -
 at bus $i$ are non-linear functions of $V_i$, as indicated by the presence of
 the sine and cosine terms.  Kirchoff's Current Law requires that the net
 complex power injection (generation - load) at each bus equals the sum of
-complex power flows on each connected branch, given by the power balance
+complex power flows on each branch connected to the bus.  The power balance
 equations
 \begin{equation}
 \label{eq:p_balance}
-P_{g,i} - P_{d,i} = P_i
+P_g^i - P_d^i = P^i
 \end{equation}
 and
 \begin{equation}
 \label{eq:q_balance}
-Q_{g,i} - Q_{d,i} = Q_i .
+Q_g^i - Q_d^i = Q^i
 \end{equation}
+where the subscripts $g$ and $d$ indicate generation and demand
+respectively, form a key constraint in the optimal power flow problem.
 
 \subsection{Optimal Power Flow Formulation}
-Optimal power flow is formulated as a mathematical optimisation problem in
-which the complex power balance equations \ref{eq:p_balance} and
-\ref{eq:q_balance} must be satisfied.  Optimisation problems have the general
-form
+Optimal power flow is a mathematical optimisation problem in which the complex
+power balance equations (\ref{eq:p_balance}) and (\ref{eq:q_balance}) must be
+satisfied.  Optimisation problems have the general form
 \begin{equation}
 \min_x f(x)
 \end{equation}
@@ -98,11 +98,12 @@ h(x)& \leq& 0
 where $x$ is the optimisation variable, $f$ is the objective function and
 equations (\ref{eq:equality}) and (\ref{eq:inequality}) are sets of equality
 and inequality constraints on $x$, respectively.  Typical inequality
-constraints are bus voltage magnitude contingency state limits, generators
-output limits and branch power (or current) flow limits.  The optimisation
-variable $x$ may contain generator set-points, bus voltages, transformer tap
-settings etc.  If the optimisation variable $x$ is empty the formulation reduces
-to a power flow problem as described in Section \ref{sec:pf_form}, above.
+constraints are bus voltage magnitude contingency state limits, generator
+output limits and branch power or current flow limits.  The optimisation
+variable $x$ may be made up of generator set-points, bus voltages, transformer
+tap settings etc.  If the optimisation variable $x$ is empty then the
+formulation reduces to a power flow problem as described in Section
+\ref{sec:pf_form}, above.
 
 A common objective of optimal power flow is total system cost minimisation.
 For and network of $n_g$ generators the objective function is
@@ -110,12 +111,13 @@ For and network of $n_g$ generators the objective function is
 \min \sum_{k=1}^{n_g} C_k(P_{g,k})
 \end{equation}
 where $C_k$ is a cost function (typically quadratic) of the set-point $P_{g,k}$
-of generator $k$.  Alternative objectives may be to minimise losses, maxmimise
+for generator $k$.  Alternative objectives may be to minimise losses, maxmimise
 the voltage stability margin or minimise deviation of an optimisation variable
 from a particular schedule.
 
-% \subsection{Interior-Point Methods}
+\subsection{Interior-Point Methods}
 
+\newpage
 \section{Reinforcement Learning}
 \label{sec:rl}
 % The problem of learning how best to interact with an environment so as to
@@ -137,35 +139,36 @@ from a particular schedule.
 % of its environment to an action choice.  Reinforcement learning methods adjust
 % the agent's policy.
 Reinforcement learning is learning from reward by mapping situations to actions
-when interating with an uncertain environment.  An agent learns \textit{what}
-to do to achieve a task through trial-and-error using a numerical reward or
-penalty signal without being instructed \textit{how} to achieve it.  In
-challenging cases, actions may not yield immediate reward or may affect the
-next situation and all subsequent rewards.  A compromise must be made between
-exploitation of past experiences and exploration of the environment through new
-action choices.  A reinforcement learning agent must be able to:
+when interating with an uncertain environment \cite{suttonbarto:1998}.  An
+agent learns \textit{what} to do in order to achieve a task through
+trial-and-error using a numerical reward or penalty signal without being
+instructed \textit{how} to achieve it.  In challenging cases, actions may not
+yield immediate reward or may affect the next situation and all subsequent
+rewards.  A compromise must be made between exploitation of past experiences
+and exploration of the environment through new action choices.  A
+reinforcement learning agent must be able to:
 \begin{itemize}
-  \item Sense aspects of its environment,
-  \item Take actions that influence its environment and,
-  \item Have an explicit goal or set of goals relating to the state of its
+  \item sense aspects of its environment,
+  \item take actions that influence its environment and,
+  \item have an explicit goal or set of goals relating to the state of its
   environment.
 \end{itemize}
-In the classic model of agent--environment interaction, at each time step $t$
-in a sequence of discrete time steps $t = 1,2,3\dotsc$ an agent receives
-some form of the environment's state $s_t \in \mathscr{S}$, where $\mathscr{S}$
-is the set of possible states.  A set of actions $\mathscr{A}(s_t)$ are
-available to the agent in state $s_t$, from which the agent selects an action
-$a_t$ and performs it upon the environment.  The environment enters a new state
-$s_{t+1}$ in the next time step and the agent receives a scalar numerical
-reward $r_{t+1} \in \mathbb{R}$ in part as a result of its action.  The agent
-may then learn using the state representations $s_t$ and $s_{t+1}$, the chosen
-action $a_t$ and the reinforcement signal $r_{t+1}$ before beginning the next
-interaction.  Figure X diagrams the agent--environment interaction event
-sequence.
+In the classical model of agent-environment interaction, at each time step $t$
+in a sequence of discrete time steps $t = 1,2,3\dotsc$ an agent receives as
+input some form of the environment's state $s_t \in \mathscr{S}$, where
+$\mathscr{S}$ is the set of possible states.  From a set of actions
+$\mathscr{A}(s_t)$ available to the agent in state $s_t$, the agent selects an
+action $a_t$ and performs it upon its environment.  The environment enters a
+new state $s_{t+1}$ in the next time step and the agent receives a scalar
+numerical reward $r_{t+1} \in \mathbb{R}$ in part as a result of its action.
+The agent then learns from the state representations $s_t$ and $s_{t+1}$, the
+chosen action $a_t$ and the reinforcement signal $r_{t+1}$ before beginning
+its next interaction.  Figure X diagrams the agent-environment interaction
+event sequence.
 
 \subsection{Markov Decision Processes}
 For a finite number of states $\mathscr{S}$, if all states are Markov, the
-agent is interacting with a finite Markov decision process (MDP).  Informally,
+agent interacts with a finite Markov decision process (MDP).  Informally,
 for a state to be Markov it must retain all relevant information about the
 complete sequence of positions leading up to the state, such that all future
 states and expected rewards can be predicted as well as would be possible given
@@ -184,9 +187,10 @@ Given the next state $s^\prime$, the expected value of the next reward is
 s_{t+1}=s^\prime \bigr\rbrace .
 \end{equation}
 In practice not all state signals are Markov, but should provide a good basis
-for predicting subsequent states, future rewards and selecting actions.  If the
-state transition probabilities and expected reward values are not known, only
-the states and actions, then samples from the MDP must be taken and a value
+for predicting subsequent states, future rewards and selecting actions.
+
+If the state transition probabilities and expected reward values are not known,
+only the states and actions, then samples from the MDP must be taken and a value
 function approximated iteratively based on new experiences generated by
 performing actions.
 
@@ -213,8 +217,8 @@ V^\pi(s) = E \Bigg\lbrace \sum^\infty_{t=0} \gamma^t r_t \Bigg\vert s_0 = s
 \Bigg\rbrace
 \end{equation}
 where $\gamma$ is a discount factor, with $0\leq \gamma \leq 1$.
-Performing certain action may result in no state change, creating a loop and
-causing the value of that action to be infinite for some policies.
+Performing certain actions may result in no state change, creating a loop and
+causing the value of that action to be infinite for certain policies.
 The discount factor $\gamma$ prevents values from going unbounded and
 represents reduced trust in the reward $r_t$ as discrete time $t$
 increases.  Many reinforcement learning methods estimate the action-value
@@ -243,7 +247,7 @@ V^\pi(s_{t+1}) - V^\pi(s_t) \bigr]
 where $\alpha$ is the learning rate, with $0 \leq \alpha \leq 1$, which controls
 how much attention is paid to new data when updating $V^\pi$.  TD learning
 evaluates a particular policy and offers strong convergence guarantees, but does
-not learn a better policy.
+not learn better policies.
 
 \subsubsection{Sarsa}
 \label{sec:sarsa}
@@ -259,18 +263,20 @@ not learn a better policy.
 % action-values using a greedy policy, which is a different policy to that being
 % followed, SARSA uses the discounted future reward of the next state-action
 % observation following the original policy.
-Sarsa (or modified Q-learning) is an off-policy TD control method that
-approximates the state-action value function in (\ref{eq:actionvalue}) which
-returns the total expected reward for an agent following a policy for selecting
-actions as a function of future states.
+Sarsa (or modified Q-learning) is an on-policy TD control method that
+approximates the state-action value function in (\ref{eq:actionvalue}).
+Recall that the state-action value function for an agent returns the total
+expected reward for following a particular policy for selecting actions as a
+function of future states.  The function is updated according to the rule
 \begin{equation}
 \label{eq:sarsa}
 Q(s_t,a_t) \leftarrow Q(s_t,a_t) + \alpha \bigl[r_{t+1} + \gamma
 Q(s_{t+1},a_{t+1}) - Q(s_t,a_t)\bigr]
 \end{equation}
-The update also uses the action from the next time step $a_{t+1}$ also and the
-requirement to transition through state-action-reward-state-action for each time step is from where the
-algorithm's name, Sarsa, is derived.
+This update also uses the action from the next time step $a_{t+1}$ and the
+requirement to transition through state-action-reward-state-action for each
+time step derives the algorithm's name.  Sarsa is referred to as an on-policy
+method since it learns the same policy that it follows.
 
 \subsubsection{Q-Learning}
 \label{sec:qlearning}
