@@ -306,30 +306,28 @@ method since it learns the same policy that it follows.
 % determines the extent to which new rewards will override the effect of older
 % rewards.  The discount factor allows the balance between maximising immediate
 % rewards and future rewards to be set.
-Q-learning is an off-policy TD method that again does not estimate the finite
-MDP directly, but alternatively iteratively approximates the state-action value
-function which returns the value of taking action $a$ in state $s$ and taking
-the maximum across all actions, following an \textit{optimal} policy
-thereafter. The same theorems used in defining the TD error also apply for
+Q-learning is an off-policy TD method that does not estimate the finite
+MDP directly, but iteratively approximates a state-action value
+function which returns the value of taking action $a$ in state $s$ and
+following an \textit{optimal} policy thereafter. The same theorems used in defining the TD error also apply for
 state-action values.
 \begin{equation}
 \label{eq:qlearning}
 Q(s_t,a_t) \leftarrow Q(s_t,a_t) + \alpha \bigl[r_{t+1} + \gamma\max_a
 Q(s_{t+1},a)-Q(s_t,a_t) \bigr]
 \end{equation}
-The function is independant of the policy being followed and only requires that
-all state-action pairs are continually updated.
+The method is off-policy since the update function is independant of the policy
+being followed and only requires that all state-action pairs be continually
+updated.
 
 \subsubsection{Eligibility Traces}
 With the TD methods described above, only the value for the immediately
-preceeding state or state-action pair is updated at each time step.  The
-prediction $V(s_{t+1}$ also provides information converning earlier predictions
-and TD methods can be extended to update a set of values at each step.  An
-eligibility trace $e(s)$ represents how eligible the state $s$ is to receive
-credit or blame for the TD error $\delta$.  Recall, that for state-value
-prediction
+preceeding state or state-action pair is updated at each time step.  However,
+the prediction $V(s_{t+1})$ also provides information concerning earlier
+predictions and TD methods can be extended to update a set of values at each step.  An eligibility trace $e(s)$ represents how eligible the state $s$ is to receive
+credit or blame for the TD error
 \begin{equation}
-\delta = r + \gamma V(s^\prime) - V(s)
+\delta = r_{t+1} + \gamma V^\pi(s_{t+1}) - V^\pi(s_t)
 \end{equation}
 When extended with eligibility traces TD methods update values for all states
 \begin{equation}
@@ -337,13 +335,25 @@ When extended with eligibility traces TD methods update values for all states
 \Delta V_t(s) = \alpha \delta_t e_t(s)
 \end{equation}
 For the current state $e(s) \leftarrow e(s) + 1$ and for all states the
-elegibility traces is attenuated by a factor $\lambda$, $e(s) \leftarrow \gamma
-\lambda e(s)$, from which the extended TD methods TD($\lambda$), Q($\lambda$)
-and Sarsa($\lambda$) derive their names.  For $\lambda = 0$ only the preceeding
-value is updated is updated, as in the unextended definitions, and for $\lambda
-= 1$ all preceeding state-values or state-action values are updated equally.
+$e(s) \leftarrow \gamma \lambda e(s)$ where $\lambda$ is the eligibility trace
+attenuated factor from which the extended TD methods TD($\lambda$),
+Q($\lambda$) and Sarsa($\lambda$) derive their names. For $\lambda = 0$ only
+the preceeding value is updated is updated, as in the unextended definitions,
+and for $\lambda = 1$ all preceeding state-values or state-action values are
+updated equally.
 
 \subsubsection{Action Selection}
+% TODO: Epsilon-greedy.
+Action selection may be acomplished using a form of the \textit{softmax} method
+\cite{suttonbarto:1998} using the Gibbs, or Boltzmann, distribution to select
+action $k$ for the $(t+1)^{th}$ interaction with probability
+\begin{equation}
+p_{jk}(t+1) = \frac{e^{q_{jk}(t+1)/\tau}}{\sum_{l=0}^K e^{q_{jl}(t+1)/\tau}}
+\end{equation}
+where $\tau$ is the \textit{temperature} parameter.  This parameter may be
+lowered in value over the course of an experiment since high values give all
+actions similar probability and encourage exploration of the action space,
+while low values promote exploitation of past experience.
 
 % \subsubsection{Q($\lambda$)}
 % \label{sec:qlambda}
@@ -385,19 +395,19 @@ value is updated is updated, as in the unextended definitions, and for $\lambda
 % updated according to the gradient of expected reward with respect to its
 % parameters.
 Value function based methods have been successfully applied with discrete lookup
-table parameterisation to many problems [].  However, the number of discrete
+table parameterisation to many problems [ref].  However, the number of discrete
 states required increases exponentially as the dimensions of the state space
-increase if all possibly relevant situations are to be covered and these
+increase and if all possibly relevant situations are to be covered then these
 methods become subject to Bellman's Curse of Dimensionality
 \cite{bellman:1961}.  Value function based methods can be used in conjunction
 with function approximators, artificial neural networks are popular, to work
 with continuous state and action space.  However, when used with value
 function approximation they have been shown to offer poor convergence and even
-divergence characteristics, even in simple systems.
+divergence characteristics, even in simple systems \cite{peters:enac}.
 
 These convergence problems have motivated research into policy gradient methods
 which make small incremental changes to the parameters $\theta$ of a policy
-function approximator.  With artificial neural networks, the parameters being
+function approximator.  With artificial neural networks the parameters are
 the weights of the network connections.  Policy gradient methods update
 $\theta$ in the direction of the gradient of some policy performance measure
 $Y$ with respect to the parameters
@@ -408,14 +418,15 @@ where $\alpha$ is a positive definite step size learning rate.
 
 Aswell as working with continuous state and actions space, policy gradient
 methods offer strong convergence guarantees, do not require all states to be
-continually updated and althought uncertainty in state data can degrade policy
+continually updated and although uncertainty in state data can degrade policy
 performance, the techniques need not be altered.
 
 Policy gradient methods are differentiated largely by the techniques used to
-obtain an estimate of the policy gradient $\frac{\partial Y}{\partial \theta}$.
+obtain an estimate of the policy gradient $\partial Y / \partial \theta$.
 The most successful real-world robotics results have been yielded using
-REINFORCE likelihood ratio methods \cite{williams:reinforce} and natural policy
-gradient methods such as Natual Actor-Critic \cite{peters:enac}.
+Williams' \textsc{Reinforce} likelihood ratio methods \cite{williams:reinforce}
+and natural policy gradient methods such as Natual Actor-Critic
+\cite{peters:enac}.
 
 % \subsubsection{REINFORCE}
 % \label{sec:reinforce}
@@ -455,34 +466,32 @@ gradient methods such as Natual Actor-Critic \cite{peters:enac}.
 
 \subsection{Roth-Erev Method}
 \label{sec:rotherev}
-The Roth-Erev reinforcement learning algorithm uses a stateless policy to
-select actions from a discrete domain \cite{roth:games,roth:aer}.  The dataset
-stored by each agent, $j$, contains an array of length $K$, where $K$ is the
-number of feasible actions $k$.  Each value in the array represents the
-propensity for selection of the associated action in all states of the
-environment.  Following interaction $t$ in which agent $j$ performed action
-$k^\prime$ on its environment, for arbitrary positive $t$, a reward
-$r_{jk^\prime}(t)$ is calculated.  The propensity for agent $j$ to select
-action $k$ for interaction $t+1$ is
+The reinforcement learning method formulated by Alvin~E.~Roth and Ido~Erev is
+based on empirical results obtained from observing how humans learn decision
+making strategies in games against multiple strategic players
+\cite{roth:games,roth:aer}.  It learns a stateless policy in which each action
+$a$ is associated with a value $q$ for the propensity of its selection.  In
+time period $t$, if agent $j$ performs action $a^\prime$ and receives a reward
+$r_{ja^\prime}(t)$ then the propensity value for action $a$ at time $t+1$ is
 \begin{equation}
-q_{jk}(t+1) =
+q_{ja}(t+1) =
 \begin{cases}
-(1-\phi)q_{ik}(t) + r_{jk^\prime}(t)(1-\epsilon), & \text{$k = k^\prime$} \\
-(1-\phi)q_{ik}(t) + r_{jk^\prime}(t)(\frac{\epsilon}{K-1}), & \text{$k \ne
-k^\prime$}
+(1-\phi)q_{ia}(t) + r_{ja^\prime}(t)(1-\epsilon), & \text{$a = a^\prime$} \\
+(1-\phi)q_{ia}(t) + r_{ja^\prime}(t)(\frac{\epsilon}{A-1}), & \text{$a \ne
+a^\prime$}
 \end{cases}
 \end{equation}
-where $\phi$ and $\epsilon$ denote \textit{recency} and
-\textit{experimentation} parameters, respectively.  The recency (forgetting)
-parameter degrades the propensities for all actions and prevents the values
-from going unbounded.  It is intended to represent the tendency for players to
-forget older action choices and to prioritise more recent experience.  The
+where $A$ is the total number of feasible actions, $\phi$ is the
+\textit{recency} parameter and $\epsilon$ is the \textit{experimentation} parameter.  The recency (forgetting) parameter
+degrades the propensities for all actions and prevents propensity values from
+going unbounded.  It is intended to represent the tendency for players to forget
+older action choices and to prioritise more recent experience.  The
 experimentation parameter prevents the probability of choosing an action from
 going to zero and encourages exploration of the action space.
 
-Erev and Roth proposed that actions be selected according to a discrete
-probability distribution function where action $k$ is selected for interaction
-$t+1$ with probability:
+Erev and Roth proposed action selection according to a discrete probability
+distribution function, where action $k$ is selected for interaction $t+1$ with
+probability
 
 \begin{equation}
 p_{jk}(t+1) = \frac{q_{jk}(t+1)}{\sum_{l=0}^K q_{jl}(t+1)}
@@ -491,45 +500,34 @@ p_{jk}(t+1) = \frac{q_{jk}(t+1)}{\sum_{l=0}^K q_{jl}(t+1)}
 Since $\sum_{l=0}^K q_{jl}(t+1)$ increases with $t$, a reward $r_{jk}(t)$ for
 performing action $k$ will have a greater effect on the probability
 $p_{jk}(t+1)$ during early interactions while $t$ is small.  This is intended
-to represent Psychology's \textit{Power Law of Practice} in which it is
-qualitatively stated that, with practice, learning occurs at a decaying
-expoential rate and that a learning curve will eventually flatten out.
-
-This algorithm may alternatively use a form of the \textit{softmax} method
-\cite{suttonbarto:1998} using the Gibbs, or Boltzmann, distribution to select
-action $k$ for the $t+1$th interaction with probability
-
-\begin{equation}
-p_{jk}(t+1) = \frac{e^{q_{jk}(t+1)/\tau}}{\sum_{l=0}^K e^{q_{jl}(t+1)/\tau}}
-\end{equation}
-
-where $\tau$ is the \textit{temperature} parameter.  This parameter may be
-lowered in value over the course of an experiment since high values give all
-actions similar probability and encourage exploration of the action space,
-while low values promote exploitation of past experience.
+to represent Psychology's Power Law of Practice in which it is qualitatively
+stated that, with practice, learning occurs at a decaying exponential rate and
+that a learning curve will eventually flatten out.
 
 \subsubsection{Variant Roth-Erev Method}
 \label{sec:variant}
 Two shortcomings of the basic Roth-Erev algorithm have been identified and a
-variant formulation proposed \cite{nicolaisen:2001}.  The two issues are
+variant formulation proposed \cite{nicolaisen:2001}.  The two issues are that
 \begin{itemize}
-  \item The values by which propensities are updated can be zero or very small
+  \item the values by which propensities are updated can be zero or very small
   for certain combinations of the experimentation parameter $\epsilon$ and
-  the total number of feasible actions $K$ and
+  the total number of feasible actions $A$ and
   \item all propensity values are decreased by the same amount when the reward,
   $r_{jk^\prime}(t)$ is zero.
 \end{itemize}
-With the variant algorithm, the propensity of agent $j$ to select action $k$
+Under the variant algorithm, the propensity for agent $j$ to select action $a$
 for interaction $t+1$ is:
 \begin{equation}
-q_{jk}(t+1) =
+q_{ja}(t+1) =
 \begin{cases}
-(1-\phi)q_{ik}(t) + r_{jk^\prime}(t)(1-\epsilon), & \text{$k = k^\prime$} \\
-(1-\phi)q_{ik}(t) + q_{jk}(t)(\frac{\epsilon}{K-1}), & \text{$k \ne
-k^\prime$}
+(1-\phi)q_{ia}(t) + r_{ja^\prime}(t)(1-\epsilon), & \text{$a = a^\prime$} \\
+(1-\phi)q_{ia}(t) + q_{ja}(t)(\frac{\epsilon}{A-1}), & \text{$a \ne
+a^\prime$}
 \end{cases}
 \end{equation}
-As with the basic Roth-Erev algorithm, the propensity for selection of the
+As with the original Roth-Erev algorithm, the propensity for selection of the
 action that the reward is associated with is adjusted by the experimentation
 parameter.  All other action propensities are adjusted by a small proportion of
 their current value.
+
+\section{Summary}
