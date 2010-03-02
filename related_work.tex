@@ -2,95 +2,103 @@
 \label{ch:related_work}
 This thesis concerns methodological advancement in the field of agent-based
 electricity market simulation.  This chapter describes the research in the
-context of similar work with particular emphasis on the methods employed.  The
-bulk of the review focuses upon agent-based simulation with decision models
-based upon reinforcment learning.  However, simulations applying alternative
-methods, such as genetic algorithms and learning classifier systems, are also
-surveyed.  In the interests of repeatability, the software developed for
-this thesis has been released as open source and the project is described in
-the context of other open source electric power engineering tools.
+context of similar work with particular focus on simulations applying
+reinforcement learning.  Research involving alternative methods, such as
+genetic algorithms and learning classifier systems, is also reviewed.  In the
+interests of repeatability, the software developed for this thesis has been
+released as open source.  The end of this chapter describes the software
+project in the context of other open source electric power Engineering tools.
 
 \section{Policy Gradient Reinforcement Learning}
-Direct policy search reinforcement learning methods have been sucessfully
-applied to financial decision making problems.  It is more common for
-supervised learning techniques to be trained on sample data and used to
-minimise errors in price forecasts.  However, in \cite{moody:98} a recurrent
-reinforcement learning method is used to optimise investment performance
-without forecasting prices.  The method is recurrent as it uses information
-related to past decisions as input.  The authors compare using direct profit
-and the Sharpe ratio \cite{sharpe:ratio66,sharpe:ratio94} as a reward signal.
-The Sharpe ratio is a measure of isk adjusted return defined as
+The direct policy search reinforcement learning methods defined in Section
+\ref{sec:policygradient} have been sucessfully applied in both laboratory and
+operational settings.
+
+\subsection{TD-Gammon}
+
+\subsection{Finincial Decision Making}
+Conventionally, supervised learning techniques are used in financial decision
+making problems to minimise errors in price forecasts through training on
+sample data.  However, in \cite{moody:98} a recurrent reinforcement learning
+method is used to optimise investment performance without forecasting prices.
+The method is ``recurrent'' since it uses information from past decisions as
+input.  The authors compare direct profit and the Sharpe ratio
+\cite{sharpe:ratio66,sharpe:ratio94} as reward signals. The Sharpe ratio is a
+measure of risk adjusted return defined as
 \begin{equation}
-S_t = \frac{\mbox{Average}(R_t)}{\mbox{Standard Deviation}(R_t)}
+S_t = \frac{\mbox{Average}(r_t)}{\mbox{Standard Deviation}(r_t)}
 \end{equation}
-where $R_t$ is the return for period $t$.
+where $r_t$ is the return for period $t$.
 % The parameters of the trading system $\theta$ are adjusted in the direction of
 % the gradient $\partial S_t / \partial \theta_t$.
 
-The trading system parameters $\theta$ are updated in the direction of the
-steepest accent of the gradient of some performance function $U_t$ with repect
-to $\theta$
+The parameters $\theta$ of the trading system are updated in the direction of
+the steepest accent of the gradient of some performance function $U_t$ with
+repect to $\theta$
 \begin{equation}
 \Delta\theta_t = \rho \frac{dU_t(\theta_t)}{d\theta_t}
 \end{equation}
 where $\rho$ is the learning rate.  Direct profit is the simplest performance
 function defined, but assumes traders are insensitive to risk.  Investors
-being, in general, sensitive to losses are willing to sacrifice potantial gains
-for reduced risk of loss.
-To allow on-line learning and parameter updates at each time period, the
-authors define a \textit{differential} Sharpe ratio.  By maintaining an
+being sensitive to losses are, in general, willing to sacrifice potential gains
+for reduced risk of loss. To allow on-line learning and parameter updates at
+each time period, the authors define a \textit{differential} Sharpe ratio.  By maintaining an
 exponential moving average of the Sharpe ratio, the need to compute return
-averages and standard deviations for the entire trading history at each period
-is avoided.  Alternative performance ratios including the \textit{information
-ratio}, \textit{appraisal ratio} and \textit{Sterling ratio} are mentioned.
+averages and standard deviations for the entire trading history at each
+simulation period is avoided.  Alternative performance ratios, including the
+Information ratio, Appraisal ratio and Sterling ratio, are also mentioned.
 
 Simulations are conducted using artificial price data, equivalent to one year
-of hourly trade in a 24-hour market, and 45 years of monthly data from the
-Standard \& Poor (S\&P) 500 index and 3 month Treasury Bill (T-Bill) data. In a
-portfolio management simulation, in which trading systems invested proportions
-of their wealth among three different securities, it was shown that trading
-systems maximising the differential Sharpe ratio produced more consistent
-results and achieved higher risk adjusted returns than those trained to simply
-maximise profit.  This result is interesting as the majority of applications of
-reinforcement learning to electricity market simulation use profit as a reward
-signal and may benefit from using measures of risk adjusted return.
+of hourly trade in a 24-hour market, and using 45 years of monthly data from
+the Standard \& Poor (S\&P) 500 stock index and 3 month Treasury Bill (T-Bill)
+data. In a portfolio management simulation, in which trading systems invest
+proportions of their wealth among three different securities, it was shown
+that trading systems maximising the differential Sharpe ratio produced more
+consistent results and achieved higher risk adjusted returns than those
+trained to simply maximise profit.  This result is of interest as the majority
+of reinforcement learning applications to electricity market simulation use
+direct profit for the reward signal and may benefit from using measures of risk
+adjusted return.
 
 In \cite{moody:direct} the recurrent reinforcement learning method from
-\cite{moody:98} is contrasted with value function based approaches.  In
-addition to the Sharpe ratio, the \textit{Downside Deviation} ratio is
-described and may also be of use in electricity market simulation.  Simulation
-results from trading systems trained on half-hourly USD/GBP foreign exchange
-rate data and again learning switching strategies between the S\&P 500 stock
-index and T-Bills are presented.  The results show that the recurrent
-reinforcement learning method outperforms the Q-learning in the S\&P 500/T-Bill
-allocation problem.  The authors also observe that the recurrent reinforcement
-learning method has a simpler functional form, the output is not discrete and
-easily maps to real valued actions and that the algorithm is more robust to
-noise in financial data and adapts quickly to non-stationary environments.
+\cite{moody:98} is contrasted with value function based methods.  In addition
+to the Sharpe ratio, a Downside Deviation ratio is defined which may also
+be of use in electricity market simulation.  Results from trading
+systems trained on half-hourly United States Dollar-Great British Pound foreign
+exchange rate data and, again, learning switching strategies between the S\&P
+500 index and T-Bills are presented.  They show that the recurrent
+reinforcement learning method outperforms Q-learning in the S\&P
+500/T-Bill allocation problem.  The authors observe also that the recurrent
+reinforcement learning method has a much simpler functional form, that the
+output, not being discrete, maps easily to real valued actions and that the
+algorithm is more robust to noise in the financial data and adapts quickly to
+non-stationary environments.
 
+\subsection{Grid Computing}
 In \cite{vengerov:grid} a marketplace for computational resources in
-envisioned.  The authors propse a market in which grid service suppliers offer
+envisioned.  The authors propose a market in which grid service suppliers offer
 to execute jobs submitted by customers for a price per CPU-hour.  The problem
 formulation requires customers to request a quote for computing a job $k$ for a
 time $\tau_k$ on $n_k$ CPUs.  The quote returned specifies a price $P_k$ at
-which the $k$ would be charged and a delay time $d_k$ for the job.  The service
+which $k$ would be charged and a delay time $d_k$ for the job.  The service
 provider's goal is to learn a policy for pricing quotes that maximises long
-term revenue when competing in a market environment with other providers.  A
-differentiated pricing model is implemented where a standard service is priced
-at 1~\$/CPU-hour and a premium sercice a $P$~\$/CPU-hour, with premium jobs
-prioratised over standard jobs.  The state of the market environment is defined
-by the current expected delays in the standard and premium service classes and
-the product of the number of CPUs requested and the job execution time,
-$n_k \tau_k$.  The reward $r(s,a)$ for action $a$ in state $s$ is the total
-price paid for the job.  The policy gradient method employed is a modified
-version of Williams' REINFORCE where
+term revenue when competing in a market with other providers.  Price
+differentiation is implemented though provision of a standard service, priced
+at \$1/CPU-hour and a premium sercice a \$$P$/CPU-hour, with premium jobs
+prioratised over standard jobs.  The state of the market environment is
+defined by the current expected delays in the standard and premium service
+classes and by $n_k \tau_k$ -- the product of the number of CPUs requested and
+the job execution time.  The reward $r(s,a)$ for action $a$ in state $s$ is the
+total price paid for the job.  The policy gradient method employed is a
+modified version of Williams' REINFORCE where
+% TODO: Validate against Chapter 2.
 \begin{equation}
 Q(s_t,a_t) = \sum_{t=1}^T r(s_t,a_t) - \overline{r}_t
 \end{equation}
 and $\overline{r}_t$ is the current average reward.
 
-The authors recognise that their grid market model could be applied to any
-multi-seller retail market environment.  The experimental results show that if
+The authors recognise that their grid market model could be generalised to
+other multi-seller retail markets.  The experimental results show that if
 all grid service providers simultaneously use the learning algorithm then the
 process converges to a Nash equilibrium.  The results also showed that
 significant increases in profit were possible by offering both standard and
@@ -154,35 +162,40 @@ premium services.
 % defined, but none model the AC transmission system.  A common approach is to
 % use categorised market price from the previous period as state
 % information\cite{bakirtzis:psce,xiong:discrim}.
-Agent-based simulation of electricity markets has been researched with
-participants behavioral aspects modelled using Q-learning methods.  The most
-prominent work in which this method has been is adopted has been conducted at
-the Swiss Federal Institutes of Technology in Zurich and Lausanne.  The
-foundations for this were laid in \cite{krause:nash04} with a
-comparison of agent-based modelling using reinforcement learning with Nash
-equilibrium analysis in assessing network constrained power pool market
-dynamics.  Parameter sensistivity of comparison results were later analysed in
+Agent-based simulation of electricity markets has been carried out with
+participants behavioral aspects modelled using Q-learning methods.
+
+\subsection{Swiss Federal Institute of Technology}
+The most prominent work in which Q-learning was applied has been conducted
+at the Swiss Federal Institutes of Technology in Zurich and Lausanne.
+
+\subsubsection{Nash Equilibrium Comparison}
+The foundations for this were laid in \cite{krause:nash04} with a comparison of
+agent-based modelling using reinforcement learning and Nash equilibrium
+analysis for assessing network constrained power pool market dynamics.
+Parameter sensistivity of comparison results were later analysed in
 \cite{krause:nash06}.
 
-In the papers a mandatory spot market is modelled and cleared using a DC
+The authors model a mandatory spot market which is cleared using a DC
 optimal power flow formulation.  A five bus power system model is defined with
 three generators and four inelastic and constant loads.  Linear marginal cost
 functions
 \begin{equation}
 C_{g,i}(P_{g,i}) = b_{g,i} + s_{g,i}P_{g,i}
 \end{equation}
-are assumed for each generator $i$ where $P_{g,i}$ is the active power output,
+are defined for each generator $i$ where $P_{g,i}$ is the active power output,
 $s_{g,i}$ is the slope of the cost function and $b_{g,i}$ is the cost when
 $P_{g,i} = 0$.  Suppliers are given the option to markup their bids to the
-market not by increasing the slope, but by increasing $b_{g,i}$ by 10\%, 20\%
-or 30\%.  A price cap of \$60/MW is set, but may not be exceeded by any of the
-available markups.
+market not by increasing $s_{g,i}$, but increasing $b_{g,i}$ by either 0\%,
+10\%, 20\% or 30\%.
+%A price cap of \$60/MW is set, but may not be exceeded by any of the
+%available markups.
 
-Nash equilibrium of the market is computed by clearing the market for all
-possible markup combinations and determining the actions for which no player is
-motivated to deviate from as it would result in a decrease in expected reward.
-Experiments are conducted in which there is a single Nash equilibrium and two
-equilibria.
+Nash equilibrium is computed by clearing the market for all possible markup
+combinations and determining the actions for which no player is motivated to
+deviate from, as it would result in a decrease in expected reward. Experiments
+are conducted in which there is a single Nash equilibrium and two
+Nash equilibria.
 
 An $\epsilon$-greedy strategy is applied for action selection and a stateless
 action value function is updated at each time step $t$ according to
@@ -197,95 +210,101 @@ was still approached and the oscillatory behaviour observed for almost all
 combinations.
 
 The significance of this research is that is verifies that the agent-based
-approach settles at the same theoretical optimum as with closed-form equilibrium
-approaches and that exploratory policies result in the exploitation of multiple
-equlibria if they exist.
+approach settles at the same theoretical optimum as with closed-form
+equilibrium approaches and that exploratory policies result in the exploitation
+of multiple equlibria if they exist.
 
-
+\subsubsection{Congestion Management}
 Having validated the suitability of an agent-based, bottom-up, approach to
 assessing evolution of market characteristics, the authors applied the technique
 in a comparison of congestion management schemes \cite{krause:cong}.  The first
-scheme considered was \textit{locational marginal pricing}, or nodal pricing,
+scheme considered was locational marginal pricing, or nodal pricing,
 where congestion is managed by optimising the output of generators with respect to
-maximum social welfare.  Loading of branches to their flow limits results in
-non-uniform nodal marginal prices.  A nodal marginal price equals the
+maximum social welfare.  Loading branches to their flow limits results in
+non-uniform nodal marginal prices where a nodal marginal price is the
 increase in the total system cost (the value of the objective function) when
 generation at that node is increased by 1MW.  These prices are commonly used in
 electricity market analysis as they may be determined from the Lagrangian
 multipliers on the active power balance constraints in the optimal power flow
-formulation.  The second scheme considered, named \textit{market splitting}, is
+formulation.  The ``market splitting'' scheme they considered is
 similar to locational marginal pricing, but the system gets subdivided into
-zones within which the nodal prices are uniform.  The final \textit{flow based
-market coupling} scheme also uses uniform zonal pricing, but requires a
+zones, within which the nodal prices are uniform.  The final ``flow based
+market coupling'' scheme also features uniform zonal pricing, but requires a
 simplified representation of the network.  Power flows within zones are not
 represented and all lines within zones are aggregated into one equivalent
 interconnector.
 
-In a simpler alternative to the conventional DC optimal power flow formulation,
-the computation of line power flows is done using a matrix power transfer
-distribution factors.  The $(i,j)^{th}$ element of this matrix corresponds to
+In an alternative to the conventional DC optimal power flow formulation, line
+power flows computation is done using a power transfer distribution
+factor (PTDF) matrix.  The $(i,j)^{th}$ element of this corresponds to
 the change in active power flow on line $j$ given an additional injection of
 1MW at the slack bus and corresponding withdrawl of 1MW at node $i$.
 
-The congestion management schemes are evaluated under perfect competition, where
-suppliers bid at marginal cost, and under oligopolistic competition, in which
-markups of 5\% and 10\% may be added to marginal cost.  The benefits obtained
-between reward at marginal cost and a maximum markup are used to assess market
-power.  The experimental results show different market power allocations under
-the three constraint management schemes.  The significance of this work is that
-it demonstrates an agent-based model being applied to an important problem in
-the electricity supply industry.
+The congestion management schemes get evaluated under perfect competition,
+where suppliers bid at marginal cost, and under oligopolistic competition, in
+which markups of 5\% and 10\% can be added to marginal cost.  The benefits
+obtained between reward at marginal cost and a maximum markup are used to
+assess market power.  The experimental results show different market power
+allocations under the three constraint management schemes.  The work
+demonstrates an agent-based model being applied to an important problem in the
+electricity supply industry.
 
-The same Q-learning method is used in \cite{krause:gas} to analyse strategic
-behaviour in integrated electricity and gas markets.  Again, power flow are
-modelled using a power transfer distribution matrix.  Pipeline losses in the
-gas network are approximated using using a cubic function of the flow.  Three
-combined gas and electricity models are compared.  In the first model,
-operators of gas-fired power plant submit separate bid functions for gas and
-electricity.  Bids are then cleared as a single optimisation problem.  In model
-two, operators submit one offer for their capacity to convert gas to
-electricity.  In the final model, bids are submitted only to the electricity
-market, after which gas is purchased regardless of price.  Gas supply offers are
-modelled as a linear function with no strategic involvement.  The models are
-compared in terms of social welfare using a three bus power system model with
-three non-gas-fired power plants and one gas-fired plant.  The experimental
-results show little difference between electricity prices and social welfare
-prices between the models.
+\subsubsection{Gas-Electricity Market Integration}
+The Q-learning method from \cite{krause:nash04,krause:nash06} is used to
+analyse strategic behaviour in integrated electricity and gas markets in
+\cite{krause:gas}.  Again, power flows are computed using a PTDF matrix.
+Pipeline losses in the gas network are approximated using using a cubic
+function of the flow and three combined gas and electricity models are
+compared.
 
-However, this research illustrates the interest in and complexity associated
-with modelling relationships between markets.  The authors recognise the need
-for further and more detailed simulation in order to improve evaluation of
-market coupling models.
+In the first model, operators of gas-fired power plant submit separate bid
+functions for gas and electricity.  Bids are then cleared as a single
+optimisation problem.  In model two, operators submit one offer for their
+capacity to convert gas to electricity.  In the third model, bids are
+submitted only to the electricity market, after which gas is purchased
+regardless of price.  Gas supply offers are modelled as a linear function with
+no strategic involvement.  The models are compared in terms of social welfare,
+using a three bus power system model with three non-gas-fired power plants and
+one gas-fired plant.
 
+The experimental results show little difference between electricity prices and
+social welfare prices between the models.  However, this research illustrates
+the interest in and complexity associated with modelling relationships between
+markets.  The authors recognise the need for further and more detailed
+simulation in order to improve evaluation of market coupling models.
 
-Researchers at the Argonne Nationa Laboratory have published results from a
+\subsection{Argonne National Laboratory}
+Researchers at the Argonne National Laboratory have published results from a
 preliminary study of interactions between \textit{emission} and electricity
 markets \cite{wang:09}.  A cap-and-trade system for emissions is modelled where
 generator companies are allocated with $\mbox{CO}_2$ allowances that may
-subsequently be traded.  Generator companies are assumed to be price takers in
-the emissions market and to have negligible influence on market clearing
-prices. Prices for allowances from the European Energy Exchange were used.
-Whereas in the electricity market, an oligopoly is assumed and bids are cleared
-using a DC optimal power flow formulation.  To improve selection of the
-$\epsilon$ parameter for exploratory action selection, a simulated annealing
-(SA) Q-learning method based on the Metropolis criterion is used \cite{guo:sa}.
-Under this method $\epsilon$ is changed at each simulation step to allow
-solutions to escape from local optima.  A two bus system is used to study cases
-in which, allowance trading is not used, allowances can be exchanged in the
-emission market and with variations in the allowance allocations.
+subsequently be traded.  Generator companies are assumed to have negligible
+influence on market clearing prices in the emissions market and allowance
+prices from the European Energy Exchange were used.  In the electricity market,
+an oligopoly is assumed and bids are cleared using a DC optimal power flow
+formulation.
 
-A one year, hourly load profile with a summer peak is used to represent changes
-in demand.  The electricity market is cleared each hour and the emissions market
-at the end of each simulated week.  The agents learn, when they have a defecit
-of allowances, to borrow future allowances in the summer when load and
-allowance prices are high.  Conversly, when they have a surplus they learn to
-sell at this time.  In the third case, the authors show the sensitivity of
-profits to initial allocations and conclude that the experimental results can
+To improve selection of the $\epsilon$ parameter for exploratory
+action selection, a simulated annealing (SA) Q-learning method based on the
+Metropolis criterion \cite{guo:sa} is used. Under this method $\epsilon$ is
+changed at each simulation step to allow solutions to escape from local
+optima.  A two bus system is used to study cases in which allowance trading
+is not used, allowances can be exchanged in the emission market and with
+variations in the allowance allocations.  A one year, hourly load profile with
+a summer peak is used to model changes in demand.  The electricity market is
+cleared each hour and the emissions market gets cleared at the end of each
+simulated week.
+
+The agents learn, when they have a defecit of allowances, to borrow future
+allowances in the summer when load and allowance prices are high.  Conversly,
+when having a surplus, they learn to sell at this time.  In the third case, the
+authors show the sensitivity of profits to initial allocations and conclude that the experimental results can
 not be generalised.  The authors cite further model validation and agent
 learning method improvements as necessary future work.
 
-The SA-Q-learning method is also used by researchers from the University of
-Thessaloniki in \cite{tellidou:tacit} to study capacity withholding and tacit
+\subsection{University of Thessaloniki}
+The SA-Q-learning method was previously used in \cite{tellidou:tacit} by
+researchers from the University of Thessaloniki to study capacity withholding and tacit
 collusion among electricity market participants.  A mandatory spot market is
 implemented, where bid quantities may be less than net capacity and bid prices
 may be marked up upon marginal cost by increasing the slope of a linear cost
@@ -293,14 +312,15 @@ function.  Again market clearing is achieved using DC optimal power flow and
 locational marginal prices are used to calculate profits and reinforce the
 learning process.  Demand is assumed to be inelastic and transmission
 system parameters constant between simulation periods.  A simple two node
-power system model with two generators is used in three test cases.  In a
-reference case each generator bids full capacity at marginal cost.  In the
-second case, generators bid quantities in steps of 10MW and price markups in
-steps of \euro{2}/MWh.  In the final case the same generation capacity is
-split among eight identical generators to increase the level of competition.  the
-experimental results show that generators learn to withhold capacity and develop
-tacit collusion strategies to capture congestion profits.
+power system model containing two generators is applied to three test cases.
+In a reference case, each generator bids full capacity at marginal cost.  In
+case two, generators bid quantities in steps of 10MW and price markups in
+steps of \euro{2}/MWh.  In the third case, the same generation capacity is
+split among eight identical generators to increase the level of competition.
+The experimental results show that generators learn to withhold capacity and
+develop tacit collusion strategies to capture congestion profits.
 
+\subsection{University of Mashhad}
 The convergence to Nash equilibrium shown in \cite{krause:nash04} is confirmed
 in \cite{sistani:06}.  Boltzman (soft-max) exploration is used for action
 selection with the temperature parameter adjusted during the simulations.  A
