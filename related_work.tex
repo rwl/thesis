@@ -165,13 +165,10 @@ premium services.
 Agent-based simulation of electricity markets has been carried out with
 participants behavioral aspects modelled using Q-learning methods.
 
-\subsection{Swiss Federal Institute of Technology}
+\subsection{Nash Equilibrium Convergence}
 The most prominent work in which Q-learning was applied has been conducted
-at the Swiss Federal Institutes of Technology in Zurich and Lausanne.
-
-\subsubsection{Nash Equilibrium Comparison}
-The foundations for this were laid in \cite{krause:nash04} with a comparison of
-agent-based modelling using reinforcement learning and Nash equilibrium
+at the Swiss Federal Institutes of Technology in Zurich and Lausanne. The
+foundations for this were laid in \cite{krause:nash04} with a comparison of agent-based modelling using reinforcement learning and Nash equilibrium
 analysis for assessing network constrained power pool market dynamics.
 Parameter sensistivity of comparison results were later analysed in
 \cite{krause:nash06}.
@@ -214,7 +211,18 @@ approach settles at the same theoretical optimum as with closed-form
 equilibrium approaches and that exploratory policies result in the exploitation
 of multiple equlibria if they exist.
 
-\subsubsection{Congestion Management}
+Convergence to a Nash equilibrium is confirmed in \cite{sistani:06}.  Boltzman
+(soft-max) exploration is used for action selection with the temperature
+parameter adjusted during the simulations.  A modified version of the IEEE 30
+bus test system is used with the number of generators reduced from nine to
+six.  No optimal power flow formulation or details of the reward signal are
+provided.  Generators are given a three step action space where the slope of a
+linear supply function may be less then, equal to or above marginal cost.  The
+experimental results show that with temperature parameter adjustment Nash
+equilibrium is achieved and oscillation associated with $\epsilon$-greedy
+action selection are avoided.
+
+\subsection{Congestion Management Techniques}
 Having validated the suitability of an agent-based, bottom-up, approach to
 assessing evolution of market characteristics, the authors applied the technique
 in a comparison of congestion management schemes \cite{krause:cong}.  The first
@@ -249,7 +257,7 @@ allocations under the three constraint management schemes.  The work
 demonstrates an agent-based model being applied to an important problem in the
 electricity supply industry.
 
-\subsubsection{Gas-Electricity Market Integration}
+\subsection{Gas-Electricity Market Integration}
 The Q-learning method from \cite{krause:nash04,krause:nash06} is used to
 analyse strategic behaviour in integrated electricity and gas markets in
 \cite{krause:gas}.  Again, power flows are computed using a PTDF matrix.
@@ -273,7 +281,7 @@ the interest in and complexity associated with modelling relationships between
 markets.  The authors recognise the need for further and more detailed
 simulation in order to improve evaluation of market coupling models.
 
-\subsection{Argonne National Laboratory}
+\subsection{Electricity-Emissions Market Interactions}
 Researchers at the Argonne National Laboratory have published results from a
 preliminary study of interactions between \textit{emission} and electricity
 markets \cite{wang:09}.  A cap-and-trade system for emissions is modelled where
@@ -302,7 +310,7 @@ authors show the sensitivity of profits to initial allocations and conclude that
 not be generalised.  The authors cite further model validation and agent
 learning method improvements as necessary future work.
 
-\subsection{University of Thessaloniki}
+\subsection{Tacit Collusion}
 The SA-Q-learning method was previously used in \cite{tellidou:tacit} by
 researchers from the University of Thessaloniki to study capacity withholding and tacit
 collusion among electricity market participants.  A mandatory spot market is
@@ -320,46 +328,35 @@ split among eight identical generators to increase the level of competition.
 The experimental results show that generators learn to withhold capacity and
 develop tacit collusion strategies to capture congestion profits.
 
-\subsection{University of Mashhad}
-The convergence to Nash equilibrium shown in \cite{krause:nash04} is confirmed
-in \cite{sistani:06}.  Boltzman (soft-max) exploration is used for action
-selection with the temperature parameter adjusted during the simulations.  A
-modified version of the IEEE 30 bus test system is used with the number of
-generators reduced from nine to six.  No optimal power flow formulation or
-details of the reward signal are provided.  Generators are given a three step
-action space where the slope of a linear supply function may be less then, equal
-to or above marginal cost.  The experimental results show that with temperature
-parameter adjustment Nash equilibrium is achieved and oscillation associated
-with $\epsilon$-greedy action selection are avoided.
-
 
 \section{Simulations Applying Roth-Erev}
-A reinforcement learning method based on empirical results obtained from
-observing how humans learn decision making strategies in games against multiple
-strategic players has received considerable attention from the agent-based
-electricity market simultaion community \cite{roth:games,roth:aer}.
+Roth and Erev's reinforcement learning method, defined in Section
+\ref{sec:rotherev}, has received considerable attention from the agent-based
+electricity market simulation community.
 
+\subsection{Market Power}
 In \cite{nicolaisen:2001} an agent-based model of a wholesale electricity market
 with both supply and demand side participation is constructed.  It is used to
 study market power and short-run market efficiency under discriminatory pricing
-through systematic variation of concentration and capacity conditions.  To model
-the power system, each trader is assigned values of available transmission
-capability (ATC) with respect to each other trader.  Offers from buyers and
+through systematic variation of concentration and capacity conditions.
+
+Modelling the power system, each trader is assigned values of available
+transmission capability (ATC) with respect to each other trader.  Offers from buyers and
 sellers are matched on a merit order basis, with quantities restricted by
-the ATCs.  Two issues with the original Roth-Erev method are observed and the
-modified version defined in Section \ref{sec:variant} above is proposed.
+ATC values.  Two issues with the original Roth-Erev method are observed and
+the modified version defined in Section \ref{sec:variant} above is proposed.
 
 A maximum markup (markdown) of \$40/MWh is specified for each seller (buyer).
 Traders are not permitted to make negative profits and the feasible price range
 is divided into 30 offer prices for 1000 auction rounds cases and 100 offer
 prices for 10000 aution round cases.  The parameters of the Roth-Erev method are
 calibrated using direct search within reasonable ranges.  Nine combinations of
-buyer and sellers numbers and total trading capacities are tested using the
-calibarated values and \textit{best-fit} parameter values determined by Erev \&
-Roth.
+buyer and seller numbers and total trading capacities are tested using the
+calibarated values and \textit{best-fit} parameter values determined
+empirically in \cite{roth:aer}.
 
 The experimental results show that good market efficiency is achieved under all
-configurations and the sensitivity to method parameters is small.  Levels of
+configurations and the sensitivity to method parameters is low.  Levels of
 market power are found to be strongly predictive and little difference is found
 between cases in which opportunistic price offers are permitted and when traders
 are forced to bid at marginal cost.  The results are compared with those from
@@ -369,23 +366,24 @@ efficiency due their adaption according to \textit{individual} profits.
 
 Further research from Iowa State University, involving the modified Roth-Erev
 method, has centered around the AMES wholesale electricity market test bed.  A
-detailed description of which is provided in Section \ref{sec:ames} below.
-
-In \cite{tesfatsi:psce} AMES is used to investigate strategic capacity
-withholding in a wholesale electricity market design proposed by U.S. Federal
-Energy Regulatory Commission in April 2003.  A five bus power system model with
-five generators and three dispatchable loads is defined and capacity withholding
-is represented by premitting traders to lower than true operating capacity and
-higher than true marginal costs.
+detailed description of AMES is provided in Section \ref{sec:ames} below.  In
+\cite{tesfatsi:psce} it is used to investigate strategic capacity
+withholding in a wholesale electricity market design proposed by the U.S.
+Federal Energy Regulatory Commission in April 2003.  A five bus power system model
+with five generators and three dispatchable loads is defined and capacity
+withholding is represented by premitting traders to bid lower than true
+operating capacity and higher than true marginal costs.
 
 Comparing results from a benchmark case (in which true production costs are
 reported, but higher than marginal cost functions may be reported) and cases in
 which reported production limits may be less than the true values, the authors
-find, that with sufficient capacity reserve, no evidence to suggest potential
-for inducing higher net earnings through capacity withholding in the WPMP.
+find that with sufficient capacity reserve there is no evidence to suggest
+potential for inducing higher net earnings through capacity withholding in the
+market design.
 
+\subsection{Italian Wholesale Electricity Market}
 Researchers from the University of Genoa have used the modified Roth-Erev
-method to study strategic behaviour in the Italian wholsale electricity market
+method to study strategic behaviour in the Italian wholesale electricity market
 \cite{cincotti:09}.  The exact clearing procedure is replicated and a model of
 the Italian transmission system, including an interconnector to Sicily, with
 zonal subdivision, is defined.  Within each of the 11 zones, thermal plant is
@@ -393,24 +391,29 @@ combined according to technology (coal, oil, combined cycle gas, turbo gas and
 repower) and associated with one of 16 generation companies according to the
 size of the companies share.  The resulting 53 agents are assumed to bid full
 capacity and may markup bid prices in steps of 5\%, with a maximum markup of
-300\%.  Bids are cleared using a DC optimal power flow formulation with
+300\%.
+
+% TODO: One-line diagram of Italian grid model.
+
+Bids are cleared using a DC optimal power flow formulation with
 generation capacity constraints and zone interconnector flow limits.  Agents are
 rewarded according to a uniform national price, computed as a weighted average
-of zonal prices with respect to zonal load.  Using actual hourly load data, it
-is shown that in experiments in which agents \textit{learn} their optimal
-strategy, histrorical trends were replicated in all but certain hours of peak
-load.  The authors state a desire to test different learning methods and perform
+of zonal prices with respect to zonal load.  Using real hourly load data it
+is shown that in experiments in which agents learn their optimal
+strategy, histrorical trends can be replicated in all but certain hours of
+peak load.  The authors state a desire to test different learning methods and perform
 further empirical validation.
 
+\subsection{Vertically Related Energy Markets}
 In \cite{micola:08} a multi-tier model of wholesale natural gas, wholesale
 electricity and retail electricity markets is studied using another variant of
 the Roth-Erev method.  Coordination between strategic business units (SBU)
 within the same firm, but participating in different markets, is varied
-systematically and profit differences observed.
+systematically and profit differences analysed.
 
-An initial two-tier model involves firms with two associated agents rewards,
-$r^1$ and $r^2$, are initially independant.  A \textit{reward independance}
-parameter $\alpha$ is used to control the fraction of profit from the other
+An initial two-tier model involves firms with two associated agents
+whose rewards, $r^1$ and $r^2$, are initially independant.  A \textit{reward
+independance} parameter $\alpha$ is used to control the fraction of profit from the other
 market that is used in rewarding the agent.  The total rewards are
 \begin{equation}
 R^1(t) = (1-\alpha)r^1(t) + \alpha r^2(t)
@@ -419,9 +422,9 @@ and
 \begin{equation}
 R^2(t) = (1-\alpha)r^2(t) + \alpha r^1(t)
 \end{equation}
-Each action $a$ is a single price bid between zero and the price from the
-preceeding market.  The Roth-Erev method is modified such that similar
-actions, $a-1$ and $a+1$, are reinforced also.  For each agent, the action
+Each action $a$ is a single price bid between zero and the clearing price from
+the preceeding market.  The Roth-Erev method is modified such that similar
+actions, $a-1$ and $a+1$, are reinforced also.  For each agent $i$, the action
 selection propensities in auction round $t$ are
 \begin{equation}
 p^i_a(t) = \begin{cases}
@@ -430,18 +433,19 @@ p^i_a(t) = \begin{cases}
 (1-\gamma)p^i_a(t-1)& \text{if $s\neq k-1$, $s\neq k$ or $s\neq k+1$}
 \end{cases}
 \end{equation}
-where $\delta$, with $0\leq \delta \leq 1$, is the \textit{local
-experimentation} parameter, $\gamma$ is the discount parameter and $i\in \lbrace
-1,2 \rbrace$.  Actions whose probability of selection fall below a specified
-value are removed from the action space.
+where $\delta$, with $0\leq \delta \leq 1$, is the local experimentation
+parameter, $\gamma$ is the discount parameter and $i\in \lbrace 1,2 \rbrace$.
+Actions whose probability of selection fall below a specified value are
+removed from the action space.
 
 The initial simulation consists of two wholesalers and three retailers and
 $\alpha$ is varied from $0$ to $0.5$ in $51$ discrete steps.  The experiment
 is repeated using a three tier model in which two natural gas shippers supply
-three electricity generators who sell to four electricity retailers.  The
-results show a rise in market prices as reward interdependance is increased and
-greater profits for integrated firms.
+three electricity generators who in turn sell to four electricity retailers.
+The results show a rise in market prices as reward interdependance is
+increased and greater profits for integrated firms.
 
+\subsection{Two-Settlement Markets}
 In \cite{weidlich:06} the modified Roth-Erev method is used to study
 interrelationships between contracts markets and balancing markets.  Bids on the
 day-ahead contracts market consist of a price and a volume, which are assumed to
@@ -449,8 +453,9 @@ be the same for each hour of the day.  Demand is assumed to be fixed and
 inelastic.  Bids on the balancing market consist of a reserve price, a
 \textit{work} price and an offered quantity.  The reserve price is that which
 must be paid for the quantity to be kept on standby and the work price must be
-paid if that quantity is called upon for transmission system stabilisation.  No
-optimal power flow formulation or power system model is defined.  At the
+paid if that quantity is called upon for transmission system stabilisation.
+
+No optimal power flow formulation or power system model is defined.  At the
 day-ahead stage contract market and balancing market (according to reserve
 price) bids and are cleared by stacking in order of ascending price until the
 forecast demand is met.  On the following day, accepted balancing bids are
@@ -458,7 +463,7 @@ cleared according to work price such that requirements for researve dispatch
 are met.  Bid prices on the contracts market are stratified into 21 discrete
 values between 0 and 100 and bid quantities into six discrete values between 0
 and maximum capacity, giving 126 possible actions.  Bid quantities on the
-balancing market are equal to the capacity remaining after contract market
+balancing market equal to the capacity remaining after contract market
 participation.  21 discrete capacity prices between 0 and 500 and 5 work prices
 between 0 and 100 are permitted, giving 105 possible actions in the balancing
 market.  Separate instances of the modified Roth-Erev method are used to learn
@@ -467,20 +472,21 @@ bidding strategies for each agent in each of the markets.
 Interrelationsships between the markets are studied using four scenarios in
 which the order of market execution and the balancing market pricing mechanism
 (discriminatory or pay-as-bid) are changed.  Clearing prices in the market
-executed first are shown to have a considerable effect on prices in the
+executed first are shown to have a marked effect on prices in the
 following market.  The authors find agent-based simulation to be a suitable
 tool for reproducing realistic market outcomes and recognise a need for more
 detailed models with larger action domains.
 
-In the same year, the authors collaborated with Jian Yao and Shnuel Oren from
+In the same year, the authors collaborated with Jian Yao and Shmuel Oren from
 the University of California to study the dynamics between two settlement
 markets using the modified Roth-Erev method.  The markets are a forwards
 contract market, in which transmission constraints are ignored, and a spot
 market that is cleared using a DC optimal power flow formulation with line
-flows calculated using power transfer distribution factors.  Zonal prices are
-set in the forward market as weighted averages of nodal prices with repect to
-historical load shares.  Profits are dtermined using these zonal prices and
-nodal prices from optimisation of the spot market.  Demand is assumed
+flows calculated using a PTDF matrix.
+
+Zonal prices get set in the forward market as weighted averages of nodal prices
+with repect to historical load shares.  Profits are determined using these
+zonal prices and nodal prices from optimisation of the spot market.  Demand is assumed
 inelastic to price, but different contingency states with peak and low demand
 levels are examined.  A 53 bus stylised model of the Belgian electricity
 system from \cite{yao:07,yao:08} is used to validate the results against those
@@ -500,22 +506,18 @@ functions in future work.
 % \section{Closed-Form Equilibrium}
 % Hobbs, Neuhoff
 
-% \section{Policy-Gradient Reinforcement Learning}
-% TD-Gammon
-
 \newpage
 \section{Open Source Power Engineering Software}
 \label{sec:oss}
-In order to couple exisiting implementations of policy gradient reinforcement
+To couple existing implementations of policy gradient reinforcement
 learning methods from the PyBrain machine learning library with scalable and
 extensible optimal power flow formulations, the
-\matlab\footnote{\matlab is a registered tradeamark of The Mathworks, Inc.}
-source code from \matpower was translated to the Python programming language.
-With permission from the \matpower developers, the resulting package has been
-released under the terms of the GNU General Public License (GPL) as a project
-named \textsc{Pylon} \cite{lincoln:pyreto}.   This section describes the
-project in the context of other open source electric power engineering software and
-demonstrates the contribution made.
+\textsc{Matlab}\footnote{\matlab is a registered tradeamark of The Mathworks,
+Inc.} source code from \matpower was translated to the Python programming
+language for this thesis. With permission from the \matpower developers, the
+resulting package was released under the terms of the Apache License version
+2.0 as a project named \textsc{Pylon} \cite{lincoln:pyreto}.   This section describes the project in the context of other open source electric
+power engineering software and demonstrates the contribution made.
 
 %\begin{landscape}
 %\begin{table}
@@ -529,21 +531,21 @@ demonstrates the contribution made.
 SE & SP & GUI & RL \\
 \hline
 AMES & Java & GPL & & \stable & & & & & & & \stable & \stable \\
-Cimphony & Java & EPL & & & & & & & & & \stable & \\
-CIMTool & Java & LGPL & & & & & & & & & \stable & \\
+%Cimphony & Java & LGPL & & & & & & & & & \stable & \\
+%CIMTool & Java & LGPL & & & & & & & & & \stable & \\
 DCOPFJ & Java & GPL & & \stable & & & & & & & & \\
-MatDyn & \matlab & - & & & & & & & & \stable & & \\
-\matpower & \matlab & - & \stable & \stable & \stable & \unstable & & &
+MatDyn & \matlab & & & & & & & & & \stable & & \\
+\matpower & \matlab & & \stable & \stable & \stable & \unstable & & &
 \unstable & \stable & & \\
 OpenDSS & Pascal & BSD & \stable & & & & & & & \stable & \stable & \\
 PSAT & \matlab & GPL & \stable & & \stable &
 \stable & \stable & \stable & & \stable & \stable & \\
 \pylon & Python & Apache & \stable & \stable & \stable
 & \unstable & & \unstable & \unstable & \stable & \stable & \stable \\
-TEFTS & C & - & & & & \stable & & \stable & & \stable & & \\
-VST & \matlab & - & \stable & & & \stable & \stable & \stable & & \stable &
+TEFTS & C & & & & & \stable & & \stable & & \stable & & \\
+VST & \matlab & & \stable & & & \stable & \stable & \stable & & \stable &
 \stable & \\
-UWPFLOW & C & - & & & & \stable & & & & \stable & & \\
+UWPFLOW & C & & & & & \stable & & & & \stable & & \\
 \hline
 \end{tabular}
 \caption{Open source electric power engineering software feature matrix.}
@@ -555,114 +557,128 @@ UWPFLOW & C & - & & & & \stable & & & & \stable & & \\
 %\end{landscape}
 
 \subsection{MATPOWER}
-Since 1996, a team of researhers at the Power Systems Engineering Research
+Since 1996, a team of researchers at the Power Systems Engineering Research
 Center at Cornell University have been developing \matpower -- a package of
-\matlab workspace files for solving power flow and optimal power flow problems.
-Initial developement was part of the PowerWeb project which is a power
-exchange auction market simulator that is accessed by multiple users
-simultaneously through a web interface.  \matpower is designed to be easy to use
-and modify while also offering good performance.  It is available under a
+\matlab workspace files for solving power flow and optimal power flow problems
+\cite{zimmerman:mp_pes}. Initial development was part of the PowerWeb project
+in which a power exchange auction market simulator that can be accessed by multiple users
+simultaneously through a web interface was created.  \matpower is designed to
+be easy to use and modify while also offering good performance.  It is available under a
 custom license that permits it to be used for any purpose providing the project
-and authors are cited.  \matpower is very popular in education and research and
-an active mailing list is maintained by Ray Zimmerman.
+and authors are suitably cited.  \matpower is highly popular in education and
+research and an active mailing list is moderated by Ray Zimmerman.
 
 \matpower includes five power solvers for both AC and DC problems.  The default
-solver uses Newton's method \cite{tinney:67} with the full Jacobian matrix
-updated at each iteration.  Two variations on the fast decoupled method
-\cite{stott:74} described in \cite{amerongen:89} provide faster convergence in
-certain networks.  The standard Gauss-Seidel method \cite{glimn:57} is provided
-largely for academic reasons and the DC solver provides non-iterative
-method.  The properties of \matlab sparse matrices are exploited, allowing the
-solvers to scale well to very large systems.  All functions are run from the
-\matlab command line or from within users programs and no graphical user
-interface is provided.
+solver uses Newton's method \cite{tinney:67} with a full Jacobian matrix
+updated in each iteration.  Two variations on the fast decoupled method
+\cite{stott:74} described in \cite{amerongen:89} provide quicker convergence
+for certain networks.  The standard Gauss-Seidel method \cite{glimn:57} is provided
+largely for academic reasons and the DC solver provides a non-iterative
+solution.  The properties of \matlab sparse matrices are fully exploited to
+allow the solvers to scale well to very large systems.  All functions are run
+from the \matlab command-line or from within users programs and no graphical
+user interface is provided.
 
 Starting with the first beta release of version 4.0, \matpower includes a pure
 \matlab primal dual interior point method (PDIPM) that can be used for solving
 DC and AC optimal power flow problems \cite{zimmerman:ccv}.  Previously,
-\textsc{Fmincon} from the \matlab Optimization Toolbox\footnote{Optimization
+FMINCON from the \matlab Optimization Toolbox\footnote{Optimization
 Toolbox is a registered trademark of The Mathworks, Inc.} was required or one
-of a suite of high performance closed-source solvers.  \textsc{Tspopf} is a
+of a suite of high performance closed-source solvers.  TSPOPF is a
 collection of three AC optimal power flow solvers, implemented in the C
 programming language and released as \matlab MEX files.  It includes
 the original implementation of the step-controlled PDIPM from which the pure
-\matlab version was derived.  \textsc{Minopf} provides an interface to the
-Fortran based \textsc{Minos}\footnote{\textsc{Minos} is trademark of Stanford
-Business Software, Inc.} solver developed at the Systems Optimization Laboratory at Stanford University and is often the fastest solver for \matpower, but is
-available only for educational and research purposes.  DC optimal power flow
-problems can alternatively be solved using a MEX interface to \textsc{Bpmpd} --
-a commercial interior point method for linear and quadratic programming.
+\matlab version was derived.  MINOPF provides an interface to the
+Fortran based MINOS\footnote{MINOS is trademark of Stanford
+Business Software, Inc.} solver, developed at the Systems Optimization
+Laboratory at Stanford University, and is often the fastest solver for
+\textsc{Matpower}, but is available only for educational and research purposes.
+DC optimal power flow problems can alternatively be solved using a MEX
+interface to BPMPD -- a commercial interior point method for linear
+and quadratic programming.
 
 \matpower has an \textit{extensible} optimal power flow formulation that allows
-additional optimisation variable and problem constraints to be introduced by
-the user.  The is used internally to extend the standard optimisation problem
-to supprt piecewise linear cost functions, dispatchable loads, generator PQ
-capability curves and branch angle difference limit constraints.  Examples of
-additional extensions include: reserve requirements, environmental costs and
-contingency constraints.
+additional optimisation variables and problem constraints to be introduced by
+the user.  It is used internally to extend the standard optimisation
+formulation to support piecewise linear cost functions, dispatchable loads,
+generator PQ capability curves and branch angle difference limit constraints.
+Examples of possible additional extensions include: reserve requirements,
+environmental costs and contingency constraints.
 
 \matpower currently requires \matlab, version 6.5 or greater, which is a
-commercial software product from The Mathworks, Inc that is supported on all
-major platforms.  However, with the recent inclusion of a native PDIPM it
-should be possible to run \matpower on \textsc{Gnu}/Octave with minimal
+commercial software product from The Mathworks that is supported on all
+major platforms.  However, with the recent inclusion of a native PDIPM thereis
+the posibility to that \matpower could be run on
+\textsc{Gnu}/Octave\footnote{\textsc{Gnu}/Octave is an free program for
+numerical computation with strong \matlab compatibility.} with minimal
 alteration.
 
 \subsection{MATDYN}
 \textsc{Matdyn} is an extension to \matpower developed by Stijn Cole from the
 Katholieke Universiteit Leuven for dynamic analysis of electric power systems.
 It was first released in 2009 under the same license as \matpower and uses the
-same coding style.  The \matpower case format is extended with structs
-for dynamic and event data.  \textsc{Matdyn} uses \matpower to obtain a power flow solution that is then used in solving the system of differential algrbraic equations that represent the
-power system.  Results for \textsc{Matdyn} are validated against those obtained from
-\textsc{Pss/e}\footnote{\textsc{Pss/e} is a registered trademark of Siemens Power
-Transmission \& Distribution, Inc. Power Technologies International.} and
-\psat (A power system analysis toolbox described in Section \ref{sec:psat},
-below) and show good correspondance.
+same programming style.  The \matpower case format is extended with structs
+for dynamic and event data.  \textsc{Matdyn} uses \matpower to obtain a power
+flow solution that is then used in solving the system of differential
+algrbraic equations representing the power system.  Results for \textsc{Matdyn}
+are validated against those obtained from PSS/E\footnote{PSS/E is a
+registered trademark of Siemens Power Transmission \& Distribution, Inc.~Power
+Technologies International.} and PSAT (A power system analysis toolbox
+described in Section \ref{sec:psat}, below) and show good correspondance.
 
 \subsection{Power System Analysis Toolbox}
 \label{sec:psat}
 The Power System Analysis Toolbox (PSAT) is a \matlab toolbox for static and
-dynamic analysis of electric power systems developed by Federico Milano,
-currently at the University of Castilla in La Mancha, Spain.  It is released
-under the terms of the GPL version 2 and offers routines for:
-power flow, bifurcation analysis, optimal power flow, small signal stability anlysis, time
-domain simulation and phasor measurement unit placement.  A large number of
-input data formats are supported using Perl scripts and simulation reports can
-be exported plain text, Excel spreadsheets or \LaTeX~code.  \psat may be run
-from the \matlab commandline or from a \matlab based graphical user interface
-with support for network design using Simulink\footnote{Simulink is a
-registered trademark of The Mathworks, Inc.}.  A slightly modified version of
-\psat that can be run from the \textsc{Gnu}/Octave commandline is also
-available.
+dynamic analysis of electric power systems developed by Federico Milano
+-- currently an Assistant Professor at the University of Castilla in Spain. It
+is released under the terms of the \textsc{Gnu} General Public License (GPL)
+version 2 and offers routines for
+\begin{itemize}
+	\item power flow,
+	\item bifurcation analysis,
+	\item optimal power flow,
+	\item small signal stability anlysis,
+	\item time domain simulation and
+	\item phasor measurement unit placement.
+\end{itemize}
+A large number of input data formats are supported through Perl scripts and
+simulation reports can be exported as plain text, Excel spreadsheets or
+\LaTeX~code.  PSAT may be run from the \matlab command-line or from a \matlab
+based graphical user interface with support for network design using
+Simulink\footnote{Simulink is a registered trademark of The Mathworks, Inc.}.
+A slightly modified version of PSAT that can be run from the
+\textsc{Gnu}/Octave command-line is also available.
+
+% TODO: Insert UKGDS Simulink diagram.
 
 Optimal power flow problems are solved via an interface to the General
 Algebraic Modeling System (GAMS).  GAMS defines optimisation
 problems using a high-level modelling language and has a large solver portfolio, including all
 of the major commercial and academic solvers.  The interface can be used for
 solving single period optimal power flow problems where the objective function
-can represent maximisation of social benefit, maximisation of the distance to
+can model maximisation of social benefit, maximisation of the distance to
 the maximum loading condition or multi-objective of a combination of these.
 Multi-period optimal power flow is formulated as a mixed integer problem with
-linearised power balance constraints.  Again, the objective function represents
+linearised power balance constraints.  The objective function models
 maximisation of social welfare, but is extended to include startup and
 shutdown costs.
 
 Power flow and dynamic data are typically separated in electric power
-simulation tools, but in \psat they are integrated.  This combined with the
-large number of routines supported by \psat can make the code base difficult to
+simulation tools, but in PSAT they are integrated.  This combined with the
+large number of routines supported by PSAT can make the code base difficult to
 understand and modify.  However, comprehensive documentation is included with
-\psat and the mailing list is extremely active.  The majority of correspondance
-on the list concerns \psat's dynamic simulation features.  The price of
-GAMS licenses and the need for optimal power flow problems to be converted to
-the GAMS language can be barriers to its use.
+PSAT and the mailing list is very active.  The majority of correspondance on
+this list concerns PSAT's dynamic simulation features.  The price of GAMS
+licenses and the need for optimal power flow problems to be converted to the
+GAMS language can be barriers to its use.
 
 \subsection{UWPFLOW}
 % Continuation and Direct Methods to Locate Fold Bifurcations in AC/DC/FACTS
 % Power Systems
 UWPFLOW is a research tool for voltage stability analysis developed at the
 University of Waterloo, Ontario, and the University of Wisconsin-Madison.  It
-is written in ANSI-C and available as open source for research purposes only.
-The program is run with the terminal command
+is written in ANSI-C and is available as open source for research purposes
+only. The program can be run with the terminal command
 \begin{center}
 \begin{verbatim}
 $ uwpflow [-options] input_file
@@ -671,9 +687,9 @@ $ uwpflow [-options] input_file
 where \texttt{input\_file} is the path to a data file in the IEEE common data
 format (CDF) \cite{cdf:73} that may contain High-Voltage Direct Current (HVDC)
 and Flexible Alternating Current Transmission System (FACTS) device data.
-Output is also in the CDF and can include additional data for post-processing,
-including values for nose curve plots.  An interface to UWPFLOW is used by \psat
-for bifurcation analysis.
+Output is also in CDF and can include additional data for post-processing,
+including values for nose curve plots.  An interface to UWPFLOW is provided
+with PSAT and can be used for bifurcation analysis.
 
 \subsection{TEFTS}
 % Transient Stability Program to Study Energy Functions and Voltage Stability
@@ -688,44 +704,50 @@ package contains a simple example.
 The Voltage Stability Toolbox (VST) is a \matlab toolbox, developed at the
 Center for Electric Power Engineering at Drexel University in Philidelphia, for
 investigating stability and bifurcation issues in power systems.  The source
-may be used for any purpose providing the authors are properly cited.  VST
-supports: power flow, time domain simulation, static and dynamic bifurcation
-analysis, singularity analysis and eigenvalue analysis.  The feature matrix in
-Figure shows that VST has similar capabilities to PSAT.  It was developed
-around a similar time and has the same goals for educational and research
-applications, but does not have the same quality of documentation nor such an
-active community of users and developers as PSAT.
+is available for any purpose providing that the authors are suitably cited.
+VST features routines for
+\begin{itemize}
+  \item power flow,
+  \item time domain simulation,
+  \item static and dynamic bifurcation analysis,
+  \item singularity analysis and
+  \item eigenvalue analysis.
+\end{itemize}
+The feature matrix in Table \ref{tbl:featurematrix} shows the similar
+capabilities of VST and PSAT. It was developed around the same time and has
+the same goals for educational and research applications.  However it does not
+have the same quality of documentation nor such an active community of users
+and developers as PSAT.
 
 \subsection{Distribution System Simulator}
 In November 2008, the Open Distribution System Simulator (OpenDSS) was released
-as open source by the Electric Power Research Institute (EPRI).  Development of
-OpenDSS began in April 1997 and it has been used in many distributed generation
-impact assessment applications.  It is the only open source software designed
-for both distribution and transmission system simulation.  OpenDSS supports
-steady-state analyses in the frequency domain such as power flow, harmonics and
-dynamics.  Arbitrary n-phase unbalanced circuit analysis is supported using an
-object orientated data model.  Circuit elements are defined in Object Pascal
+by the Electric Power Research Institute (EPRI) as open source.  Development of
+OpenDSS began in April 1997 and it has been used extensively in distributed
+generation impact assessment applications.  It is the only open source
+program designed for both distribution and transmission system simulation.
+OpenDSS supports steady-state analysis in the frequency domain, including power
+flow, harmonics and dynamics.  Arbitrary n-phase unbalanced circuit analysis is supported using an object orientated data model.  Circuit elements are defined in Object Pascal
 and solutions are found using a linear sparse matrix solver written in C and
 C++.  OpenDSS is available under the Berkeley Software Distribution (BSD)
-license which allows use for almost any purpose.  Circuits are defined in
+license, which allows use for almost any purpose.  Circuits are defined in
 scripts, using a domain specific language, that may be executed through a
 graphical user interface or a Common Object Model (COM) interface.  The user
 interface also provides circuit data editing, plotting and power flow
 visualisation tools.
 
-The power flow solver is very fast and can be configured for repeated studies
-using daily, yearly or duty-cycle data.  The multi-phase circuit model allows
+The power flow solver is extremely fast and can be configured for repeated
+studies using daily, yearly or duty-cycle data.  The multi-phase circuit model allows
 complex fault conditions to be defined and three short-circuit analysis methods
 are provided.  The heritage of OpenDSS is in harmonics and dynamics analysis
-and it does not support any system optimisation techniques.
+and it does not support system optimisation.
 
 \subsection{Agent-based Modelling of Electricity Systems}
 \label{sec:ames}
 The AMES (Agent-based Modeling of Electricity Systems) power market test bed is
 a software package that models core features of the Wholesale Power Market
-Platform (WPMP) -- a market design proposed by the US Federal Energy Regulatory
+Platform -- a market design proposed by the Federal Energy Regulatory
 Commission (FERC) in April 2003 for common adoption in regions of the
-US\cite{tesfatsi:wpmp}. The design features:
+U.S.~\cite{tesfatsi:wpmp}. The design features:
 \begin{itemize}
   \item a centralised structure managed by an independent market operator,
   \item parallel day-ahead and real-time markets and
@@ -734,30 +756,32 @@ US\cite{tesfatsi:wpmp}. The design features:
 Learning agents represent load serving entities or generating companies and
 learn using the Roth-Erev methods, described in Section \ref{sec:rotherev}
 above, implemented using the Repast agent simulation toolkit
-\cite{gieseler:thesis}.  The permissive license under which the source code for
-these algorithms has been released allowed direct translation of them for use
-in this study.  Agents learn from the solutions of hourly bid/offer based
+\cite{gieseler:thesis}.
+% The permissive license under which the source code for
+% these algorithms has been released allowed direct translation of them for use
+% in this study.
+Agents learn from the solutions of hourly bid/offer based
 DC-OPF problems formulated as quadratic programs using the DCOPFJ package
 \cite{tesfatsi:dcopf} described in Section \ref{sec:dcopfj}, below.
 
 The capabilities of AMES are demonstrated using a 5-bus network model in
 \cite{tesfatsi:pes09}.  The model is provided with AMES and a step-by-step
-tutorial explains how it may be used simulate.  AMES comes with a
+tutorial describes how it may be used.  AMES comes with a
 Swing-based graphical user interface with plotting and table editor tools and
-is released under the the GNU General Public license version 2.
+is released under the the \textsc{Gnu} GPL version 2.
 
 \subsection{DCOPFJ}
 \label{sec:dcopfj}
 To solve market problems defined in AMES, researchers at Iowa State University
-developed a stand-alone DC optimal power flow solver in Java named DCOPFJ [].
+developed a stand-alone DC optimal power flow solver in Java named DCOPFJ.
 It formulates optimal power flow problems as convex quadratic programs and
-solves using QuadProgJ.  The same researcher developed QuadProgJ as an
-stand-alone solver that uses the dual active set strictly convex quadratic
-programming algorithm [Goldfarb, Fletcher, Idnani 83].  DCOPFJ requires
+which are solved using QuadProgJ.  The same researcher developed QuadProgJ as
+an independant solver that uses the dual active set strictly convex quadratic
+programming algorithm \cite{goldfarb:scqp}.  DCOPFJ requires
 generator costs to be modelled as polynomial functions, of second order or
 less and no sparse matrix techniques are employed to allow application to large
 systems.
 
 %\subsection{PyBrain}
 
-\subsection{Summary}
+\section{Summary}
