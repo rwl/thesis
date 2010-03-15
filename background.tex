@@ -1,531 +1,235 @@
-\chapter{Background Theory}
+\chapter{Background}
 \label{ch:background}
-This chapter provides an introduction to optimal power flow and reinforcement
-learning.  The methods described are used in Chapter \ref{ch:method} below to
-model electricity markets and market participant behaviour.  Optimal power
-flow is one of the most widely studied subjects in electric power Engineering
-and a comprehensive literature review is available in
-\cite{momoh:part1,momoh:part2}.  For detailed definitions and analysis
-reinforcement learning methods the interested reader is referred to
-\cite{suttonbarto:1998,bertsekas:96}.
 
-\section{Optimal Power Flow}
-\label{sec:opf}
-Nationalised electricity supply industries are typically planned operated and
-controlled centrally.  A system operator determines which generators must
-operate and the required output of the operating units such that demand and
-reserve requirements are met and the overall cost of production is minimised.
-In electric power Engineering, this is termed the \textit{unit commitment} and
-\textit{economic dispatch} problem.
 
-In 1962 a unit commitment formulation was published with network constraints
-included \cite{carpentier:opf}.  \textit{Optimal power flow} is this
-integration of economic and power flow aspects of power systems into a
-mathematical optimisation problem.  Its ability to solve centralised power
-system operation problems and determine prices in power pool markets has led
-to optimal power flow being one of the most widely studied subjects in the
-power systems community.
-
-\subsection{Power Flow Formulation}
-\label{sec:pf_form}
-Optimal power flow derives its name from the \textit{power flow}, or load flow,
-steady-state power system analysis technique.  Given sets of generator data,
-load data and a nodal admittance matrix $Y_{bus}$, a power flow study
-determines the voltage
+\section{Electric Power Systems}
+Generation and bulk movement of electricity in the UK takes place in a
+three-phase alternating current (AC) power system.  Each phase is
+high voltage, sinusoidal electrical waveform, $120^\circ$ offset in time
+and oscillating at a constant frequency of 50Hz.  Synchronous generators (or
+alternators), typically rotating at 3600rpm or 1800rpm, generate apparent power
+$S$ at a line voltage $V_l$ typically between
+11kV and 25kV.  One of the prinicpal reasons that alternating current, and not
+direct current (DC), systems are used to supply electricity is that they allow
+power to be transformed between voltages with very high efficiency.  The
+apparent power conducted by a line $l$ is the product of the line current
+$I_l$ and the line voltage
 \begin{equation}
-V_i = \vert V_i \vert \angle\delta_i = \vert
-V_i\vert(\cos\delta_i + j\sin\delta_i)
+S = \sqrt{3} V_l I_l
 \end{equation}
-at each node $i$ in the power system \cite{grainger:psa}. $Y_{bus}$ describes
-the electrical network and its formulation is dependant upon the transmission
-line, transformer and shunt models employed\footnote{The $Y_{bus}$
-formulation used in this thesis is defined in Section \ref{sec:acpf}.}.
-Importantly, the relationship between nodal voltages and power entering the
-network is non-linear.  For a network of $n_b$ nodes, the current injected at
-node $i$ is
+so increasing the voltage has an inverse effect on the current.
+Ohmic heating losses are proportional to the square of line current
 \begin{equation}
-I_i = \sum_{j=1}^{n_b} Y_{ij} V_j
+P_{r} = 3 I^2 R
 \end{equation}
-where $Y_{ij} = \vert Y_{ij}\vert \angle\theta_{ij}$ is the $(i,j)^{th}$ element
-if the, $n_b \times n_b$, $Y_{bus}$ matrix.  Hence, the apparent power entering
-the network at bus $i$ is
-\begin{equation}
-S_i = P_i+Q_i = V_iI_i^* = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \angle
-(\delta_i - \delta_j - \theta_{ij})
-\end{equation}
-Converting to polar coordinates and separating the real and imaginary parts,
-the active power
-\begin{equation}
-P_i = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \cos(\delta_i - \delta_j -
-\theta_{ij})
-\end{equation}
-and the reactive power entering the network
-\begin{equation}
-Q_i = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \sin(\delta_i - \delta_j -
-\theta_{ij})
-\end{equation}
-at bus $i$ are non-linear functions of $V_i$, as indicated by the presence of
-the sine and cosine terms.  Kirchoff's Current Law requires that the net
-complex power injection (generation - load) at each bus equals the sum of
-complex power flows on each branch connected to the bus.  The power balance
-equations
-\begin{equation}
-\label{eq:p_balance}
-P_g^i - P_d^i = P^i
-\end{equation}
-and
-\begin{equation}
-\label{eq:q_balance}
-Q_g^i - Q_d^i = Q^i
-\end{equation}
-where the subscripts $g$ and $d$ indicate generation and demand
-respectively, form a key constraint in the optimal power flow problem.
+where $R$ is the resistance of the line.  Hence reducing the line current
+dramatically reduces the heating losses.  One drawback of higher voltages
+is the larger extent and integrity of conductor insulation required between
+one another, neutral and earth.  This results in large transmission towers and
+high cable costs when undergrounding systems.
 
-\subsection{Optimal Power Flow Formulation}
-Optimal power flow is a mathematical optimisation problem in which the complex
-power balance equations (\ref{eq:p_balance}) and (\ref{eq:q_balance}) must be
-satisfied.  Optimisation problems have the general form
-\begin{equation}
-\min_x f(x)
-\end{equation}
-subject to
-\begin{eqnarray}
-\label{eq:equality}
-g(x)& =& 0\\
-\label{eq:inequality}
-h(x)& \leq& 0
-\end{eqnarray}
-where $x$ is the optimisation variable, $f$ is the objective function and
-equations (\ref{eq:equality}) and (\ref{eq:inequality}) are sets of equality
-and inequality constraints on $x$, respectively.  Typical inequality
-constraints are bus voltage magnitude contingency state limits, generator
-output limits and branch power or current flow limits.  The optimisation
-variable $x$ may be made up of generator set-points, bus voltages, transformer
-tap settings etc.  If the optimisation variable $x$ is empty then the
-formulation reduces to a power flow problem as described in Section
-\ref{sec:pf_form}, above.
+UK transmission systems operate at 400kV, 275kV or 132kV, but systems upto
+and beyond 1000kV are in operation in larger countries.  For transmission over
+very long distances or undersea, high voltage DC systems have become
+econmically viable in recent years.  The ability to transform power between
+voltages and transmit large quantities over long distances allows
+generation at high capacity stations, located away from large load centres and
+which offer economies of scale and lower operating costs.  It also allows
+electricity to be transmitted across country borders and from renewable energy
+plant in remote locations.
 
-A common objective of optimal power flow is total system cost minimisation.
-For and network of $n_g$ generators the objective function is
-\begin{equation}
-\min \sum_{k=1}^{n_g} C_k(P_{g,k})
-\end{equation}
-where $C_k$ is a cost function (typically quadratic) of the set-point $P_{g,k}$
-for generator $k$.  Alternative objectives may be to minimise losses, maxmimise
-the voltage stability margin or minimise deviation of an optimisation variable
-from a particular schedule.
+For delivery to most consumers, electric energy is transferred at a substation
+from the transmission system to the grid supply point of a distribution
+system.  Distribution networks are also three-phase AC systems, but operate at
+lower voltages and differ in their general structure or topology from
+transmission networks.  Transmission networks are typically highly
+interconnected, providing several paths for power flow.  Whereas distribution
+networks in rural areas typically consist of long radial feeders (usually
+overhead lines) or in urban areas consist of many ring circuits.  Three-phase
+transformers, that step the voltage down to levels more convenient for general
+use (typically from 11kV or 33kV to 400V), are spaced along the branches/rings.
+All three-phases at 400V may be provided for industrial and commercial loads
+or individual phases at 230V supply typical domestic and other commercial
+loads. Splitting of phases is usually planned so that each is loaded equally.
+This produces a balanced symetrical system that may be analysed as a single
+phase circuit, as explained further in Section \ref{sec:power_system_model}.
+Figure [] illustrates the basic sturcture of a typical national electric power
+system.
 
-\subsection{Interior-Point Methods}
+\section{Electricity Markets}
+The UK was the first large country to privatise its electricity
+supply industry.  The market structures that have since been adopted
+implement the main principles behind most electricity markets.
 
-\newpage
-\section{Reinforcement Learning}
-\label{sec:rl}
-% The problem of learning how best to interact with an environment so as to
-% maximise some long-term reward is a general one.  Reinforcement learning is a
-% term from the field of machine learning that is typically applied to
-% understanding, automating and solving this problem through adaptive
-% computational approaches.  Unlike many machine learning techinques, the
-% algorithms are not instructed as to which actions to take, but must learn to
-% maximise the long-term reward through trial-and-error.
+The England and Wales Electricity Pool was created in 1990 to break apart the
+monolithic Central Electricity Generating Board (CEGB) and to gradually
+introduce competition in generation and retail supply.  Early adoption of
+electrcity markets by the UK has lead to the country hosting the
+main European power and gas exchanges and the UK boasts a high degree
+of consumer switching which is an important factor in a competitive
+marketplace. The Pool has since been replaced by trading arrangements in which
+market outcomes are not centrally determined, but arise largely from
+bilateral agreements between producers and suppliers.
 
-% Reinforcement learning starts with an interactive, goal-seeking individual
-% agent existing in an environment.  The agent requires the ability to;
-% \begin{itemize}
-%   \item Sense aspects of its environment,
-%   \item Perform actions that influence the state of its environment and
-%   \item be assigned rewards as a response to their chosen action.
-% \end{itemize}
-% An agent follows a particular \textit{policy} when mapping the perceived state
-% of its environment to an action choice.  Reinforcement learning methods adjust
-% the agent's policy.
-Reinforcement learning is learning from reward by mapping situations to actions
-when interating with an uncertain environment \cite{suttonbarto:1998}.  An
-agent learns \textit{what} to do in order to achieve a task through
-trial-and-error using a numerical reward or penalty signal without being
-instructed \textit{how} to achieve it.  In challenging cases, actions may not
-yield immediate reward or may affect the next situation and all subsequent
-rewards.  A compromise must be made between exploitation of past experiences
-and exploration of the environment through new action choices.  A
-reinforcement learning agent must be able to:
-\begin{itemize}
-  \item sense aspects of its environment,
-  \item take actions that influence its environment and,
-  \item have an explicit goal or set of goals relating to the state of its
-  environment.
-\end{itemize}
-In the classical model of agent-environment interaction, at each time step $t$
-in a sequence of discrete time steps $t = 1,2,3\dotsc$ an agent receives as
-input some form of the environment's state $s_t \in \mathscr{S}$, where
-$\mathscr{S}$ is the set of possible states.  From a set of actions
-$\mathscr{A}(s_t)$ available to the agent in state $s_t$, the agent selects an
-action $a_t$ and performs it upon its environment.  The environment enters a
-new state $s_{t+1}$ in the next time step and the agent receives a scalar
-numerical reward $r_{t+1} \in \mathbb{R}$ in part as a result of its action.
-The agent then learns from the state representations $s_t$ and $s_{t+1}$, the
-chosen action $a_t$ and the reinforcement signal $r_{t+1}$ before beginning
-its next interaction.  Figure X diagrams the agent-environment interaction
-event sequence.
+\subsection{The England and Wales Electricity Pool}
+\label{sec:thepool}
+The Electric Lighting Act 1882 began the development of the UK's electricity
+supply industry by allowing persons, companies and local authorities to set up
+supply systems, principally at the time for the purposes of street lighting and
+trams.  Under The Electricity Supply Act 1926 the Central Electricity Board
+started operating the first grid of regional networks interconnected and
+synchronised at 132kV, 50Hz in 1933.  This began operation as a national system
+five years later in 1938 and was nationalised under The Electricity Act 1947
+with the merger of over 600 electricity companies and the creation of the
+British Electricity Authority.  This was then dissolved and replaced with the
+CEGB and the Electricity Council under The Electricity Act 1957.  The CEGB was
+responsible for planning the network and generating sufficient electricity until the start of privatisation in 1990.
 
-\subsection{Markov Decision Processes}
-For a finite number of states $\mathscr{S}$, if all states are Markov, the
-agent interacts with a finite Markov decision process (MDP).  Informally,
-for a state to be Markov it must retain all relevant information about the
-complete sequence of positions leading up to the state, such that all future
-states and expected rewards can be predicted as well as would be possible given
-a complete history.  A particular MDP is defined for a discrete set of time
-steps by a state set $\mathscr{S}$, an action set $\mathscr{A}$, a set of state
-transition probabilities $\mathscr{P}$ and a set of expected reward values
-$\mathscr{R}$.  Given a state $s$ and an action $a$, the probability of
-transitioning to each possible next state $s^\prime$ is
-\begin{equation}
-\mathscr{P}^a_{ss^\prime} = \Pr \bigl\lbrace s_{t+1} = s^\prime \vert s_t=s,
-a_t=a \bigr\rbrace .
-\end{equation}
-Given the next state $s^\prime$, the expected value of the next reward is
-\begin{equation}
-\mathscr{R}^a_{ss^\prime} = E \bigl\lbrace r_{t+1} \vert s_t=s, a_t=a,
-s_{t+1}=s^\prime \bigr\rbrace .
-\end{equation}
-In practice not all state signals are Markov, but should provide a good basis
-for predicting subsequent states, future rewards and selecting actions.
+The industry was privatised under Prime Minister
+Margaret Thatcher and The England and Wales Electricity Pool was created in
+March 1990.  Control of the transmission system was transferred from the
+CEGB to The National Grid Company, which was originally owned by twelve
+regional electricity companies and is now publically listed.  The Pool was a
+multilateral contractual arrangement between generators and suppliers and did
+not itself buy or sell electricity.  Competition in generation was introduced
+gradually, by entitling customers with consumption greater than or equal
+to 1MW (approximately 45\% of the non-domestic market \cite{decc:dukes09}) to
+purchase electricity form any listed supplier.  This limit was lowered in April
+1994 to included customers with peak loads of 100kW or more.  Finally, between
+September 1998 and March 1999 the market was opened to all customers.
 
-If the state transition probabilities and expected reward values are not known,
-only the states and actions, then samples from the MDP must be taken and a value
-function approximated iteratively based on new experiences generated by
-performing actions.
+Scheduling of generation was on a merit order basis (cheapest first) at a day
+ahead stage and set a wholesale electricity price for each half-hour period of
+the schedule day.  Forecasts of total demand in MW, based on historic data and
+adjusted for factors such as the weather, for each settlement period were used
+by generating companies and organisations with interconnects to the England
+and Wales grid to formulate bids that had to be submitted to the grid operator
+by 10AM on the day before the schedule day.
 
-\subsection{Value Function Methods}
-\label{sec:valuebased}
-% Value-based methods attempt to find the optimal policy by
-% approximating a \textit{value-function} which returns the total reward an
-% agent can expect to accumulate, given an initial state and following the
-% current policy thereafter.  The policy is adjusted using the reinforcing
-% signal and information from previous action choices.
-Any method that can optimise control of a MDP may be considered a reinforcement
-learning method.  All search for an optimal policy $\pi^*$ that maps state
-$s \in \mathscr{S}$ and action $a \in \mathscr{A}$ to the probability
-$\pi^*(s,a)$ of taking $a$ in $s$ and maxmimises the sum of rewards over the
-agents lifetime.
+% TODO: Insert Pool bids figure.
 
-Each state $s$ under policy $\pi$ may be associated with a \textit{value}
-$V^\pi(s)$ equal to the expected return from following policy $\pi$ from state
-$s$.  Most reinforcement learning methods are based on estimating the
-state-value function
-\begin{equation}
-\label{eq:statevalue}
-V^\pi(s) = E \Bigg\lbrace \sum^\infty_{t=0} \gamma^t r_t \Bigg\vert s_0 = s
-\Bigg\rbrace
-\end{equation}
-where $\gamma$ is a discount factor, with $0\leq \gamma \leq 1$.
-Performing certain actions may result in no state change, creating a loop and
-causing the value of that action to be infinite for certain policies.
-The discount factor $\gamma$ prevents values from going unbounded and
-represents reduced trust in the reward $r_t$ as discrete time $t$
-increases.  Many reinforcement learning methods estimate the action-value
-function
-\begin{equation}
-\label{eq:actionvalue}
-Q^\pi(s,a) = E \Bigg\lbrace \sum^\infty_{t=0} \gamma^t r_t \Bigg\vert s_0 = s,
-a_0 = a \Bigg\rbrace
-\end{equation}
-which defines the value of taking action $a$ in state $s$ under fixed policy
-$\pi$.
+Bids consisted of five price parameters, as illustrated in Figure X, and
+represented the avoidable cost of generation.  A start-up price would also be
+included, representing the cost of turning on the generator from cold.  A
+no-load price $c_{noload}$ would equal the cost in pounds of keeping the
+generator running regardless of output. Three incremental prices $c_1$, $c_2$
+and $c_3$ specify the cost per MWh of generation between set-points $p_1$,
+$p_2$ and $p_3$.
 
-\subsubsection{Temporal-Difference Learning}
-Temporal Difference (TD) learning is a central idea in reinforcement learning.
-TD methods do not attempt to estimate the state transition probabilities and
-expected rewards of the finite MDP, but estimate the value function directly.
-They learn to \textit{predict} the expected value of total reward returned by
-the state-value function (\ref{eq:statevalue}).  For an exploratory policy $\pi$
-and a non-terminal state $s$, an estimate of $V^\pi(s_t)$ at any given time step
-$t$ is updated using the estimate at the next time step $V^\pi(s_{t+1})$ and the
-observed reward $r_{t+1}$
-\begin{equation}
-V^\pi(s_t) \leftarrow V^\pi(s_t) + \alpha \bigl[r_{t+1} + \gamma
-V^\pi(s_{t+1}) - V^\pi(s_t) \bigr]
-\end{equation}
-where $\alpha$ is the learning rate, with $0 \leq \alpha \leq 1$, which controls
-how much attention is paid to new data when updating $V^\pi$.  TD learning
-evaluates a particular policy and offers strong convergence guarantees, but does
-not learn better policies.
+A settlement computer program was used to calculate an unconstrained schedule
+(with no account being taken for the physical limitations of the transmission
+system), meeting the forecast demand and requirements for reserve while minimising cost.
+Cheapest bids up to the marginal point would get accepted first and the bid
+price from the marginal generator would generally determine the system marginal
+price for each settlement period.  The system marginal price would determine
+the prices paid by consumers and paid to generators, which would be adjusted
+such that that the costs of transmission are covered by the market and that the
+availability of capacity is encouraged at certain times.
 
-\subsubsection{Sarsa}
-\label{sec:sarsa}
-% The SARSA algorithm is an on-policy Temporal Difference control method where
-% the policy is typically represented by a $M \times N$ table, where $M$ and $N$
-% are arbitrary positive numbers equal to the total number of feasible states and
-% actions respectively.  The action-value update for agent $j$ is defined by
-% \begin{equation}
-% Q_j(s_{jt},a_{jt}) + \alpha [r_{jt+1} + \gamma Q_j(s_{jt+1},a_{jt+1}) -
-% Q_j(s_{jt},a_{jt})]
-% \end{equation}
-% While the Q-learning method (See Section \ref{sec:qlearning}, below) updates
-% action-values using a greedy policy, which is a different policy to that being
-% followed, SARSA uses the discounted future reward of the next state-action
-% observation following the original policy.
-Sarsa (or modified Q-learning) is an on-policy TD control method that
-approximates the state-action value function in (\ref{eq:actionvalue}).
-Recall that the state-action value function for an agent returns the total
-expected reward for following a particular policy for selecting actions as a
-function of future states.  The function is updated according to the rule
-\begin{equation}
-\label{eq:sarsa}
-Q(s_t,a_t) \leftarrow Q(s_t,a_t) + \alpha \bigl[r_{t+1} + \gamma
-Q(s_{t+1},a_{t+1}) - Q(s_t,a_t)\bigr]
-\end{equation}
-This update also uses the action from the next time step $a_{t+1}$ and the
-requirement to transition through state-action-reward-state-action for each
-time step derives the algorithm's name.  Sarsa is referred to as an on-policy
-method since it learns the same policy that it follows.
+Variations in demand and changes in plant availability would be adjusted for by
+the grid operator, producing a constrained schedule.  Generators having
+submitted bids would be instructed to increase or reduce production
+appropriately.  Alternatively, the grid operator could instruct large customers
+with contracts to curtail their demand to do so or instruct generators
+contracted to provide ancillary services to adjust production.
 
-\subsubsection{Q-Learning}
-\label{sec:qlearning}
-% This section describes the original off-policy Temporal Difference Q-learning
-% method developed by Watkins \cite{watkins:1989}.  The action-value function,
-% $Q(s,a)$, returns values from a $M \times N$ matrix where $M$ and $N$ are
-% arbitrary positive numbers equal to the total number of feasible states and
-% actions, respectively.  Each value represents the \textit{quality} of taking a
-% particular action, $a$, in state $s$.  Actions are selected using either the
-% $\epsilon$-greedy or softmax (See Section \ref{sec:rotherev}, above) methods.
-% The $\epsilon$-greedy method either selects the action (or one of the actions)
-% with the highest estimated value or it selects an action at random, uniformly,
-% independently of the estimated values with (typically small) probability
-% $\epsilon$.
-%
-% Agent $j$ will observe a reward, $r_{jt}$, and a new state, $s_{jt+1}$,
-% after taking action $a_{jt}$ at step $t$ when in state $s_{jt}$.  The
-% state-action value, $Q_j(s_{jt},a_{jt})$, is updated according to the
-% maximum value of available actions in state $s_{t+1}$ and becomes
-% \begin{equation}
-% \label{eq:qlearning}
-% Q_j(s_{jt},a_{jt}) + \alpha [r_{jt+1} + \gamma\max_{a} Q_j(s_{jt+1},a_{jt}) -
-% Q_j(s_{jt},a_{jt})]
-% \end{equation}
-% where $\alpha$ and $\gamma$ are the learning rate, $0\leq\alpha\leq1$, and
-% discount factor, $0\leq\gamma\leq1$, respectively.  The learning rate
-% determines the extent to which new rewards will override the effect of older
-% rewards.  The discount factor allows the balance between maximising immediate
-% rewards and future rewards to be set.
-Q-learning is an off-policy TD method that does not estimate the finite
-MDP directly, but iteratively approximates a state-action value
-function which returns the value of taking action $a$ in state $s$ and
-following an \textit{optimal} policy thereafter. The same theorems used in defining the TD error also apply for
-state-action values.
-\begin{equation}
-\label{eq:qlearning}
-Q(s_t,a_t) \leftarrow Q(s_t,a_t) + \alpha \bigl[r_{t+1} + \gamma\max_a
-Q(s_{t+1},a)-Q(s_t,a_t) \bigr]
-\end{equation}
-The method is off-policy since the update function is independant of the policy
-being followed and only requires that all state-action pairs be continually
-updated.
+\subsection{British Electricity Transmission and Trading Arrangements}
+\label{sec:betta}
+Concerns over exploitation of market power in The England and Wales Electricity
+Pool and its effectiveness in reducing consumer electricity prices prompted the
+introduction of New Electricity Trading Arrangements (NETA) in March 2001
+\cite{martoccia:2005}.  The aim was to improve efficiency and provide greater
+choice to participants.  The Scottish electricity industry was integrated into
+the nationwide British Electricity Transmission and Trading Arrangments
+(BETTA) in April 2005 under The Energy Act 2004.  While The Pool operated a
+single daily auction and dispatched plant centrally, under the new
+arrangements participants became self-dispatching and market positions became
+determined through continuous bilateral trading between generators, suppliers,
+traders and consumers.
 
-\subsubsection{Eligibility Traces}
-With the TD methods described above, only the value for the immediately
-preceeding state or state-action pair is updated at each time step.  However,
-the prediction $V(s_{t+1})$ also provides information concerning earlier
-predictions and TD methods can be extended to update a set of values at each step.  An eligibility trace $e(s)$ represents how eligible the state $s$ is to receive
-credit or blame for the TD error
-\begin{equation}
-\delta = r_{t+1} + \gamma V^\pi(s_{t+1}) - V^\pi(s_t)
-\end{equation}
-When extended with eligibility traces TD methods update values for all states
-\begin{equation}
-%V(s) \leftarrow V(s) + \gamma \delta e(s)
-\Delta V_t(s) = \alpha \delta_t e_t(s)
-\end{equation}
-For the current state $e(s) \leftarrow e(s) + 1$ and for all states the
-$e(s) \leftarrow \gamma \lambda e(s)$ where $\lambda$ is the eligibility trace
-attenuated factor from which the extended TD methods TD($\lambda$),
-Q($\lambda$) and Sarsa($\lambda$) derive their names. For $\lambda = 0$ only
-the preceeding value is updated is updated, as in the unextended definitions,
-and for $\lambda = 1$ all preceeding state-values or state-action values are
-updated equally.
+The majority of power is traded under the BETTA through long-term contracts
+that are customised to the requirements of each party \cite{kirschen:book}.
+These suit participants responsible for large power plants or those purchasing
+large volumes of power for many customers.  Considerable amounts of time and
+effort are required to form these long-term contracts and this has a high
+associated transaction cost.  However, they reduce risk for large players and
+a degree of flexibility can be provided through option contracts.
 
-\subsubsection{Action Selection}
-% TODO: Epsilon-greedy.
-Action selection may be acomplished using a form of the \textit{softmax} method
-\cite{suttonbarto:1998} using the Gibbs, or Boltzmann, distribution to select
-action $k$ for the $(t+1)^{th}$ interaction with probability
-\begin{equation}
-p_{jk}(t+1) = \frac{e^{q_{jk}(t+1)/\tau}}{\sum_{l=0}^K e^{q_{jl}(t+1)/\tau}}
-\end{equation}
-where $\tau$ is the \textit{temperature} parameter.  This parameter may be
-lowered in value over the course of an experiment since high values give all
-actions similar probability and encourage exploration of the action space,
-while low values promote exploitation of past experience.
+Power is also traded directly between participants through over the counter
+(OTC) contracts that are usually of a standardised form.  Such contracts
+typically concern smaller volumes of power and have much lower associated
+transaction costs.  Often they are used by participants to refine their market
+position ahead of delivery time.
 
-% \subsubsection{Q($\lambda$)}
-% \label{sec:qlambda}
-% In the Q-learning formulation, described in equation \ref{eq:qlearning}, only
-% the quality associated with the previous state, $s_{jt}$, is updated.  However,
-% the preceding states can also, in general, be said to be associated with the
-% reward $r_{jt+1}$.  Eligibility traces are a mechanism for representing this
-% effect and in algorithms such as Q($\lambda$), they are what the $\lambda$
-% refers to.  The eligibility trace for a state $e(s)$ represents how eligible
-% the state $s$ is to receive credit or blame for the error.  The term ``trace''
-% refers to fact that only recently visited states become eligible.  The
-% eligibility value for the current state is increased while for all other
-% states it is attenuated by a factor $\lambda$.
-%
-% The off-policy nature of Q-learning requires special care to be taken when
-% implementing eligibility traces.  While the algorithm may learn a greedy
-% policy, in which the action with the maximum value would always be taken,
-% typically a policy with some degree of exploration will be followed when
-% choosing actions.  If an exploratory (pseudo-random) step is taken the
-% preceding states can no longer be considered eligible for credit or blame.
-% Setting $\lambda$ to $0$ for non-greedy actions removes much of the benefit of
-% using eligibility traces if exploratory actions are frequent.  A solution to
-% this has been developed, but requires a very complex implementation
-% \cite{peng:1996}.  A na\"ive approach can be taken, where the effect of
-% exploratory actions is ignored, but the results of this are unexplored.
+Trading facilities, such as power exchanges, provide a means for participants
+to fine-tune their positions further, through short-term transactions for
+relatively small quantities of energy.  Modern exchanges are computerised and
+accept anonymous offers and bids submitted electronically.  A submitted
+offer/bid will be paired with any outstanding bids/offers in the system with
+compatible prices and quantities.  The details are then displayed for traders
+to observe and educate their decisions with.
 
-\subsection{Policy Gradient Methods}
-\label{sec:policygradient}
-% The value-function methods defined in Section \ref{sec:valuebased} typically
-% rely upon discretisation of the sensor and action spaces so the associated
-% values may be stored in tables.  The memory requirements for this restrict the
-% application of these methods to small environments.  Many environments,
-% particularly from real applications, exhibit continuous sensor and/or action
-% spaces and require generalisation techniques to be employed to provide a more
-% compact policy representation.
-%
-% Policy-gradient methods use only the reward signal and search directly in the
-% space of the policy parameters.  The agent's policy function approximator is
-% updated according to the gradient of expected reward with respect to its
-% parameters.
-Value function based methods have been successfully applied with discrete lookup
-table parameterisation to many problems [ref].  However, the number of discrete
-states required increases exponentially as the dimensions of the state space
-increase and if all possibly relevant situations are to be covered then these
-methods become subject to Bellman's Curse of Dimensionality
-\cite{bellman:1961}.  Value function based methods can be used in conjunction
-with function approximators, artificial neural networks are popular, to work
-with continuous state and action space.  However, when used with value
-function approximation they have been shown to offer poor convergence and even
-divergence characteristics, even in simple systems \cite{peters:enac}.
+All bilateral trading must be completed before ``gate-closure'' -- a point
+in time, before delivery time, that gives the system operator an
+opportunity to balance supply and demand and mitigate potential breaches of
+system limits.  In keeping with the UK's free market philosphy, a competitive
+spot market \cite{schweppe:spot} is used in the balancing process.  A
+generator that is not fully loaded may offer a price at which it is willing to
+increase its output by a specified quantity, stating the rate at which it is
+capable of doing so.  Certain loads may also offer demand reductions at a
+price which can typically be implemeted very quickly.  Longer-term contracts
+for balancing services are also struck between the system operator and
+generators/suppliers in order to avoid the price volatility often associated
+with spot markets.
 
-These convergence problems have motivated research into policy gradient methods
-which make small incremental changes to the parameters $\theta$ of a policy
-function approximator.  With artificial neural networks the parameters are
-the weights of the network connections.  Policy gradient methods update
-$\theta$ in the direction of the gradient of some policy performance measure
-$Y$ with respect to the parameters
-\begin{equation}
-\theta_{i+1} = \theta_i + \alpha \frac{\partial Y}{\partial \theta_i}
-\end{equation}
-where $\alpha$ is a positive definite step size learning rate.
+\section{Electricity Market Simulation}
+The previous sections have shown the importance of electricity to modern
+societies and have explained how its supply is trusted to unadministered
+bilateral trading arrangements.  Electricity supply involves technology, money,
+people, natural resources and the environment.  These aspects are all changing
+and the discipline must be constantly researched to ensure that systems such as
+electricity markets are fit for purpose.  The value of electricity to society
+makes it infeasible to experiment with radical changes to trading arrangements
+on real systems.  A practical alternative is to create an abstract mathematical
+model with a set of simplifying approximations and assumptions and find
+analytical solutions by simulating the model using computer programs.
 
-Aswell as working with continuous state and actions space, policy gradient
-methods offer strong convergence guarantees, do not require all states to be
-continually updated and although uncertainty in state data can degrade policy
-performance, the techniques need not be altered.
+Game theory is the branch of applied mathematics in which behaviour in
+strategic situations is captured.  A common approach to doing this is to
+model the system and players as a mathematical optimisation problem.  Section
+\ref{sec:opf} defines the optimal power flow problem, which is a classic
+optimisation problem in the field of electric power Engineering.  Electricity
+markets are commonly modelled using variations on the optimal power flow problem with
+player strategies integrated[ref].  This thesis concerns \textit{agent-based}
+simulation, which is an alternative approach to the mathematics of games.
 
-Policy gradient methods are differentiated largely by the techniques used to
-obtain an estimate of the policy gradient $\partial Y / \partial \theta$.
-The most successful real-world robotics results have been yielded using
-Williams' \textsc{Reinforce} likelihood ratio methods \cite{williams:reinforce}
-and natural policy gradient methods such as Natual Actor-Critic
-\cite{peters:enac}.
+\subsection{Agent-Based Simulation}
+Social systems, such as electricity markets, are inherently complex and involve
+interactions between different types of individuals and between individuals
+and collective entities, such as organisations or groups, the behaviour of which
+is itself the product of individual interactions.  This complexity
+drives classical monolithic equilibrium models to their limits.  Models are
+often highly stylised and limited to small numbers of players with strong
+constraining assumptions made on their behaviour.
 
-% \subsubsection{REINFORCE}
-% \label{sec:reinforce}
-% REINFORCE is an associative reinforcement learning method that determines
-% a policy by modifying the parameters of a policy function approximator, rather
-% than approximating a value function \cite{williams:reinforce}.  Commonly,
-% feedforward artificial neural networks are used to represent the policy, where
-% the input is a representation of the state and the output is action selection
-% probabilities.  In learning, a policy gradient approach is taken where the
-% weights of the network are adjusted in the direction of the gradient of
-% expected reinforcement.
-%
-% Defining the network, let $\mathbf{x}^i$ denote the vector of inputs to the
-% $i$th unit and $y_i$ denote output of the unit.  In the input layer of the
-% network the elements $x_j$ of $\mathbf{x}^i$ are normalised sensor values from
-% the environment and in the output layer, or in any hidden layers, they are
-% outputs from the $j$ unit in the preceding layer.  Let $\mathbf{w}^i$ denote
-% the vector of the weights, $w_{ij}$, on the connections to the $i$th unit.  The
-% output of the $i$th unit is dependant on the vector of inputs, $\mathbf{x}^i$,
-% and the associated weights, $\mathbf{w}^i$.
-%
-% For each interaction of the agent with the environment, each parameter $w_{ij}$
-% is incremented by
-% \begin{equation}
-% \label{eq:reinforce}
-% \Delta w_{ij} = \alpha_{ij}(r - b_{ij})\frac{\partial\ln\rho_i}{\partial
-% w_{ij}}
-% \end{equation}
-% where $\alpha_{ij}$ is the \textit{learning factor}, $b_{ij}$ is the
-% \textit{reinforcement baseline} and $\rho_i$ is the performance of the policy
-% (e.g., the average reward per interaction).
-%
-% \subsubsection{ENAC}
-% \label{sec:enac}
-% ToDo: Episodic Natural Actor Critic\cite{peters:enac}.
+Agent-based simulation involves modelling simultaneous operations and
+interactions between adaptive agents and assessing their effect on the system
+as a whole.  Macro-level system properties arise from agent interactions, even
+those with simple behavioural rules, that could not be deduced by simply
+aggregating the agent's properties. % Game of Life
 
-
-\subsection{Roth-Erev Method}
-\label{sec:rotherev}
-The reinforcement learning method formulated by Alvin~E.~Roth and Ido~Erev is
-based on empirical results obtained from observing how humans learn decision
-making strategies in games against multiple strategic players
-\cite{roth:games,roth:aer}.  It learns a stateless policy in which each action
-$a$ is associated with a value $q$ for the propensity of its selection.  In
-time period $t$, if agent $j$ performs action $a^\prime$ and receives a reward
-$r_{ja^\prime}(t)$ then the propensity value for action $a$ at time $t+1$ is
-\begin{equation}
-q_{ja}(t+1) =
-\begin{cases}
-(1-\phi)q_{ia}(t) + r_{ja^\prime}(t)(1-\epsilon), & \text{$a = a^\prime$} \\
-(1-\phi)q_{ia}(t) + r_{ja^\prime}(t)(\frac{\epsilon}{A-1}), & \text{$a \ne
-a^\prime$}
-\end{cases}
-\end{equation}
-where $A$ is the total number of feasible actions, $\phi$ is the
-\textit{recency} parameter and $\epsilon$ is the \textit{experimentation} parameter.  The recency (forgetting) parameter
-degrades the propensities for all actions and prevents propensity values from
-going unbounded.  It is intended to represent the tendency for players to forget
-older action choices and to prioritise more recent experience.  The
-experimentation parameter prevents the probability of choosing an action from
-going to zero and encourages exploration of the action space.
-
-Erev and Roth proposed action selection according to a discrete probability
-distribution function, where action $k$ is selected for interaction $t+1$ with
-probability
-\begin{equation}
-p_{jk}(t+1) = \frac{q_{jk}(t+1)}{\sum_{l=0}^K q_{jl}(t+1)}
-\end{equation}
-Since $\sum_{l=0}^K q_{jl}(t+1)$ increases with $t$, a reward $r_{jk}(t)$ for
-performing action $k$ will have a greater effect on the probability
-$p_{jk}(t+1)$ during early interactions while $t$ is small.  This is intended
-to represent Psychology's Power Law of Practice in which it is qualitatively
-stated that, with practice, learning occurs at a decaying exponential rate and
-that a learning curve will eventually flatten out.
-
-\subsubsection{Modified Roth-Erev Method}
-\label{sec:variant}
-Two shortcomings of the basic Roth-Erev algorithm have been identified and a
-modified formulation proposed \cite{nicolaisen:2001}.  The two issues are that
-\begin{itemize}
-  \item the values by which propensities are updated can be zero or very small
-  for certain combinations of the experimentation parameter $\epsilon$ and
-  the total number of feasible actions $A$ and
-  \item all propensity values are decreased by the same amount when the reward,
-  $r_{jk^\prime}(t)$ is zero.
-\end{itemize}
-Under the variant algorithm, the propensity for agent $j$ to select action $a$
-for interaction $t+1$ is:
-\begin{equation}
-q_{ja}(t+1) =
-\begin{cases}
-(1-\phi)q_{ia}(t) + r_{ja^\prime}(t)(1-\epsilon), & \text{$a = a^\prime$} \\
-(1-\phi)q_{ia}(t) + q_{ja}(t)(\frac{\epsilon}{A-1}), & \text{$a \ne
-a^\prime$}
-\end{cases}
-\end{equation}
-As with the original Roth-Erev algorithm, the propensity for selection of the
-action that the reward is associated with is adjusted by the experimentation
-parameter.  All other action propensities are adjusted by a small proportion of
-their current value.
+Following \cite{tesfatsi:handbook}, the objectives of agent-based modelling
+research fall roughly into four strands: empirical, normative, heuristic and
+methodological. The \textit{empirical} objectives are to understand how and why macro-level
+regularities have evolved from micro-level interactions when little or no
+top-down control is present.  Reaserch with \textit{normative} goals aims to
+relate agent-based models to an ideal standard or optimal design.  The objective being
+to evaluate proposed designs for social policy, institutions or processes in
+their ability to produce socially desirable system performance.  The
+\textit{heuristic} strand aims to generate theories on the fundamental causal
+mechanisms in social systems that can be observed, even in simple systems, when there are
+alternative initial conditions.  This thesis has the goal of providing
+\textit{methodologial} advancement to the field.  Improvements in the tools and
+methods available aid research with the former objectives.
 
 \section{Summary}
