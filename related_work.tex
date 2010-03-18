@@ -9,12 +9,33 @@ interests of repeatability, the software developed for this thesis has been
 released as open source.  The end of this chapter describes the software
 project in the context of other open source electric power Engineering tools.
 
+\section{Customised Learning Methods}
+Early agent-based electricity market simulations did not utilise traditional
+learning methods from Artificial Intelligence, but relies upon custom
+heuristic methods.  They are typically formulated using the author's intuition
+and encapsulate basic trading rules, but disregard many of the key concepts
+from reinforcement learning theory.
+
+\subsection{Market Power}
+Under Professor Derek Bunn, researchers from the London Business School
+performed some the first and most thourough of the agent-based electricity
+market simulations in the literature.  Their research was initially motivated
+by proposals in 1999 to transform the structure of the England and Wales
+electricity pool with the aim of combating generator market power that was
+widely believed to be causing elevated market prices.
+
 \section{Policy Gradient Reinforcement Learning}
 The direct policy search reinforcement learning methods defined in Section
 \ref{sec:policygradient} have been sucessfully applied in both laboratory and
-operational settings.
-
-\subsection{TD-Gammon}
+operational settings.  In \cite{bower:2001} a detailed model of electricity
+trading in England and Wales is used to compare day-ahead and bilateral
+contract markets under uniform price and discriminatory settlement.  Twenty
+generating companies operating in the Pool during 1998 are modelled as agents
+endowed with a portfolio of generating plants.  Plant capacities, costs and
+expected availabilities are synthesised from public and private data sources
+and the author's own estimates.  In simulations of the day-ahead market, each
+agent submits a single price for the following simulated trading day, for each
+item of plant in its portfolio.
 
 \subsection{Finincial Decision Making}
 Conventionally, supervised learning techniques are used in financial decision
@@ -404,7 +425,7 @@ strategy, histrorical trends can be replicated in all but certain hours of
 peak load.  The authors state a desire to test different learning methods and perform
 further empirical validation.
 
-\subsection{Vertically Related Energy Markets}
+\subsection{Vertically Related Firms and Crossholding}
 In \cite{micola:08} a multi-tier model of wholesale natural gas, wholesale
 electricity and retail electricity markets is studied using another variant of
 the Roth-Erev method.  Coordination between strategic business units (SBU)
@@ -444,6 +465,24 @@ is repeated using a three tier model in which two natural gas shippers supply
 three electricity generators who in turn sell to four electricity retailers.
 The results show a rise in market prices as reward interdependance is
 increased and greater profits for integrated firms.
+
+This alternative formulation of the Roth-Erev method is also used in
+\cite{micola:08b} to analyse the effect on market prices of different degrees
+of producer crossholding\footnote{Crossholding occur when one publically
+traded firm owns stock in another such firm.} under private and public bidding
+information.  Crossholding is reprsented through the introduction of a factor
+to the each agent's reward function that controls the fraction of profit from
+the crossowned rival that the agent receives.  Public information availability
+is modelled using a public vector of probabilities for selection of each
+possible action that is the average of each agent's private probability.  The
+degree to which the public probabilities influence the agent's action
+selection probability from equation (\ref{eq:re_prob}) is varied
+systematically in a series of experiments, along with crossholding levels and
+buyer numbers.  The results are illustrated clearly using three-dimensional
+plots and show a direct relationship between crossholding and market price.
+The authors conclusions on market concentration are dependant upon modelling
+both the demand and supply sides of the market and the authors state that this
+illustrates to some extent the value of agent-based simulation.
 
 \subsection{Two-Settlement Markets}
 In \cite{weidlich:06} the modified Roth-Erev method is used to study
