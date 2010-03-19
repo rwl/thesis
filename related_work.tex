@@ -9,7 +9,7 @@ interests of repeatability, the software developed for this thesis has been
 released as open source.  The end of this chapter describes the software
 project in the context of other open source electric power Engineering tools.
 
-\section{Customised Learning Methods}
+\section{Custom Learning Methods}
 Early agent-based electricity market simulations did not utilise traditional
 learning methods from Artificial Intelligence, but relies upon custom
 heuristic methods.  They are typically formulated using the author's intuition
@@ -24,18 +24,204 @@ by proposals in 1999 to transform the structure of the England and Wales
 electricity pool with the aim of combating generator market power that was
 widely believed to be causing elevated market prices.
 
+In \cite{bower:2001} a
+detailed model of electricity trading in England and Wales is used to compare
+day-ahead and bilateral contract markets under uniform price and
+discriminatory settlement.  Twenty generating companies operating in the Pool
+during 1998 are modelled as agents endowed with a portfolio of generating
+plants.  Plant capacities, costs and expected availabilities are synthesised
+from public and private data sources and the author's own estimates.  In
+simulations of the day-ahead market, each agent submits a single price for the
+following simulated trading day, for each item of plant in its portfolio.
+Whereas, under the bilateral contract model, 24 bids are submitted for each
+generator, cooresponding to each hour of the following simulated day.  Revenues
+are calculated at the end of each trading day and are determined either by the
+bid price of the marginal unit or the generator's own bid price.  Each
+generating plant is characterised in part by an estimated target utilisation
+rate that represents its desire for forward contract cover.  The agents learn
+to achieve this utilisation rate and then improve profitability.
+
+Algorithm X
+defines the rules followed by each agent to achieve this.  If the utilisation
+rate is not achieved, a random percentage from a uniform distribution with a
+range of $\pm10\%$ and $0\%$ mean is substracted from the bid price of all
+generators in the agent's portfolio.  Agents with more than one generator
+transfer sucessful bidding strategies between items of plant by setting the bid
+price for a generator to the level of the next highest submitted bid price if
+the generator sold at a price lower than that of other generators in the same
+portfolio.  If an agent's total profit does not increase, a random percentage
+from the same distribution as above is added or subtracted from the bid price
+from the previous day for each of its generators.  A cap on bid prices is
+imposed at \pounds1000.  Demand follows a 24-hour profile based on the 1997/98
+peak winter load pattern.  The response of the load schedule to high prices is
+modelled as a reduction of 25MW for every \pounds1/MWh that the system marginal
+price rises above \pounds75/MWh.
+
+750 trading days are simulated for each of the four combinations of a day-ahead
+market and the bilateral model under uniform pricing and discriminatory
+settlement.  Prices are found to generally be higher under pay-as-bid pricing
+for both market models.  Agents with larger portfolios are shown to have a
+significant advantage over smaller generators due to their greater ability to
+gather scarce market price information and distribute it among generators.
+
+In \cite{bower:2001b} a more sophisticated custom learning method, resembling
+the Roth-Erev method, is applied to a more detailed model of the New Electrcity
+Trading Arragements.  The balancing mechanism is modelled as a one-shot
+market, that follows the contract market, to which increment and decrement
+bids are submitted.  An active demand side is included in the model and
+generator dynamic constraints are represented by limiting the number of off/on
+cycles per day.  Again, transmission constraints and regional variations are
+ignored.  Supplier and generator agents are assigned an optimal value for
+exposure to the balancing mechanism that is typically low due to high price and
+volume uncertainty.  The agents learn to maximise profit, but profits are
+penalised if the objective value for balancing mechanism exposure is not
+achieved.  They learn policies for pricing markups on the bid submitted
+to the power exchange and the increments and decrements submitted to the
+balancing mechanism.  Markups in the power exchange are relative to to prices
+from the previous day and markups on balancing mechanism bids are relative to
+power exchange bid prices on the same day.  Thus the agents state data needs
+only include power exchange prices from the previous day.  Different markup
+ranges are specified for generators and suppliers in the power exchange and
+balancing mechanism and are partitioned into ten discrete intervals.  As with
+the Roth-Erev method, a probability for the selection of each markup is
+calculated by the learning method.  Daily profits and acceptance rates for
+bids/offers from previous trading days are extrapolated to determine expected
+values and thus the expected reward for each markup.  The markups are then
+sorted by expected reward in decending order.  The perceived utility of each
+markup $j$ is
+\begin{equation}
+U_j = \mu \biggl(\frac{\phi - n}{\phi}\biggr)^{i_j-1}
+\end{equation}
+where $i$ is the index of $j$ in the order vector of markups and $\phi$ is a
+search parameter.  High values of $\phi$ cause the agent to adopt a more
+exploratory markup selection policy.  For all of the experiments $\mu = 1000$,
+$\phi = 4$, $n = 3$ and the probability of selecting markup $j$ is
+\begin{equation}
+Pr_j = \frac{U_j}{\sum_{k=1}^K U_k}
+\end{equation}
+for $K$ possible markups.
+
+A representative model of the England and Wales system with 24 generator
+agents, representing 80 generating plants, and 13 supplier agents is analysed
+using 200 simulated trading days.  The authors draw conclusions on the
+importance accurate forecasts, greater risk for suppliers than generators, the
+value of flexible plant and the influence of capacity margin on opportunities
+for collusive behaviour.
+
+The same learning method is applied in \cite{bunn:03} as part of an
+inquiry by the Competition Commision into whether two specific companies in the
+England and Wales electricity market had enough market power to operate against
+the public interest.
+
+Another early publication on agent-based simulation of electricity markets in
+whcih a custom learnign method is used is \cite{visud:99}.  The simulations
+comprise only three generators, market power is assumed, and the authors
+analyse the mechanisms by which the market power is exercised.  Two bid formats
+are modelled.  The \textit{single-step supply function} model requires each
+generator to submit and price and a quantity, where the quantity is determined
+by the generator's marginal cost function.  Under the \textit{linear supply
+function} model, each generator submits and value corresponding to the slope of
+its supply function.  The bid price or slope value for generator $i$ anfter
+simulation period $t$ is
+\begin{equation}
+x_i(t+1) = x_i(t) + b_i(p_m(t))u_i(t)
+\end{equation}
+where $b_i \in \lbrace-1,0,1\rbrace$ is the reward as a function of the market
+clearing price $p_m$ from stage $t$ and $u_i$ is a reward gain or attenuation
+parameter.  The reward $b_i$ is defined according to strategies for estimated
+profit maximistaion and competition to be the base load generator.  Both
+elastic and inelastic load models are considered.  Using the single-step supply
+function model, the two strategies are compared in a day-ahead market setting
+using a case where there is sufficient capacity to meet demand and a case where
+ther is excessive capacity to the point where demand can be met by just two of
+the generators.  The linear suuply model is analysed using moth day-ahead and
+hour-ahead markets with inelastic load.  The hour-ahead simulation is repeated
+with elastic demand response.
+
+The first coauthor goes on to compare a similar custom learning method with two
+other algoithms in her thesis \cite{visud:thesis}.  The custom method is design
+specifically for the power pool model that is implemented and uses separate
+policies for selecting bid quantities and prices according to a slew of if-then
+rules that attempt to capture capacity withholding behaviour.  The method is
+compared with algorithms developed in \cite{auer:03} for application to the
+$n$-armed bandit problem \cite[\S2.1]{robbins:53,suttonbarto:1998} and a method
+based on evaluative feedback with softmax action selection
+\cite[\S2]{suttonbarto:1998}.
+
+In the algorithms from \cite{auer:03} each action $i = 1,2,\dotsc K$ for $K$
+possible actions is associated with a weight $w_t(i)$ a simulation period $t
+\in T$ that is used in determining the action's probability of selection
+\begin{equation}
+p_i(t) = (1 - \gamma) \frac{w_i(t)}{\sum_{j=1}^K w_j(t)} + \frac{\gamma}{K}
+\end{equation}
+where $\gamma$ is a tuning parameter, with $0 < \gamma \leq 1$, that is
+initialised such that
+\begin{equation}
+\gamma = \min \Biggl\lbrace \frac{3}{5}, 2\sqrt{\frac{3}{5} \frac{K\ln K}{T}}
+\Biggr\rbrace .
+\end{equation}
+Using the received reward $x_t(i_t)$, the weights for action $j$ in period
+$t+1$ is
+\begin{equation}
+w_{t+1}(j) = w_t(i) \exp \biggl(\frac{\gamma}{3K} \biggl(\hat{x}_t(i) +
+\frac{\alpha}{p_t(i)\sqrt{KT}}\biggr)\biggr)
+\end{equation}
+where
+\begin{equation}
+\hat{x}_t(i) =
+\begin{cases}
+x_t(j)/p_t(i)& \text{if $j=i_t$}\\
+0& \text{otherwise}
+\end{cases}\end{equation}
+and
+\begin{equation}
+\alpha = 2\sqrt{\ln(KT/\gamma)}.
+\end{equation}
+In the evaluative feedback method from \cite[\S2]{suttonbarto:1998} each action
+$i$ has a value $Q_t(i)$ in simulation period $t$ equal to the expected average
+reward if that action is selected.  The softmax method uses a Boltzman
+distribution to select actions with probability
+\begin{equation}
+p_t(i) \frac{e^{Q_t(i)/\tau}}{\sum_{j=1}^K e^{Q_t(j)/\tau}}
+\end{equation}
+where $\tau$ is a \textit{temperature} parameter with $\tau > 0$.  The value of
+action $i$ in the $t+1^{th}$ period is
+\begin{equation}
+Q_{t+1}(i) = \begin{cases}
+(1-\alpha)Q_t(i) + \alpha r_t(i) & \text{if $i_{t+1}=i$}\\
+Q_t(i) & otherwise
+\end{cases}
+\end{equation}
+where $\alpha$ is a constant \textit{step-size} parameter with $0 < \alpha
+\leq 1$.
+
+An extensive suite of simulation reuslts are reported and the choice of
+learning method is found to have a significant impact on agent performance, but
+no quantitative comparative measure is provided and no conclusions as to which
+method is the superior are drawn.
+
+\subsection{Financial Transmission Rights}
+In \cite{ernst:04} a custom learning method is defined and used to study
+generator and supplier profits where financial transmission rights are part of
+the market.  A two node transmission system is defined with one lossless
+transmission line of limited capacity, endowed to a transmission operator
+agent.  Generator agents submit bids for their respective generating plants
+and the transmission owner submits a bid representing the cost per MW of
+transmitting power between the nodes.  The market operator clears the bids,
+minimising costs while balancing supply and demand and not violating the line
+capacity.  Prices at each node are calculated to provide a signal for both
+energy and transmission costs.  Each agent selects its bid according to a
+calculation of the reward it would expect to receive if all other agents were
+to bid as they did in the previous stage.  If multiple bids are found to have
+the same value then the least expensive is selected.  In the first period,
+previous bids are assumed to be at marginal cost.  Several case studies are
+examined with different numbers of generators and line capacities, but few
+concrete conclusions are drawn.
+
 \section{Policy Gradient Reinforcement Learning}
 The direct policy search reinforcement learning methods defined in Section
 \ref{sec:policygradient} have been sucessfully applied in both laboratory and
-operational settings.  In \cite{bower:2001} a detailed model of electricity
-trading in England and Wales is used to compare day-ahead and bilateral
-contract markets under uniform price and discriminatory settlement.  Twenty
-generating companies operating in the Pool during 1998 are modelled as agents
-endowed with a portfolio of generating plants.  Plant capacities, costs and
-expected availabilities are synthesised from public and private data sources
-and the author's own estimates.  In simulations of the day-ahead market, each
-agent submits a single price for the following simulated trading day, for each
-item of plant in its portfolio.
+operational settings.
 
 \subsection{Finincial Decision Making}
 Conventionally, supervised learning techniques are used in financial decision
