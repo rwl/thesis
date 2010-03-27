@@ -1,75 +1,78 @@
 \chapter{Background}
 \label{ch:background}
-
+Competitive power trade is a relatively new practice and is one that has a
+number of unique characteristics among commodities.  This chapter provides
+background information on electric power supply and the associated wholesale
+electricity markets.  It also explains how such markets are simulated and, in
+particular, the agent-based approach to this.
 
 \section{Electric Power Systems}
 Generation and bulk movement of electricity in the UK takes place in a
-three-phase alternating current (AC) power system.  Each phase is
-high voltage, sinusoidal electrical waveform, $120^\circ$ offset in time
+three-phase alternating current (AC) power system.  Each of the phases is
+high voltage, sinusoidal electrical waveform, $120$ degrees offset in time
 and oscillating at a constant frequency of 50Hz.  Synchronous generators (or
 alternators), typically rotating at 3600rpm or 1800rpm, generate apparent power
 $S$ at a line voltage $V_l$ typically between
 11kV and 25kV.  One of the prinicpal reasons that alternating current, and not
-direct current (DC), systems are used to supply electricity is that they allow
-power to be transformed between voltages with very high efficiency.  The
+direct current (DC), systems are common in electricity supply is that they
+allow power to be transformed between voltages with very high efficiency.  The
 apparent power conducted by a line $l$ is the product of the line current
 $I_l$ and the line voltage
 \begin{equation}
-S = \sqrt{3} V_l I_l
+S = \sqrt{3} V_l I_l .
 \end{equation}
-so increasing the voltage has an inverse effect on the current.
+Thus increasing the voltage has an inverse effect on the current.
 Ohmic heating losses are proportional to the square of line current
 \begin{equation}
-P_{r} = 3 I^2 R
+P_{r} = 3 I_l^2 R
 \end{equation}
 where $R$ is the resistance of the line.  Hence reducing the line current
-dramatically reduces the heating losses.  One drawback of higher voltages
-is the larger extent and integrity of conductor insulation required between
-one another, neutral and earth.  This results in large transmission towers and
-high cable costs when undergrounding systems.
+causes a dramatic reduction in heating losses.  One consequence of higher
+voltages is the larger extent and integrity of conductor insulation required between
+one another, neutral and earth.  This results in necessity for large
+transmission towers and in high cable costs when undergrounding systems.
 
-UK transmission systems operate at 400kV, 275kV or 132kV, but systems upto
-and beyond 1000kV are in operation in larger countries.  For transmission over
-very long distances or undersea, high voltage DC systems have become
-econmically viable in recent years.  The ability to transform power between
-voltages and transmit large quantities over long distances allows
-generation at high capacity stations, located away from large load centres and
-which offer economies of scale and lower operating costs.  It also allows
-electricity to be transmitted across country borders and from renewable energy
-plant in remote locations.
+The UK transmission system operates at 400kV and 275kV (plus 132kV in
+Scotland), but systems with voltages upto and beyond 1000kV are used in certain
+larger countries\footnote{For transmission over very long distances or
+undersea, high voltage DC systems have become econmically viable in recent
+years.}.  The ability to transform power between voltages and transmit large
+volumes over long distances allows for generation to take place at high
+capacity stations (located away from large load centres and closer to fuel
+sources) which offer economies of scale and lower operating costs.  It allows
+electricity to be transmitted across country borders and from renewable
+energy plant such as hydro power stations located in remote areas.
 
-For delivery to most consumers, electric energy is transferred at a substation
-from the transmission system to the grid supply point of a distribution
-system.  Distribution networks are also three-phase AC systems, but operate at
-lower voltages and differ in their general structure or topology from
-transmission networks.  Transmission networks are typically highly
-interconnected, providing several paths for power flow.  Whereas distribution
-networks in rural areas typically consist of long radial feeders (usually
-overhead lines) or in urban areas consist of many ring circuits.  Three-phase
-transformers, that step the voltage down to levels more convenient for general
-use (typically from 11kV or 33kV to 400V), are spaced along the branches/rings.
-All three-phases at 400V may be provided for industrial and commercial loads
+For delivery to most consumers, electric energy is transferred, at a
+substation, from the transmission system to the grid supply point of a distribution
+system.  Distribution networks are also three-phase AC systems, but
+typically operate at lower voltages and differ in their general
+structure/topology from transmission networks.  Transmission networks are
+typically highly interconnected, providing several paths for power flow.
+Whereas distribution networks, in rural areas, typically consist of long radial
+feeders (usually overhead lines) or, in urban areas, consist of many ring
+circuits.  Three-phase transformers, that step the voltage down to levels
+more convenient for general use (typically from 11kV or 33kV to 400V), are spaced along the branches/rings. All three-phases at 400V may be provided for industrial and commercial loads
 or individual phases at 230V supply typical domestic and other commercial
 loads. Splitting of phases is usually planned so that each is loaded equally.
-This produces a balanced symetrical system that may be analysed as a single
-phase circuit, as explained further in Section \ref{sec:power_system_model}.
-Figure [] illustrates the basic sturcture of a typical national electric power
-system.
+As explained in Appendix \ref{sec:power_system_model} this produces a balanced
+symetrical system that may be analysed as a single phase circuit. Figure []
+illustrates the basic sturcture of a typical national electric power system.
 
 \section{Electricity Markets}
 The UK was the first large country to privatise its electricity
 supply industry.  The market structures that have since been adopted
-implement the main principles behind most electricity markets.
+implement some of the main principles behind electricity markets.
 
 The England and Wales Electricity Pool was created in 1990 to break apart the
 monolithic Central Electricity Generating Board (CEGB) and to gradually
 introduce competition in generation and retail supply.  Early adoption of
-electrcity markets by the UK has lead to the country hosting the
+electrcity markets by the UK has lead to the country hosting many of the
 main European power and gas exchanges and the UK boasts a high degree
-of consumer switching which is an important factor in a competitive
-marketplace. The Pool has since been replaced by trading arrangements in which
-market outcomes are not centrally determined, but arise largely from
-bilateral agreements between producers and suppliers.
+of consumer switching, an important factor in any competitive marketplace. The
+Pool has since been replaced by trading arrangements in which market outcomes
+are not centrally determined, but arise largely from bilateral agreements
+between producers and suppliers.
 
 \subsection{The England and Wales Electricity Pool}
 \label{sec:thepool}
@@ -81,7 +84,7 @@ started operating the first grid of regional networks interconnected and
 synchronised at 132kV, 50Hz in 1933.  This began operation as a national system
 five years later in 1938 and was nationalised under The Electricity Act 1947
 with the merger of over 600 electricity companies and the creation of the
-British Electricity Authority.  This was then dissolved and replaced with the
+British Electricity Authority.  This was dissolved and replaced with the
 CEGB and the Electricity Council under The Electricity Act 1957.  The CEGB was
 responsible for planning the network and generating sufficient electricity until the start of privatisation in 1990.
 
@@ -108,13 +111,12 @@ by 10AM on the day before the schedule day.
 
 % TODO: Insert Pool bids figure.
 
-Bids consisted of five price parameters, as illustrated in Figure X, and
-represented the avoidable cost of generation.  A start-up price would also be
-included, representing the cost of turning on the generator from cold.  A
-no-load price $c_{noload}$ would equal the cost in pounds of keeping the
-generator running regardless of output. Three incremental prices $c_1$, $c_2$
-and $c_3$ specify the cost per MWh of generation between set-points $p_1$,
-$p_2$ and $p_3$.
+Figure X illustrates the four of the five price parameters that bids consisted
+of.  A start-up price would also be included, representing the cost of turning
+on the generator from cold.  The no-load price $c_{noload}$ represents the
+cost in pounds of keeping the generator running regardless of output. Three
+incremental prices $c_1$, $c_2$ and $c_3$ specify the cost per MWh of
+generation between set-points $p_1$, $p_2$ and $p_3$.
 
 A settlement computer program was used to calculate an unconstrained schedule
 (with no account being taken for the physical limitations of the transmission
@@ -139,24 +141,24 @@ Concerns over exploitation of market power in The England and Wales Electricity
 Pool and its effectiveness in reducing consumer electricity prices prompted the
 introduction of New Electricity Trading Arrangements (NETA) in March 2001
 \cite{martoccia:2005}.  The aim was to improve efficiency and provide greater
-choice to participants.  The Scottish electricity industry was integrated into
-the nationwide British Electricity Transmission and Trading Arrangments
-(BETTA) in April 2005 under The Energy Act 2004.  While The Pool operated a
-single daily auction and dispatched plant centrally, under the new
-arrangements participants became self-dispatching and market positions became
-determined through continuous bilateral trading between generators, suppliers,
-traders and consumers.
+choice to participants.  Control of the Scottish transmission system was
+handed to England when the industry was integrated into the nationwide British
+Electricity Transmission and Trading Arrangments (BETTA) in April 2005 under The Energy
+Act 2004.  While The Pool operated a single daily auction and dispatched
+plant centrally, under the new arrangements participants became
+self-dispatching and market positions became determined through continuous
+bilateral trading between generators, suppliers, traders and consumers.
 
 The majority of power is traded under the BETTA through long-term contracts
 that are customised to the requirements of each party \cite{kirschen:book}.
 These suit participants responsible for large power plants or those purchasing
 large volumes of power for many customers.  Considerable amounts of time and
-effort are required to form these long-term contracts and this has a high
-associated transaction cost.  However, they reduce risk for large players and
-a degree of flexibility can be provided through option contracts.
+effort are required to form these long-term contracts and this results in a
+high associated transaction cost.  However, they reduce risk for large
+players and a degree of flexibility can be provided through option contracts.
 
-Power is also traded directly between participants through over the counter
-(OTC) contracts that are usually of a standardised form.  Such contracts
+Power is also traded directly between participants through over-the-counter
+contracts that are usually of a standardised form.  Such contracts
 typically concern smaller volumes of power and have much lower associated
 transaction costs.  Often they are used by participants to refine their market
 position ahead of delivery time.
@@ -166,11 +168,11 @@ to fine-tune their positions further, through short-term transactions for
 relatively small quantities of energy.  Modern exchanges are computerised and
 accept anonymous offers and bids submitted electronically.  A submitted
 offer/bid will be paired with any outstanding bids/offers in the system with
-compatible prices and quantities.  The details are then displayed for traders
-to observe and educate their decisions with.
+compatible price and quantity values.  The details are then displayed for
+traders to observe and use to educate their decisions.
 
-All bilateral trading must be completed before ``gate-closure'' -- a point
-in time, before delivery time, that gives the system operator an
+All bilateral trading must be completed before ``gate-closure'' which is a
+point in time, before delivery time, that gives the system operator an
 opportunity to balance supply and demand and mitigate potential breaches of
 system limits.  In keeping with the UK's free market philosphy, a competitive
 spot market \cite{schweppe:spot} is used in the balancing process.  A
@@ -183,25 +185,25 @@ generators/suppliers in order to avoid the price volatility often associated
 with spot markets.
 
 \section{Electricity Market Simulation}
-The previous sections have shown the importance of electricity to modern
-societies and have explained how its supply is trusted to unadministered
+Previous sections have shown the importance of electricity to
+modern societies and have explained how its supply is trusted to unadministered
 bilateral trading arrangements.  Electricity supply involves technology, money,
 people, natural resources and the environment.  These aspects are all changing
 and the discipline must be constantly researched to ensure that systems such as
 electricity markets are fit for purpose.  The value of electricity to society
-makes it infeasible to experiment with radical changes to trading arrangements
-on real systems.  A practical alternative is to create an abstract mathematical
+means that it is not feasible to experiment with radical changes to trading
+arrangements on real systems.  A practical alternative is to create an abstract mathematical
 model with a set of simplifying approximations and assumptions and find
 analytical solutions by simulating the model using computer programs.
 
 Game theory is the branch of applied mathematics in which behaviour in
 strategic situations is captured.  A common approach to doing this is to
-model the system and players as a mathematical optimisation problem.  Section
+model the system and players as a mathematical optimisation problem.  Appendix
 \ref{sec:opf} defines the optimal power flow problem, which is a classic
 optimisation problem in the field of electric power Engineering.  Electricity
 markets are commonly modelled using variations on the optimal power flow problem with
-player strategies integrated[ref].  This thesis concerns \textit{agent-based}
-simulation, which is an alternative approach to the mathematics of games.
+player strategies integrated[ref].  However, this thesis concerns
+\textit{agent-based} simulation, which is an alternative approach to the mathematics of games.
 
 \subsection{Agent-Based Simulation}
 Social systems, such as electricity markets, are inherently complex and involve
@@ -210,7 +212,7 @@ and collective entities, such as organisations or groups, the behaviour of which
 is itself the product of individual interactions.  This complexity
 drives classical monolithic equilibrium models to their limits.  Models are
 often highly stylised and limited to small numbers of players with strong
-constraining assumptions made on their behaviour.
+constraining assumptions made about their behaviour.
 
 Agent-based simulation involves modelling simultaneous operations and
 interactions between adaptive agents and assessing their effect on the system
@@ -228,8 +230,8 @@ to evaluate proposed designs for social policy, institutions or processes in
 their ability to produce socially desirable system performance.  The
 \textit{heuristic} strand aims to generate theories on the fundamental causal
 mechanisms in social systems that can be observed, even in simple systems, when there are
-alternative initial conditions.  This thesis has the goal of providing
-\textit{methodologial} advancement to the field.  Improvements in the tools and
-methods available aid research with the former objectives.
+alternative initial conditions.  This thesis aims to provide
+\textit{methodologial} advancement in the field.  Improvements in the tools
+and methods available aid research with the former objectives.
 
-\section{Summary}
+%\section{Summary}
