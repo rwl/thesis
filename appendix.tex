@@ -9,114 +9,6 @@
 % reinforcement learning methods the interested reader is referred to
 % \cite{suttonbarto:1998,bertsekas:96}.
 
-\chapter{Optimal Power Flow}
-\label{sec:opf}
-Nationalised electricity supply industries are typically planned operated and
-controlled centrally.  A system operator determines which generators must
-operate and the required output of the operating units such that demand and
-reserve requirements are met and the overall cost of production is minimised.
-In electric power Engineering, this is termed the \textit{unit commitment} and
-\textit{economic dispatch} problem.
-
-In 1962 a unit commitment formulation was published with network constraints
-included \cite{carpentier:opf}.  \textit{Optimal power flow} is this
-integration of economic and power flow aspects of power systems into a
-mathematical optimisation problem.  Its ability to solve centralised power
-system operation problems and determine prices in power pool markets has led
-to optimal power flow being one of the most widely studied subjects in the
-power systems community.
-
-\section{Power Flow Formulation}
-\label{sec:pf_form}
-Optimal power flow derives its name from the \textit{power flow}, or load flow,
-steady-state power system analysis technique.  Given sets of generator data,
-load data and a nodal admittance matrix $Y_{bus}$, a power flow study
-determines the voltage
-\begin{equation}
-V_i = \vert V_i \vert \angle\delta_i = \vert
-V_i\vert(\cos\delta_i + j\sin\delta_i)
-\end{equation}
-at each node $i$ in the power system \cite{grainger:psa}. $Y_{bus}$ describes
-the electrical network and its formulation is dependant upon the transmission
-line, transformer and shunt models employed\footnote{The $Y_{bus}$
-formulation used in this thesis is defined in Section \ref{sec:acpf}.}.
-Importantly, the relationship between nodal voltages and power entering the
-network is non-linear.  For a network of $n_b$ nodes, the current injected at
-node $i$ is
-\begin{equation}
-I_i = \sum_{j=1}^{n_b} Y_{ij} V_j
-\end{equation}
-where $Y_{ij} = \vert Y_{ij}\vert \angle\theta_{ij}$ is the $(i,j)^{th}$ element
-if the, $n_b \times n_b$, $Y_{bus}$ matrix.  Hence, the apparent power entering
-the network at bus $i$ is
-\begin{equation}
-S_i = P_i+Q_i = V_iI_i^* = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \angle
-(\delta_i - \delta_j - \theta_{ij})
-\end{equation}
-Converting to polar coordinates and separating the real and imaginary parts,
-the active power
-\begin{equation}
-P_i = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \cos(\delta_i - \delta_j -
-\theta_{ij})
-\end{equation}
-and the reactive power entering the network
-\begin{equation}
-Q_i = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \sin(\delta_i - \delta_j -
-\theta_{ij})
-\end{equation}
-at bus $i$ are non-linear functions of $V_i$, as indicated by the presence of
-the sine and cosine terms.  Kirchoff's Current Law requires that the net
-complex power injection (generation - load) at each bus equals the sum of
-complex power flows on each branch connected to the bus.  The power balance
-equations
-\begin{equation}
-\label{eq:p_balance}
-P_g^i - P_d^i = P^i
-\end{equation}
-and
-\begin{equation}
-\label{eq:q_balance}
-Q_g^i - Q_d^i = Q^i
-\end{equation}
-where the subscripts $g$ and $d$ indicate generation and demand
-respectively, form a key constraint in the optimal power flow problem.
-
-\section{Optimal Power Flow Formulation}
-Optimal power flow is a mathematical optimisation problem in which the complex
-power balance equations (\ref{eq:p_balance}) and (\ref{eq:q_balance}) must be
-satisfied.  Optimisation problems have the general form
-\begin{equation}
-\min_x f(x)
-\end{equation}
-subject to
-\begin{eqnarray}
-\label{eq:equality}
-g(x)& =& 0\\
-\label{eq:inequality}
-h(x)& \leq& 0
-\end{eqnarray}
-where $x$ is the optimisation variable, $f$ is the objective function and
-equations (\ref{eq:equality}) and (\ref{eq:inequality}) are sets of equality
-and inequality constraints on $x$, respectively.  Typical inequality
-constraints are bus voltage magnitude contingency state limits, generator
-output limits and branch power or current flow limits.  The optimisation
-variable $x$ may be made up of generator set-points, bus voltages, transformer
-tap settings etc.  If the optimisation variable $x$ is empty then the
-formulation reduces to a power flow problem as described in Section
-\ref{sec:pf_form}, above.
-
-A common objective of optimal power flow is total system cost minimisation.
-For and network of $n_g$ generators the objective function is
-\begin{equation}
-\min \sum_{k=1}^{n_g} C_k(P_{g,k})
-\end{equation}
-where $C_k$ is a cost function (typically quadratic) of the set-point $P_{g,k}$
-for generator $k$.  Alternative objectives may be to minimise losses, maxmimise
-the voltage stability margin or minimise deviation of an optimisation variable
-from a particular schedule.
-
-\section{Interior-Point Methods}
-
 
 \chapter{Reinforcement Learning}
 \label{sec:rl}
@@ -530,357 +422,357 @@ parameter.  All other action propensities are adjusted by a small proportion of
 their current value.
 
 
-\chapter{MATPOWER OPF Formulation}
-\label{sec:power_system_model}
-Power systems are modelled as three-phase AC circuits operating in the
-steady-state, under balanced conditions that can be represented by an
-equivalent single phase nodal graph of busbars connected by branches
-\cite{grainger:psa}.
-
-\section{Branches}
-Following \cite[p.11]{pserc:mp_manual}, each branch is modelled as a medium
-length transmission line in series with a regulating transformer at the ``from'' end.  A nominal-$\pi$ model with total
-series admittance $y_s = 1/(r_s+jx_s)$ and total shunt capacitance $b_c$
-represents the transmission line.  The transformer is assumed to be ideal,
-phase-shifting and tap-changing, with the ratio between primary winding
-voltage $v_{f}$ and secondary winding voltage $N = \tau e^{j\theta_{ph}}$
-where $\tau$ is the tap ratio and $\theta_{ph}$ is the phase shift angle.
-Figure X diagrams the branch model.  From Kirchhoff's Current Law the current
-in the series impedance is
-\begin{equation}
-\label{eq:iseries}
-i_s = \frac{b_c}{2}v_t - i_t
-\end{equation}
-and from Kirchhoff's Voltage Law the voltage across the secondary winding of
-the transformer is
-\begin{equation}
-\frac{v_{f}}{N} = v_t + \frac{i_s}{y_s}
-\end{equation}
-Substituting $i_s$ from equation (\ref{eq:iseries}), gives
-\begin{equation}
-\label{eq:vfrom}
-\frac{v_{f}}{N} = v_t - \frac{i_t}{y_s} + v_t\frac{b_c}{2y_s}
-\end{equation}
-and rearranging in terms if $i_t$, gives
-\begin{equation}
-\label{eq:ito}
-i_t = v_s \left( \frac{-y_s}{\tau e^{\theta_{ph}}} \right) +
-v_r \left( y_s + \frac{b_c}{2} \right)
-\end{equation}
-The current through the secondary winding of the transformer is
-\begin{equation}
-N^*i_f = i_s + \frac{b_c}{2}\frac{v_{f}}{N}
-\end{equation}
-Substituting $i_s$ from equation(\ref{eq:iseries}) again, gives
-\begin{equation}
-N^*i_f = \frac{b_c}{2}v_t - i_t + \frac{b_c}{2}\frac{v_{f}}{N}
-\end{equation}
-and substituting $\frac{v_{f}}{N}$ from equation (\ref{eq:vfrom}) and
-rearranging, gives
-\begin{equation}
-\label{eq:ifrom}
-i_s = v_s \left( \frac{1}{\tau^2} \left(y_s + \frac{b_c}{2}\right) \right) +
-v_r \left(\frac{y_s}{\tau e^{-j\theta}}\right)
-\end{equation}
-Equations (\ref{eq:ito}) and (\ref{eq:ifrom}) are used in section
-\ref{sec:acpf} below to define the system admittance matrices that describe
-the electrical network.
-
-\section{Generators}
-\label{sec:generators}
-Each generator $k$ is modelled as an apparent power injection $s^k_g = p^k_g +
-jq^k_g$ at a bus $i$, where $p^k_g$ is the active power injection,
-$q^k_g$ is the reactive power injection and each are expressed in per-unit to
-the system base MVA.  Upper and lower limits on $p^k_g$ are specified by
-$p^k_{max}$ and $p^k_{min}$, respectively, where $p^k_{max} > p^k_{min} \geq
-0$.  Similarly, upper and lower limits on $q^k_g$ are specified by $q_{max}^k$
-and $q_{min}^k$, respectively, where $q^k_{max} > q^k_{min}$.
-
-\section{Buses and Loads}
-At each bus $i$, constant active power demand is specified by $p^i_d$ and
-reactive power demand by $q^i_d$.  Upper and lower limits on the voltage
-magnitude at the bus are defined by $v_m^{i,max}$ and $v_m^{i,min}$,
-respectively.  One generator bus $i \in \mathcal{I}_{ref}$ in the circuit is
-designated the \textit{reference} bus and has voltage angle $\theta^{ref}_k$.
-Dispatchable loads are modelled as generators with negative $p^i_g$ and
-$p^i_{min} < p^i_{max} = 0$. %TODO: Constant power factor.
-
-\section{AC Power Flow Equations}
-\label{sec:acpf}
-Following \cite[p.13]{pserc:mp_manual}, for a network of $n_b$ buses, $n_l$
-branches and $n_g$ generators, let $Cg$ be the $n_b \times n_g$ bus-generator connection matrix such that the $(i,j)^{th}$
-element of $C_{g}$ is $1$ if generator $j$ is connected to bus $i$.  The
-$n_b \times 1$ vector of complex power injections from generators at all buses
-is
-\begin{equation}
-S_{g,bus} = C_g \cdot S_g
-\end{equation}
-where $S_g = P_g + jQ_g$ is the $n_g \times 1$ vector with the $i^{th}$ element
-is equal to $s^i_g$.
-
-Combining equations (\ref{eq:ito}) and (\ref{eq:ifrom}), the \textit{from}
-and \textit{to} end complex current injections for branch $l$ are
-\begin{equation}
-\label{eq:ybranch}
-\begin{bmatrix}
-i_f^l\\
-i_t^l
-\end{bmatrix}
-=
-\begin{bmatrix}
-y_{ff}^l& y_{ft}^l\\
-y_{tf}^l& y_{tt}^l
-\end{bmatrix}
-\begin{bmatrix}
-v_f^l\\
-v_t^l
-\end{bmatrix}
-\end{equation}
-where
-\begin{eqnarray}
-\label{eq:yff}
-y_{ff}^l& =& \frac{1}{\tau^2} \left(y_s + \frac{b_c}{2}\right)\\
-\label{eq:yft}
-y_{ft}^l& =& \frac{y_s}{\tau e^{-j\theta_{ph}}}\\
-\label{eq:ytf}
-y_{tf}^l& =& \frac{-y_s}{\tau e^{j\theta_{ph}}}\\
-\label{eq:ytt}
-y_{tt}^l& =& y_s + \frac{b_c}{2}
-\end{eqnarray}
-Let $Y_{ff}$, $Y_{ft}$, $Y_{tf}$ and $Y_{tt}$ be $n_l \times 1$ vectors where
-the $l^{th}$ element of each corresponds to $y_{ff}^l$, $y_{ft}^l$,
-$y_{tf}^l$ and $y_{tt}^l$, respectively.  Furthermore, let $C_f$ and $C_t$ be the
-$n_l \times n_b$ branch-bus connection matrices, where $C_{f_{i,j}} = 1$ and
-$C_{t_{i,k}} = 1$ if branch $i$ connects from bus $j$ to bus $k$.  The $n_l
-\times n_b$ branch admittance matrices are
-\begin{eqnarray}
-Y_f& =& \diag(Y_{ff})C_f + \diag(Y_{ft})C_t\\
-Y_t& =& \diag(Y_{tf})C_f + \diag(Y_{tt})C_t
-\end{eqnarray}
-and relate the complex bus voltages $V$ to the branch ``from'' and
-``to'' end current vectors
-\begin{eqnarray}
-I_{f}& =& Y_{f}V\\
-I_{t}& =& Y_{t}V
-\end{eqnarray}
-The $n_b \times n_b$ bus admittance matrix
-\begin{eqnarray}
-Y_{bus}& =& C_f^\mathsf{T} Y_f + C_t^\mathsf{T} Y_t
-\end{eqnarray}
-relates the complex bus voltages to the nodal current injections
-\begin{eqnarray}
-I_{bus}& =& Y_{bus}V
-\end{eqnarray}
-The complex bus power injections are expressed as a non-linear function of $V$
-\begin{eqnarray}
-S_{bus}(V)& =& \diag(V)I_{bus}^* \nonumber \\
-\label{eq:sbus}
-&= & \diag(V)Y_{bus}^*V^*
-\end{eqnarray}
-As are the complex power injections at the ``from'' and ``to'' ends of all
-branches
-\begin{eqnarray}
-S_{f}(V)& =& \diag(C_fV)I_f^* \nonumber \\
-\label{eq:sf_loss}
-& =& \diag(C_fV)Y_f^*V^*\\
-S_{t}(V)& =& \diag(C_tV)I_t^* \nonumber \\
-\label{eq:st_loss}
-& =& \diag(C_tV)Y_t^*V^*
-\end{eqnarray}
-The net complex power injection (generation - load) at each bus must equal the
-sum of complex power flows on each branch connected to the bus.  Hence the AC
-power balance equations are
-\begin{equation}
-\label{eq:mismatch}
-S_{bus}(V) + S_d - S_g = 0
-\end{equation}
-
-\section{DC Power Flow Equations}
-Following \cite[p.14]{pserc:mp_manual}, the same power system model is used in
-the formulation of the linearised DC power flow equations, but the following additional assumptions are made:
-\begin{itemize}
-  \item The resistance $r_s$ and shunt capacitance $b_c$ of all branches can be
-  considered negligible.
-  \begin{equation}
-  \label{eq:lossless}
-  y_s \approx \frac{1}{jx_s}, \quad b_c \approx 0
-  \end{equation}
-  \item Bus voltage magnitudes $v_{m,i}$ are all approximately 1 per-unit.
-  \begin{equation}
-  \label{eq:oneperunit}
-  v_i \approx 1e^{j\theta_i}
-  \end{equation}
-  \item The voltage angle difference between bus $i$ and bus $j$ is small enough
-  that
-  \begin{equation}
-  \label{eq:busangdiff}
-  \sin\theta_{ij} \approx \theta_{ij}
-  \end{equation}
-\end{itemize}
-Applying the assumption that branches are lossless from equation
-(\ref{eq:lossless}), the quadrants of the branch admittance matrix in equations
-(\ref{eq:yff}), (\ref{eq:yft}), (\ref{eq:ytf}) and (\ref{eq:ytt}), approximate
-to
-\begin{eqnarray}
-y_{ff}^l& =& \frac{1}{jx_s \tau^2}\\
-y_{ft}^l& =& \frac{-1}{jx_s \tau e^{-j\theta_{ph}}}\\
-y_{tf}^l& =& \frac{-1}{jx_s \tau e^{j\theta_{ph}}}\\
-y_{tt}^l& =& \frac{1}{jx_s}
-\end{eqnarray}
-respectively.  Applying the uniform bus voltage magnitude assumption from
-equation (\ref{eq:oneperunit}) to equation (\ref{eq:ybranch}), the branch
-``from'' end current approximates to
-\begin{eqnarray}
-i_f& \approx& \frac{e^{j\theta_f}}{jx_s\tau^2} -
-\frac{e^{j\theta_t}}{jx_s \tau e^{-j\theta_{ph}}}\\
-& =& \frac{1}{jx_s\tau} ( \frac{1}{\tau}e^{j\theta_f} -
-e^{j(\theta_t + \theta_{ph})} )
-\end{eqnarray}
-% ToDo: Branch to end current derivation.
-and the branch ``from'' end complex power flow $s_f = v_f \cdot i_f^*$
-approximates to
-\begin{eqnarray}
-s_f& \approx& e^{j\theta_f} \cdot \frac{j}{x_s\tau}
-(\frac{1}{\tau}e^{-j\theta_f} - e^{j(\theta_t + \theta_{ph})})\\
-& =& \frac{1}{x_s\tau} \left[ \sin(\theta_f-\theta_t-\theta_{ph}) +
-j\left( \frac{1}{\tau} - \cos(\theta_f-\theta_t-\theta_{ph}) \right) \right]
-\end{eqnarray}
-Applying the voltage angle difference assumption from equation
-(\ref{eq:busangdiff}) yields the approximation
-\begin{equation}
-p_f \approx \frac{1}{x_s\tau}(\theta_f-\theta_t-\theta_{ph})
-\end{equation}
-Let $B_{ff}$ and $P_{f,ph}$ be the $n_l \times 1$ vectors where
-$B_{ff_i} = 1 / (x_s^i\tau^i)$ and $P_{f,ph_i} =
--\theta_{ph}^i / (x_s^i\tau^i)$.  Then if the system $B$ matrices are
-\begin{eqnarray}
-B_f& =& \diag(B_{ff})(C_f-C_t)\\
-B_{bus}& = &(C_f-C_t)^\mathsf{T}B_f
-\end{eqnarray}
-then the real power bus injections are
-\begin{equation}
-\label{eq:bbus}
-P_{bus}(\Theta) = B_{bus}\Theta + P_{bus,ph}
-\end{equation}
-where $\Theta$ is the $n_b \times 1$ vector of bus voltage angles and
-\begin{equation}
-P_{bus,ph} = (C_f-C_t)^\mathsf{T} + P_{f,ph}
-\end{equation}
-The active power flows at the branch ``from'' ends are
-\begin{equation}
-\label{eq:pf_loss}
-P_f(\Theta) = B_f\Theta + P_{f,ph}
-\end{equation}
-and $P_t = -P_f$ since all branches are assumed lossless.
-
-\section{AC OPF Formulation}
-Following \cite[p.26]{pserc:mp_manual}, generator active and, optionally,
-reactive power output costs are defined by a convex $n$-segment piecewise
-linear cost function
-\begin{equation}
-c^{(i)}(x) = m_ip + c_i
-\end{equation}
-for $p_i \leq p \leq p_{i+1}$ with $i = 1,2,\dotsc n$ where $m_{i+1} \geq m_i$
-and $p_{i+1} > p_i$ as diagramed in Figure X.  Since these costs are
-non-differentiable the constrained cost variable approach from
-\cite{zimmerman:ccv} is used to make the optimisation problem smooth.  For
-each generator $i$ a helper cost variable $y_i$ added to the objective
-function.  The inequality constraints
-\begin{equation}
-y_i \geq m_{i,j}(p-p_j) + c_j, \quad j = 1\dotsc n
-\end{equation}
-require that $y_i$ lies on the epigraph\footnote{Informally, the epigraph of a
-function is a set of points lying on or above its graph.} of $c^{(i)}(x)$. The objective of
-the optimal power flow problem is to minimise the sum of the cost variables
-for all generators.
-\begin{equation}
-\min_{\theta, V_m, P_g, Q_g, y} \sum_{i=1}^{n_g}y_i
-\end{equation}
-Equation (\ref{eq:mismatch}) forms an equality constraint which enforce the
-balance between the net complex power injection and injections into the
-network.  Branch complex power flow limits $S_{max}$ are enforced by the
-inequality constraints
-\begin{eqnarray}
-\abs{S_f(V)} - S_{max}& \leq &0\\
-\abs{S_f(V)} - S_{max}& \leq &0
-\end{eqnarray}
-and the reference bus voltage angle $\theta_i$ is fixed with the equality
-constraint
-\begin{equation}
-\label{eq:refbusang}
-\theta_i^{ref} \leq \theta_i \leq \theta_i^{ref}, \quad i \in \mathcal{I}_{ref}
-\end{equation}
-Upper and lower limits on the optimisation variables $V_m$, $P_g$ and $Q_g$ are
-enforced by the inequality constraints
-\begin{eqnarray}
-v_m^{i,min} \leq v_m^i \leq v_m^{i,max},& \quad i= 1 \dotsc n_b&\\
-\label{eq:pglim}
-p_g^{i,min} \leq p_g^i \leq p_q^{i,max},& \quad i= 1 \dotsc n_g&\\
-q_g^{i,min} \leq q_g^i \leq q_q^{i,max},& \quad i= 1 \dotsc n_g&
-\end{eqnarray}
-
-\section{DC OPF Formulation}
-Piecewise linear cost functions are also used to define generator active power
-costs in the DC optimal power flow formulation.  Since the power flow equations
-are linearised, following the assumptions in equations (\ref{eq:lossless}),
-(\ref{eq:oneperunit}) and (\ref{eq:busangdiff}), the optimal power flow
-problem simplifies to a linear program.  The voltage magnitude variables $V_m$
-and generator reactive power set-point variable $Q_g$ are eliminated following
-the assumption in equation (\ref{eq:busangdiff}) since branch reactive power
-flows depend on bus voltage angle differences.  The objective function reduces to
-\begin{equation}
-\min_{\theta, P_g, y} \sum_{i=1}^{n_g}y_i
-\end{equation}
-Combining the nodal real power injections, expressed as a function of $\Theta$,
-from equation (\ref{eq:bbus}), with active power generation $P_g$ and active
-demand $P_d$, the power balance constraint is
-\begin{equation}
-B_{bus}\Theta + P_{bus,ph} + P_d - C_gP_g = 0
-\end{equation}
-Limits on branch active power flows $B_f\Theta$ and $B_t\Theta$ are enforced by
-the inequality constraints
-\begin{eqnarray}
-B_f\Theta + P_{f,ph} - F_{max}& \leq& 0\\
--B_f\Theta + P_{f,ph} - F_{max}& \leq& 0
-\end{eqnarray}
-The reference bus voltage angle equality constraint from
-equation (\ref{eq:refbusang}) and the $p_g$ limit constraint from
-(\ref{eq:pglim}) are also applied.
-
-\section{Optimal Power Flow Solution}
-\label{sec:opfsol}
-% Generator dispatch points are used with the associated cost functions to
-% compute the objective function value -- the total system cost.  The power
-% balance Lagrangian multipliers are the shadow prices or system nodal prices and
-% equal the cost to the system of supplying one more unit of load at that bus.
-
-\section{Unit De-commitment}
-The optimal power flow formulation defined in Section \ref{sec:opf} above
-requires generators are dispatched within their upper and lower power limits.
-Expensive generators can not be completely shutdown, even if doing so would
-result in a lower total system cost.  Algorithm \ref{alg:ud} defines the unit
-de-commitment algorithm from \cite[p.20]{pserc:mp_manual} which allows a least
-cost commitment and dispatch to be determined using the optimal power flow
-formulation. The algorithm finds the least cost dispatch by solving repeated
-optimal power flow problems with different combinations of generating units
-that are at their minimum active power limit deactivated.  The lowest cost
-solution is returned when no further improvement can be made and no candidate
-generators remain.
-\begin{algorithm}[H]
-\caption{Unit de-commitment}
-\label{alg:ud}
-\begin{algorithmic}[1]
-\STATE $\text{initialise}~N \leftarrow 0$
-\STATE $\text{solve initial OPF}$
-\STATE $L_{tot} \leftarrow \text{total load capacity}$
-\WHILE{$\text{total min gen.\ capacity} > L_{tot}$}
-	\STATE $N \leftarrow N + 1$
-\ENDWHILE
-
-\REPEAT
-	\FOR{c in candidates}
-		\STATE $\text{solve OPF}$
-	\ENDFOR
-\UNTIL{$\text{done} = \text{True}$}
-\end{algorithmic}
-\end{algorithm}
+% \chapter{MATPOWER OPF Formulation}
+% \label{sec:power_system_model}
+% Power systems are modelled as three-phase AC circuits operating in the
+% steady-state, under balanced conditions that can be represented by an
+% equivalent single phase nodal graph of busbars connected by branches
+% \cite{grainger:psa}.
+%
+% \section{Branches}
+% Following \cite[p.11]{pserc:mp_manual}, each branch is modelled as a medium
+% length transmission line in series with a regulating transformer at the ``from'' end.  A nominal-$\pi$ model with total
+% series admittance $y_s = 1/(r_s+jx_s)$ and total shunt capacitance $b_c$
+% represents the transmission line.  The transformer is assumed to be ideal,
+% phase-shifting and tap-changing, with the ratio between primary winding
+% voltage $v_{f}$ and secondary winding voltage $N = \tau e^{j\theta_{ph}}$
+% where $\tau$ is the tap ratio and $\theta_{ph}$ is the phase shift angle.
+% Figure X diagrams the branch model.  From Kirchhoff's Current Law the current
+% in the series impedance is
+% \begin{equation}
+% \label{eq:iseries}
+% i_s = \frac{b_c}{2}v_t - i_t
+% \end{equation}
+% and from Kirchhoff's Voltage Law the voltage across the secondary winding of
+% the transformer is
+% \begin{equation}
+% \frac{v_{f}}{N} = v_t + \frac{i_s}{y_s}
+% \end{equation}
+% Substituting $i_s$ from equation (\ref{eq:iseries}), gives
+% \begin{equation}
+% \label{eq:vfrom}
+% \frac{v_{f}}{N} = v_t - \frac{i_t}{y_s} + v_t\frac{b_c}{2y_s}
+% \end{equation}
+% and rearranging in terms if $i_t$, gives
+% \begin{equation}
+% \label{eq:ito}
+% i_t = v_s \left( \frac{-y_s}{\tau e^{\theta_{ph}}} \right) +
+% v_r \left( y_s + \frac{b_c}{2} \right)
+% \end{equation}
+% The current through the secondary winding of the transformer is
+% \begin{equation}
+% N^*i_f = i_s + \frac{b_c}{2}\frac{v_{f}}{N}
+% \end{equation}
+% Substituting $i_s$ from equation(\ref{eq:iseries}) again, gives
+% \begin{equation}
+% N^*i_f = \frac{b_c}{2}v_t - i_t + \frac{b_c}{2}\frac{v_{f}}{N}
+% \end{equation}
+% and substituting $\frac{v_{f}}{N}$ from equation (\ref{eq:vfrom}) and
+% rearranging, gives
+% \begin{equation}
+% \label{eq:ifrom}
+% i_s = v_s \left( \frac{1}{\tau^2} \left(y_s + \frac{b_c}{2}\right) \right) +
+% v_r \left(\frac{y_s}{\tau e^{-j\theta}}\right)
+% \end{equation}
+% Equations (\ref{eq:ito}) and (\ref{eq:ifrom}) are used in section
+% \ref{sec:acpf} below to define the system admittance matrices that describe
+% the electrical network.
+%
+% \section{Generators}
+% \label{sec:generators}
+% Each generator $k$ is modelled as an apparent power injection $s^k_g = p^k_g +
+% jq^k_g$ at a bus $i$, where $p^k_g$ is the active power injection,
+% $q^k_g$ is the reactive power injection and each are expressed in per-unit to
+% the system base MVA.  Upper and lower limits on $p^k_g$ are specified by
+% $p^k_{max}$ and $p^k_{min}$, respectively, where $p^k_{max} > p^k_{min} \geq
+% 0$.  Similarly, upper and lower limits on $q^k_g$ are specified by $q_{max}^k$
+% and $q_{min}^k$, respectively, where $q^k_{max} > q^k_{min}$.
+%
+% \section{Buses and Loads}
+% At each bus $i$, constant active power demand is specified by $p^i_d$ and
+% reactive power demand by $q^i_d$.  Upper and lower limits on the voltage
+% magnitude at the bus are defined by $v_m^{i,max}$ and $v_m^{i,min}$,
+% respectively.  One generator bus $i \in \mathcal{I}_{ref}$ in the circuit is
+% designated the \textit{reference} bus and has voltage angle $\theta^{ref}_k$.
+% Dispatchable loads are modelled as generators with negative $p^i_g$ and
+% $p^i_{min} < p^i_{max} = 0$. %TODO: Constant power factor.
+%
+% \section{AC Power Flow Equations}
+% \label{sec:acpf}
+% Following \cite[p.13]{pserc:mp_manual}, for a network of $n_b$ buses, $n_l$
+% branches and $n_g$ generators, let $Cg$ be the $n_b \times n_g$ bus-generator connection matrix such that the $(i,j)^{th}$
+% element of $C_{g}$ is $1$ if generator $j$ is connected to bus $i$.  The
+% $n_b \times 1$ vector of complex power injections from generators at all buses
+% is
+% \begin{equation}
+% S_{g,bus} = C_g \cdot S_g
+% \end{equation}
+% where $S_g = P_g + jQ_g$ is the $n_g \times 1$ vector with the $i^{th}$ element
+% is equal to $s^i_g$.
+%
+% Combining equations (\ref{eq:ito}) and (\ref{eq:ifrom}), the \textit{from}
+% and \textit{to} end complex current injections for branch $l$ are
+% \begin{equation}
+% \label{eq:ybranch}
+% \begin{bmatrix}
+% i_f^l\\
+% i_t^l
+% \end{bmatrix}
+% =
+% \begin{bmatrix}
+% y_{ff}^l& y_{ft}^l\\
+% y_{tf}^l& y_{tt}^l
+% \end{bmatrix}
+% \begin{bmatrix}
+% v_f^l\\
+% v_t^l
+% \end{bmatrix}
+% \end{equation}
+% where
+% \begin{eqnarray}
+% \label{eq:yff}
+% y_{ff}^l& =& \frac{1}{\tau^2} \left(y_s + \frac{b_c}{2}\right)\\
+% \label{eq:yft}
+% y_{ft}^l& =& \frac{y_s}{\tau e^{-j\theta_{ph}}}\\
+% \label{eq:ytf}
+% y_{tf}^l& =& \frac{-y_s}{\tau e^{j\theta_{ph}}}\\
+% \label{eq:ytt}
+% y_{tt}^l& =& y_s + \frac{b_c}{2}
+% \end{eqnarray}
+% Let $Y_{ff}$, $Y_{ft}$, $Y_{tf}$ and $Y_{tt}$ be $n_l \times 1$ vectors where
+% the $l^{th}$ element of each corresponds to $y_{ff}^l$, $y_{ft}^l$,
+% $y_{tf}^l$ and $y_{tt}^l$, respectively.  Furthermore, let $C_f$ and $C_t$ be the
+% $n_l \times n_b$ branch-bus connection matrices, where $C_{f_{i,j}} = 1$ and
+% $C_{t_{i,k}} = 1$ if branch $i$ connects from bus $j$ to bus $k$.  The $n_l
+% \times n_b$ branch admittance matrices are
+% \begin{eqnarray}
+% Y_f& =& \diag(Y_{ff})C_f + \diag(Y_{ft})C_t\\
+% Y_t& =& \diag(Y_{tf})C_f + \diag(Y_{tt})C_t
+% \end{eqnarray}
+% and relate the complex bus voltages $V$ to the branch ``from'' and
+% ``to'' end current vectors
+% \begin{eqnarray}
+% I_{f}& =& Y_{f}V\\
+% I_{t}& =& Y_{t}V
+% \end{eqnarray}
+% The $n_b \times n_b$ bus admittance matrix
+% \begin{eqnarray}
+% Y_{bus}& =& C_f^\mathsf{T} Y_f + C_t^\mathsf{T} Y_t
+% \end{eqnarray}
+% relates the complex bus voltages to the nodal current injections
+% \begin{eqnarray}
+% I_{bus}& =& Y_{bus}V
+% \end{eqnarray}
+% The complex bus power injections are expressed as a non-linear function of $V$
+% \begin{eqnarray}
+% S_{bus}(V)& =& \diag(V)I_{bus}^* \nonumber \\
+% \label{eq:sbus}
+% &= & \diag(V)Y_{bus}^*V^*
+% \end{eqnarray}
+% As are the complex power injections at the ``from'' and ``to'' ends of all
+% branches
+% \begin{eqnarray}
+% S_{f}(V)& =& \diag(C_fV)I_f^* \nonumber \\
+% \label{eq:sf_loss}
+% & =& \diag(C_fV)Y_f^*V^*\\
+% S_{t}(V)& =& \diag(C_tV)I_t^* \nonumber \\
+% \label{eq:st_loss}
+% & =& \diag(C_tV)Y_t^*V^*
+% \end{eqnarray}
+% The net complex power injection (generation - load) at each bus must equal the
+% sum of complex power flows on each branch connected to the bus.  Hence the AC
+% power balance equations are
+% \begin{equation}
+% \label{eq:mismatch}
+% S_{bus}(V) + S_d - S_g = 0
+% \end{equation}
+%
+% \section{DC Power Flow Equations}
+% Following \cite[p.14]{pserc:mp_manual}, the same power system model is used in
+% the formulation of the linearised DC power flow equations, but the following additional assumptions are made:
+% \begin{itemize}
+%   \item The resistance $r_s$ and shunt capacitance $b_c$ of all branches can be
+%   considered negligible.
+%   \begin{equation}
+%   \label{eq:lossless}
+%   y_s \approx \frac{1}{jx_s}, \quad b_c \approx 0
+%   \end{equation}
+%   \item Bus voltage magnitudes $v_{m,i}$ are all approximately 1 per-unit.
+%   \begin{equation}
+%   \label{eq:oneperunit}
+%   v_i \approx 1e^{j\theta_i}
+%   \end{equation}
+%   \item The voltage angle difference between bus $i$ and bus $j$ is small enough
+%   that
+%   \begin{equation}
+%   \label{eq:busangdiff}
+%   \sin\theta_{ij} \approx \theta_{ij}
+%   \end{equation}
+% \end{itemize}
+% Applying the assumption that branches are lossless from equation
+% (\ref{eq:lossless}), the quadrants of the branch admittance matrix in equations
+% (\ref{eq:yff}), (\ref{eq:yft}), (\ref{eq:ytf}) and (\ref{eq:ytt}), approximate
+% to
+% \begin{eqnarray}
+% y_{ff}^l& =& \frac{1}{jx_s \tau^2}\\
+% y_{ft}^l& =& \frac{-1}{jx_s \tau e^{-j\theta_{ph}}}\\
+% y_{tf}^l& =& \frac{-1}{jx_s \tau e^{j\theta_{ph}}}\\
+% y_{tt}^l& =& \frac{1}{jx_s}
+% \end{eqnarray}
+% respectively.  Applying the uniform bus voltage magnitude assumption from
+% equation (\ref{eq:oneperunit}) to equation (\ref{eq:ybranch}), the branch
+% ``from'' end current approximates to
+% \begin{eqnarray}
+% i_f& \approx& \frac{e^{j\theta_f}}{jx_s\tau^2} -
+% \frac{e^{j\theta_t}}{jx_s \tau e^{-j\theta_{ph}}}\\
+% & =& \frac{1}{jx_s\tau} ( \frac{1}{\tau}e^{j\theta_f} -
+% e^{j(\theta_t + \theta_{ph})} )
+% \end{eqnarray}
+% % ToDo: Branch to end current derivation.
+% and the branch ``from'' end complex power flow $s_f = v_f \cdot i_f^*$
+% approximates to
+% \begin{eqnarray}
+% s_f& \approx& e^{j\theta_f} \cdot \frac{j}{x_s\tau}
+% (\frac{1}{\tau}e^{-j\theta_f} - e^{j(\theta_t + \theta_{ph})})\\
+% & =& \frac{1}{x_s\tau} \left[ \sin(\theta_f-\theta_t-\theta_{ph}) +
+% j\left( \frac{1}{\tau} - \cos(\theta_f-\theta_t-\theta_{ph}) \right) \right]
+% \end{eqnarray}
+% Applying the voltage angle difference assumption from equation
+% (\ref{eq:busangdiff}) yields the approximation
+% \begin{equation}
+% p_f \approx \frac{1}{x_s\tau}(\theta_f-\theta_t-\theta_{ph})
+% \end{equation}
+% Let $B_{ff}$ and $P_{f,ph}$ be the $n_l \times 1$ vectors where
+% $B_{ff_i} = 1 / (x_s^i\tau^i)$ and $P_{f,ph_i} =
+% -\theta_{ph}^i / (x_s^i\tau^i)$.  Then if the system $B$ matrices are
+% \begin{eqnarray}
+% B_f& =& \diag(B_{ff})(C_f-C_t)\\
+% B_{bus}& = &(C_f-C_t)^\mathsf{T}B_f
+% \end{eqnarray}
+% then the real power bus injections are
+% \begin{equation}
+% \label{eq:bbus}
+% P_{bus}(\Theta) = B_{bus}\Theta + P_{bus,ph}
+% \end{equation}
+% where $\Theta$ is the $n_b \times 1$ vector of bus voltage angles and
+% \begin{equation}
+% P_{bus,ph} = (C_f-C_t)^\mathsf{T} + P_{f,ph}
+% \end{equation}
+% The active power flows at the branch ``from'' ends are
+% \begin{equation}
+% \label{eq:pf_loss}
+% P_f(\Theta) = B_f\Theta + P_{f,ph}
+% \end{equation}
+% and $P_t = -P_f$ since all branches are assumed lossless.
+%
+% \section{AC OPF Formulation}
+% Following \cite[p.26]{pserc:mp_manual}, generator active and, optionally,
+% reactive power output costs are defined by a convex $n$-segment piecewise
+% linear cost function
+% \begin{equation}
+% c^{(i)}(x) = m_ip + c_i
+% \end{equation}
+% for $p_i \leq p \leq p_{i+1}$ with $i = 1,2,\dotsc n$ where $m_{i+1} \geq m_i$
+% and $p_{i+1} > p_i$ as diagramed in Figure X.  Since these costs are
+% non-differentiable the constrained cost variable approach from
+% \cite{zimmerman:ccv} is used to make the optimisation problem smooth.  For
+% each generator $i$ a helper cost variable $y_i$ added to the objective
+% function.  The inequality constraints
+% \begin{equation}
+% y_i \geq m_{i,j}(p-p_j) + c_j, \quad j = 1\dotsc n
+% \end{equation}
+% require that $y_i$ lies on the epigraph\footnote{Informally, the epigraph of a
+% function is a set of points lying on or above its graph.} of $c^{(i)}(x)$. The objective of
+% the optimal power flow problem is to minimise the sum of the cost variables
+% for all generators.
+% \begin{equation}
+% \min_{\theta, V_m, P_g, Q_g, y} \sum_{i=1}^{n_g}y_i
+% \end{equation}
+% Equation (\ref{eq:mismatch}) forms an equality constraint which enforce the
+% balance between the net complex power injection and injections into the
+% network.  Branch complex power flow limits $S_{max}$ are enforced by the
+% inequality constraints
+% \begin{eqnarray}
+% \abs{S_f(V)} - S_{max}& \leq &0\\
+% \abs{S_f(V)} - S_{max}& \leq &0
+% \end{eqnarray}
+% and the reference bus voltage angle $\theta_i$ is fixed with the equality
+% constraint
+% \begin{equation}
+% \label{eq:refbusang}
+% \theta_i^{ref} \leq \theta_i \leq \theta_i^{ref}, \quad i \in \mathcal{I}_{ref}
+% \end{equation}
+% Upper and lower limits on the optimisation variables $V_m$, $P_g$ and $Q_g$ are
+% enforced by the inequality constraints
+% \begin{eqnarray}
+% v_m^{i,min} \leq v_m^i \leq v_m^{i,max},& \quad i= 1 \dotsc n_b&\\
+% \label{eq:pglim}
+% p_g^{i,min} \leq p_g^i \leq p_q^{i,max},& \quad i= 1 \dotsc n_g&\\
+% q_g^{i,min} \leq q_g^i \leq q_q^{i,max},& \quad i= 1 \dotsc n_g&
+% \end{eqnarray}
+%
+% \section{DC OPF Formulation}
+% Piecewise linear cost functions are also used to define generator active power
+% costs in the DC optimal power flow formulation.  Since the power flow equations
+% are linearised, following the assumptions in equations (\ref{eq:lossless}),
+% (\ref{eq:oneperunit}) and (\ref{eq:busangdiff}), the optimal power flow
+% problem simplifies to a linear program.  The voltage magnitude variables $V_m$
+% and generator reactive power set-point variable $Q_g$ are eliminated following
+% the assumption in equation (\ref{eq:busangdiff}) since branch reactive power
+% flows depend on bus voltage angle differences.  The objective function reduces to
+% \begin{equation}
+% \min_{\theta, P_g, y} \sum_{i=1}^{n_g}y_i
+% \end{equation}
+% Combining the nodal real power injections, expressed as a function of $\Theta$,
+% from equation (\ref{eq:bbus}), with active power generation $P_g$ and active
+% demand $P_d$, the power balance constraint is
+% \begin{equation}
+% B_{bus}\Theta + P_{bus,ph} + P_d - C_gP_g = 0
+% \end{equation}
+% Limits on branch active power flows $B_f\Theta$ and $B_t\Theta$ are enforced by
+% the inequality constraints
+% \begin{eqnarray}
+% B_f\Theta + P_{f,ph} - F_{max}& \leq& 0\\
+% -B_f\Theta + P_{f,ph} - F_{max}& \leq& 0
+% \end{eqnarray}
+% The reference bus voltage angle equality constraint from
+% equation (\ref{eq:refbusang}) and the $p_g$ limit constraint from
+% (\ref{eq:pglim}) are also applied.
+%
+% \section{Optimal Power Flow Solution}
+% \label{sec:opfsol}
+% % Generator dispatch points are used with the associated cost functions to
+% % compute the objective function value -- the total system cost.  The power
+% % balance Lagrangian multipliers are the shadow prices or system nodal prices and
+% % equal the cost to the system of supplying one more unit of load at that bus.
+%
+% \section{Unit De-commitment}
+% The optimal power flow formulation defined in Section \ref{sec:opf} above
+% requires generators are dispatched within their upper and lower power limits.
+% Expensive generators can not be completely shutdown, even if doing so would
+% result in a lower total system cost.  Algorithm \ref{alg:ud} defines the unit
+% de-commitment algorithm from \cite[p.20]{pserc:mp_manual} which allows a least
+% cost commitment and dispatch to be determined using the optimal power flow
+% formulation. The algorithm finds the least cost dispatch by solving repeated
+% optimal power flow problems with different combinations of generating units
+% that are at their minimum active power limit deactivated.  The lowest cost
+% solution is returned when no further improvement can be made and no candidate
+% generators remain.
+% \begin{algorithm}[H]
+% \caption{Unit de-commitment}
+% \label{alg:ud}
+% \begin{algorithmic}[1]
+% \STATE $\text{initialise}~N \leftarrow 0$
+% \STATE $\text{solve initial OPF}$
+% \STATE $L_{tot} \leftarrow \text{total load capacity}$
+% \WHILE{$\text{total min gen.\ capacity} > L_{tot}$}
+% 	\STATE $N \leftarrow N + 1$
+% \ENDWHILE
+%
+% \REPEAT
+% 	\FOR{c in candidates}
+% 		\STATE $\text{solve OPF}$
+% 	\ENDFOR
+% \UNTIL{$\text{done} = \text{True}$}
+% \end{algorithmic}
+% \end{algorithm}
