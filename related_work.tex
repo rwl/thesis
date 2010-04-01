@@ -507,12 +507,13 @@ potential for inducing higher net earnings through capacity withholding in the
 market design.
 
 \subsection{Italian Wholesale Electricity Market}
+\input{tikz/italy}
 Researchers from the University of Genoa have used the modified Roth-Erev
 method to study strategic behaviour in the Italian wholesale electricity market
-\cite{cincotti:09}.  The actual clearing procedure is modelled and a
-model of the Italian transmission system, including an interconnector to Sicily, with
-zonal subdivision, is defined.  Within each of the 11 zones, thermal plant is
-combined according to technology (coal, oil, combined cycle gas, turbo gas and
+\cite{cincotti:09}.  The actual clearing procedure is modelled and the
+model of the Italian transmission system, including an interconnector to
+Sicily, with zonal subdivision, illustrated in Figure \ref{fig:italy} is
+defined.  Within each of the 11 zones, thermal plant is combined according to technology (coal, oil, combined cycle gas, turbo gas and
 repower) and associated with one of 16 generation companies according to the
 size of the companies share.  The resulting 53 agents are assumed to bid full
 capacity and may markup bid prices in steps of 5\%, with a maximum markup of
@@ -884,11 +885,16 @@ simulation reports can be exported as plain text, Excel spreadsheets or
 \LaTeXe~code.  PSAT may be run from the \matlab command-line or from a \matlab
 based graphical user interface.  The graphical interface can be used with
 Simulink\footnote{Simulink is a registered trademark of The Mathworks, Inc.}
-to construct networks such as that shown in Figure X.  A slightly modified
-version of PSAT that can be run from the \textsc{Gnu}/Octave command-line is
-also available.
+to construct networks such as that shown in Figure \ref{fig:ukgds_ehv3}.  A
+slightly modified version of PSAT that can be run from the \textsc{Gnu}/Octave
+command-line is also available.
 
-% TODO: Insert UKGDS Simulink diagram.
+\begin{figure}
+  \centering
+  \includegraphics[width=20cm,angle=90]{figures/psat}
+  \caption{UKGDS EHV3 model in PSAT Simulink network editor.}
+  \label{fig:ukgds_ehv3}
+\end{figure}
 
 Optimal power flow problems are solved via an interface to the General
 Algebraic Modeling System (GAMS).  GAMS defines optimisation

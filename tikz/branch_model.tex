@@ -1,0 +1,116 @@
+\begin{figure}
+\label{fig:branch_model}
+\centering
+\begin{tikzpicture}[thick]
+%   \def\capacitor(#1,#2){%
+%     \draw (#1,#2+3cm) -- (#1,#2+5mm);
+% %    \draw (#1-1cm,#2+5mm) -- (#1+1cm,#2+5mm);
+% %     \draw[linewidth=1pt] (-1cm,-5mm) -- (1cm,-5mm);
+% %     \draw[linewidth=1pt] (0,-1cm) -- (0,-5mm);
+%   }
+%
+%   \capacitor(0,0);
+
+%   \def\terminal(#1,#2){#3}{%
+%     \node[circle,draw,minimum width=5pt,inner sep=0pt] (#3) at (#1,#2) {};
+%   }
+%   \terminal(5,5);
+
+  \coordinate (vf0) at (0,0);
+  \coordinate (vf+) at (0,6);
+  \coordinate (vt0) at (13,0);
+  \coordinate (vt+) at (13,6);
+
+  \coordinate (trx) at (2,3);
+  \coordinate (vf0p) at ($(trx)-(0.5,3)$);
+  \coordinate (vf+p) at ($(trx)+(-0.5,3)$);
+  \coordinate (vf0s) at ($(trx)-(-0.5,3)$);
+  \coordinate (vf+s) at ($(trx)+(0.5,3)$);
+
+  \coordinate (vl0) at (4,0);
+  \coordinate (vl+) at (4,6);
+  % resistor
+  \coordinate (res) at (7.5,6);
+  \coordinate (rin) at ($(res) -(7mm,0)$);
+  \coordinate (rout) at ($(res) + (7mm,0)$);
+  \coordinate (rh) at (0,6pt);
+  % inductor
+  \coordinate (ind) at (9.5,6);
+  \coordinate (lin) at ($(ind)-(7mm,0)$);
+  \coordinate (lout) at ($(ind)+(7mm,0)$);
+
+  \coordinate (capw) at (7mm,0);
+  \coordinate (bc1) at (5.8,3);
+  \coordinate (bc1in) at ($(bc1) + (0,2mm)$);
+  \coordinate (bc1out) at ($(bc1) - (0,2mm)$);
+  \coordinate (bc2) at (11.2,3);
+  \coordinate (bc2in) at ($(bc2) + (0,2mm)$);
+  \coordinate (bc2out) at ($(bc2) - (0,2mm)$);
+
+  \node[circle,draw,minimum width=4pt,inner sep=0pt] (nvf0) at (vf0) {};
+  \node[circle,draw,minimum width=4pt,inner sep=0pt] (nvf+) at (vf+) {};
+  \node[circle,draw,minimum width=4pt,inner sep=0pt] (nvl0) at (vl0) {};
+  \node[circle,draw,minimum width=4pt,inner sep=0pt] (nvl+) at (vl+) {};
+  \node[circle,draw,minimum width=4pt,inner sep=0pt] (nvt0) at (vt0) {};
+  \node[circle,draw,minimum width=4pt,inner sep=0pt] (nvt+) at (vt+) {};
+
+  \draw (nvl0) -- (nvt0);
+  % transformer
+  \draw (nvf0) -- (vf0p);
+  \draw (vf0s) -- (nvl0);
+  \draw (nvf+) -- (vf+p);
+  \draw (vf+s) -- (nvl+);
+  \draw[decorate,decoration={coil,amplitude=5pt,segment length=5.5pt,
+  pre length=10mm,post length=10mm}] (vf+p) -- (vf0p);
+  \draw[decorate,decoration={coil,amplitude=5pt,segment length=5.5pt,
+  pre length=10mm,post length=10mm}] (vf0s) -- (vf+s);
+  \coordinate (cor1) at ($(trx)-(1mm,0)$);
+  \coordinate (cor2) at ($(trx)+(1mm,0)$);
+  \coordinate (corh) at (0,1.8);
+  \draw[line width=1.5pt] ($(cor1)-(corh)$) -- ($(cor1)+(corh)$);
+  \draw[line width=1.5pt] ($(cor2)-(corh)$) -- ($(cor2)+(corh)$);
+
+  % resistor
+  \filldraw[fill=white,drop shadow] ($(rin)-(rh)$) rectangle ($(rout)+(rh)$);
+  \draw ($(res) + (0,5mm)$) node {$r_s$};
+  \draw (nvl+) -- (rin);
+
+  \draw (rout) -- (lin);
+  % inductor
+  \draw[decorate,decoration={coil,amplitude=6pt,segment length=6pt}]
+  (lin) -- (lout);
+  \draw ($(ind) +(0,5mm)$) node {$x_s$};
+  \draw (lout) -- (nvt+);
+  % capacitor 1
+  \draw (bc1in) -- (bc1in |- vf+s) node[circle,draw,minimum width=2pt,
+  inner sep=0pt,fill=black]{};
+  \draw (bc1out) -- (bc1out |- vf0s) node[circle,draw,minimum width=2pt,
+  inner sep=0pt,fill=black]{};
+  \draw[line width=1.2pt] ($(bc1in)-(capw)$) -- ($(bc1in)+(capw)$);
+  \draw[line width=1.2pt] ($(bc1out)-(capw)$) -- ($(bc1out)+(capw)$);
+%   \draw[line width=1.2pt] ($(bc1out)$) .. controls ($(bc1out)+(capw)+(-2mm,0)$)
+%   .. ($(bc1out)+(capw)+(0,-2mm)$); \draw ($(bc1) + (capw)$) node[anchor=west] {$\dfrac{b_c}{2}$};
+  % capacitor 2
+  \draw (bc2in) -- (bc2in |- vt+) node[circle,draw,minimum width=2pt,
+  inner sep=0pt,fill=black]{};
+  \draw (bc2out) -- (bc2out |- vt0) node[circle,draw,minimum width=2pt,
+  inner sep=0pt,fill=black]{};
+  \draw[line width=1.2pt] ($(bc2in)-(capw)$) -- ($(bc2in)+(capw)$);
+  \draw[line width=1.2pt] ($(bc2out)-(capw)$) -- ($(bc2out)+(capw)$);
+  \draw ($(bc2) - (capw)$) node[anchor=east] {$\dfrac{b_c}{2}$};
+
+  \draw[->,shorten >=5pt,shorten <=5pt,thin] (vf0) node[above right] {$-$} --
+  node[fill=white] {$v_f$} (vf+) node[below right] {$+$};
+  \draw[->,shorten >=5pt,shorten <=5pt,thin] (vl0) node[above left] {$-$} --
+  node[fill=white] {$\dfrac{v_f}{N}$} (vl+) node[below left] {$+$};
+  \draw[->,shorten >=5pt,shorten <=5pt,thin] (vt0) node[above left] {$-$} --
+  node[fill=white] {$v_t$} (vt+) node[below left] {$+$};
+  \node at ($(trx)-(0,2.4)$) {$N:1$};
+  \draw[->,thin] ($(vf+)+(rh)$) -- node[above]{$i_f$} ++(12mm,0);
+  \draw[->,thin] ($(vf+s)+(rh)$) -- node[above]{$N^*i_f$} ++(12mm,0);
+  \draw[->,thin] ($(vt+)+(rh)$) -- node[above]{$i_t$} ++(-12mm,0);
+  \draw[->,thin] ($(lout)+(rh)$) -- node[above]{$i_l$} ++(8mm,0);
+
+\end{tikzpicture}
+\caption{MATPOWER branch model.}
+\end{figure}

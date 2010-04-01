@@ -1,0 +1,46 @@
+\begin{figure}
+\label{fig:italy}
+\centering
+\begin{scriptsize}
+\begin{tikzpicture}[thick]
+
+\coordinate (csicily) at (0,2.5);
+\coordinate (cprgp) at (2,0);
+\coordinate (crosn) at (4.5,0);
+\coordinate (cbrnn) at (7,0);
+\coordinate (csouth) at (8,3);
+\coordinate (cfogn) at (10,5);
+\coordinate (ccs) at (8,7);
+\coordinate (ccn) at (8,10.5);
+\coordinate (csardinia) at (0,10.5);
+\coordinate (cmftv) at (8,14);
+\coordinate (cnorth) at (4,16);
+
+\vbusbar{sicily}{csicily}{30mm}
+\busbar{prgp}{cprgp}{15mm}
+\busbar{rosn}{crosn}{20mm}
+\busbar{brnn}{cbrnn}{15mm}
+\vbusbar{south}{csouth}{20mm}
+\vbusbar{fogn}{cfogn}{20mm}
+\vbusbar{cs}{ccs}{20mm}
+\vbusbar{cn}{ccn}{30mm}
+\vbusbar{sardinia}{csardinia}{20mm}
+\vbusbar{mftv}{cmftv}{20mm}
+\busbar{north}{cnorth}{20mm}
+
+\draw[line] ([yshift=-7.5mm] sicily.east) -- ++(1,0) -| (prgp.north);
+\draw[line] ([yshift=7.5mm] sicily.east) -- ++(3,0) -| ([xshift=-5mm]
+rosn.north);
+\draw[line] (rosn.north) -- ++(0,2.5) -| ([yshift=-5mm] south.west);
+\draw[line] ([xshift=5mm] rosn.north) -- ++(0,1) -| (brnn.north);
+\draw[line] (south.west) -- ++(-2,0) |- ([yshift=-5mm] cs.west);
+\draw[line] ([yshift=5mm] south.west) -- ++(-1,0) |- (fogn.west);
+\draw[line] ([yshift=5mm] cs.west) -- ++(-2,0) |- ([yshift=-7.5mm] cn.west);
+\draw[line] (cn.west) -- (sardinia.east);
+\draw[line] ([yshift=7.5mm] cn.west) -| ([xshift=-5mm] north.south);
+\draw[line] ([xshift=5mm] north.south) |- (mftv.west);
+
+\end{tikzpicture}
+\end{scriptsize}
+\caption{One-line diagram for a stylised Italian grid model.}
+\end{figure}

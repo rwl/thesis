@@ -25,6 +25,9 @@
 
 \usepackage{tikz}
 \usetikzlibrary{arrows,calc}
+\usetikzlibrary{shadows}
+\usetikzlibrary{decorations,decorations.pathmorphing}
+\usetikzlibrary{positioning,shapes}
 \tikzset{
 >=stealth', % standard arrow tip
 help lines/.style={dashed, thick}, % different line styles
@@ -32,6 +35,11 @@ axis/.style={<->},
 important line/.style={thick},
 connection/.style={thick, dotted},
 }
+
+% PGF/TikZ sequence diagrams.
+\usepackage[underline=true,rounded corners=false]{pgf-umlsd}
+
+\input{tikz/tikz_cmd}
 
 \makeatletter
 \newcommand{\rmnum}[1]{\romannumeral #1}

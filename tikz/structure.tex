@@ -1,0 +1,222 @@
+
+
+\begin{figure}
+  \label{fig:powersystem}
+  \centering
+  \begin{tikzpicture}[thick]
+
+  % Power Station.
+  \begin{scope}[very thick]
+    \draw[line join=round] (0.7mm,0) -- ++(1mm,25mm) -- ++(2mm,0) --
+    ++(1mm,-25mm) -- cycle;
+
+    \draw[ultra thick] (6mm,0) rectangle ++(8mm,15mm);
+    \foreach \y in {0.5,0.6,...,1.5}
+      \draw (6mm,\y) -- ++(8mm,0);
+
+    \draw (6mm,1mm) -- ++(-1.4mm,2mm);
+    \draw (6mm,3mm) -- ++(-1.5mm,2mm);
+
+    \begin{scope}[ultra thick,xshift=2cm,yshift=0cm]
+      \filldraw[fill=black!70,draw=black!70] (4.3mm,15mm) rectangle
+      ++(7.4mm,1.6mm);
+
+      \draw[line join=round] (0,0) .. controls (3mm,3mm) and
+      (5mm,10mm) .. (4mm,20mm)-- (12mm,20mm) --
+      (12mm,20mm) .. controls (11mm,10mm) and (13mm,3mm) .. (16mm,0mm);
+%      \draw (4mm,20mm) -- (12mm,20mm);
+    \end{scope}
+
+    \filldraw[ultra thick,fill=white] (14mm,0) rectangle ++(14mm,8mm);
+    \filldraw[fill=black] (14mm,5mm) rectangle ++(14mm,1.5mm);
+
+    \filldraw[ultra thick,fill=white] (28mm,0) rectangle ++(10mm,4mm);
+
+%     \begin{scope}[xshift=2cm,yshift=3cm]
+%       \draw (0,0) to[out=30,in=270]
+%             (3mm,15mm) to[out=0,in=180]
+%             (9mm,15mm) to[out=-90,in=150]
+%             (12mm,0);
+%     \end{scope}
+  \end{scope}
+
+  % Transformer.
+  \begin{scope}[very thick,xshift=4.5cm]
+    \draw (0,0) rectangle (6mm,8mm);
+    \filldraw[fill=black] (-0.1mm,0) rectangle (6.2mm,-0.1mm);
+    \filldraw[fill=black] (-0.2mm,8mm) rectangle (6.2mm,8.1mm);
+
+    \draw[thick] (0,0.5mm) rectangle (-2.5mm,7mm);
+    \foreach \x in {-0.05,-0.09,...,-0.25}
+      \draw[thin] (\x,0.5mm) -- ++(0,6.5mm);
+
+    \draw[line join=round,thick] (0.5mm,8mm) -- ++(-1mm,4mm) -- (2mm,8mm);
+    \draw[thick] (-0.05mm,8.8mm) -- ++(1.9mm,0);
+    \draw[thick] (-0.15mm,9.4mm) -- ++(1.65mm,0);
+    \draw[thick] (-0.26mm,10mm) -- ++(1.4mm,0);
+    \draw[thick] (-0.39mm,10.6mm) -- ++(1.15mm,0);
+
+    \draw[thick] (6mm,0.5mm) rectangle (8.5mm,7mm);
+    \foreach \x in {0.65,0.69,...,0.85}
+      \draw[thin] (\x,0.5mm) -- ++(0,6.5mm);
+
+    \draw[line join=round,thick] (5.5mm,8mm) -- ++(1mm,4mm) -- (4mm,8mm);
+    \draw[thick] (6.05mm,8.8mm) -- ++(-1.9mm,0);
+    \draw[thick] (6.15mm,9.4mm) -- ++(-1.65mm,0);
+    \draw[thick] (6.26mm,10mm) -- ++(-1.4mm,0);
+    \draw[thick] (6.39mm,10.6mm) -- ++(-1.15mm,0);
+  \end{scope}
+
+  % Transmission tower.
+  \begin{scope}[xscale=0.1,yscale=0.7,xshift=65cm,yshift=30mm,very thick]
+	\draw[line join=round] (-2,0) -- (-2,1.8) -- ( 2,1.8) -- ( 2,0) -- cycle;
+	\draw[line join=bevel] (-2,0) -- ++(4,0.9) -- ++(-4,0.9);% -- ++(4,0.75);
+	\draw[line join=bevel] (2,0) -- ++(-4,0.9) -- ++(4,0.9);% -- ++(-4,0.75);
+    \draw[line join=round] (-2,1.8) -- (0,2.05) -- (2,1.8);
+
+    \draw[line join=round] (-2,0) -- ++(-6,0) -- (-2,0.35) -- (-4,0) --
+    (-5.5,0.15);
+    \draw[line join=round] (-2,0.7) -- ++(-8,0) -- (-2,1.14) -- (-4.5,0.7) --
+    ++(-2,0.2);
+    \draw[line join=round] (-2,1.5) -- ++(-5,0) -- (-2,1.8) -- (-3.5,1.5) --
+    ++(-1.3,0.15);
+
+    \draw[line join=round] (2,0) -- ++(6,0) -- (2,0.35) -- (4,0) --
+    (5.5,0.15);
+    \draw[line join=round] (2,0.7) -- ++(8,0) -- (2,1.14) -- (4.5,0.7) --
+    ++(2,0.2);
+    \draw[line join=round] (2,1.5) -- ++(5,0) -- (2,1.8) -- (3.5,1.5) --
+    ++(1.3,0.15);
+
+    \draw[ultra thick] (-7.8,0) -- ++(0,-0.4);
+    \draw[ultra thick] (-9.8,0.7) -- ++(0,-0.4);
+    \draw[ultra thick] (-6.8,1.5) -- ++(0,-0.4);
+
+    \draw[ultra thick] (7.8,0) -- ++(0,-0.4);
+    \draw[ultra thick] (9.8,0.7) -- ++(0,-0.4);
+    \draw[ultra thick] (6.8,1.5) -- ++(0,-0.4);
+
+    \draw (-2,0) -- (-5,-3)
+          ( 2,0) -- ( 5,-3)
+          (-2,0) -- (2,0)
+
+          (-2, 0) -- ( 3,-1)
+          ( 2, 0) -- (-3,-1)
+          ( 3,-1) -- (-3,-1)
+
+          ( 3,-1) -- (-4.5,-2.5)
+          (-3,-1) -- ( 4.5,-2.5)
+          (-4.5,-2.5) -- (4.5,-2.5)
+
+          (0,-2.5) -- (-5,-3)
+          (-4.5,-2.5) -- (-3,-2.75)
+          (0,-2.5) -- ( 5,-3)
+          (4.5,-2.5) -- (3,-2.75);
+
+  \end{scope}
+
+  % Transmission customer.
+  \begin{scope}[xshift=8cm,yshift=0cm,line join=round,ultra
+  thick,xscale=0.5,yscale=0.5]
+    \draw[draw=gray!70,xshift=2.5pt,yshift=-2.5pt]
+    (0,0) -- (0,1) -- (0.5,1.5) -- (1,1) -- (1.5,1.5) -- (2,1) -- (2,3) --
+    (2.3,3) -- (2.3,1.5) -- (2.6,1.5) -- (2.6,3) -- (2.9,3) -- (2.9,1.5) --
+    (3.2,1.5) -- (3.2,3) -- (3.5,3) -- (3.5,0) -- (2.9,0) -- (2.9,0.8) --
+    (2.2,0.8) -- (2.2,0) -- cycle;
+
+    \filldraw[fill=white] (0,0) -- (0,1) -- (0.5,1.5) -- (1,1) -- (1.5,1.5) --
+    (2,1) -- (2,3) -- (2.3,3) -- (2.3,1.5) -- (2.6,1.5) -- (2.6,3) -- (2.9,3) -- (2.9,1.5) --
+    (3.2,1.5) -- (3.2,3) -- (3.5,3) -- (3.5,0) -- (2.9,0) -- (2.9,0.8) --
+    (2.2,0.8) -- (2.2,0) -- cycle;
+  \end{scope}
+
+  % Distribution customer.
+  \begin{scope}[xscale=0.5,yscale=0.5,xshift=18cm,yshift=-8cm,ultra thick,line
+  join=round]
+    \draw[draw=gray!70,xshift=2pt,yshift=-2pt] (2,2) rectangle ++(0.3,2.5);
+	\filldraw[fill=black] (2,2) rectangle ++(0.3,2.5);
+
+	\draw[draw=gray!70,xshift=2pt,yshift=-2pt] (0,0) -- (0,2) -- (3,2) -- (3,3) --
+	(4,3) -- (4,0) -- cycle;
+	\filldraw[fill=white] (0,0) -- (0,2) -- (3,2) -- (3,3) -- (4,3) -- (4,0) --
+	cycle;
+
+	\foreach \x in {0.5,1.1,1.7,2.3,2.9}
+	  \filldraw[fill=black!80] (\x,1.2) rectangle ++(2.5mm,2.5mm);
+
+  \end{scope}
+
+  % House.
+  \begin{scope}[xscale=0.6,yscale=0.6,xshift=15cm,yshift=-10cm,ultra thick,line
+  join=round]
+    \draw (0,0) rectangle ++(3,1);
+    \draw (3,0) rectangle ++(0.18,2.6);
+    \filldraw[fill=white] (-0.1,1) rectangle ++(3.2,1.2);
+
+    \draw (0.2,0.4) rectangle ++(0.9,0.4);
+    \draw (1.3,0) rectangle ++(0.4,0.8);
+    \draw (1.9,0.4) rectangle ++(0.9,0.4);
+
+    \draw (0.4,1.3) rectangle ++(0.4,0.4);
+    \draw[thick] (0.5,1.4) rectangle ++(0.2,0.2);
+    \draw (0.35,1.7) -- ++(0.5,0) -- ++(-0.25,0.2) -- cycle;
+    \draw[thick] (0.6,1.4) -- ++(0,0.2);
+    \draw[thick] (0.5,1.5) -- ++(0.2,0);
+  \end{scope}
+
+  \node[text width=33mm,text centered] at (2,-1) {Generating Station
+  \newline 11kV--25kV};
+  \node[text width=3cm,text centered] at (5,-1) {Step-Up Transformer};
+  \node[text width=8cm,text centered] at (8,4) {Transmission Lines 400kV,
+  275kV or 138kV};
+  \node[text width=4cm,text centered] at (9,-1) {Transmission Customer \newline
+  275kV and 132kV};
+  \node[text width=4cm,text centered] at (6.5,-3) {Primary Customer 33kV, 11kV
+  or 6.6kV};
+  \node[text width=4cm,text centered] at (6.5,-5) {Secondary Customer 400V and
+  220V};
+
+  % Line key.
+  \begin{scope}[yshift=-6cm]
+    \draw (0,0) rectangle ++(4,1.75);
+%    \node[above right] at (0.1,1.5) {\textbf{Line Key}};
+
+    \node[above right] at (0.1,1.1) {Generation:};
+    \draw[dashed] (2.8,1.3) -- ++(1,0);
+
+    \node[above right] at (0.1,0.6) {Transmission:};
+    \draw (2.8,0.8) -- ++(1,0);
+
+    \node[above right] at (0.1,0.1) {Distribution:};
+    \draw[densely dotted] (2.8,0.3) -- ++(1,0);
+  \end{scope}
+
+  % Pole.
+  \begin{scope}[xshift=13cm,yshift=-5.5cm,thick]
+    \draw (-0.63,-0.49) -- ++(1.15,0.6) -- ++(0,0.1) -- ++(-1.15,-0.6) -- cycle;
+    \filldraw[fill=white] (-0.6,-0.5) -- ++(1.15,0.6) -- ++(0,0.1) --
+    ++(-1.15,-0.6) -- cycle;
+
+    \node[draw,cylinder,rotate=90,minimum width=1mm,minimum
+    height=0.75mm,inner sep=0.8pt,cylinder uses custom fill,cylinder end
+    fill=white, cylinder body fill=white] at (-0.57,-0.35) {};
+    \node[draw,cylinder,rotate=90,minimum width=1mm,minimum
+    height=0.75mm,inner sep=0.8pt,cylinder uses custom fill,cylinder end
+    fill=white, cylinder body fill=white] at (0.49,0.2) {};
+    \node[draw,cylinder,rotate=90,minimum width=1mm,minimum
+    height=0.75mm,inner sep=0.8pt,cylinder uses custom fill,cylinder end
+    fill=white, cylinder body fill=white] at (-0.5mm,-0.9mm) {};
+
+    \node[draw,cylinder,rotate=90,aspect=0.5,minimum width=1mm,minimum
+    height=2cm,inner sep=2pt,left,cylinder uses custom fill,cylinder end
+    fill=white, cylinder body fill=white] at (0.2mm,-0.6mm) {};
+
+%    \filldraw[fill=white] (0,-1) rectangle ++(-3mm,4mm);
+    \node[draw,cylinder,rotate=90,aspect=0.75,minimum width=2.2mm,minimum
+    height=4mm,inner sep=2pt,cylinder uses custom fill,cylinder end
+    fill=black!30, cylinder body fill=black!50] at (-1.2mm,-7mm) {};
+  \end{scope}
+
+  \end{tikzpicture}
+  \caption{Basic structure of a three phase AC power system.}
+\end{figure}

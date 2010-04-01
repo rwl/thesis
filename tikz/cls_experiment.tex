@@ -1,0 +1,51 @@
+\begin{figure}
+  \label{fig:cls_experiment}
+  \centering
+  \begin{tikzpicture}[thick]
+
+    \node (Agent) [final, rectangle split, rectangle split parts=3,
+    		       text width=5.5cm] {
+      \textbf{LearningAgent}
+        \nodepart[text justified]{second}%
+        name: string\newline
+        history: ReinforcementDataSet\newline
+        module: Module\newline
+        learner: RLLearner
+		\nodepart[text justified]{third}%
+		integrateObservation(obs)\newline
+		getAction()\newline
+		giveReward(r)\newline
+		learn(episodes=1)
+    };
+
+    \node (AuxNode01) [text width=4mm,text height=6cm,right=of Agent] {};
+
+
+    \node (Task) [final, rectangle split, rectangle split parts=3,
+    		      text width=4.5cm,right=of AuxNode01] {
+      \textbf{ProfitTask}
+        \nodepart[text justified]{second}%
+        name: string\newline
+        sensor\_limits: list = [ ]\newline
+        actor\_limits: list = [ ]
+		\nodepart[text justified]{third}%
+		getObservation()\newline
+		performAction(action)\newline
+		getReward()
+    };
+
+
+    \node (Expr) [final, rectangle split, rectangle split parts=3,
+    		      text width=4.5cm,above=of AuxNode01] {
+      \textbf{MarketExperiment}
+        \nodepart[text justified]{second}%
+        market: SmartMarket
+		\nodepart[text justified]{third}%
+		doInteractions(number=1)
+    }
+    edge [->] node[near end,right,text width=6mm] {agents 1..*} (Agent)
+    edge [->] node[near end,right,text width=6mm] {tasks 1..*} (Task);
+
+  \end{tikzpicture}
+  \caption{Class diagram for Pyreto market experiment.}
+\end{figure}

@@ -1,0 +1,101 @@
+\begin{figure}
+\label{fig:case6ww}
+\centering
+\begin{scriptsize}
+\begin{tikzpicture}[thick]
+
+\coordinate (c1) at (0,4);
+\coordinate (c2) at (5,6.5);
+\coordinate (c3) at (10,4);
+\coordinate (c4) at (0,0);
+\coordinate (c5) at (5,-2.5);
+\coordinate (c6) at (10,0);
+\coordinate (over) at (0,3.75);
+
+\busbar{b1}{c1}{20mm}
+\busbar{b2}{c2}{30mm}
+\busbar{b3}{c3}{20mm}
+\busbar{b4}{c4}{20mm}
+\busbar{b5}{c5}{30mm}
+\busbar{b6}{c6}{20mm}
+
+% Branch 1-2.
+\draw[line] ([xshift=5mm] b1.north) node[rotate=90,above right]{$15.41$}
+node[rotate=90,below right]{$-9.58$} -- ++(0,3.75) -| ([xshift=-8mm] b2.north)
+node[rotate=90,above right]{$-15.14$} node[rotate=90,below right]{$5.70$};
+% Branch 1-4.
+\draw[line] ([xshift=-5mm] b1.south) node[rotate=90,above left]{$33.95$}
+node[rotate=90,below left]{$22.50$} -- ([xshift=-5mm] b4.north)
+node[rotate=90,above right]{$-33.15$} node[rotate=90,below right]{$-23.46$};
+% Branch 1-5.
+\draw[line] ([xshift=5mm] b1.south) node[rotate=90,above left]{$27.86$}
+node[rotate=90,below left]{$12.80$} -- ([xshift=5mm,yshift=-15mm] b1.south)
+-- ([xshift=-8mm,yshift=15mm] b5.north) -- ([xshift=-8mm] b5.north)
+node[rotate=90,above right]{$-27.11$} node[rotate=90,below right]{$-16.20$};
+% Branch 2-3.
+\draw[line] ([xshift=8mm] b2.north) node[rotate=90,above right]{$0.29$}
+node[rotate=90,below right]{$-11.76$} -- ++(0,1.25) -| ([xshift=-5mm] b3.north)
+node[rotate=90,above right]{$-0.25$} node[rotate=90,below right]{$5.18$};
+% Branch 2-4.
+\draw[line,ultra thick] ([xshift=-8mm] b2.south) node[rotate=90,above
+left]{$41.74$} node[rotate=90,below left]{$43.11$} --
+([xshift=-8mm,yshift=-15mm] b2.south) -- node[sloped,above]{$\vert S_{max}^5
+\vert = 60.0$} ([xshift=5mm,yshift=15mm] b4.north) -- ([xshift=5mm] b4.north)
+node[rotate=90,above right]{$-40.06$} node[rotate=90,below right]{$-41.83$};
+% Branch 2-5.
+\draw[line] (b2.south) node[rotate=90,above left]{$17.35$}
+node[rotate=90,below left]{$14.93$} -- (b5.north) node[rotate=90,above
+right]{$-16.81$} node[rotate=90,below right]{$-17.46$};
+% Branch 2-6.
+\draw[line] ([xshift=8mm] b2.south) node[rotate=90,above left]{$25.03$}
+node[rotate=90,below left]{$12.67$} -- ([xshift=8mm,yshift=-15mm] b2.south)
+-- ([xshift=-5mm,yshift=15mm] b6.north) -- ([xshift=-5mm] b6.north)
+node[rotate=90,above right]{$-24.49$} node[rotate=90,below right]{$-16.38$};
+% Branch 3-5.
+\draw[line] ([xshift=-5mm] b3.south) node[rotate=90,above left]{$23.18$}
+node[rotate=90,below left]{$21.57$} -- ([xshift=-5mm,yshift=-15mm] b3.south)
+-- ([xshift=8mm,yshift=15mm] b5.north) -- ([xshift=8mm] b5.north)
+node[rotate=90,above right]{$-21.99$} node[rotate=90,below right]{$-24.28$};
+% Branch 3-6.
+\draw[line] ([xshift=5mm] b3.south) node[rotate=90,above left]{$47.50$}
+node[rotate=90,below left]{$59.90$} -- ([xshift=5mm] b6.north)
+node[rotate=90,above right]{$-46.45$} node[rotate=90,below right]{$-56.82$};
+% Branch 4-5.
+\draw[line] ([xshift=5mm] b4.south) node[rotate=90,above left]{$3.21$}
+node[rotate=90,below left]{$-4.71$} -- ++(0,-3.75) -| ([xshift=-8mm] b5.south)
+node[rotate=90,above left]{$-3.19$} node[rotate=90,below left]{$-3.03$};
+% Branch 5-6.
+\draw[line] ([xshift=8mm] b5.south) node[rotate=90,above left]{$-0.90$}
+node[rotate=90,below left]{$-9.03$} -- ++(0,-1.25) -| ([xshift=-5mm] b6.south)
+node[rotate=90,above left]{$0.94$} node[rotate=90,below left]{$3.21$};
+
+% Generator 1.
+\genset{g1}{$(c1)+(-5mm,15mm)$}
+\draw[line] ([xshift=-5mm] b1.north) -- node[sloped,above]{$77.22$}
+node[sloped,below]{$25.72$} (g1.south);
+% Generator 2.
+\genset{g2}{$(c2)+(0,15mm)$}
+\draw[line] (b2.north) -- node[sloped,above]{$69.27$}
+node[sloped,below]{$64.65$} (g2.south);
+% Generator 3.
+\genset{g3}{$(c3)+(5mm,15mm)$}
+\draw[line] ([xshift=5mm] b3.north) -- node[sloped,above]{$70.42$}
+node[sloped,below]{$86.64$} (g3.south);
+
+% Load 1.
+\loadd{l1}{$(c4)-(5mm,15mm)$}
+\draw[line] (l1.south) -- node[sloped,above]{$70.00$}
+node[sloped,below]{$70.00$} ([xshift=-5mm] b4.south);
+% Load 2.
+\loadd{l2}{$(c5)-(0mm,15mm)$}
+\draw[line] (l2.south) -- node[sloped,above]{$70.00$}
+node[sloped,below]{$70.00$} (b5.south);
+% Load 3.
+\loadd{l3}{$(c6)+(5mm,-15mm)$}
+\draw[line] (l3.south) -- node[sloped,above]{$70.00$}
+node[sloped,below]{$70.00$} ([xshift=5mm] b6.south);
+
+\end{tikzpicture}
+\end{scriptsize}
+\caption{One line diagram for six bus power system model from [].}
+\end{figure}

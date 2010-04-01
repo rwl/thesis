@@ -1,0 +1,76 @@
+\begin{figure}
+  \label{fig:cls_pyreto}
+  \centering
+  \begin{tikzpicture}[node distance=2cm,thick]
+
+    \node (Mkt) [final, rectangle split, rectangle split parts=3,
+    		      		 text width=5.8cm] {
+      \textbf{SmartMarket}
+        \nodepart[text justified]{second}%
+        price\_cap: float = 500\newline
+        auction\_type: string = ``first price"\newline
+        period: float = 1\newline
+        limits: dict = $\lbrace \rbrace$\newline
+        offers: list = [ ]\newline
+        bids: list = [ ]
+		\nodepart[text justified]{third}%
+		run()\newline
+		get\_offbids(generator)
+    };
+
+    \node (Gen) [final, rectangle split, rectangle split parts=3,
+    		     text width=4.5cm, below=of Mkt]{
+      \textbf{Generator}
+        \nodepart[text justified]{second}%
+        name: string\newline
+%        online\newline
+        v\_magnitude\newline
+        p: float = 100\newline
+        p\_max: float = 200\newline
+        p\_min: float\newline
+        q: float\newline
+        q\_max: float = 100\newline
+        q\_min: float = -100\newline
+        p\_cost: list\newline
+        q\_cost: list
+        \nodepart[text justified]{third}
+        is\_load(): bool\newline
+        total\_cost(p): float\newline
+        offers\_to\_pwl(offers)\newline
+        bids\_to\_pwl(bids)};
+
+    \node (Env) [final, rectangle split, rectangle split parts=3,
+    		      		 text width=4.5cm,left=of Mkt] {
+      \textbf{MarketEnvironment}
+        \nodepart[text justified]{second}%
+        name: string\newline
+        n\_offbids: int = 2\newline
+        offbid\_qty: bool = False\newline
+        markups: tuple
+		\nodepart[text justified]{third}%
+		getSensors()\newline
+		performAction(action)\newline
+		reset()
+    }
+
+    edge [->] node[near end,text width=6mm] {market 1..1} (Mkt)
+    edge [->] node[near end,text width=10mm] {generators 1..*} (Gen);
+
+    \node (Task) [final, rectangle split, rectangle split parts=3,
+    		      		 text width=4.5cm,below=of Env] {
+      \textbf{ProfitTask}
+        \nodepart[text justified]{second}%
+        name: string\newline
+        sensor\_limits: list = [ ]\newline
+        actor\_limits: list = [ ]
+		\nodepart[text justified]{third}%
+		getObservation()\newline
+		performAction(action)\newline
+		getReward()
+    }
+
+    edge [->] node[near end,text width=6mm] {env 1..1} (Env);
+
+  \end{tikzpicture}
+  \caption{Class diagram for the Pyreto.}
+\end{figure}

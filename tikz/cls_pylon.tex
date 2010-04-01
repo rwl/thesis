@@ -1,0 +1,102 @@
+\begin{figure}
+  \label{fig:cls_pylon}
+  \centering
+  \begin{tikzpicture}[node distance=2cm,thick]
+
+%     \node (Case) [final, rectangle split, rectangle split parts=3]{
+%       \textbf{Case}
+%       \nodepart[text justified]{second}%
+%       name\newline
+%       baseMVA\hfill{\color{gray} $S_{base}$}
+%       \nodepart[text justified]{third}%
+%       makeYbus()\newline
+%       makeBdc()\newline
+%       dSbus\_dV()\newline
+%       dIbr\_dV()\newline
+%       dSbr\_dV()\newline
+%       dAbr\_dV()\newline
+%       d2Sbus\_dV2()\newline
+%       d2Ibr\_dV2()\newline
+%       d2Sbr\_dV2()\newline
+%       d2ASbr\_dV2()\newline
+%       d2AIbr\_dV2()
+%     };
+
+    \node (Bus) at (0,0) [final, rectangle split, rectangle split parts=2,
+            text width=5cm]{
+      \textbf{Bus}
+        \nodepart[text justified]{second}%
+        name: string~{\color{gray} $i$}\newline
+        type: string = PQ\newline
+        v\_mag\_guess: float = 1.0~{\color{gray} $V_{m0}$}\newline
+        v\_angle\_guess: float = 0.0~{\color{gray} $V_{a0}$}\newline
+        v\_max: float = 1.1~{\color{gray} $V_{max}$}\newline
+        v\_min: float = 0.9~{\color{gray} $V_{min}$}\newline
+        p\_demand: float~{\color{gray} $P_d S_{b}$}\newline
+        q\_demand: float~{\color{gray} $Q_d S_{b}$}\newline
+        g\_shunt: float~{\color{gray} $G_{sh}$}\newline
+        b\_shunt: float~{\color{gray} $B_{sh}$}};
+
+    \node (Branch) [final, rectangle split, rectangle split parts=2,
+    				text width=4.4cm, below=of Bus]{
+      \textbf{Branch}
+        \nodepart[text justified]{second}%
+        name~{\color{gray} $l$}\newline
+%        online: bool = true\newline
+        r: float = 0.001~{\color{gray} $r_s$}\newline
+        x: float = 0.001~{\color{gray} $x_s$}\newline
+        b: float = 0.001~{\color{gray} $b_c$}\newline
+        s\_max: float = 200~{\color{gray} $S_{max} S_{b}$}\newline
+        ratio: float = 1.0~{\color{gray} $\tau$}\newline
+        phase\_shaft: float~{\color{gray} $\theta_{ph}$}\newline
+        angle\_max: float~{\color{gray} $\theta_{max}$}\newline
+        angle\_min: float~{\color{gray} $\theta_{min}$}}
+
+    edge [->] node[near end,left,text width=12mm]
+    {to\_bus 1..1} ([xshift=-6mm]Bus.south)
+    edge [->] node[near end,right,text width=16mm]
+    {from\_bus 1..1} ([xshift=6mm]Bus.south);
+
+    \node (Gen) [final, rectangle split, rectangle split parts=3,
+    		     text width=4.5cm, right=of Bus]{
+      \textbf{Generator}
+        \nodepart[text justified]{second}%
+        name: string~{\color{gray} $k$}\newline
+%        online\newline
+        v\_magnitude~{\color{gray} $V_m$}\newline
+        p: float = 100~{\color{gray} $P_g S_{b}$}\newline
+        p\_max: float = 200~{\color{gray} $P_g^{max} S_{b}$}\newline
+        p\_min: float~{\color{gray} $P_g^{min} S_{b}$}\newline
+        q: float~{\color{gray} $Q_g S_{b}$}\newline
+        q\_max: float = 100~{\color{gray} $Q_g^{max} S_{b}$}\newline
+        q\_min: float = -100~{\color{gray} $Q_g^{min} S_{b}$}\newline
+        p\_cost: list\newline
+        q\_cost: list
+        \nodepart[text justified]{third}
+        is\_load(): bool\newline
+        total\_cost(p): float\newline
+        offers\_to\_pwl(offers)\newline
+        bids\_to\_pwl(bids)}
+
+    edge [->] node[near end,below,text width=6mm] {bus 1..1} (Bus);
+
+    \node (Case) [final, rectangle split, rectangle split parts=3,
+    		      text width=4.5cm, right=of Branch] {
+      \textbf{Case}
+        \nodepart[text justified]{second}%
+        name: string\newline
+        base\_mva: float = 100~{\color{gray} $S_{b}$}
+		\nodepart[text justified]{third}%
+		makeYbus()
+    }
+
+    edge [->] node[near end,text width=6mm] {buses 0..*} (Bus)
+    edge [->] node[near end,above,text width=6mm] {branches 0..*} (Branch)
+    edge [->] node[near end,right,text width=6mm] {generators 0..*} (Gen);
+
+  \end{tikzpicture}
+  \caption{Class diagram for the Pylon power system model illustrating
+  required associations between branch, bus and generator classes. Mathematical
+  symbols for vectors of object attributes are shown in grey, where
+  {\color{gray} $S_{b}$} is the system base MVA used in per-unit calculation.}
+\end{figure}

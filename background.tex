@@ -7,14 +7,15 @@ electricity markets.  It also explains how such markets are simulated and, in
 particular, the agent-based approach to this.
 
 \section{Electric Power Systems}
+\input{tikz/structure}
 Generation and bulk movement of electricity in the UK takes place in a
 three-phase alternating current (AC) power system.  Each of the phases is
 high voltage, sinusoidal electrical waveform, $120$ degrees offset in time
 and oscillating at a constant frequency of 50Hz.  Synchronous generators (or
 alternators), typically rotating at 3600rpm or 1800rpm, generate apparent power
 $S$ at a line voltage $V_l$ typically between
-11kV and 25kV.  One of the prinicpal reasons that alternating current, and not
-direct current (DC), systems are common in electricity supply is that they
+11kV and 25kV (See Figure \ref{fig:uk_gen}).  One of the prinicpal reasons that
+alternating current, and not direct current (DC), systems are common in electricity supply is that they
 allow power to be transformed between voltages with very high efficiency.  The
 apparent power conducted by a line $l$ is the product of the line current
 $I_l$ and the line voltage
@@ -43,6 +44,8 @@ sources) which offer economies of scale and lower operating costs.  It allows
 electricity to be transmitted across country borders and from renewable
 energy plant such as hydro power stations located in remote areas.
 
+\input{tikz/uk}
+
 For delivery to most consumers, electric energy is transferred, at a
 substation, from the transmission system to the grid supply point of a distribution
 system.  Distribution networks are also three-phase AC systems, but
@@ -55,9 +58,10 @@ circuits.  Three-phase transformers, that step the voltage down to levels
 more convenient for general use (typically from 11kV or 33kV to 400V), are spaced along the branches/rings. All three-phases at 400V may be provided for industrial and commercial loads
 or individual phases at 230V supply typical domestic and other commercial
 loads. Splitting of phases is usually planned so that each is loaded equally.
-As explained in Appendix \ref{sec:power_system_model} this produces a balanced
-symetrical system that may be analysed as a single phase circuit. Figure []
-illustrates the basic sturcture of a typical national electric power system.
+As explained in Section \ref{sec:pf_form} this produces a balanced
+symetrical system that may be analysed as a single phase circuit. Figure
+\ref{fig:powersystem} illustrates the basic sturcture of a typical national
+electric power system.
 
 \section{Electricity Markets}
 The UK was the first large country to privatise its electricity
@@ -109,10 +113,10 @@ by generating companies and organisations with interconnects to the England
 and Wales grid to formulate bids that had to be submitted to the grid operator
 by 10AM on the day before the schedule day.
 
-% TODO: Insert Pool bids figure.
+\input{tikz/cost_function}
 
-Figure X illustrates the four of the five price parameters that bids consisted
-of.  A start-up price would also be included, representing the cost of turning
+Figure \ref{fig:poolbids} illustrates the four of the five price parameters
+that bids consisted of.  A start-up price would also be included, representing the cost of turning
 on the generator from cold.  The no-load price $c_{noload}$ represents the
 cost in pounds of keeping the generator running regardless of output. Three
 incremental prices $c_1$, $c_2$ and $c_3$ specify the cost per MWh of
@@ -245,8 +249,8 @@ represents the transmission line.  The transformer is assumed to be ideal,
 phase-shifting and tap-changing, with the ratio between primary winding
 voltage $v_{f}$ and secondary winding voltage $N = \tau e^{j\theta_{ph}}$
 where $\tau$ is the tap ratio and $\theta_{ph}$ is the phase shift angle.
-Figure X diagrams this conventional branch model.  From Kirchhoff's Current Law
-the current in the series impedance is
+Figure \ref{fig:branch_model} diagrams this conventional branch model.  From
+Kirchhoff's Current Law the current in the series impedance is
 \begin{equation}
 \label{eq:iseries}
 i_s = \frac{b_c}{2}v_t - i_t
@@ -282,6 +286,8 @@ rearranging, gives
 i_s = v_s \left( \frac{1}{\tau^2} \left(y_s + \frac{b_c}{2}\right) \right) +
 v_r \left(\frac{y_s}{\tau e^{-j\theta}}\right)
 \end{equation}
+
+\input{tikz/branch_model}
 
 Combining equations (\ref{eq:ito}) and (\ref{eq:ifrom}), the \textit{from}
 and \textit{to} end complex current injections for branch $l$ are
