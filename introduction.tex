@@ -1,72 +1,74 @@
 \chapter{Introduction}
-This thesis presents a comparison of algorithms which learn to trade
-power. This first chapter explains the motivation for the research presented
-below, defines the problem that has been tackled and states the principle
-research contributions that have been made.  A reading guide and outline of
-the remaining chapters is provided at the end.
+This thesis presents a comparison of algorithms which learn to trade electric
+power.  In this chapter the motivation for electricity market
+research is explained, the problem that has been considered is defined
+and the principle research contributions are stated.
+% A reading guide and
+% outline of the following chapters is also provided.
 
-\section{Motivation for Electricity Market Research}
+\section{Research Motivation}
+%\section{Motivation for Electricity Market Research}
 The average total demand for electricity in the United Kingdom (UK) is
 approximately 45GW and the cost of buying 1MW for one hour is around
 \pounds40 \cite{decc:dukes09}. This equates to yearly transaction values of
-\pounds16 billion.  The value of electricity to society becomes especially
+\pounds16 billion.  The value of electricity to society is especially
 apparent when supply fails. The New York black-out in August 2003 involved
 a loss of 61.8GW of power supply to approximately 50 million consumers.
 The majority of supplies were restored within two days, but the event is estimated to have cost more than \$6~billion and to have contributed to 11~deaths \cite{minkel:2008,icf:2003}.
 
 Quality of life for a person has been shown to be directly proportional to that
-person's level of electricity usage \cite{alam:qol}.  The world
+person's electricity usage \cite{alam:qol}.  The world
 population is currently 6.7~billion and forecast to pass 9~billion by the year 2050 \cite{un:pop}.
 Electricity production currently demands over $1/3$ of the annual primary
-energy extracted[ref]. As people endevour to improve their quality of life,
+energy extracted. As people endevour to improve their quality of life,
 finite primary energy fuel resources are becoming increasingly scarce and
 markets are a proven economic device for efficient allocation of scarce
 resources.
 
-Commercialisation of electricity supply industries is a relatively new
-practice, having begun in the early 1990s.  The inability to store electricity,
-once generated, in a commercially viable quantity prevents trade as a
-conventional commodity.  Trading mechanisms must allow shortfalls in electric
-energy to be purchased at short notice from quickly dispatchable generators.
-Numerous mechanisms for this have been implemented in countries and states
-around the world and how best to structure them remains an important and
-unanswered question.
+Commercialisation of large electricity supply industries began just two
+decades ago. The inability to store electricity, once generated, in a
+commercially viable quantity prevents trade as a conventional commodity.
+Trading mechanisms must allow shortfalls in electric energy to be purchased at
+short notice from quickly dispatched generators.  Numerous market structures
+that facilitate this have been implemented in countries and states around the
+world.  Designed correctly, a competitive electricity market promotes
+efficiency and drives down costs to the consumer, while design errors can
+lead to market power abuse and elevated market prices.
 % Electricity market designs are particularly
 % complicated due to the need to manage complex dynamic constraints imposed by
 % electric power systems.
 
 \section{Problem Statement}% and Hypothesis}%/Aims \& Objectives}
-An indivdual interacting with an electricity market environment, be they
-representing a generating company, load serving entitiy, trader etc., is
-presented with state and action spaces of many dimensions and which are mostly
-continuous in nature.  Moreover, certain state information, such as demand
-forecasts, exhibit a degree of uncertainty and other data, such as a
-competitor's bid, is hidden.
+Indivduals participating in an electricity market, be they representing a
+generating company, load serving entity or traders, make use of
+multi-dimensional data that mostly continuous in nature.  Certain data, such as
+demand forecasts, exhibits a degree of uncertainty and other market
+information, such as competitor's bids, is hidden.
 
-Traditional value-function based reinforcement learning methods (defined
-in Appendix \ref{sec:valuebased}, below) offer few convergence guarantees in
-partially observable Markov decsison processes [ref].  Without the use of
-function approximation techniques, these methods are restricted by Bellman's
-Curse of Dimentionality \cite{bellman:1961} and can not be applied to complex
-problems with high-dimensional state and actions space.  With value function
-approximation, feedback between policy updates and value function changes can
-result in oscillations or divergence in these methods \cite{peters:enac}.
+Value-function based reinforcement learning methods (defined in Appendix
+\ref{sec:valuebased}) when used with look-up tables are restricted by
+Bellman's Curse of Dimentionality \cite{bellman:1961} and can not be applied
+to complex problems with high-dimensional state and actions space.  When used
+with value function approximation systems, these methods have been shown to
+offer few convergence guarantees in simple problems
+\cite{gordon:95,baird:95,tsitsiklis:94}.
 
 Policy gradient reinforcement learning methods (defined in Appendix
-\ref{sec:policygradient}, below) do not suffer from many of the problems that
-mar value-function based methods in high-dimensional domains.  They offer
-strong convergence guarantees, do not require that all states be continuously
+\ref{sec:policygradient}) do not suffer from many of the problems that
+mar value-function based methods in high-dimensional domains.  They have
+strong convergence properties, do not require that all states be continuously
 visited and work with state and action spaces that are continuous, discrete
 or mixed.  Policy performance may be degraded by uncertainty in state data,
-but the learning methods need not be altered.  Importantly, they have been
-sucessfully applied in many operational settings
+but the learning methods need not be altered.  They have been sucessfully
+applied in many operational settings
 \cite{barto:policy,shaal:robots,moody:direct,peshkin:routing}.
 
 It is proposed that agents which learn using policy gradient methods may
-outperform those using value function based based methods in a simulated
-competitive electricity trading environment.  It is proposed that policy
-gradient methods may learn faster, achieve greater profitability and
-better exploit constraints in the power system to their advantage.
+outperform those using value function based methods in simulated
+competitive electricity trade.  It is proposed that policy gradient methods may
+cope better with non-stationary power system conditions, achieving greater
+profitability and better exploit power system constraints to their financial
+benefit.
 
 % Methods including learning classifier systems, genetic algorithms and
 % reinforcement learning have been successfully used to research the
@@ -114,16 +116,17 @@ Electric Power Engineering, Artificial Intelligence and Economics.  The
 principle contributions made by this thesis in these fields are:
 
 \begin{itemize}
-  \item The proof that policy gradient reinforcement learning algorithms
-  outperform value-function algorithms when applied to the power trade problem,
-  \item A novel coupling of power system models and optimal power flow
-  algorithm results with agents capable of handling discrete and continuous
-  sensor and action spaces,
-  \item Implementations of Roth-Erev reinforcement learning algorithms and
-  continuous versions of Q-learning and Q($\lambda$) for the open source
-  PyBrain library,
-  \item Open source implementations of power flow and optimal power flow
-  algorithms in the Python programming language.
+  \item The application of policy gradient reinforcement learning methods to
+  simulated energy trade.
+  \item The demonstration that policy gradient reinforcement learning
+  methods converge more slowly than value function based methods when learning
+  simple power trade policies.
+  \item The demonstration that agents using policy gradient reinforcement
+  learning methods achieve greater profitability than those using value
+  function methods when when competing to supply electric power on equal terms.
+  \item An implementation of a multi-agent system for electricity market
+  simulation with discrete and continuous sensor and action space
+  representations.
 \end{itemize}
 
 % This paper compares policy-gradient reinforcement learning algorithms
@@ -156,31 +159,32 @@ principle contributions made by this thesis in these fields are:
 % conclusion.
 
 \section{Reader's Guide}
-This thesis applies standard and advanced reinforcement learning methods in the
-domain of electric power trade.  The reader will require a certain degree of
-prior knowledge and may need to read Chapter \ref{ch:background} and
-much of the referenced material, to fully understand the methodology used.
-This thesis is written for several kinds of readers.  A student who has taken
-an energy economics class or two may appreciate it as an introduction to
-electricity markets and their simulation.  Research students embarking upon
-postgraduate study of electricity markets may find the ideas for further work
-in Section \ref{sec:furtherwork} of particular interest.  Researchers
-experienced in adpative control and machine learning, looking for new
-application domains for their methods, may find the electricity market model
-definition in Chapter \ref{ch:method} to be of value.
+In this thesis classic and modern reinforcement learning methods are applied in
+the domain of electric power trade.  The reader will require a certain degree
+of prior knowledge in these fields and may need to read Chapter
+\ref{ch:background} and much of the referenced material, to fully understand
+the methodology used.  This thesis is written for several kinds of readers.  A
+student who has taken an energy economics class or two may appreciate it as an
+introduction to electricity markets and their simulation.  Research students
+embarking upon postgraduate study of electricity markets may find the ideas
+for further work in Chapter \ref{sec:furtherwork} of particular interest.
+Researchers experienced in adpative control and machine learning, looking for
+new application domains for their methods, may find the electricity market
+model definition in Chapter \ref{ch:method} to be of value.
 
 \section{Thesis Outline}
-The presentation is organised into nine chapters.  Chapter \ref{ch:background}
-provides a introduction to electric power supply and wholesale electricity
-markets in the UK.  The research in this thesis is described in the context of
-related work from the fields of Power Enginneering, Machine Learning and
-Computer Science in Chapter \ref{ch:related_work}.  Chapter \ref{ch:method}
-defines the electricity market model and a multi-agent system used to
-coordinate simulated electricity trade.  Reinforcement learning methods are
-compared in a series of increasingly daring experiments in Chapter
-\ref{ch:learningtotrade}. Finally, a summary of conclusions drawn from this
-research is given in \ref{ch:conclusion} along with several ideas for
-building upon the tools developed.
+The presentation is organised into 9 chapters.  Chapter \ref{ch:background}
+provides an introduction to electric power supply and the history of wholesale
+electricity markets in the UK.  The research is described in
+the context of related work from the fields of Power Enginneering, Machine
+Learning and Computer Science in Chapter \ref{ch:related_work}.  Chapter
+\ref{ch:method} defines the electricity market model and a multi-agent system
+used to simulated electricity trade.  Reinforcement learning methods are
+compared in a series of increasingly complex experiments in Chapter
+\ref{ch:learningtotrade}.  Finally, several ideas for further research using
+the tools developed are given in Chapter \ref{sec:furtherwork} and a summary
+of the conclusions drawn from the research is given in Chapter
+\ref{ch:conclusion}.
 
 % Free market democracy has underpinned the transformation of large western
 % economies in the post war era and continues to be relied upon.  Towards the
