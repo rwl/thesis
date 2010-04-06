@@ -203,22 +203,22 @@ with spot markets.
 
 \section{Electricity Market Simulation}
 Previous sections have shown the importance of electricity to
-modern societies and have explained how its supply is trusted to unadministered
-bilateral trading arrangements.  Electricity supply involves technology, money,
-people, natural resources and the environment.  These aspects are all changing
+modern societies and have explained how the majority of
+electricity supply in the UK is trusted to unadministered bilateral trading
+arrangements. Electricity supply involves technology, money, people, natural resources and the environment.  These aspects are all changing
 and the discipline must be constantly researched to ensure that systems such as
 electricity markets are fit for purpose.  The value of electricity to society
 means that it is not feasible to experiment with radical changes to trading
-arrangements on real systems.  A practical alternative is to create an abstract mathematical
-model with a set of simplifying approximations and assumptions and find
-analytical solutions by simulating the model using computer programs.
+arrangements on real systems.  A practical alternative is to create abstract
+mathematical models with sets of simplifying approximations and assumptions
+and to find analytical solutions by simulating them using computer programs.
 
 Game theory is the branch of applied mathematics in which behaviour in
-strategic situations is captured.  A common approach to doing this is to
-model the system and players as a mathematical optimisation problem.  Optimal
-power flow problem is a classical optimisation problem in the field of electric
+strategic situations is captured mathematically.  A common approach to doing
+this is to model the system and players as a mathematical optimisation problem.  Optimal
+power flow is a classic optimisation problem in the field of electric
 power engineering and variants are widely used to research electricity
-markets.  In this thesis, optimal power flow forms one part in an
+markets.  In this thesis, optimal power flow forms one part of an
 \textit{agent-based} simulation, which is an alternative approach to the
 mathematics of games.
 
@@ -227,39 +227,37 @@ mathematics of games.
 Nationalised electricity supply industries were for many years planned,
 operated and controlled centrally.  A system operator would determine which
 generators must operate and the required output of the operating units such
-that demand and reserve requirements are met and the overall cost of
-production gets minimised.  This is termed the \textit{unit commitment} and
-\textit{economic dispatch} problem.
+that demand and reserve requirements were met and the overall cost of
+production was minimised.  In Electric Power Engineering, this is termed the
+\textit{unit commitment} and \textit{economic dispatch} problem.
 
-In 1962 a unit commitment formulation was published with network constraints
-included \cite{carpentier:opf}.  \textit{Optimal power flow} is this
-integration of the economic and the power flow aspects of power systems into a
-mathematical optimisation problem.  The ability of optimal power flow to solve
-centralised power system operation problems and determine prices in power
+In 1962 a unit commitment formulation was published with power system
+constraints incorporated \cite{carpentier:opf}.  \textit{Optimal power flow} is
+this integration of the economic and the power flow aspects of power systems into a
+mathematical optimisation problem.  The ability to use optimal power flow to
+solve centralised power system operation problems and determine prices in power
 pool markets has led to it being one of the most widely studied subjects in
 the power systems community.
 
 \subsubsection{Power Flow Formulation}
 \label{sec:pf_form}
-Optimal power flow derives its name from the \textit{power flow}, or load flow,
+Optimal power flow derives its name from the \textit{power flow} (or load flow)
 steady-state power system analysis technique.  Given sets of generator data,
-load data and a nodal admittance matrix $Y_{bus}$, a power flow study
-determines the voltage
+load data and a nodal admittance matrix, a power flow study determines the
+voltage
 \begin{equation}
 V_i = \vert V_i \vert \angle\delta_i = \vert
 V_i\vert(\cos\delta_i + j\sin\delta_i)
 \end{equation}
-at each node $i$ in the power system from which branch
-flows may be calculated \cite{grainger:psa}. $Y_{bus}$ describes the electrical
-network and its formulation is dependant upon the transmission line,
-transformer and shunt models employed.
+at each node $i$ in the power system from which branch flows may be calculated
+\cite{grainger:psa}.
 
 \paragraph{Nodal Admittance Matrix}
-Following \cite[p.11]{pserc:mp_manual}, each branch is typically modelled as
-medium length transmission line in series with a regulating transformer at
-the ``from'' end.  A nominal-$\pi$ model with total series admittance $y_s = 1/(r_s+jx_s)$ and total shunt capacitance $b_c$
-represents the transmission line.  The transformer is assumed to be ideal,
-phase-shifting and tap-changing, with the ratio between primary winding
+The nodal admittance matrix describes the electrical network and its
+formulation is dependant upon the transmission line, transformer and shunt
+models employed.  Following \cite[p.11]{pserc:mp_manual}, a branch in a power
+system nodal representation is typically modelled as a medium length
+transmission line in series with a regulating transformer at the ``from'' end.  A nominal-$\pi$ model with total series admittance $y_s = 1/(r_s+jx_s)$ and total shunt capacitance $b_c$ represents the transmission line.  The transformer is assumed to be ideal, phase-shifting and tap-changing, with the ratio between primary winding
 voltage $v_{f}$ and secondary winding voltage $N = \tau e^{j\theta_{ph}}$
 where $\tau$ is the tap ratio and $\theta_{ph}$ is the phase shift angle.
 Figure \ref{fig:branch_model} diagrams this conventional branch model.  From
@@ -342,7 +340,7 @@ Y_f& =& \diag(Y_{ff})C_f + \diag(Y_{ft})C_t\\
 Y_t& =& \diag(Y_{tf})C_f + \diag(Y_{tt})C_t
 \end{eqnarray}
 and the
-$n_b \times n_b$ bus admittance matrix is
+$n_b \times n_b$ nodal admittance matrix is
 \begin{eqnarray}
 Y_{bus}& =& C_f^\mathsf{T} Y_f + C_t^\mathsf{T} Y_t .
 \end{eqnarray}
@@ -373,7 +371,7 @@ node $i$ is
 I_i = \sum_{j=1}^{n_b} Y_{ij} V_j
 \end{equation}
 where $Y_{ij} = \vert Y_{ij}\vert \angle\theta_{ij}$ is the $(i,j)^{th}$ element
-if the, $n_b \times n_b$, $Y_{bus}$ matrix.  Hence, the apparent power entering
+if the $Y_{bus}$ matrix.  Hence, the apparent power entering
 the network at bus $i$ is
 \begin{equation}
 S_i = P_i+Q_i = V_iI_i^* = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \angle
@@ -410,8 +408,8 @@ problem.
 
 \subsubsection{Optimal Power Flow Formulation}
 Optimal power flow is a mathematical optimisation problem in which the complex
-power balance equations (\ref{eq:p_balance}) and (\ref{eq:q_balance}) must be
-satisfied.  Mathematical optimisation problems have the general form
+power balance equations (\ref{eq:p_balance}) and (\ref{eq:q_balance}) form one
+of the constraints. Mathematical optimisation problems have the general form
 \begin{equation}
 \min_x f(x)
 \end{equation}

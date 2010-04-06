@@ -97,7 +97,7 @@ Finally, to provide an interface to agent participants that resembles that of
 real electricity market, MATPOWER's auction wrapper for the optimal power flow
 routine is described.
 
-\input{tikz/cls_pylon}
+%\input{tikz/cls_pylon}
 
 
 \subsection{Auction Interface}
@@ -174,7 +174,7 @@ feature has not been exploited.} via the agent's environment.  Each environment
 maintains an association with a singular market instance for submission of
 offers/bids.  Two main operations are supported by an agent's environment.
 
-\input{tikz/cls_pyreto}
+%\input{tikz/cls_pyreto}
 
 For a power system with $n_b$ buses, $n_l$ and $n_g$ generators, the
 \texttt{getSensors} method returns a $n_s \times 1$ vector of sensor values
@@ -281,7 +281,9 @@ where $0 \leq x_r \leq 1$.  If $x_r < \epsilon$ then a random vector of the same
 length as $a_e$ is returned, otherwise $a_e = a_m$.
 
 \subsection{Simulation Event Sequence}
-\input{tikz/cls_experiment}
+
+%\input{tikz/cls_experiment}
+
 In each simulation of a system consisting of one or more task-agent pairs a
 sequence of interactions is coordinated, as illustrated in Figure X.
 
@@ -305,7 +307,7 @@ performed $a_e$.  Each agent is instructed to learn from its actions using
 $r_t$, at which point the values/parameters of the module of $A$ are updated
 according to the algorithm of the learner.
 
-\input{tikz/sequence}
+%\input{tikz/sequence}
 
 This constitutes one step of the simulation and the process is repeated until
 the specified number of steps are complete.  Unless agents are reset, the
