@@ -4,7 +4,7 @@ To the best of the author's knowledge, this thesis presents the first case of
 policy gradient reinforcement learning methods being applied to electricity
 trading problems.  It must first be proven that these methods are capable of
 learning a basic power trading policy.  This section describes the method used
-to compare methods in their ability to do so.
+to compare reinforcement learning methods in their ability to do so.
 
 \section{Aims \& Objectives} The purpose of this first experiment is to
 compare the relative abilities of value-function and policy gradient methods in
@@ -19,7 +19,7 @@ examine:
 \section{Method of Simulation}
 Each learning method is tested individually using a range of parameter
 configurations.  A power system model with one bus, one generator $k$ and
-one dispatchable load $l$, as illustrated in Figure X is used.  In this
+one dispatchable load $l$.  In this
 context, the market clearing process is equivalent to creating offer and bids
 stacks and finding the point of intersection.  A passive agent is associated
 with the dispatchable load.  This agent bids for $-p_{g,l}^{min}$ at marginal
@@ -31,8 +31,8 @@ the $k$ is half that of the load $l$.  The generator and dispatchable load
 attributes are given in Table X.  A price cap for the market is set to twice the
 marginal cost of the $l$ at full capacity, $p_{g,l}^{min}$.  The DC optimal
 power flow formulation (See Section \ref{sec:opf}, above) is used to clear the
-market and reactive power trade is omitted.  The Python code used to conduct the
-simulations is provided in Listing X.
+market and reactive power trade is omitted.
+% The Python code used to conduct the simulations is provided in Listing X.
 
 \section{Results}
 \section{Discussion}
