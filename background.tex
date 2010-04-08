@@ -39,7 +39,7 @@ undergrounding systems.
 The UK transmission system operates at 400kV and 275kV (also 132kV in
 Scotland), but systems with voltages upto and beyond 1000kV are used in
 larger countries.  For transmission over very long distances or
-undersea, high voltage DC (HVDC) systems have become econmically viable in
+undersea, high voltage DC (HVDC) systems have become economically viable in
 recent years.  The ability to
 transform power between voltages and transmit large volumes over long
 distances allows for generation to take place at high capacity power stations,
@@ -51,7 +51,7 @@ electricity to be imported/exported.  The Moyle HVDC interconnector can export
 upto 500MW from Auchencrosh in Scotland to Ballycronan More in Northern
 Ireland or import upto 80MW.  Further HVDC interconnectors are planned between
 England and the Netherlands and between Wales and The Republic of Ireland.
-Figure \ref{fig:uk_gen} diagrams the exisitng interconnectors and illustrates
+Figure \ref{fig:uk_gen} diagrams the existing interconnectors and illustrates
 how the UK's larger power stations are located away from large load centres and
 close to sources of fuel.
 
@@ -66,13 +66,14 @@ typically highly interconnected, providing multiple paths for power flow.
 Whereas distribution networks, in rural areas, typically consist of long radial
 feeders (usually overhead lines) or, in urban areas, consist of many ring
 circuits.  Three-phase transformers, that step the voltage down to levels
-more convenient for general use (typically from 11kV or 33kV to 400V), are spaced along the branches/rings. All three-phases at 400V may be provided for industrial and commercial loads
-or individual phases at 230V supply typical domestic and other commercial
-loads. Splitting of phases is usually planned so that each is loaded equally.
-This produces a balanced, symetrical system that may be analysed, as explained
-in Section \ref{sec:pf_form}, as a \textit{single} phase circuit.  Figure
-\ref{fig:powersystem} illustrates the basic sturcture of a typical national
-electric power system.
+more convenient for general use (typically from 11kV or 33kV to 400V), are
+spaced along the branches/rings. All three-phases at 400V may be provided for
+industrial and commercial loads or individual phases at 230V supply typical
+domestic and other commercial loads. Splitting of phases is usually planned so
+that each is loaded equally. This produces a balanced, symmetrical system that
+may be analysed, as explained in Section \ref{sec:pf_form}, as a
+\textit{single} phase circuit.  Figure \ref{fig:powersystem} illustrates the
+basic structure of a typical national electric power system.
 
 \section{Electricity Markets}
 The UK was the first large country to privatise its electricity supply industry
@@ -108,7 +109,7 @@ The UK electricity supply industry was privatised under Prime Minister
 Margaret Thatcher and The England and Wales Electricity Pool was created in
 March 1990.  Control of the transmission system was transferred from the
 CEGB to The National Grid Company, which was originally owned by twelve
-regional electricity companies and has since become publically listed.  The
+regional electricity companies and has since become publicly listed.  The
 Pool was a multilateral contractual arrangement between generators and suppliers and did
 not itself buy or sell electricity.  Competition in generation was introduced
 gradually, by first entitling customers with consumption greater than or equal
@@ -160,8 +161,8 @@ introduction of New Electricity Trading Arrangements (NETA) in March 2001
 \cite{martoccia:2005}.  The aim was to improve efficiency and provide greater
 choice to participants.  Control of the Scottish transmission system was
 handed over to England with the introduction of the nationwide British
-Electricity Transmission and Trading Arrangments (BETTA) in April 2005 under The Energy
-Act 2004.  While The Pool operated a single daily auction and dispatched plant
+Electricity Transmission and Trading Arrangements (BETTA) in April 2005 under
+The Energy Act 2004.  While The Pool operated a single daily auction and dispatched plant
 centrally, under the new arrangements participants became self-dispatching and
 market positions became determined through continuous bilateral trading
 between generators, suppliers, traders and consumers.
@@ -191,12 +192,12 @@ traders to observe and to use in subsequent trading.
 All bilateral trading must be completed before ``gate-closure'' which is a
 point in time, before delivery time, that gives the system operator an
 opportunity to balance supply and demand and mitigate potential breaches of
-system limits.  In keeping with the UK's free market philosphy, a competitive
+system limits.  In keeping with the UK's free market philosophy, a competitive
 spot market \cite{schweppe:spot} is used in the balancing process.  A
 generator that is not fully loaded may offer a price at which it is willing to
 increase its output by a specified quantity, stating the rate at which it is
 capable of doing so.  Certain loads may also offer demand reductions at a
-price which can typically be implemeted very quickly.  Longer-term contracts
+price which can typically be implemented very quickly.  Longer-term contracts
 for balancing services are also struck between the system operator and
 generators/suppliers in order to avoid the price volatility often associated
 with spot markets.
@@ -257,11 +258,15 @@ The nodal admittance matrix describes the electrical network and its
 formulation is dependant upon the transmission line, transformer and shunt
 models employed.  Following \citeA[p.11]{pserc:mp_manual}, a branch in a power
 system nodal representation is typically modelled as a medium length
-transmission line in series with a regulating transformer at the ``from'' end.  A nominal-$\pi$ model with total series admittance $y_s = 1/(r_s+jx_s)$ and total shunt capacitance $b_c$ represents the transmission line.  The transformer is assumed to be ideal, phase-shifting and tap-changing, with the ratio between primary winding
-voltage $v_{f}$ and secondary winding voltage $N = \tau e^{j\theta_{ph}}$
-where $\tau$ is the tap ratio and $\theta_{ph}$ is the phase shift angle.
-Figure \ref{fig:branch_model} diagrams this conventional branch model.  From
-Kirchhoff's Current Law the current in the series impedance is
+transmission line in series with a regulating transformer at the ``from'' end.
+A nominal-$\pi$ model with total series admittance $y_s = 1/(r_s+jx_s)$ and
+total shunt capacitance $b_c$ represents the transmission line.  The
+transformer is assumed to be ideal, phase-shifting and tap-changing, with the
+ratio between primary winding voltage $v_{f}$ and secondary winding voltage
+$N = \tau e^{j\theta_{ph}}$ where $\tau$ is the tap ratio and $\theta_{ph}$ is
+the phase shift angle. Figure \ref{fig:branch_model} diagrams this
+conventional branch model.  From Kirchhoff's Current Law the current in the
+series impedance is
 \begin{equation}
 \label{eq:iseries}
 i_s = \frac{b_c}{2}v_t - i_t
@@ -437,13 +442,13 @@ For and network of $n_g$ generators the objective function is
 \end{equation}
 where $C_{P,k}$ and $C_{Q,k}$ are cost functions (typically quadratic) of the
 set-points $P_{g,k}$ and $Q_{g,k}$ for generator $k$, respectively. Alternative
-objectives may be to minimise losses, maxmimise the voltage stability margin or
+objectives may be to minimise losses, maximise the voltage stability margin or
 minimise deviation of an optimisation variable from a particular schedule
 \cite[\S18]{kallrath:2009}.
 
 \subsubsection{Nodal Marginal Prices}
 Many solution methods for optimal power flow have been developed
-since Carpientier introduced the problem and a review of the main techniques
+since Carpentier introduced the problem and a review of the main techniques
 can be found in \citeA{momoh:part1,momoh:part2}.  One of the most robust
 strategies is to solve the Lagrangian function
 \begin{equation}
@@ -493,7 +498,7 @@ their ability to produce socially desirable system performance.  The
 \textit{heuristic} strand aims to generate theories on the fundamental causal
 mechanisms in social systems that can be observed, even in simple systems, when there are
 alternative initial conditions.  This thesis aims to provide
-\textit{methodologial} advancement.  Improvements in the tools and methods
+\textit{methodological} advancement.  Improvements in the tools and methods
 available aid research with the former objectives.
 
 %\section{Summary}

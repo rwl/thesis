@@ -3,10 +3,10 @@
 This chapter describes the research in this thesis in the context of similar
 work.  It reviews previously published research with particular focus made on
 the learning methods and simulation models used.  For a similar review with greater
-emphasis on crticism of simulation results and the conclusions drawn from
+emphasis on criticism of simulation results and the conclusions drawn from
 them, the interested reader is referred to \citeA{weidlich:08}.
 In the interests of repeatability, the software developed for this thesis has
-been released as open source \shortcite{lincoln:pyreto}.  The second section in
+been released as open source \cite{lincoln:pyreto}.  The second section in
 this chapter describes the software project in the context of other open source
 Electric Power Engineering programs.
 
@@ -35,7 +35,7 @@ from public and private data sources and the author's own estimates.  In
 simulations of the day-ahead market, each agent submits a single price for the
 following simulated trading day, for each item of plant in its portfolio.
 Whereas, under the bilateral contract model, 24 bids are submitted for each
-generator, cooresponding to each hour of the following simulated day.  Revenues
+generator, corresponding to each hour of the following simulated day.  Revenues
 are calculated at the end of each trading day and are determined either by the
 bid price of the marginal unit or the generator's own bid price.  Each
 generating plant is characterised in part by an estimated target utilisation
@@ -44,7 +44,7 @@ to achieve this utilisation rate and then improve profitability.
 
 % TODO: Algorithm X defines the rules followed by each agent.
 If the utilisation rate is not achieved, a random percentage from a uniform
-distribution with a range of $\pm10\%$ and $0\%$ mean is substracted from the
+distribution with a range of $\pm10\%$ and $0\%$ mean is subtracted from the
 bid price of all generators in the agent's portfolio.  Agents with more than one generator
 transfer successful bidding strategies between plant by setting the
 bid price for a generator to the level of the next highest submitted bid price if
@@ -54,8 +54,8 @@ from the same distribution as above is added or subtracted from the bid price
 from the previous day for each of its generators.  A cap on bid prices is
 imposed at \pounds1000 in each period.  Demand follows a 24-hour profile based
 on the 1997-1998 peak winter load pattern.  The response of the load schedule
-to high prices is modelled as a reduction of 25MW for every \pounds1/MWh that the system marginal
-price rises above \pounds75/MWh.
+to high prices is modelled as a reduction of 25MW for every \pounds1/MWh that
+the system marginal price rises above \pounds75/MWh.
 
 750 trading days are simulated for each of the four combinations of a day-ahead
 market and the bilateral trading model under uniform pricing and discriminatory
@@ -66,7 +66,7 @@ gather scarce market price information and distribute it among generators.
 
 In \citeA{bower:2001b} a more sophisticated custom learning method, resembling
 the Roth-Erev method described in Appendix \ref{sec:rotherev}, is applied to a
-more detailed model of the New Electrcity Trading Arragements.  The balancing
+more detailed model of the New Electricity Trading Arrangements.  The balancing
 mechanism is modelled as a one-shot market, that follows the contracts market,
 to which increment and decrement bids are submitted.  Active demand side
 participation is modelled and generator dynamic constraints are represented by
@@ -89,7 +89,7 @@ As with the Roth-Erev method, a probability for the selection of each markup is
 calculated by the learning method.  Daily profits and acceptance rates for
 bids/offers from previous trading days are extrapolated out to determine
 expected values and thus the expected reward for each markup.  The markups are then
-sorted according to expected reward in decending order.  The perceived utility
+sorted according to expected reward in descending order.  The perceived utility
 of each markup $j$ is
 \begin{equation}
 U_j = \mu \biggl(\frac{\phi - n}{\phi}\biggr)^{i_j-1}
@@ -110,7 +110,7 @@ the importance accurate forecasts, greater risk for suppliers than generators, t
 value of flexible plant and the influence of capacity margin on opportunities
 for collusive behaviour.
 The same learning method is applied in \citeA{bunn:03} as part of an
-inquiry by the Competition Commision into whether two specific companies in the
+inquiry by the Competition Commission into whether two specific companies in the
 England and Wales electricity market had enough market power to operate against
 the public interest.
 
@@ -140,7 +140,7 @@ hour-ahead markets with inelastic load.  The hour-ahead simulation is repeated
 with elastic demand response.
 
 The first coauthor goes on to compare a similar custom learning method with two
-other algoithms in \citeA{visud:thesis}.  The custom method is designed
+other algorithms in \citeA{visud:thesis}.  The custom method is designed
 specifically for the power pool model used and employs separate policies for
 selecting bid quantities and prices according to a several if-then rules that
 attempt to capture capacity withholding behaviour.  The method is compared
@@ -289,7 +289,7 @@ at the Swiss Federal Institutes of Technology in Zurich and Lausanne. The
 foundations for this work were laid in \citeA{krause:nash04} with a comparison
 of agent-based modelling using reinforcement learning and Nash equilibrium
 analysis when assessing network constrained power pool market dynamics.
-Parameter sensistivity of comparison results were later analysed in
+Parameter sensitivity of comparison results were later analysed in
 \citeA{krause:nash06}.
 
 The authors model a mandatory spot market which is cleared using a DC
@@ -365,7 +365,7 @@ As an alternative to the conventional DC optimal power flow formulation, line
 power flows computation is done using a power transfer distribution
 factor (PTDF) matrix.  The $(i,j)^{th}$ element of the PTDF matrix corresponds
 to the change in active power flow on line $j$ given an additional injection of
-1MW at the slack bus and corresponding withdrawl of 1MW at node $i$.
+1MW at the slack bus and corresponding withdrawal of 1MW at node $i$.
 
 The congestion management schemes get evaluated under perfect competition,
 where suppliers bid at marginal cost, and under oligopolistic competition, in
@@ -421,7 +421,7 @@ a summer peak is used to model changes in demand.  The electricity market is
 cleared for each simulated hour and the emissions market gets cleared at the
 end of each simulated week.
 
-The agents learn, when they have a defecit of allowances, to borrow future
+The agents learn, when they have a deficit of allowances, to borrow future
 allowances in the summer when load and allowance prices are high.  Conversely,
 when having a surplus, they learn to sell at this time.  In the third case, the
 authors show the sensitivity of profits to initial allocations and conclude
@@ -470,10 +470,10 @@ the modified version defined in Appendix \ref{sec:variant} is proposed.
 A maximum markup (markdown) of \$40/MWh is specified for each seller (buyer).
 Traders are not permitted to make negative profits and the feasible price range
 is divided into 30 offer prices for 1000 auction rounds cases and 100 offer
-prices for 10000 aution round cases.  The parameters of the Roth-Erev method are
-calibrated using direct search within reasonable ranges.  Nine combinations of
+prices for 10000 auction round cases.  The parameters of the Roth-Erev method
+are calibrated using direct search within reasonable ranges.  Nine combinations of
 buyer and seller numbers and total trading capacities are tested using the
-calibarated parameter values and \textit{best-fit} values determined
+calibrated parameter values and \textit{best-fit} values determined
 empirically in \citeA{roth:aer}.
 
 The experimental results show that good market efficiency is achieved under all
@@ -492,7 +492,7 @@ detailed description of AMES is provided in Section \ref{sec:ames} below.  In
 withholding in a wholesale electricity market design proposed by the U.S.
 Federal Energy Regulatory Commission in April 2003.  A five bus power system model
 with five generators and three dispatchable loads is defined and capacity
-withholding is represented by premitting traders to bid lower than true
+withholding is represented by permitting traders to bid lower than true
 operating capacity and higher than true marginal costs.
 
 Comparing results from a benchmark case (in which true production costs are
@@ -511,7 +511,8 @@ method to study strategic behaviour in the Italian wholesale electricity market
 \cite{cincotti:09}.  An accurate model of the actual clearing procedure is
 implemented and the model of the Italian transmission system, including an
 interconnector to Sicily and zonal subdivision, illustrated in Figure
-\ref{fig:italy} is defined.  Within each of the 11 zones, thermal plant is combined according to technology (coal, oil, combined cycle gas, turbo gas and
+\ref{fig:italy} is defined.  Within each of the 11 zones, thermal plant is
+combined according to technology (coal, oil, combined cycle gas, turbo gas and
 repower) and associated with one of 16 generation companies according to the
 size of the companies share.  The resulting 53 agents are assumed to bid full
 capacity and may markup bid prices in steps of 5\%, with a maximum markup of
@@ -524,7 +525,7 @@ generation capacity constraints and zone interconnector flow limits.  Agents are
 rewarded according to a uniform national price, computed as a weighted average
 of zonal prices with respect to zonal load.  Using real hourly load data it
 is shown that in experiments in which agents learn their optimal
-strategy, histrorical trends can be replicated in all but certain hours of
+strategy, historical trends can be replicated in all but certain hours of
 peak load.  The authors state a desire to test different learning methods and perform
 further empirical validation.
 
@@ -536,8 +537,8 @@ within the same firm, but participating in different markets, is varied
 systematically and profit differences are analysed.
 
 An two-tier model involves firms with two associated agents
-whose rewards $r^1$ and $r^2$ are initially independant.  A ``reward
-independance'' parameter $\alpha$ is used to control the fraction of profit
+whose rewards $r^1$ and $r^2$ are initially independent.  A ``reward
+independence'' parameter $\alpha$ is used to control the fraction of profit
 from one market that is used in rewarding the agent in the other market.
 The total rewards are
 \begin{equation}
@@ -548,7 +549,7 @@ and
 R^2(t) = (1-\alpha)r^2(t) + \alpha r^1(t).
 \end{equation}
 Each action $a$ is a single price bid between zero and the clearing price from
-the preceeding market.  The Roth-Erev method is modified such that similar
+the preceding market.  The Roth-Erev method is modified such that similar
 actions, $a-1$ and $a+1$, are reinforced also.  For each agent $i$, the action
 selection propensities in auction round $t$ are
 \begin{equation}
@@ -567,12 +568,12 @@ The initial simulation consists of two wholesalers and three retailers and
 $\alpha$ is varied from $0$ to $0.5$ in $51$ discrete steps.  The experiment
 is repeated using a three tier model in which two natural gas shippers supply
 three electricity generators who, in turn, sell to four electricity retailers.
-The results show a rise in market prices as reward interdependance is
+The results show a rise in market prices as reward interdependence is
 increased and greater profits for integrated firms.
 
 The same alternative formulation of the Roth-Erev method is also used in
 \citeA{micola:08b} to analyse the effect on market prices of different degrees
-of producer crossholding\footnote{Crossholdings occur when one publically
+of producer crossholding\footnote{Crossholdings occur when one publicly
 traded firm owns stock in another such firm.} under private and public bidding
 information.  Crossholding is represented with the introduction of a factor
 to each agent's reward function that controls the fraction of profit from
@@ -631,7 +632,7 @@ market that is cleared using a DC optimal power flow formulation with line
 flows calculated using a PTDF matrix.
 
 Zonal prices are set in the forward market as weighted averages of nodal prices
-with repect to historical load shares.  Profits are determined using the
+with respect to historical load shares.  Profits are determined using the
 zonal prices and nodal prices from optimisation of the spot market.  Demand is assumed
 inelastic to price, but different contingency states with peak and low demand
 levels are examined.  A stylised 53 bus model of the Belgian electricity
@@ -646,11 +647,11 @@ functions in future work.
 
 \section{Policy Gradient Reinforcement Learning}
 The policy gradient reinforcement learning methods defined in Appendix
-\ref{sec:policygradient} have been sucessfully applied in both laboratory and
+\ref{sec:policygradient} have been successfully applied in both laboratory and
 operational settings \cite{barto:policy,shaal:robots,peshkin:routing}.  This
 section reviews the \textit{market} related applications of these methods.
 
-\subsection{Finincial Decision Making}
+\subsection{Financial Decision Making}
 Conventionally, \textit{supervised} learning techniques are used in financial
 decision making problems to minimise errors in price forecasts and are trained
 on sample data.  In \citeA{moody:98} a recurrent reinforcement learning
@@ -668,7 +669,7 @@ where $r_t$ is the return for period $t$.
 
 The parameters $\theta$ of the trading system are updated in the direction of
 the steepest accent of the gradient of some performance function $U_t$ with
-repect to $\theta$
+respect to $\theta$
 \begin{equation}
 \Delta\theta_t = \rho \frac{dU_t(\theta_t)}{d\theta_t}
 \end{equation}
@@ -717,8 +718,8 @@ which $k$ would be charged and a delay time $d_k$ for the job.  The service
 provider's goal is to learn a policy for pricing quotes that maximises long
 term revenue when competing in a market with other providers.  Price
 differentiation is implemented though provision of a standard service, priced
-at \$1/CPU-hour and a premium sercice a \$$P$/CPU-hour, with premium jobs
-prioratised over standard jobs.  The state of the market environment is
+at \$1/CPU-hour and a premium service a \$$P$/CPU-hour, with premium jobs
+prioritised over standard jobs.  The state of the market environment is
 defined by the current expected delays in the standard and premium service
 classes and by $n_k \tau_k$ -- the product of the number of CPUs requested and
 the job execution time.  The reward $r(s,a)$ for action $a$ in state $s$ is the
@@ -857,11 +858,11 @@ It was first released in 2009 under the same license as \matpower and the
 same programming style has been used.  The \matpower case format is extended
 with structs for dynamic and event data.  \textsc{Matdyn} uses \matpower to obtain a power
 flow solution that is then used in solving the system of differential
-algrbraic equations representing the power system.  Results for \textsc{Matdyn}
+algebraic equations representing the power system.  Results for \textsc{Matdyn}
 are validated against those obtained from PSS/E\footnote{PSS/E is a
 registered trademark of Siemens Power Transmission \& Distribution, Inc.~Power
 Technologies International.} and the Power System Analysis Toolbox and show
-good correspondance.
+good correspondence.
 
 \subsection*{Power System Analysis Toolbox}
 \label{sec:psat}
@@ -874,7 +875,7 @@ version 2 and offers routines for:
 	\item Power flow,
 	\item Bifurcation analysis,
 	\item Optimal power flow,
-	\item Small signal stability anlysis,
+	\item Small signal stability analysis,
 	\item Time domain simulation and
 	\item Phasor measurement unit placement.
 \end{itemize}
@@ -1022,7 +1023,7 @@ To solve market problems defined in AMES, researchers at Iowa State University
 developed a stand-alone DC optimal power flow solver in Java named DCOPFJ.
 It formulates optimal power flow problems as convex quadratic programs
 which are solved using QuadProgJ.  The same researcher developed QuadProgJ as
-an independant solver that uses the dual active set strictly convex quadratic
+an independent solver that uses the dual active set strictly convex quadratic
 programming algorithm \cite{goldfarb:scqp}.  DCOPFJ requires
 generator costs to be modelled as polynomial functions, of second order or
 less and no sparse matrix techniques are employed to allow application to large

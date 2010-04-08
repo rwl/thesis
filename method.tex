@@ -81,7 +81,7 @@ model used.  The DC optimal power flow formulation is used in the initial experi
 as it is less computationally expensive.  While the more accurate AC optimal
 power flow formulation is required for the more complex experiments that test
 agents in their ability to exploit constraints in the power system models.
-The tradeoffs between using DC models over AC have been examined in
+The trade-offs between using DC models over AC have been examined in
 \citeA{overbye:acdc} and DC models have been found reasonable for nodal
 marginal price calculation.  Piecewise linear generator cost functions are
 modelled using the constrained cost variable method \cite{zimmerman:ccv}.  The
@@ -125,8 +125,8 @@ To present agents participating in the market with an interface more
 representative of a real power exchange market, an auction clearing
 mechanism is implemented \cite[p.92]{pserc:mp_manual}.  The interface
 converts offers to sell and bids to buy blocks of power in MW, with prices
-specified in \$/MWh, into corresponding generator capacitites and piecewise
-linear cost functions.  The solution of the unit-decommitment optimal power
+specified in \$/MWh, into corresponding generator capacities and piecewise
+linear cost functions.  The solution of the unit de-commitment optimal power
 flow algorithm is used to clear the offer/bid quantities and prices and the
 cleared offers/bids are used to determine revenue values from which each
 agent's earnings/losses are derived.
@@ -150,7 +150,7 @@ discriminatory (pay-as-bid).
 Participants are modelled as agents that use reinforcement learning algorithms
 to adjust their bidding behaviour and their interaction with the auction
 interface is coordinated by a multi-agent system.  Agent's do not interact
-directly with thier environment, but are associated with a particular task
+directly with their environment, but are associated with a particular task
 that defines the agent's reward and hence the agent's purpose.  This section
 defines the agent's environment, their tasks and the design of connectionist
 systems and tables used to represent their action selection policies.  The
@@ -228,7 +228,7 @@ with a particular task.  A task associates a purpose with an environment and
 defines what constitutes a reward.  Regardless of the learning method employed,
 the goal of each participant agent is to make a financial profit and the
 rewards are thus defined as the sum of earnings from the previous period $t$
-as calcualted by the market.
+as calculated by the market.
 
 Sensor data from the environment is filtered according to the task being
 performed.  Agents using the value-function methods under test have a tabular
