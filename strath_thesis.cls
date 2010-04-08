@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{strath_thesis}[2010/01/16 Strathclyde LaTeX PhD Class]
+\ProvidesClass{strath_thesis}[2010/04/08 Strathclyde LaTeX PhD Class]
 \RequirePackage{setspace}
 \ExecuteOptions{a4paper,oneside,12pt,onecolumn,final}
 
@@ -37,21 +37,22 @@
     hyperfigures]{hyperref}
 
 % %\setlength{\evensidemargin}{25mm}
-% \setlength{\oddsidemargin}{15.6mm}
-% \setlength{\topmargin}{-4.4mm}
-% %\setlength{\headheight}{1.36cm}
-% %\setlength{\headsep}{1.00cm}
-% \setlength{\textheight}{224mm}
-% \setlength{\textwidth}{143mm}
+% \setlength{\oddsidemargin}{15.6mm} % plus 1 inch
+% \setlength{\topmargin}{20mm}
+% \setlength{\headheight}{0mm}
+% \setlength{\headsep}{0mm}
+% \setlength{\textheight}{237mm} % 297-20-40
+% \setlength{\textwidth}{145mm} % 210-40-25
 % %\setlength{\marginparsep}{1mm}
 % %\setlength{\marginparwidth}{3cm}
 % %\setlength{\footskip}{2.36cm}
 
 \RequirePackage[
+	a4paper,
     top=20mm,
     bottom=40mm,
     inner=40mm,
-    outer=25mm,]{geometry}
+    outer=25mm]{geometry}
 
 % clearemptydoublepage from page 92 of The LaTeX Companion 1993.
 \newcommand{\clearemptydoublepage}{\newpage{\pagestyle{empty}\cleardoublepage}}
