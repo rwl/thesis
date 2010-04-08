@@ -1,0 +1,34 @@
+\begin{figure}
+  \label{fig:seq_reward}
+  \centering
+  \begin{small}
+  \begin{sequencediagram}
+    \newthread{exp}{:Experiment}
+    \newinst{tsk}{:Task}
+    \newinst{env}{:Environment}
+    \newinst{agt}{:Agent}
+    \newinst{mkt}{:Market}
+    \newinst{dat}{:Dataset}
+
+    \begin{call}{exp}{getReward()}{tsk}{$r_t$}
+      \begin{call}{tsk}{getGenerators()}{env}{$g$}
+      \end{call}
+      \begin{call}{tsk}{getClearedOffers($g$)}{mkt}{$\sigma_g$}
+      \end{call}
+      \begin{callself}{tsk}{getEarnings($\sigma_g$)}{$r_t$}
+      \end{callself}
+    \end{call}
+
+    \begin{call}{exp}{giveReward($r_t$)}{agt}{}
+      \begin{callself}{agt}{getLastObs()}{$s_t$}
+      \end{callself}
+      \begin{callself}{agt}{getLastObs()}{$a_e$}
+      \end{callself}
+      \begin{call}{agt}{addSample($s_t$,$a_e$,$r_t$)}{dat}{}
+      \end{call}
+    \end{call}
+
+  \end{sequencediagram}
+  \end{small}
+  \caption{Sequence diagram for the reward process.}
+\end{figure}

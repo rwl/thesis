@@ -1,0 +1,32 @@
+\begin{figure}
+  \label{fig:seq_learn}
+  \centering
+  \begin{small}
+  \begin{sequencediagram}
+    \newthread{exp}{:Experiment}
+    \newinst[1.5]{agt}{:Agent}
+    \newinst{lrn}{:Learner}
+    \newinst[1]{dat}{:Dataset}
+    \newinst{mod}{:Module}
+
+    \begin{call}{exp}{learnEpisodes($1$)}{agt}{}
+      \begin{call}{agt}{learn()}{lrn}{}
+        \begin{sdblock}{batchMode}{}
+          \begin{call}{lrn}{getSample()}{dat}{$s$, $a$, $r$}
+          \end{call}
+          \begin{call}{lrn}{getValue($s_{-1}$,$a_{-1}$)}{mod}{$q_v$}
+          \end{call}
+          \begin{call}{lrn}{getValue($s$,$a$)}{mod}{$q_{+1}$}
+          \end{call}
+          \begin{callself}{lrn}{getQ($q_v$,$\alpha$,$r$,$\gamma$,$q_{+1}$)}{$q_u$}
+          \end{callself}
+          \begin{call}{lrn}{updateValue($s_{-1}$,$a_{-1}$,$q_u$)}{mod}{}
+          \end{call}
+        \end{sdblock}
+      \end{call}
+    \end{call}
+
+  \end{sequencediagram}
+  \end{small}
+  \caption{Sequence diagram for the SARSA learning process.}
+\end{figure}

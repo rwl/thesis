@@ -23,7 +23,7 @@
 %     };
 
     \node (Bus) at (0,0) [final, rectangle split, rectangle split parts=2,
-            text width=5cm]{
+            text width=5.5cm]{
       \textbf{Bus}
         \nodepart[text justified]{second}%
         name: string~{\color{gray} $i$}\newline
@@ -38,7 +38,7 @@
         b\_shunt: float~{\color{gray} $B_{sh}$}};
 
     \node (Branch) [final, rectangle split, rectangle split parts=2,
-    				text width=4.4cm, below=of Bus]{
+    				text width=5cm, below=of Bus]{
       \textbf{Branch}
         \nodepart[text justified]{second}%
         name~{\color{gray} $l$}\newline
@@ -58,7 +58,7 @@
     {from\_bus 1..1} ([xshift=6mm]Bus.south);
 
     \node (Gen) [final, rectangle split, rectangle split parts=3,
-    		     text width=4.5cm, right=of Bus]{
+    		     text width=5cm, right=of Bus]{
       \textbf{Generator}
         \nodepart[text justified]{second}%
         name: string~{\color{gray} $k$}\newline
@@ -95,8 +95,5 @@
     edge [->] node[near end,right,text width=6mm] {generators 0..*} (Gen);
 
   \end{tikzpicture}
-  \caption{Class diagram for the Pylon power system model illustrating
-  required associations between branch, bus and generator classes. Mathematical
-  symbols for vectors of object attributes are shown in grey, where
-  {\color{gray} $S_{b}$} is the system base MVA used in per-unit calculation.}
+  \caption{Class diagram for the power system model.}
 \end{figure}

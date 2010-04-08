@@ -1,0 +1,26 @@
+\begin{figure}
+  \label{fig:seq_rl}
+  \centering
+  \begin{sequencediagram}
+    \newthread{agt}{:Agent}
+    \newinst[3]{env}{:Environment}
+    \begin{sdblock}{Interaction}{}
+
+      \begin{call}{agt}{getState()}{env}{$s_t$}
+      \end{call}
+
+      \begin{callself}{agt}{chooseAction($s_t$)}{$a_t$}
+      \end{callself}
+
+      \begin{call}{agt}{performAction($a_t$)}{env}{$r_{t+1}$}
+        \begin{callself}{env}{changeState($a_t$)}{$s_{t+1}$}
+        \end{callself}
+      \end{call}
+
+      \begin{callself}{agt}{learn($s_t$,$a_t$,$r_{t+1}$)}{}
+      \end{callself}
+
+    \end{sdblock}
+  \end{sequencediagram}
+  \caption{Sequence diagram for the basic reinforcement learning model.}
+\end{figure}

@@ -4,7 +4,7 @@
   \begin{tikzpicture}[node distance=2cm,thick]
 
     \node (Mkt) [final, rectangle split, rectangle split parts=3,
-    		      		 text width=5.8cm] {
+    		      		 text width=6.2cm] {
       \textbf{SmartMarket}
         \nodepart[text justified]{second}%
         price\_cap: float = 500\newline
@@ -53,7 +53,7 @@
 		reset()
     }
 
-    edge [->] node[near end,text width=6mm] {market 1..1} (Mkt)
+    edge [->] node[near end,text width=10mm] {market 1..1} (Mkt)
     edge [->] node[near end,text width=10mm] {generators 1..*} (Gen);
 
     \node (Task) [final, rectangle split, rectangle split parts=3,

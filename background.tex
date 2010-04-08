@@ -7,7 +7,7 @@ models.
 
 \section{Electric Power Supply}
 
-%\input{tikz/structure}
+\input{tikz/structure}
 
 Generation and bulk movement of electricity in the UK takes place in a
 three-phase alternating current (AC) power system.  These phases are
@@ -55,7 +55,7 @@ Figure \ref{fig:uk_gen} diagrams the existing interconnectors and illustrates
 how the UK's larger power stations are located away from large load centres and
 close to sources of fuel.
 
-%\input{tikz/uk}
+\input{tikz/uk}
 
 For delivery to most consumers, electric energy is transferred, at a
 substation, from the transmission system to the grid supply point of a distribution
@@ -126,7 +126,7 @@ by generating companies and organisations with interconnects to the England
 and Wales grid to formulate bids that had to be submitted to the grid operator
 by 10AM on the day before the schedule day.
 
-%\input{tikz/cost_function}
+\input{tikz/cost_function}
 
 Figure \ref{fig:poolbids} diagrams four of the five price parameters
 that made up a bid.  A start-up price would also be stated, representing the
@@ -303,7 +303,7 @@ i_s = v_s \left( \frac{1}{\tau^2} \left(y_s + \frac{b_c}{2}\right) \right) +
 v_r \left(\frac{y_s}{\tau e^{-j\theta}}\right)
 \end{equation}
 
-%\input{tikz/branch_model}
+\input{tikz/branch_model}
 
 Combining equations (\ref{eq:ito}) and (\ref{eq:ifrom}), the \textit{from}
 and \textit{to} end complex current injections for branch $l$ are
@@ -438,10 +438,10 @@ A common objective of optimal power flow is total system cost minimisation.
 For and network of $n_g$ generators the objective function is
 \begin{equation}
 \label{eq:objfunc}
-\min_{\theta, V_m, P_g} \sum_{k=1}^{n_g} C_{P,k}(P_{g,k}) + C_{Q,k}(Q_{g,k})
+\min_{\theta, V_m, P_g} \sum_{k=1}^{n_g} C^k_P(P_g^k) + C_Q^k(Q_g^k)
 \end{equation}
-where $C_{P,k}$ and $C_{Q,k}$ are cost functions (typically quadratic) of the
-set-points $P_{g,k}$ and $Q_{g,k}$ for generator $k$, respectively. Alternative
+where $C_P^k$ and $C_Q^k$ are cost functions (typically quadratic) of the
+set-points $P_g^k$ and $Q_g^k$ for generator $k$, respectively. Alternative
 objectives may be to minimise losses, maximise the voltage stability margin or
 minimise deviation of an optimisation variable from a particular schedule
 \cite[\S18]{kallrath:2009}.
