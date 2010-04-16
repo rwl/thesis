@@ -1,5 +1,100 @@
 \chapter{Further Work}
 \label{sec:furtherwork}
+
+\section{UK Transmission System}
+Some of the more ambitious agent-based electricity market simulations have used
+stylised models of national transmission systems
+\cite{cincotti:09,weidlich:06}.  This work has often been motivated by recent
+or expected changes to the arrangements in the associated regions.  The drop in
+oil prices around the time of the global economic crash in 2008 was not
+refledted quickly in energy prices and this amplified concerns over liquiduty
+levels in the UK electricity markets.  Ofgem found competition to be
+sufficient[ref], but the concerns persists and the market arrangements have
+been re-examined under Project Discovery[ref].
+
+Several of the the UK's largest power stations are due to be decommissioned
+around 2015 in accordance with EU regulations[ref]  The ability of the market
+to sufficiently incentivise new investment in generation that will cover the
+resulting shortfall is in question.  The concern extends to the need for
+long-term investment in new nuclear power plant that is deemed neccessary for
+the UK to meet the legally binding obligations, made in the Climate Change
+Bill, to cut greenhouse gas emissions by 80\% by 2050, compared to 1990 levels.
+Calls have been made for a radical overhaul of the exising arrangments and for
+a more interventionist strategy from the government.
+
+Ofgem's project discovery makes many large assumptions in its model of the UK
+energy industry.  Future examinations could be enhanced by the advanced
+participant behavioural models and accurate electric power system simulations
+presented in this thesis.  To this end the transmission systems data
+for winter peak load provided by National Grid in [ref] has been converted
+into the PSS/E version 30 data file in Appendix \ref{sec:nget_pf}.  Generator
+set-points were determined using the state estimator from Pylon [Crow].  The
+power flow results are shown in Figure X and correlate accurately with those in
+[SYS], having a mean variance of X.XX.  Cost data for each of the aggregated generating units has
+been estimated from public sources and stored in the PSS/E version 30 optimal
+power flow data file in Appendix \ref{sec:nget_opf}.  Execution times for
+solving this case using DC, AC and unit de-commitment optimal power flow are
+shown in Table X.  The problem is currently too computationally expensive to be
+solved repeated in an agent-based simulation, but the profiling output in
+Table~Y shows that much of the execution time is spent constructing matrices in
+linked list format.  Significant improvements in speed should be possible
+through more efficient construction of the Hessian matrices in the AC optimal
+power flow solver.  Agent-based simulation lends itself to parallelisation and
+the artificial neural networks could be processed in multiple threads on
+multi-core processors or on distributed memory architectures.
+
+\section{Security Constrained Optimal Power Flow}
+To the best of the author's knowledge this is the first application of security
+constrained optimal power flow in agent-based electricity market simulation.
+AC optimal power flow is more difficult to implement and more computationally
+expensive to solve due to the non-linear sets of constraints involved.  The
+additional complexity does not always add sufficient value.  For locational
+marginal price calculation, linearised DC forumulations have been found to
+provide suitable results under most circumstances \cite{overbye:acdc}.
+However, the option to use an AC formulation offers some interesting
+possibilities for further work.
+
+The inclusion of the cost associated with producing (or absorbing) reactive
+power in the objective function of an AC optimal power flow problem means that
+a parallel auction for voltage support may be run.  This could be open to
+agents associated with reactive compensation equipment such as that commonly
+needed for wind farm developments.  Reactive power markets have traditionally
+been purely of academic interest, but as the UK becomes more dependant upon
+offshore wind power the topic could become of increasing interest.
+
+Bus voltage magnitudes are not all assumed to be 1~per-unit in AC optimal power
+flow problems, but are part of the optimisation variable.  Generator reactive
+power and bus voltage constraint limits are usually determined by system
+security constraint requirements.  The policy gradient methods used in this
+thesis can operate with large state spaces that may include information on
+these constraints.  The additional constraints that are part of an AC
+formulation represent further opportunities for agents to exploit system
+conditions and receive greater reward.  However, bus voltages are typically
+regulated by tap changing transformers and this is a difficult feature to
+implement.  Tap positions are typically restricted to discrete intervals,
+making the optimisation a mixed integer problem and thus much more difficult
+to solve.  A formulation extended to includ automatic tap changing might also
+implement variable phase shifting transformers.  These offer a degree of
+control in directing power flows and the formulation would allow advanced
+constraint management schemes to be researched.
+
+\section{Multi-Market Simulation}
+Policy gradient method's superior use of sensory data and their ability to
+operate in large action domains opens opportunities for more detailed study of
+inter-market relationships.  The global economy is a holistic system of
+systems and the anaylsis of markets independently must be of limited value.
+Recent agent-based electricity market simulations studies have investigated the
+interaction between electricity, gas and emission allowances markets
+\cite{krause:gas,wang:09}.  Non-linear models [ref] have been published for gas
+flows in pipelines such as the UK gas network in Figure X and could be used in a
+similar way to the UK transmission system model.  As in \citeA{krause:gas},
+actions in the gas market would constrain the generators options to sell power
+in subsequent electricity auctions.  In the same way that agents using policy
+gradient learning methods can better exploit conditions in electricity markets,
+these methods could be used to learn complex strategies for buying and selling
+allowances while avioding penalties for exceeding quotas.
+
+
 % \subsection{Common Information Model}
 % Many tools exist for steady-state analysis of balanced three-phase AC networks
 % and most are centred around bespoke models that describe the power system
@@ -20,13 +115,12 @@
 % and magnitude at each bus is determined the power flows on each branch may be
 % calculated.
 
-\section{AC Optimal Power Flow}
 % market power, constraint management
-\section{Decentralised Trade}
+%\section{Decentralised Trade}
 % distribution level, renewables
-\section{Standarisation}
+%\section{Standarisation}
 % CIM for markets
-\section{Blackbox optimisation}
+%\section{Blackbox optimisation}
 % periodic
 
 \chapter{Summary Conclusions}
