@@ -281,6 +281,42 @@ less and no sparse matrix techniques are employed to allow application to large
 systems.
 
 \section{PYLON}
+% Table \ref{tbl:featurematrix} shows that there are open source software tools
+% for all of the main Electric Power Engineering problems and that Matlab is the
+% most popular language used.  Several of the projects are more than a decade
+% old and the relatively recent release of OpenDSS by EPRI shows that interest
+% in this approach to development is not fading.
+
+\pylon is a translation of \matpower and Matdyn to the Python programming
+language.  It has extensions for agent-based electricity market simulation
+that provide features similar to those of AMES.  Both the DC and AC
+forumlations of the extensible optimal power flow model \cite{zimmerman:mp_pes}
+from \matpower are implemented.  Either a Python version of MIPS or an
+interface to the cp solver from CVXOPT can be used to compute solutions.  The
+sparsity of the problems is exploited throughout the solution process using
+matrix packages from SciPy and bindings to SuperLU or UMFPACK for solver sparse
+set of linear equations and performing LU decomposition.  Scripts are provided
+for reading and writing data files in PSS/E, \matpower and PSAT format. A wide
+variety of learing methods are available in \pylon due to its use of the
+PyBrain machine learning library \cite{schaul:2010}.  PyBrain also provides
+the artificial neural network models used for policy function approximation
+and they may be accelerated using C extension modules from the ARAC project.
+
+In addition to its market simulation capabilities, \pylon also features solvers
+for power flow problems (using Newton's method or fast decoupled methods),
+state estimation, continuation power flow and time domain simulation.  \pylon
+includes a rudimentary GUI that uses the Tkinter library that is included
+with Python and thus imposes no additional dependencies.  A more feature
+rich GUI is provided by plug-ins for Puddle -- an extensible, GUI
+toolkit independant integrated development environment, created for the
+purposes of this thesis also.  The use of matrix libraries from NumPy and
+SciPy has allowed \pylon (with the permission of the \matpower developers) to
+be released under the Apache license, version 2.0. This allows \pylon to be
+used in the developement of proprietary software as well as free and open
+source software since derivatives of the source code may be made available
+under more restrictive terms than the original Apache license.  This is in
+contrast to ``copyleft'' licenses, such as the GNU GPL, that require the same
+rights to be preserved in modified versions of the work.
 
 % \chapter{Background Theory}
 % \label{ch:background}
