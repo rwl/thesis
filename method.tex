@@ -92,7 +92,7 @@ not used are:
   \item Generator P-Q capability curves.
 \end{itemize}
 
-\input{tikz/cls_pylon}
+%\input{tikz/cls_pylon}
 
 The standard optimal power flow formulation constrains generator set-points
 between upper and lower power limits.  Expensive generators can not be
@@ -168,7 +168,7 @@ environment and the generator model along with the association with an instance
 of the market with allows submission of offers/bids by the agent. Two main
 operations are supported by an agent's environment.
 
-\input{tikz/cls_pyreto}
+%\input{tikz/cls_pyreto}
 
 For a power system with $n_b$ buses, $n_l$ branches and $n_g$ generators, the
 \texttt{getSensors} method returns a $n_s \times 1$ vector of sensor values
@@ -280,13 +280,13 @@ length as $a_e$ is returned, otherwise $a_e = a_m$.
 
 \subsection{Simulation Event Sequence}
 
-\input{tikz/cls_experiment}
+%\input{tikz/cls_experiment}
 
 In each simulation of a system consisting of one or more task-agent pairs a
 sequence of interactions is coordinated, as illustrated in Figure
 \ref{fig:cls_experiment}.
 
-\input{tikz/seq_action}
+%\input{tikz/seq_action}
 
 At the beginning of each step/period the market is initialised and all
 offers/bids removed.  From each task-agent tuple $(T,A)$ an observation $s_t$
@@ -297,7 +297,7 @@ $T$.  Recall, this process involves the submission of offer/bids to the market.
 Figure \ref{fig:seq_action} is a UML sequence diagram that illustrates the
 process of performing actions.
 
-\input{tikz/seq_reward}
+%\input{tikz/seq_reward}
 
 Once all actions have been performed the offer/bids are cleared using the
 auction mechanism.  Each task $T$ is requested to return a reinforcement reward
@@ -312,7 +312,7 @@ sample is the dataset, along with the last observation $s_t$ and the last action
 performed $a_e$.  Figure \ref{fig:seq_action} is a UML sequence diagram that
 illustrates the reward process.
 
-\input{tikz/seq_learn}
+%\input{tikz/seq_learn}
 
 As illustrated in Figure \ref{fig:seq_learn}, each agent learns from its
 actions using $r_t$, at which point the values/parameters of the module of $A$

@@ -7,7 +7,7 @@ models.
 
 \section{Electric Power Supply}
 
-\input{tikz/structure}
+%\input{tikz/structure}
 
 Generation and bulk movement of electricity in the UK takes place in a
 three-phase alternating current (AC) power system.  These phases are
@@ -55,7 +55,7 @@ Figure \ref{fig:uk_gen} diagrams the existing interconnectors and illustrates
 how the UK's larger power stations are located away from large load centres and
 close to sources of fuel.
 
-\input{tikz/uk}
+%%\input{tikz/uk}
 
 For delivery to most consumers, electric energy is transferred, at a
 substation, from the transmission system to the grid supply point of a distribution
@@ -126,7 +126,7 @@ by generating companies and organisations with interconnects to the England
 and Wales grid to formulate bids that had to be submitted to the grid operator
 by 10AM on the day before the schedule day.
 
-\input{tikz/cost_function}
+%\input{tikz/cost_function}
 
 Figure \ref{fig:poolbids} diagrams four of the five price parameters
 that made up a bid.  A start-up price would also be stated, representing the
@@ -303,7 +303,7 @@ i_s = v_s \left( \frac{1}{\tau^2} \left(y_s + \frac{b_c}{2}\right) \right) +
 v_r \left(\frac{y_s}{\tau e^{-j\theta}}\right)
 \end{equation}
 
-\input{tikz/branch_model}
+%\input{tikz/branch_model}
 
 Combining equations (\ref{eq:ito}) and (\ref{eq:ifrom}), the \textit{from}
 and \textit{to} end complex current injections for branch $l$ are
@@ -501,4 +501,445 @@ alternative initial conditions.  This thesis aims to provide
 \textit{methodological} advancement.  Improvements in the tools and methods
 available aid research with the former objectives.
 
-%\section{Summary}
+\chapter{Reinforcement Learning}
+\label{sec:rl}
+% The problem of learning how best to interact with an environment so as to
+% maximise some long-term reward is a general one.  Reinforcement learning is a
+% term from the field of machine learning that is typically applied to
+% understanding, automating and solving this problem through adaptive
+% computational approaches.  Unlike many machine learning techinques, the
+% algorithms are not instructed as to which actions to take, but must learn to
+% maximise the long-term reward through trial-and-error.
+
+% Reinforcement learning starts with an interactive, goal-seeking individual
+% agent existing in an environment.  The agent requires the ability to;
+% \begin{itemize}
+%   \item Sense aspects of its environment,
+%   \item Perform actions that influence the state of its environment and
+%   \item be assigned rewards as a response to their chosen action.
+% \end{itemize}
+% An agent follows a particular \textit{policy} when mapping the perceived state
+% of its environment to an action choice.  Reinforcement learning methods adjust
+% the agent's policy.
+Reinforcement learning is learning from reward by mapping situations to actions
+when interacting with an uncertain environment \cite{suttonbarto:1998}.  An
+agent learns \textit{what} to do in order to achieve a task through
+trial-and-error using a numerical reward or a penalty signal without being
+instructed \textit{how} to achieve it.  In challenging cases, actions may not
+yield immediate reward or may affect the next situation and all subsequent
+rewards.  A compromise must be made between exploitation of past experiences
+and exploration of the environment through new action choices.  A
+reinforcement learning agent must be able to:
+\begin{itemize}
+  \item Sense aspects of its environment,
+  \item Take actions that influence its environment and,
+  \item Have an explicit goal or set of goals relating to the state of its
+  environment.
+\end{itemize}
+In the classical model of agent-environment interaction, at each time step $t$
+in a sequence of discrete time steps $t = 1,2,3\dotsc$ an agent receives as
+input some form of the environment's state $s_t \in \mathscr{S}$, where
+$\mathscr{S}$ is the set of possible states.  From a set of actions
+$\mathscr{A}(s_t)$ available to the agent that state and the agent selects
+an action $a_t$ and performs it upon its environment.  The environment enters a
+new state $s_{t+1}$ in the next time step and the agent receives a scalar
+numerical reward $r_{t+1} \in \mathbb{R}$ in part as a result of its action.
+The agent then learns from the state representation, the
+chosen action $a_t$ and the reinforcement signal $r_{t+1}$ before beginning
+its next interaction.  Figure \ref{fig:seq_rl} diagrams the classical
+agent-environment interaction event sequence in reinforcement learning.
+
+%\input{tikz/seq_rl}
+
+\section{Markov Decision Processes}
+For a finite number of states $\mathscr{S}$, if all states are Markov, the
+agent interacts with a finite Markov decision process (MDP).  Informally,
+for a state to be Markov it must retain all relevant information about the
+complete sequence of positions leading up to the state, such that all future
+states and expected rewards can be predicted as well as would be possible given
+a complete history.  A particular MDP is defined for a discrete set of time
+steps by a state set $\mathscr{S}$, an action set $\mathscr{A}$, a set of state
+transition probabilities $\mathscr{P}$ and a set of expected reward values
+$\mathscr{R}$.
+% Given a state $s$ and an action $a$, the probability of
+% transitioning to each possible next state $s^\prime$ is
+% \begin{equation}
+% \mathscr{P}^a_{ss^\prime} = \Pr \bigl\lbrace s_{t+1} = s^\prime \vert s_t=s,
+% a_t=a \bigr\rbrace .
+% \end{equation}
+% Given the next state $s^\prime$, the expected value of the next reward is
+% \begin{equation}
+% \mathscr{R}^a_{ss^\prime} = E \bigl\lbrace r_{t+1} \vert s_t=s, a_t=a,
+% s_{t+1}=s^\prime \bigr\rbrace .
+% \end{equation}
+In practice not all state signals are Markov, but should provide a good basis
+for predicting subsequent states, future rewards and selecting actions.
+
+If the state transition probabilities and expected reward values are not known,
+only the states and actions, then samples from the MDP must be taken and a value
+function approximated iteratively based on new experiences generated by
+performing actions.
+
+\section{Value Function Methods}
+\label{sec:valuebased}
+% Value-based methods attempt to find the optimal policy by
+% approximating a \textit{value-function} which returns the total reward an
+% agent can expect to accumulate, given an initial state and following the
+% current policy thereafter.  The policy is adjusted using the reinforcing
+% signal and information from previous action choices.
+Any method that can optimise control of a MDP may be considered a reinforcement
+learning method.  All search for an optimal policy $\pi^*$ that maps state
+$s \in \mathscr{S}$ and action $a \in \mathscr{A}$ to the probability
+$\pi^*(s,a)$ of taking $a$ in $s$ and maximises the sum of rewards over the
+agents lifetime.
+
+Each state $s$ under policy $\pi$ may be associated with a \textit{value}
+$V^\pi(s)$ equal to the expected return from following policy $\pi$ from state
+$s$.  Most reinforcement learning methods are based on estimating the
+state-value function
+\begin{equation}
+\label{eq:statevalue}
+V^\pi(s) = E \Bigg\lbrace \sum^\infty_{t=0} \gamma^t r_t \Bigg\vert s_0 = s
+\Bigg\rbrace
+\end{equation}
+where $\gamma$ is a discount factor, with $0\leq \gamma \leq 1$.
+Performing certain actions may result in no state change, creating a loop and
+causing the value of that action to be infinite for certain policies.
+The discount factor $\gamma$ prevents values from going unbounded and
+represents reduced trust in the reward $r_t$ as discrete time $t$
+increases.  Many reinforcement learning methods estimate the action-value
+function
+\begin{equation}
+\label{eq:actionvalue}
+Q^\pi(s,a) = E \Bigg\lbrace \sum^\infty_{t=0} \gamma^t r_t \Bigg\vert s_0 = s,
+a_0 = a \Bigg\rbrace
+\end{equation}
+which defines the value of taking action $a$ in state $s$ under fixed policy
+$\pi$.
+
+\subsection{Temporal-Difference Learning}
+Temporal Difference (TD) learning is a fundamental concept in reinforcement
+learning. TD methods do not attempt to estimate the state transition probabilities and
+expected rewards of the finite MDP, but estimate the value function directly.
+They learn to \textit{predict} the expected value of total reward returned by
+the state-value function (\ref{eq:statevalue}).  For an exploratory policy $\pi$
+and a non-terminal state $s$, an estimate of $V^\pi(s_t)$ at any given time step
+$t$ is updated using the estimate at the next time step $V^\pi(s_{t+1})$ and the
+observed reward $r_{t+1}$
+\begin{equation}
+V^\pi(s_t) \leftarrow V^\pi(s_t) + \alpha \bigl[r_{t+1} + \gamma
+V^\pi(s_{t+1}) - V^\pi(s_t) \bigr]
+\end{equation}
+where $\alpha$ is the learning rate, with $0 \leq \alpha \leq 1$, which controls
+how much attention is paid to new data when updating $V^\pi$.  TD learning
+evaluates a particular policy and offers strong convergence guarantees, but does
+not learn better policies.
+
+\subsection{Sarsa}
+\label{sec:sarsa}
+% The SARSA algorithm is an on-policy Temporal Difference control method where
+% the policy is typically represented by a $M \times N$ table, where $M$ and $N$
+% are arbitrary positive numbers equal to the total number of feasible states and
+% actions respectively.  The action-value update for agent $j$ is defined by
+% \begin{equation}
+% Q_j(s_{jt},a_{jt}) + \alpha [r_{jt+1} + \gamma Q_j(s_{jt+1},a_{jt+1}) -
+% Q_j(s_{jt},a_{jt})]
+% \end{equation}
+% While the Q-learning method (See Section \ref{sec:qlearning}, below) updates
+% action-values using a greedy policy, which is a different policy to that being
+% followed, SARSA uses the discounted future reward of the next state-action
+% observation following the original policy.
+Sarsa (or modified Q-learning) is an on-policy TD control method that
+approximates the state-action value function in (\ref{eq:actionvalue}).
+Recall that the state-action value function for an agent returns the total
+expected reward for following a particular policy for selecting actions as a
+function of future states.  The function is updated according to the rule
+\begin{equation}
+\label{eq:sarsa}
+Q(s_t,a_t) \leftarrow Q(s_t,a_t) + \alpha \bigl[r_{t+1} + \gamma
+Q(s_{t+1},a_{t+1}) - Q(s_t,a_t)\bigr]
+\end{equation}
+This update also uses the action from the next time step $a_{t+1}$ and the
+requirement to transition through state-action-reward-state-action for each
+time step derives the algorithm's name.  Sarsa is referred to as an on-policy
+method since it learns the same policy that it follows.
+
+\subsection{Q-Learning}
+\label{sec:qlearning}
+% This section describes the original off-policy Temporal Difference Q-learning
+% method developed by Watkins \cite{watkins:1989}.  The action-value function,
+% $Q(s,a)$, returns values from a $M \times N$ matrix where $M$ and $N$ are
+% arbitrary positive numbers equal to the total number of feasible states and
+% actions, respectively.  Each value represents the \textit{quality} of taking a
+% particular action, $a$, in state $s$.  Actions are selected using either the
+% $\epsilon$-greedy or softmax (See Section \ref{sec:rotherev}, above) methods.
+% The $\epsilon$-greedy method either selects the action (or one of the actions)
+% with the highest estimated value or it selects an action at random, uniformly,
+% independently of the estimated values with (typically small) probability
+% $\epsilon$.
+%
+% Agent $j$ will observe a reward, $r_{jt}$, and a new state, $s_{jt+1}$,
+% after taking action $a_{jt}$ at step $t$ when in state $s_{jt}$.  The
+% state-action value, $Q_j(s_{jt},a_{jt})$, is updated according to the
+% maximum value of available actions in state $s_{t+1}$ and becomes
+% \begin{equation}
+% \label{eq:qlearning}
+% Q_j(s_{jt},a_{jt}) + \alpha [r_{jt+1} + \gamma\max_{a} Q_j(s_{jt+1},a_{jt}) -
+% Q_j(s_{jt},a_{jt})]
+% \end{equation}
+% where $\alpha$ and $\gamma$ are the learning rate, $0\leq\alpha\leq1$, and
+% discount factor, $0\leq\gamma\leq1$, respectively.  The learning rate
+% determines the extent to which new rewards will override the effect of older
+% rewards.  The discount factor allows the balance between maximising immediate
+% rewards and future rewards to be set.
+Q-learning is an off-policy TD method that does not estimate the finite
+MDP directly, but iteratively approximates a state-action value
+function which returns the value of taking action $a$ in state $s$ and
+following an \textit{optimal} policy thereafter. The same theorems used in defining the TD error also apply for
+state-action values.
+\begin{equation}
+\label{eq:qlearning}
+Q(s_t,a_t) \leftarrow Q(s_t,a_t) + \alpha \bigl[r_{t+1} + \gamma\max_a
+Q(s_{t+1},a)-Q(s_t,a_t) \bigr]
+\end{equation}
+The method is off-policy since the update function is independent of the policy
+being followed and only requires that all state-action pairs be continually
+updated.
+
+\subsection{Eligibility Traces}
+With the TD methods described above, only the value for the immediately
+preceding state or state-action pair is updated at each time step.  However,
+the prediction $V(s_{t+1})$ also provides information concerning earlier
+predictions and TD methods can be extended to update a set of values at each step.  An eligibility trace $e(s)$ represents how eligible the state $s$ is to receive
+credit or blame for the TD error:
+\begin{equation}
+\delta = r_{t+1} + \gamma V^\pi(s_{t+1}) - V^\pi(s_t)
+\end{equation}
+When extended with eligibility traces TD methods update values for all states
+\begin{equation}
+%V(s) \leftarrow V(s) + \gamma \delta e(s)
+\Delta V_t(s) = \alpha \delta_t e_t(s)
+\end{equation}
+For the current state $e(s) \leftarrow e(s) + 1$ and for all states the
+$e(s) \leftarrow \gamma \lambda e(s)$ where $\lambda$ is the eligibility trace
+attenuated factor from which the extended TD methods TD($\lambda$),
+Q($\lambda$) and Sarsa($\lambda$) derive their names. For $\lambda = 0$ only
+the preceding value is updated is updated, as in the unextended definitions,
+and for $\lambda = 1$ all preceding state-values or state-action values are
+updated equally.
+
+\subsection{Action Selection}
+% TODO: Epsilon-greedy.
+Action selection may be accomplished using a form of the \textit{softmax}
+method \cite{suttonbarto:1998} using the Gibbs, or Boltzmann, distribution to select
+action $k$ for the $(t+1)^{th}$ interaction with probability
+\begin{equation}
+p_{jk}(t+1) = \frac{e^{q_{jk}(t+1)/\tau}}{\sum_{l=0}^K e^{q_{jl}(t+1)/\tau}}
+\end{equation}
+where $\tau$ is the \textit{temperature} parameter.  This parameter may be
+lowered in value over the course of an experiment since high values give all
+actions similar probability and encourage exploration of the action space,
+while low values promote exploitation of past experience.
+
+% \subsubsection{Q($\lambda$)}
+% \label{sec:qlambda}
+% In the Q-learning formulation, described in equation \ref{eq:qlearning}, only
+% the quality associated with the previous state, $s_{jt}$, is updated.  However,
+% the preceding states can also, in general, be said to be associated with the
+% reward $r_{jt+1}$.  Eligibility traces are a mechanism for representing this
+% effect and in algorithms such as Q($\lambda$), they are what the $\lambda$
+% refers to.  The eligibility trace for a state $e(s)$ represents how eligible
+% the state $s$ is to receive credit or blame for the error.  The term ``trace''
+% refers to fact that only recently visited states become eligible.  The
+% eligibility value for the current state is increased while for all other
+% states it is attenuated by a factor $\lambda$.
+%
+% The off-policy nature of Q-learning requires special care to be taken when
+% implementing eligibility traces.  While the algorithm may learn a greedy
+% policy, in which the action with the maximum value would always be taken,
+% typically a policy with some degree of exploration will be followed when
+% choosing actions.  If an exploratory (pseudo-random) step is taken the
+% preceding states can no longer be considered eligible for credit or blame.
+% Setting $\lambda$ to $0$ for non-greedy actions removes much of the benefit of
+% using eligibility traces if exploratory actions are frequent.  A solution to
+% this has been developed, but requires a very complex implementation
+% \cite{peng:1996}.  A na\"ive approach can be taken, where the effect of
+% exploratory actions is ignored, but the results of this are unexplored.
+
+\section{Policy Gradient Methods}
+\label{sec:policygradient}
+% The value-function methods defined in Section \ref{sec:valuebased} typically
+% rely upon discretisation of the sensor and action spaces so the associated
+% values may be stored in tables.  The memory requirements for this restrict the
+% application of these methods to small environments.  Many environments,
+% particularly from real applications, exhibit continuous sensor and/or action
+% spaces and require generalisation techniques to be employed to provide a more
+% compact policy representation.
+%
+% Policy-gradient methods use only the reward signal and search directly in the
+% space of the policy parameters.  The agent's policy function approximator is
+% updated according to the gradient of expected reward with respect to its
+% parameters.
+Value function based methods have been successfully applied with discrete lookup
+table parameterisation to a great many problems.  However, the number of
+discrete states required increases exponentially as the dimensions of the state space
+increase and if all possibly relevant situations are to be covered then these
+methods become subject to Bellman's Curse of Dimensionality
+\cite{bellman:1961}.  Value function based methods can be used in conjunction
+with function approximators, artificial neural networks are popular, to work
+with continuous state and action space.  However, when used with value
+function approximation they have been shown to offer poor convergence and even
+divergence characteristics, even in simple systems \cite{peters:enac}.
+
+These convergence problems have motivated research into policy gradient methods
+which make small incremental changes to the parameters $\theta$ of a policy
+function approximator.  With artificial neural networks the parameters are
+the weights of the network connections.  Policy gradient methods update
+$\theta$ in the direction of the gradient of some policy performance measure
+$Y$ with respect to the parameters
+\begin{equation}
+\theta_{i+1} = \theta_i + \alpha \frac{\partial Y}{\partial \theta_i}
+\end{equation}
+where $\alpha$ is a positive definite step size learning rate.
+
+As well as working with continuous state and actions space, policy gradient
+methods offer strong convergence guarantees, do not require all states to be
+continually updated and although uncertainty in state data can degrade policy
+performance, the techniques need not be altered.
+
+Policy gradient methods are differentiated largely by the techniques used to
+obtain an estimate of the policy gradient $\partial Y / \partial \theta$.
+The most successful real-world robotics results have been yielded using
+Williams' \textsc{Reinforce} likelihood ratio methods \cite{williams:reinforce}
+and natural policy gradient methods such as Natural Actor-Critic
+\cite{peters:enac}.
+
+% \subsubsection{REINFORCE}
+% \label{sec:reinforce}
+% REINFORCE is an associative reinforcement learning method that determines
+% a policy by modifying the parameters of a policy function approximator, rather
+% than approximating a value function \cite{williams:reinforce}.  Commonly,
+% feedforward artificial neural networks are used to represent the policy, where
+% the input is a representation of the state and the output is action selection
+% probabilities.  In learning, a policy gradient approach is taken where the
+% weights of the network are adjusted in the direction of the gradient of
+% expected reinforcement.
+%
+% Defining the network, let $\mathbf{x}^i$ denote the vector of inputs to the
+% $i$th unit and $y_i$ denote output of the unit.  In the input layer of the
+% network the elements $x_j$ of $\mathbf{x}^i$ are normalised sensor values from
+% the environment and in the output layer, or in any hidden layers, they are
+% outputs from the $j$ unit in the preceding layer.  Let $\mathbf{w}^i$ denote
+% the vector of the weights, $w_{ij}$, on the connections to the $i$th unit.  The
+% output of the $i$th unit is dependant on the vector of inputs, $\mathbf{x}^i$,
+% and the associated weights, $\mathbf{w}^i$.
+%
+% For each interaction of the agent with the environment, each parameter $w_{ij}$
+% is incremented by
+% \begin{equation}
+% \label{eq:reinforce}
+% \Delta w_{ij} = \alpha_{ij}(r - b_{ij})\frac{\partial\ln\rho_i}{\partial
+% w_{ij}}
+% \end{equation}
+% where $\alpha_{ij}$ is the \textit{learning factor}, $b_{ij}$ is the
+% \textit{reinforcement baseline} and $\rho_i$ is the performance of the policy
+% (e.g., the average reward per interaction).
+%
+% \subsubsection{ENAC}
+% \label{sec:enac}
+% ToDo: Episodic Natural Actor Critic\cite{peters:enac}.
+
+
+\section{Roth-Erev Method}
+\label{sec:rotherev}
+The reinforcement learning method formulated by Alvin~E.~Roth and Ido~Erev is
+based on empirical results obtained from observing how humans learn decision
+making strategies in games against multiple strategic players
+\cite{roth:games,roth:aer}.  It learns a stateless policy in which each action
+$a$ is associated with a value $q$ for the propensity of its selection.  In
+time period $t$, if agent $j$ performs action $a^\prime$ and receives a reward
+$r_{ja^\prime}(t)$ then the propensity value for action $a$ at time $t+1$ is
+\begin{equation}
+q_{ja}(t+1) =
+\begin{cases}
+(1-\phi)q_{ia}(t) + r_{ja^\prime}(t)(1-\epsilon), & \text{$a = a^\prime$} \\
+(1-\phi)q_{ia}(t) + r_{ja^\prime}(t)(\frac{\epsilon}{A-1}), & \text{$a \ne
+a^\prime$}
+\end{cases}
+\end{equation}
+where $A$ is the total number of feasible actions, $\phi$ is the
+\textit{recency} parameter and $\epsilon$ is the \textit{experimentation} parameter.  The recency (forgetting) parameter
+degrades the propensities for all actions and prevents propensity values from
+going unbounded.  It is intended to represent the tendency for players to forget
+older action choices and to prioritise more recent experience.  The
+experimentation parameter prevents the probability of choosing an action from
+going to zero and encourages exploration of the action space.
+
+Erev and Roth proposed action selection according to a discrete probability
+distribution function, where action $k$ is selected for interaction $t+1$ with
+probability
+\begin{equation}
+\label{eq:re_prob}
+p_{jk}(t+1) = \frac{q_{jk}(t+1)}{\sum_{l=0}^K q_{jl}(t+1)}
+\end{equation}
+Since $\sum_{l=0}^K q_{jl}(t+1)$ increases with $t$, a reward $r_{jk}(t)$ for
+performing action $k$ will have a greater effect on the probability
+$p_{jk}(t+1)$ during early interactions while $t$ is small.  This is intended
+to represent Psychology's Power Law of Practice in which it is qualitatively
+stated that, with practice, learning occurs at a decaying exponential rate and
+that a learning curve will eventually flatten out.
+
+\subsection{Modified Roth-Erev Method}
+\label{sec:variant}
+Two shortcomings of the basic Roth-Erev algorithm have been identified and a
+modified formulation proposed \cite{nicolaisen:2001}.  The two issues are that
+\begin{itemize}
+  \item the values by which propensities are updated can be zero or very small
+  for certain combinations of the experimentation parameter $\epsilon$ and
+  the total number of feasible actions $A$ and
+  \item all propensity values are decreased by the same amount when the reward,
+  $r_{jk^\prime}(t)$ is zero.
+\end{itemize}
+Under the variant algorithm, the propensity for agent $j$ to select action $a$
+for interaction $t+1$ is:
+\begin{equation}
+q_{ja}(t+1) =
+\begin{cases}
+(1-\phi)q_{ia}(t) + r_{ja^\prime}(t)(1-\epsilon), & \text{$a = a^\prime$} \\
+(1-\phi)q_{ia}(t) + q_{ja}(t)(\frac{\epsilon}{A-1}), & \text{$a \ne
+a^\prime$}
+\end{cases}
+\end{equation}
+As with the original Roth-Erev algorithm, the propensity for selection of the
+action that the reward is associated with is adjusted by the experimentation
+parameter.  All other action propensities are adjusted by a small proportion of
+their current value.
+
+\section{Summary}
+The combination of electricity markets and electric power systems presents a
+complex dynamic environment to participants.  Network power flows are
+non-linear functions of the bus voltages and thus one party's generation or
+consumption decisions affect all other parties.  Substantial modifications to
+the design of the UK's electricity trading arrangements have been required
+since the their introduction two decades ago.  Major changes to the UK power
+systems will be required if its ambitious greenhouse gas emission reduction
+commitments are to be met and further modifications will be likely.
+
+The main electricity trading mechanisms can be modelled using well established
+mathematical optimisation formulations.  Robust techniques exist for computing
+solutions to these problems and they provide price data that reflects network
+topology and conditions.
+
+The combination of non-linear optimisation problems and participant behavioural
+models is beyond the capabilities of conventional equilibrium approaches to
+market simulation when analysing large systems.  An alternative is to take a
+``bottom-up'' approach to modelling them and examine the system dynamics that
+result from interactions between goal driven individuals.
+
+Reinforcement learning is an unsupervised machine learning technique that can
+be used to model the dynamic behaviour of these individuals.  Traditional
+methods associated a \textit{value} with each state and the available actions,
+but are limited to realtively small discrete problems.  Methods that search
+directly in the space of the parameters of an action selection policy can
+operate in continuous state and actions space, have good convergence properties
+and have potential for application in electricity market simulation.
