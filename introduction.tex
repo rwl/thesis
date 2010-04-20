@@ -174,17 +174,56 @@ principle contributions made by this thesis in these fields are:
 
 \section{Thesis Outline}
 The presentation of this thesis is organised into 9 chapters.  Chapter
-\ref{ch:background} provides an introduction to electric power supply and the history of wholesale
-electricity markets in the UK.  The research is described in
-the context of related work from the fields of Power Engineering, Machine
-Learning and Computer Science in Chapter \ref{ch:related_work}.  Chapter
-\ref{ch:method} defines the electricity market model and a multi-agent system
-used to simulated electricity trade.  Reinforcement learning methods are
-compared in a series of increasingly complex experiments in Chapter
-\ref{ch:learningtotrade}.  Finally, several ideas for further research using
-the tools developed are given in Chapter \ref{sec:furtherwork} and a summary
-of the conclusions drawn from the research is given in Chapter
-\ref{ch:conclusion}.
+\ref{ch:background} provides background information on electric power supply,
+wholesale electricity markets and reinforcement learning.  It describes how
+optimal power flow problems can be used to model electricity markets and
+defines the reinforcement learning methods used in subsequent
+chapters.
+
+In Chapter \ref{ch:related_work} the research in this thesis is described in
+the context of previous work which is related in terms of application field and
+methodology.  Agent based electricity market simulation publications are
+discussed with particular emphasis on the reinforcement learning methods used.
+Previous applications of policy gradient learning methods in other market
+settings are also reviewed.  Finally, the contribution made by releasing the
+source code developed for this thesis as open source is shown in a reiview of the main
+open source electric power Engineering software tools.
+
+Chapter \ref{ch:method} describes the electric power exchange auction market
+model and the multi-agent system used to simulated electricity trade.  It
+defines the security constrained optimal power flow formulation and describes
+the wrapper that is used to provide a simplified interface to participants.
+The chapter defines how learning agents are associated with a portfolio of
+generators and/or dispatchable loads and how the submission of offers and/or bids and the receipt of rewards is coordinated.  It also shows
+how artificial neural networks, that are used for policy function
+approxiamtion, are structured to handle environment state information and the
+design of look-up tables used with value function based methods.
+
+An initial experiment that aims to establish the relative learning capabilities
+of the different methods is provided in Chapter \ref{ch:learningtotrade}.  Data
+for the six bus test case is given and results are presented using sparkline
+diagrams.
+
+Chapter \ref{ch:exploitation} examines the ability of agents to exploit
+constraints in the power system model using their learning algorithms.  A
+larger 30 bus test case is defined and the choice of generator cost data is
+explained. By tightening constraints, imposing line outages and profiling
+demand, the learning methods compete under dynamic conditions.
+
+In Chapter \ref{sec:furtherwork} ideas for futher work are outlined.  A model
+of the UK transmission system, constructed from data in the National Grid
+seven year statement, is described and it  is explained how the model could be
+used, along with the advances made in this thesis, to study issues pertinent to
+the nation.  The chapter goes on to explain how the option to use security
+constrained optimal power flow, instead of the linearised DC formulations found in the literature,
+provides opportunities for more accurate and revealing research.  The
+need to model interelationships between multiple markets, including gas
+and emissions, is recognised and a method for achieving this using the existing
+model if described.
+
+The primary conclusions of this thesis are summarised in Chapter
+\ref{ch:conclusion}.  Shortcommings are noted and the broaded implications
+are addressed.
 
 % Free market democracy has underpinned the transformation of large western
 % economies in the post war era and continues to be relied upon.  Towards the
