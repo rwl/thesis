@@ -10,6 +10,9 @@
 \usepackage{rotating}
 \usepackage{pdflscape}
 
+%\usepackage{pslatex}
+%\usepackage{palatino}
+
 % \ifpdf
 %   \usepackage[pdftex]{graphicx}
 %   \graphicspath{{./pdf/}{./jpg/}}
@@ -97,20 +100,56 @@ learning method was translated from the Java Reinforcement Learning Module
 \end{acknowledgements}
 
 \begin{abstract}
-Reinforcement learning methods that use connectionist systems for value
-function approximation offer few convergence guarantees, even in simple
-systems.  Table-based value function reinforcement learning methods have been
-used previously for the simulation of electricity markets, but they operate
-only in discrete action and sensor domains.  If learning algorithms are to
-deliver on their potential for application in operational settings then it will
-be necessary for them to operate in continuous domains.  The principle
-contribution of this thesis is the demonstration of policy-gradient
-reinforcement learning algorithms being applied to continuous representations
-of electricity trading problems, showing that superior use of sensor data
-results in improved overall performance when compared with previously applied
-value-function methods.  From this it follows that learning methods which
-search directly in the policy space will be better suited to decision support
-applications and automated electric power trade.
+In electrical power Enginerring, learning algorithms can be used to model
+the strategies of electricity market participants.  The objective of this work
+is to establish if policy gradient reinforcement learning methods can be used
+to produce participant models superior to those using previously applied value
+function based methods.
+
+% Electricity is an unique commodity.  It must be supplied at the presise moment
+% that it is demanded, as there are no practical methods for significant
+% levels of storage in most systems.  There are also few options for controlling
+% the direction in which power flows around networks, so generation or
+% consumption at one point in the system has an effect at all other points.
+Supply of electricity involves technology, money, people, natural resources and the environment.  All of these aspects are changing and the
+discipline must be constantly researched to ensure that systems, such as
+electricity markets, are fit for purpose.
+
+In this thesis electricity markets are modelled using security constrained
+optimal power flow that is formulated as a non-linear optimisation problem and
+solved using a primal-dual interior point method.  Policy gradient reinforcement
+learning methods are used to adjust the parameters of an artificial neural
+networks that are used to approximate the policies market participants follow
+when selecting quantities and prices to offer or bid in the marketplace.
+
+Traditional reinforcement learning methods, that learn a function which returns
+the \textit{value} associated with a particular action, have been previously
+applied in simulated electricity trade, but are largely restricted to discrete
+representations of the market environment.  Policy gradient methods have been
+shown to offer good convergence properties in continuous environments, such as
+in robotic control applications, and avoid many of the problems that mar value
+function based methods.
+
+The benefits of using policy gradient methods in electricity market simulation
+are explored and the results demonstrate their superior trading ability when
+operating with constrained networks.  This work provides some opportunities
+revisit previous research in this field and opens possibilites for application
+of policy gradient methods in decision support and automated energy trade.
+
+% Reinforcement learning methods that use connectionist systems for value
+% function approximation offer few convergence guarantees, even in simple
+% systems.  Table-based value function reinforcement learning methods have been
+% used previously for the simulation of electricity markets, but they operate
+% only in discrete action and sensor domains.  If learning algorithms are to
+% deliver on their potential for application in operational settings then it will
+% be necessary for them to operate in continuous domains.  The principle
+% contribution of this thesis is the demonstration of policy-gradient
+% reinforcement learning algorithms being applied to continuous representations
+% of electricity trading problems, showing that superior use of sensor data
+% results in improved overall performance when compared with previously applied
+% value-function methods.  From this it follows that learning methods which
+% search directly in the policy space will be better suited to decision support
+% applications and automated electric power trade.
 \end{abstract}
 
 \tableofcontents
