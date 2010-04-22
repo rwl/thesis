@@ -64,6 +64,12 @@ for both market models.  Agents with larger portfolios are shown to have a
 significant advantage over smaller generators due to their greater ability to
 gather scarce market price information and distribute it among generators.
 
+The research question addressed is a common one in agent-based electricity
+market simulation and the paper demonstrates the use of a relatively simple
+learning method.  It is an example of how such simulations need not be
+restricted to simple models, but can be scaled to study systems at a national
+level.
+
 In \citeA{bower:2001b} a more sophisticated custom learning method, resembling
 the Roth-Erev method described in Appendix \ref{sec:rotherev}, is applied to a
 more detailed model of the New Electricity Trading Arrangements.  The balancing
@@ -112,7 +118,12 @@ for collusive behaviour.
 The same learning method is applied in \citeA{bunn:03} as part of an
 inquiry by the Competition Commission into whether two specific companies in the
 England and Wales electricity market had enough market power to operate against
-the public interest.
+the public interest.  These papers show that previous research in this field by
+the respected author was perceived to be of sufficient value for the approach
+the be pursued further and a need to improve participant and market models was
+recognised.  Despite the neglection of transmission system constraints, the
+work is an ambitious attempt to extrapolate results out to consquences for a
+national market.
 
 \citeA{visud:99} is another early publication on agent-based simulation of
 electricity markets in which a custom learning method is used.  The simulations
@@ -138,6 +149,10 @@ there is excessive capacity to the point where demand can be met by just two of
 the generators.  The LSF model is analysed using both day-ahead and
 hour-ahead markets with inelastic load.  The hour-ahead simulation is repeated
 with elastic demand response.
+
+The number of if-then rules required to define participant strategies in this
+paper is demonstrated a drawback of implementing custom learning methods that
+is exacerbated when defining multiple strategies.
 
 The first coauthor goes on to compare a similar custom learning method with two
 other algorithms in \citeA{visud:thesis}.  The custom method is designed
@@ -214,12 +229,18 @@ minimising costs while balancing supply and demand and not breaching the line
 capacity.  Prices at each node are calculated to provide a signal to the
 agents that captures both energy and transmission costs.
 
+% TODO: Two bus test system.
+
 Each agent selects its bid according to a calculation of the reward that it
 would expect to receive if all other agents were to bid as they did in the previous stage.  If multiple bids are found to have
 the same value then the least expensive is selected.  In the first period,
 previous bids are assumed to be at marginal cost.  Several case studies are
 examined with different numbers of generators and line capacities, but few
-explicit conclusions are drawn.
+explicit conclusions are drawn.  Financial transmission rights are an
+important issue in certain electricity markets, but the learning algorithm and
+network model are perhaps overly simple.  Agent-based simulation has the
+potential to provide further insight into financial transmission rights and the
+issue is one that ought to be revisited as advances in the field are made.
 
 % \section{Agent-Based Simulation}
 % Relative to the traditional closed-form equilibrium approaches, agent-based
@@ -340,6 +361,11 @@ experimental results show that with temperature parameter adjustment Nash
 equilibrium is achieved and the oscillations associated with $\epsilon$-greedy
 action selection are avoided.
 
+Dynamic modification of the softmax temperature parameter is a technique that
+is employed in several other such publications, but as noted in
+\citeA[pp.~1746]{weidlich:08}, the approach taken in this paper conflicts with
+the need to balance exploration and exploitation.
+
 \subsection{Congestion Management Techniques}
 Having validated the suitability of an agent-based, bottom-up, approach to
 assessing the evolution of market characteristics, the authors applied the same
@@ -375,6 +401,11 @@ assess market power.  The experimental results show that market power
 allocations are different under each of the three constraint management
 schemes.
 
+This is a compelling example of how optimal power flow can be used with
+traditional reinforcement learning methods to address an important research
+question.  The decision not to define environment states is unusual for a
+Q-learning application and the impact of this deserves investigation.
+
 \subsection{Gas-Electricity Market Integration}
 The Q-learning method from \citeA{krause:nash04,krause:nash06} is used to
 analyse strategic behaviour in integrated electricity and gas markets in
@@ -398,6 +429,12 @@ social welfare prices between the models.  However, this research illustrates
 the interest in and complexity associated with modelling relationships between
 markets.  The authors recognise the need for further and more detailed
 simulation in order to improve evaluation of market coupling models.
+
+While this work is of a preliminary nature, it is an important step towards
+achieving greater understanding the interrelationships between gas and
+electricity markets using agent-based simulation.  Further neglect of state
+information in the Q-learning method possibly alludes to the difficulty of
+creating discrete representations of primarly continuous environments.
 
 \subsection{Electricity-Emissions Market Interactions}
 Researchers at the Argonne National Laboratory have published results from a
@@ -429,6 +466,11 @@ that the experimental results can not be generalised.  The authors cite
 further model validation and agent learning method improvements as necessary
 future work.
 
+The complexity of the combined electricity and emissions market model
+illustrates how the search spaces for learning methods grow dramatically as
+models are expanded.  This is a problem that policy gradient learning methods
+seek to address.
+
 \subsection{Tacit Collusion}
 The SA-Q-learning method was previously used in \citeA{tellidou:tacit} by
 researchers from the University of Thessaloniki to study capacity withholding
@@ -449,6 +491,11 @@ generation capacity is split among eight identical generators to increase the
 level of competition. The experimental results show that generators learn to
 withhold capacity and develop tacit collusion strategies to capture
 congestion profits.
+
+This work is similar to earlier research from other institutions and makes only
+a minor contribution.  It suggests that there is potential to accelerate
+advancement in this field through increased collaboration and sharing of
+software source code.
 
 \section{Simulations Applying Roth-Erev}
 Roth and Erev's reinforcement learning method (defined in Appendix
@@ -485,6 +532,12 @@ are forced to bid at marginal cost.  The results are compared with those from
 conclude that the reinforcement learning approach leads to higher market
 efficiency due their adaption according to \textit{individual} profits.
 
+Genetic algorithms were a popular alternative to reinforcement learning methods
+in early agent-based electricity market research.  This paper compares the two
+and illustrates some of the reasons that they have now been largely abandoned.
+The modified Roth-Erev method proposed in this paper is later used in several
+other publications.
+
 Further research from Iowa State University, involving the modified Roth-Erev
 method, has used the AMES wholesale electricity market test bed.  A
 detailed description of AMES is provided in Section \ref{sec:ames} below.  In
@@ -501,6 +554,13 @@ which reported production limits may be less than the true values, the authors
 find that with sufficient capacity reserve there is no evidence to suggest
 potential for inducing higher net earnings through capacity withholding in the
 market design.
+
+AMES is the first agent-based electricity market simulation program to be
+released as open source, but while there are serveral publications on the
+project there are scarce papers involving its application.  This shows how
+niche the field is and the challenge faced if such projects are to benefits
+from the collaboration of communities that leads to the success of open source
+development.
 
 \subsection{Italian Wholesale Electricity Market}
 
@@ -626,10 +686,14 @@ detailed models with larger action domains.
 
 In the same year, the authors collaborated with Jian Yao and Shmuel Oren from
 the University of California to study the dynamics between two settlement
-markets using the modified Roth-Erev method.  The markets are a forward
-contracts market, in which transmission constraints are ignored, and a spot
+markets using the modified Roth-Erev method \cite{viet:06}.  The markets are a
+forward contracts market, in which transmission constraints are ignored, and a spot
 market that is cleared using a DC optimal power flow formulation with line
-flows calculated using a PTDF matrix.
+flows calculated using a PTDF matrix.  The authors state that suppliers utility
+functions are to include aspects of risk aversion in future work.  The use of
+some measure of risk adjusted return to assess performance is commonplace in
+economics research, but is currently lacking from the agent-based electicity
+market simulation literature.
 
 Zonal prices are set in the forward market as weighted averages of nodal prices
 with respect to historical load shares.  Profits are determined using the
@@ -737,6 +801,10 @@ all grid service providers simultaneously use the learning algorithm then the
 process converges to a Nash equilibrium.  The results also showed that
 significant increases in profit were possible by offering both standard and
 premium services.
+
+While this work applies policy gradient methods in a different domain, it shows
+how these methods can be used to set prices in a market and the author
+recognises the potential for the approach to be extended to other domains.
 
 % \subsection{Learning Method Comparisons}
 % \subsection{Heuristic Approaches}
