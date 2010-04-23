@@ -38,22 +38,26 @@ undergrounding systems.
 
 The UK transmission system operates at 400kV and 275kV (also 132kV in
 Scotland), but systems with voltages upto and beyond 1000kV are used in
-larger countries.  For transmission over very long distances or
-undersea, high voltage DC (HVDC) systems have become economically viable in
-recent years.  The ability to
-transform power between voltages and transmit large volumes over long
-distances allows for generation to take place at high capacity power stations,
-which offer economies of scale and lower operating costs. It allows electricity to
+larger countries such as Canada and China.  For transmission over very long
+distances or undersea, high voltage DC (HVDC) systems have become economically
+viable in recent years, largely because the reactive power component of the
+transmitted power is zero, allowing more active power flow for the same
+line/cable diameter.
+
+The ability to transform power between voltages and
+transmit large volumes over long distances allows for generation to take place at high capacity power stations, which offer economies of scale and lower operating costs. It allows electricity to
 be transmitted across country borders and from renewable energy plant such as
-hydro power stations located in remote areas.  A HVDC interconnector between
-Folkstone in the UK and Sangatte in France allows upto 2GW of
-electricity to be imported/exported.  The Moyle HVDC interconnector can export
-upto 500MW from Auchencrosh in Scotland to Ballycronan More in Northern
-Ireland or import upto 80MW.  Further HVDC interconnectors are planned between
-England and the Netherlands and between Wales and The Republic of Ireland.
-Figure \ref{fig:uk_gen} diagrams the existing interconnectors and illustrates
-how the UK's larger power stations are located away from large load centres and
-close to sources of fuel.
+hydro power stations located in remote areas.
+% A HVDC interconnector between
+% Folkstone in the UK and Sangatte in France allows upto 2GW of
+% electricity to be imported/exported.  The Moyle HVDC interconnector can export
+% upto 500MW from Auchencrosh in Scotland to Ballycronan More in Northern
+% Ireland or import upto 80MW.  Further HVDC interconnectors are planned between
+% England and the Netherlands and between Wales and The Republic of Ireland.
+Figure \ref{fig:uk_gen} shows the UK's existing HVDC interconnectors and
+how larger power stations are located away from load centres and close to
+sources of fuel, such as the coal fields in northern England and gas supply
+terminals near Cardiff and London.
 
 %%\input{tikz/uk}
 
@@ -86,30 +90,29 @@ vertically integrated Central Electricity Generating Board (CEGB) and
 gradually introduce competition in generation and retail supply.  Early
 adoption of electricity markets by the UK has lead to the country hosting many
 of the main European power and gas exchanges and the UK boasts a high degree
-of consumer switching, an important factor in any competitive marketplace.  The
-Pool has since been replaced by trading arrangements in which market outcomes
+of consumer switching compared to other European countries, an important factor
+in a competitive marketplace. The Pool has since been replaced by trading arrangements in which market outcomes
 are not centrally determined, but arise largely from bilateral agreements
 between producers and suppliers.
 
 \subsection{The England and Wales Electricity Pool}
 \label{sec:thepool}
-The Electric Lighting Act 1882 began the development of the UK's electricity
-supply industry by allowing persons, companies and local authorities to set up
-supply systems, principally at the time for the purposes of street lighting and
-trams.  Under The Electricity Supply Act 1926 the Central Electricity Board
-started operating the first grid of regional networks interconnected and
-synchronised at 132kV, 50Hz in 1933.  This began operation as a national system
-five years later in 1938 and was nationalised under The Electricity Act 1947
-with the merger of over 600 electricity companies and the creation of the
-British Electricity Authority.  This was dissolved and replaced with the
-CEGB and the Electricity Council under The Electricity Act 1957.  The CEGB was
-responsible for planning the network and generating sufficient electricity until the start of privatisation in 1990.
+The Electric Lighting Act 1882 initiated the development of the UK's
+electricity supply industry by permitting persons, companies and local authorities to set
+up supply systems, principally at the time for the purposes of street lighting and
+trams.  The Central Electricity Board started operating the first grid of
+interconnected regional networks (synchronised at 132kV, 50Hz) in 1933.
+This began operation as a national system five years later and was
+nationalised in 1947.  Over 600 electricity companies were merged in the
+process and the British Electricity Authority was created.  It was later
+dissolved and replaced with the CEGB and the Electricity Council under The
+Electricity Act 1957.  The CEGB was responsible for planning the network and
+generating sufficient electricity until the beginning of privatisation.
 
-The UK electricity supply industry was privatised under Prime Minister
-Margaret Thatcher and The England and Wales Electricity Pool was created in
-March 1990.  Control of the transmission system was transferred from the
-CEGB to The National Grid Company, which was originally owned by twelve
-regional electricity companies and has since become publicly listed.  The
+The UK electricity supply industry was privatised and The England and Wales
+Electricity Pool created in March 1990.  Control of the transmission
+system was transferred from the CEGB to The National Grid Company, which was
+originally owned by twelve regional electricity companies and has since become publicly listed.  The
 Pool was a multilateral contractual arrangement between generators and suppliers and did
 not itself buy or sell electricity.  Competition in generation was introduced
 gradually, by first entitling customers with consumption greater than or equal
@@ -128,29 +131,30 @@ by 10AM on the day before the schedule day.
 
 %\input{tikz/cost_function}
 
-Figure \ref{fig:poolbids} diagrams four of the five price parameters
+Figure \ref{fig:poolbids} graphically depicts four of the five price parameters
 that made up a bid.  A start-up price would also be stated, representing the
 cost of turning on the generator from cold.  The no-load price $c_{noload}$
 represents the cost in pounds of keeping the generator running regardless of output. Three
 incremental prices $c_1$, $c_2$ and $c_3$ specify the cost in \pounds/MWh of
 generation between set-points $p_1$, $p_2$ and $p_3$.
 
-A settlement computer program would calculate an unconstrained schedule
+A settlement algorithm would determine an unconstrained schedule
 (with no account being taken for the physical limitations of the transmission
 system), meeting the forecast demand and requirements for reserve while minimising cost.
 Cheapest bids up to the marginal point would get accepted first and the bid
 price from the marginal generator would generally determine the system marginal
-price for each settlement period.  The system marginal price would determine
-the prices paid by consumers and paid to generators, which would be adjusted
-such that that the costs of transmission are covered by the market and that the
+price for each settlement period.  The system marginal price would form the
+basis of the prices paid by consumers and paid to generators, which would be
+adjusted such that that the costs of transmission are covered by the market and that the
 availability of capacity is encouraged at certain times.
 
 Variations in demand and changes in plant availability got adjusted for by
-the grid operator, producing a constrained schedule.  Generators having
-submitted bids would be instructed to increase or reduce production
-appropriately.  Alternatively, the grid operator could instruct large customers
-with contracts to curtail their demand to do so or instruct generators
-contracted to provide ancillary services to adjust production.
+the grid operator between day close and physical delivery, producing a
+constrained schedule. Generators having submitted bids would be instructed to
+increase or reduce production appropriately.  Alternatively, the grid operator
+could instruct large customers with contracts to curtail their demand to do so
+or instruct generators contracted to provide ancillary services to adjust
+production.
 
 \subsection{British Electricity Transmission and Trading Arrangements}
 %\subsection{New Electricity Trading Arragements}
@@ -160,34 +164,34 @@ Pool and its effectiveness in reducing consumer electricity prices prompted the
 introduction of New Electricity Trading Arrangements (NETA) in March 2001
 \cite{martoccia:2005}.  The aim was to improve efficiency and provide greater
 choice to participants.  Control of the Scottish transmission system was
-handed over to England with the introduction of the nationwide British
-Electricity Transmission and Trading Arrangements (BETTA) in April 2005 under
-The Energy Act 2004.  While The Pool operated a single daily auction and dispatched plant
+included with the introduction of the nationwide British Electricity
+Transmission and Trading Arrangements (BETTA) in April 2005 under The Energy
+Act 2004.  While The Pool operated a single daily auction and dispatched plant
 centrally, under the new arrangements participants became self-dispatching and
 market positions became determined through continuous bilateral trading
 between generators, suppliers, traders and consumers.
 
 The majority of power is traded under the BETTA through long-term contracts
 that are customised to the requirements of each party \cite{kirschen:book}.
-These suit participants responsible for large power plants or those purchasing
-large volumes of power for many customers.  Sizeable amounts of time and
+These instruments suit participants responsible for large power plants or those
+purchasing large volumes of power for many customers.  Sizeable amounts of time and
 effort are required for these long-term contracts to be formed and this results
 in a high associated transaction cost.  However, they reduce risk for large
-players and a degree of flexibility can be provided through option contracts.
+players and may include a degree of flexibility.
 
 Electric power is also traded directly between participants through
 over-the-counter contracts that are usually of a standardised form.  Such contracts
 typically concern smaller volumes of power and have much lower associated
 transaction costs.  Often they are used by participants to refine their market
-position ahead of delivery time.
+position ahead of delivery time \cite{kirschen:book}.
 
 Trading facilities, such as power exchanges, provide a means for participants
 to fine-tune their positions further, through short-term transactions for
 relatively small quantities of energy.  Modern exchanges are computerised and
-accept anonymous offers and bids submitted electronically.  A submitted
-offer/bid will be paired with any outstanding bids/offers in the system with
-compatible price and quantity values.  The details are then displayed for
-traders to observe and to use in subsequent trading.
+accept anonymous offers and bids submitted electronically \cite{kirschen:book}.
+A submitted offer/bid will be paired with any outstanding bids/offers in the
+system with compatible price and quantity values.  The details are then
+displayed for traders to observe and to use in subsequent trading.
 
 All bilateral trading must be completed before ``gate-closure'' which is a
 point in time, before delivery time, that gives the system operator an
@@ -203,16 +207,15 @@ generators/suppliers in order to avoid the price volatility often associated
 with spot markets.
 
 \section{Electricity Market Simulation}
-Previous sections have shown the importance of electricity to
-modern societies and have explained how the majority of
-electricity supply in the UK is trusted to unadministered bilateral trading
-arrangements. Electricity supply involves technology, money, people, natural resources and the environment.  These aspects are all changing
-and the discipline must be constantly researched to ensure that systems such as
-electricity markets are fit for purpose.  The value of electricity to society
+Previous sections have identified the importance of electricity to
+modern societies and explained how the majority of electricity supply in the UK
+is trusted to unadministered bilateral trade. Electricity supply involves
+technology, money, people, natural resources and the environment.  These aspects are all changing and the discipline must be constantly researched to ensure that systems such as electricity markets are fit for purpose.  The value of electricity to society
 means that it is not feasible to experiment with radical changes to trading
-arrangements on real systems.  A practical alternative is to create abstract
-mathematical models with sets of simplifying approximations and assumptions
-and to find analytical solutions by simulating them using computer programs.
+arrangements on real systems.  A practical alternative is to study abstract
+mathematical models (with sets of simplifying approximations and assumptions)
+and find analytical solutions, where possible, by simulating them using
+computer programs.
 
 Game theory is the branch of applied mathematics in which behaviour in
 strategic situations is captured mathematically.  A common approach to doing
@@ -222,6 +225,35 @@ power engineering and variants are widely used to research electricity
 markets.  In this thesis, optimal power flow forms one part of an
 \textit{agent-based} simulation, which is an alternative approach to the
 mathematics of games.
+
+\subsection{Agent-Based Simulation}
+Social systems, such as electricity markets, are inherently complex and involve
+interactions between different types of individuals and between individuals
+and collective entities, such as organisations or groups, the behaviour of which
+is itself the product of individual interactions.  This complexity
+drives classical monolithic equilibrium models to their limits.  The models are
+often highly stylised and limited to small numbers of players with strong
+constraining assumptions made on their behaviour.
+
+Agent-based simulation involves modelling simultaneous operations and
+interactions between adaptive agents and assessing their effect on the system
+as a whole.  Macro-level system properties arise from agent interactions, even
+those with simple behavioural rules, that could not be deduced by simply
+aggregating the agent's properties. % Game of Life
+
+Following \citeA{tesfatsi:handbook}, the objectives of agent-based modelling
+research fall roughly into four strands: empirical, normative, heuristic and
+methodological. The \textit{empirical} objectives are to understand how and why macro-level
+regularities have evolved from micro-level interactions when little or no
+top-down control is present.  Research with the \textit{normative} goals aims
+to relate agent-based models to an ideal standard or optimal design.  The objective being
+to evaluate proposed designs for social policy, institutions or processes in
+their ability to produce socially desirable system performance.  The
+\textit{heuristic} strand aims to generate theories on the fundamental causal
+mechanisms in social systems that can be observed, even in simple systems, when there are
+alternative initial conditions.  This thesis aims to provide
+\textit{methodological} advancement.  Improvements in the tools and methods
+available aid research with the former objectives.
 
 \subsection{Optimal Power Flow}
 \label{sec:opf}
@@ -471,35 +503,6 @@ are required for the constraints to be satisfied.  Nodal marginal prices are
 commonly used in agent-based electricity market simulation to determine the
 revenue for generating units as they reflect the increased value of production in
 constrained areas of the power system.
-
-\subsection{Agent-Based Simulation}
-Social systems, such as electricity markets, are inherently complex and involve
-interactions between different types of individuals and between individuals
-and collective entities, such as organisations or groups, the behaviour of which
-is itself the product of individual interactions.  This complexity
-drives classical monolithic equilibrium models to their limits.  Models are
-often highly stylised and limited to small numbers of players with strong
-constraining assumptions made on their behaviour.
-
-Agent-based simulation involves modelling simultaneous operations and
-interactions between adaptive agents and assessing their effect on the system
-as a whole.  Macro-level system properties arise from agent interactions, even
-those with simple behavioural rules, that could not be deduced by simply
-aggregating the agent's properties. % Game of Life
-
-Following \citeA{tesfatsi:handbook}, the objectives of agent-based modelling
-research fall roughly into four strands: empirical, normative, heuristic and
-methodological. The \textit{empirical} objectives are to understand how and why macro-level
-regularities have evolved from micro-level interactions when little or no
-top-down control is present.  Research with the \textit{normative} goals aims
-to relate agent-based models to an ideal standard or optimal design.  The objective being
-to evaluate proposed designs for social policy, institutions or processes in
-their ability to produce socially desirable system performance.  The
-\textit{heuristic} strand aims to generate theories on the fundamental causal
-mechanisms in social systems that can be observed, even in simple systems, when there are
-alternative initial conditions.  This thesis aims to provide
-\textit{methodological} advancement.  Improvements in the tools and methods
-available aid research with the former objectives.
 
 \section{Reinforcement Learning}
 \label{sec:rl}

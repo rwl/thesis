@@ -22,8 +22,8 @@ Under Professor Derek Bunn, researchers from the London Business School
 performed some the first and most reputable agent-based electricity
 market simulations.  Their research was initially motivated
 by proposals in 1999 to transform the structure of The England and Wales
-Electricity Pool, with the aim of combating the generator market power that was
-widely believed to be resulting in elevated market prices.
+Electricity Pool, with the aim of combating the perceived generator market
+power that was widely believed to be resulting in elevated market prices.
 
 In \citeA{bower:2001} a
 detailed model of electricity trading in England and Wales is used to compare
@@ -57,9 +57,9 @@ on the 1997-1998 peak winter load pattern.  The response of the load schedule
 to high prices is modelled as a reduction of 25MW for every \pounds1/MWh that
 the system marginal price rises above \pounds75/MWh.
 
-750 trading days are simulated for each of the four combinations of a day-ahead
-market and the bilateral trading model under uniform pricing and discriminatory
-settlement.  Prices are found to generally be higher under pay-as-bid pricing
+In total, 750 trading days are simulated for each of the four combinations of a
+day-ahead market and the bilateral trading model under uniform pricing and discriminatory
+settlement.  Prices were found to generally be higher under pay-as-bid pricing
 for both market models.  Agents with larger portfolios are shown to have a
 significant advantage over smaller generators due to their greater ability to
 gather scarce market price information and distribute it among generators.
@@ -71,7 +71,7 @@ restricted to simple models, but can be scaled to study systems at a national
 level.
 
 In \citeA{bower:2001b} a more sophisticated custom learning method, resembling
-the Roth-Erev method described in Appendix \ref{sec:rotherev}, is applied to a
+the Roth-Erev method (described in Section \ref{sec:rotherev}) is applied to a
 more detailed model of the New Electricity Trading Arrangements.  The balancing
 mechanism is modelled as a one-shot market, that follows the contracts market,
 to which increment and decrement bids are submitted.  Active demand side
@@ -154,9 +154,8 @@ The number of if-then rules required to define participant strategies in this
 paper is demonstrated a drawback of implementing custom learning methods that
 is exacerbated when defining multiple strategies.
 
-The first coauthor goes on to compare a similar custom learning method with two
-other algorithms in \citeA{visud:thesis}.  The custom method is designed
-specifically for the power pool model used and employs separate policies for
+A similar custom learning method is compared with two other algorithms in
+\citeA{visud:thesis}.  The custom method is designed specifically for the power pool model used and employs separate policies for
 selecting bid quantities and prices according to a several if-then rules that
 attempt to capture capacity withholding behaviour.  The method is compared
 with algorithms developed in \citeA{auer:03} for application to the $n$-armed
@@ -220,8 +219,8 @@ is the superior.
 \subsection{Financial Transmission Rights}
 In \citeA{ernst:04} a custom learning method is defined and used to study
 generator and supplier profits where financial transmission rights are included
-in the market.  A two node transmission system is defined with one lossless
-transmission line of limited capacity that is endowed to a transmission
+in the electricity market.  A two node transmission system is defined with one
+lossless transmission line of limited capacity that is endowed to a transmission
 operator agent.  Generator agents submit bids for their respective generating
 units and the transmission owner submits a bid representing the cost per MW of
 transmitting power between the nodes.  The market operator clears the bids,
@@ -300,9 +299,9 @@ issue is one that ought to be revisited as advances in the field are made.
 % defined, but none model the AC transmission system.  A common approach is to
 % use categorised market price from the previous period as state
 % information\cite{bakirtzis:psce,xiong:discrim}.
-More recent agent-based simulation of electricity markets has been carried out
+Recent agent-based simulation of electricity markets has been carried out
 with participant's behavioral aspects modelled using the Q-learning methods
-described in Appendix \ref{sec:qlearning}.
+described in Section \ref{sec:qlearning}.
 
 \subsection{Nash Equilibrium Convergence}
 The most prominent work in which Q-learning is applied was conducted
@@ -321,9 +320,8 @@ functions
 C_{g,i}(P_{g,i}) = b_{g,i} + s_{g,i}P_{g,i}
 \end{equation}
 are defined for each generator $i$ where $P_{g,i}$ is the active power output,
-$s_{g,i}$ is the slope of the cost function and $b_{g,i}$ is the cost when
-$P_{g,i} = 0$.  Suppliers are given the option to markup their bids to the
-market not by increasing $s_{g,i}$, but increasing $b_{g,i}$ by either 0,
+$s_{g,i}$ is the slope of the cost function and $b_{g,i}$ is the intercept.
+Suppliers are given the option to markup their bids to the market not by increasing $s_{g,i}$, but increasing $b_{g,i}$ by either 0,
 10, 20 or 30\%.
 %A price cap of \$60/MW is set, but may not be exceeded by any of the
 %available markups.
@@ -334,8 +332,8 @@ deviate from, as it would result in a decrease in expected reward. Experiments
 are conducted in which there is a single Nash equilibrium and where there
 are two Nash equilibria.
 
-An $\epsilon$-greedy strategy is applied for action selection and a
-\textit{stateless} action value function is updated at each time step $t$
+An $\epsilon$-greedy strategy \cite{suttonbarto:1998} is applied for action
+selection and a \textit{stateless} action value function is updated at each time step $t$
 according to
 \begin{equation}
 Q(a_t) \leftarrow Q(a_t) + \alpha(r_{t+1} - Q(a_t))
@@ -391,7 +389,7 @@ As an alternative to the conventional DC optimal power flow formulation, line
 power flows computation is done using a power transfer distribution
 factor (PTDF) matrix.  The $(i,j)^{th}$ element of the PTDF matrix corresponds
 to the change in active power flow on line $j$ given an additional injection of
-1MW at the slack bus and corresponding withdrawal of 1MW at node $i$.
+1MW at the slack bus and corresponding withdrawal of 1MW at node $i$ [ref].
 
 The congestion management schemes get evaluated under perfect competition,
 where suppliers bid at marginal cost, and under oligopolistic competition, in
@@ -438,14 +436,14 @@ creating discrete representations of primarly continuous environments.
 
 \subsection{Electricity-Emissions Market Interactions}
 Researchers at the Argonne National Laboratory have published results from a
-preliminary study of interactions between \textit{emission} and electricity
+preliminary study of interactions between \textit{emissions} and electricity
 markets \cite{wang:09}.  A cap-and-trade system for emissions is modelled where
 generator companies are allocated with $\mbox{CO}_2$ allowances that may
 subsequently be traded.  Generator companies are assumed to have negligible
 influence on market clearing prices in the emissions market and allowance
 prices from the European Energy Exchange were used.  In the electricity market,
-an oligopoly is assumed and bids are cleared using a DC optimal power flow
-formulation.
+an oligopoly structure is assumed and bids are cleared using a DC optimal power
+flow formulation.
 
 To improve selection of the $\epsilon$ parameter for exploratory
 action selection, a simulated annealing (SA) Q-learning method based on the
@@ -498,7 +496,7 @@ advancement in this field through increased collaboration and sharing of
 software source code.
 
 \section{Simulations Applying Roth-Erev}
-Roth and Erev's reinforcement learning method (defined in Appendix
+Roth and Erev's reinforcement learning method (defined in Section
 \ref{sec:rotherev}) has received considerable attention from the
 agent-based electricity market simulation community.
 
@@ -512,7 +510,7 @@ To model the power system, each trader is assigned values of available
 transmission capability (ATC) with respect to each of the other traders.
 Offers from buyers and sellers are matched on a merit order basis, with quantities restricted by
 ATC values.  Two issues with the original Roth-Erev method are observed and
-the modified version defined in Appendix \ref{sec:variant} is proposed.
+the modified version defined in Section \ref{sec:variant} is proposed.
 
 A maximum markup (markdown) of \$40/MWh is specified for each seller (buyer).
 Traders are not permitted to make negative profits and the feasible price range
@@ -597,16 +595,16 @@ within the same firm, but participating in different markets, is varied
 systematically and profit differences are analysed.
 
 An two-tier model involves firms with two associated agents
-whose rewards $r^1$ and $r^2$ are initially independent.  A ``reward
+whose rewards $r_1$ and $r_2$ are initially independent.  A ``reward
 independence'' parameter $\alpha$ is used to control the fraction of profit
 from one market that is used in rewarding the agent in the other market.
 The total rewards are
 \begin{equation}
-R^1(t) = (1-\alpha)r^1(t) + \alpha r^2(t)
+R_1(t) = (1-\alpha)r_1(t) + \alpha r_2(t)
 \end{equation}
 and
 \begin{equation}
-R^2(t) = (1-\alpha)r^2(t) + \alpha r^1(t).
+R_2(t) = (1-\alpha)r_2(t) + \alpha r_1(t).
 \end{equation}
 Each action $a$ is a single price bid between zero and the clearing price from
 the preceding market.  The Roth-Erev method is modified such that similar
@@ -614,8 +612,8 @@ actions, $a-1$ and $a+1$, are reinforced also.  For each agent $i$, the action
 selection propensities in auction round $t$ are
 \begin{equation}
 p^i_a(t) = \begin{cases}
-(1-\gamma)p^i_a(t-1) + R^i(t)& \text{if $s=k$}\\
-(1-\gamma)p^i_a(t-1) + (1-\delta)R^i(t)& \text{if $s=k-1$ or $s=k+1$}\\
+(1-\gamma)p^i_a(t-1) + R_i(t)& \text{if $s=k$}\\
+(1-\gamma)p^i_a(t-1) + (1-\delta)R_i(t)& \text{if $s=k-1$ or $s=k+1$}\\
 (1-\gamma)p^i_a(t-1)& \text{if $s\neq k-1$, $s\neq k$ or $s\neq k+1$}
 \end{cases}
 \end{equation}
@@ -710,8 +708,8 @@ The authors note that risk aversion is to be included in suppliers utility
 functions in future work.
 
 \section{Policy Gradient Reinforcement Learning}
-The policy gradient reinforcement learning methods defined in Appendix
-\ref{sec:policygradient} have been successfully applied in both laboratory and
+Policy gradient reinforcement learning methods, defined in Section
+\ref{sec:policygradient}, have been successfully applied in both laboratory and
 operational settings \cite{barto:policy,shaal:robots,peshkin:routing}.  This
 section reviews the \textit{market} related applications of these methods.
 
@@ -788,7 +786,7 @@ defined by the current expected delays in the standard and premium service
 classes and by $n_k \tau_k$ -- the product of the number of CPUs requested and
 the job execution time.  The reward $r(s,a)$ for action $a$ in state $s$ is the
 total price paid for the job.  The policy gradient method employed is a
-modified version of Williams' REINFORCE where
+modified version of Williams' REINFORCE \cite{williams:reinforce} where
 % TODO: Validate against Chapter 2.
 \begin{equation}
 Q(s_t,a_t) = \sum_{t=1}^T r(s_t,a_t) - \overline{r}_t

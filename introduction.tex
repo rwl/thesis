@@ -1,8 +1,8 @@
 \chapter{Introduction}
-This thesis presents a comparison of algorithms which learn to trade electric
-power.  In this chapter the motivation for electricity market
-research is explained, the problem that has been considered is defined
-and the principle research contributions are stated.
+This thesis is a comparison of algorithms which learn to trade power.  In this
+chapter the motivation for research into the trade of electric power is
+explained, the problem under consideration is defined and the principle research
+contributions are stated.
 % A reading guide and
 % outline of the following chapters is also provided.
 
@@ -22,11 +22,12 @@ population is currently 6.7~billion and forecast to pass 9~billion by the year 2
 Electricity production currently demands over $1/3$ of the annual primary
 energy extracted. As people endeavour to improve their quality of life,
 finite primary energy fuel resources are becoming increasingly scarce and
-markets are a proven economic device for efficient allocation of scarce
-resources.
+market mechanisms (e.g. auctions), where the final allocation is based upon the
+claimants' willingness to pay for the good, provide a device for efficient
+allocation of resources in short supply.
 
-Commercialisation of large electricity supply industries began just two
-decades ago. The inability to store electricity, once generated, in a
+Commercialisation of large electricity supply industries began two
+decades ago in the UK. The inability to store electricity, once generated, in a
 commercially viable quantity prevents trade as a conventional commodity.
 Trading mechanisms must allow shortfalls in electric energy to be purchased at
 short notice from quickly dispatched generators.  Numerous market structures
@@ -37,38 +38,55 @@ lead to market power abuse and elevated market prices.
 % Electricity market designs are particularly
 % complicated due to the need to manage complex dynamic constraints imposed by
 % electric power systems.
+The value of electricity to society
+means that it is not feasible to experiment with radical changes to trading
+arrangements on real systems.  A practical alternative is to study abstract
+mathematical models (with sets of simplifying approximations and assumptions)
+and find analytical solutions, where possible, by simulating them using
+computer programs.  Competition is fundamental to markets, but accurate
+participant strategy models are difficult to obtain.  Reinforcement
+learning methods can be used to represent adaptive behaviour in competing
+players and have been shown to be capable of learning highly complex
+strategies \cite{tesauro:gammon}.
 
 \section{Problem Statement}% and Hypothesis}%/Aims \& Objectives}
 Individuals participating in an electricity market, be they representing a
-generating company, load serving entity or traders, make use of
-multi-dimensional data that mostly continuous in nature.  Certain data, such as
-demand forecasts, exhibits a degree of uncertainty and other market
+generating company, load serving entity or a firm of traders, make use of
+multi-dimensional data that is mostly continuous in nature.  Certain data, such
+as demand forecasts, exhibits a degree of uncertainty and other market
 information, such as competitor's bids, is hidden.
 
-Value-function based reinforcement learning methods (defined in Appendix
-\ref{sec:valuebased}) when used with look-up tables are restricted by
-Bellman's Curse of Dimensionality \cite{bellman:1961} and can not be applied
-to complex problems with high-dimensional state and actions space.  When used
-with value function approximation systems, these methods have been shown to
-offer few convergence guarantees in simple problems
+Traditional reinforcement learning methods accociate a value with each
+available action in a given state. (A more detailed definition is given in
+Section \ref{sec:valuebased}.)  When used with look-up tables they are
+restricted by Bellman's Curse of Dimensionality \cite{bellman:1961} and can
+not be applied to complex problems with high-dimensional state and actions
+space.  When used with function approximation techniques (e.g.~artificial
+neural networks) to allow operation in continuous environments, these methods
+have been shown to have poor convergence properties, even in simple problems
 \cite{gordon:95,baird:95,tsitsiklis:94}.
 
-Policy gradient reinforcement learning methods (defined in Appendix
-\ref{sec:policygradient}) do not suffer from many of the problems that
+Policy gradient reinforcement learning methods do not attempt to
+approximate a value function, but use function approximation techiniques to
+represent a policy for seleting actions and search directly in the space of
+its parameters.  (More detail policy gradient methods is provided in Section
+\ref{sec:policygradient}.)  They do not suffer from many of the problems that
 mar value-function based methods in high-dimensional domains.  They have
 strong convergence properties, do not require that all states be continuously
-visited and work with state and action spaces that are continuous, discrete
-or mixed.  Policy performance may be degraded by uncertainty in state data,
-but the learning methods need not be altered.  They have been successfully
-applied in many operational settings
+visited and work with state and action spaces that are continuous, discrete or
+mixed.  Policy performance may be degraded by uncertainty in state data, but
+the learning methods need not be altered.  They have been successfully applied
+in many operational settings
 \cite{barto:policy,shaal:robots,moody:direct,peshkin:routing}.
 
-It is proposed that agents which learn using policy gradient methods may
-outperform those using value function based methods in simulated
-competitive electricity trade.  It is proposed that policy gradient methods may
-cope better with non-stationary power system conditions, achieving greater
-profitability and better exploit power system constraints to their financial
-benefit.
+It is proposed in this thesis that agents which learn using policy gradient
+methods may outperform those using value function based methods in simulated
+competitive electricity trade.  It is further proposed that policy gradient
+methods may operate better under dynamic electric power system conditions,
+achieving greater profit by exploiting constraints to their financial benefit.
+This thesis will use electricity market simulation techniques to compare value
+function based and policy gradient learning methods and explore these
+proposals.
 
 % Methods including learning classifier systems, genetic algorithms and
 % reinforcement learning have been successfully used to research the
@@ -116,14 +134,15 @@ Electric Power Engineering, Artificial Intelligence and Economics.  The
 principle contributions made by this thesis in these fields are:
 
 \begin{itemize}
-  \item The application of policy gradient reinforcement learning methods to
-  simulated energy trade.
-  \item The demonstration that policy gradient reinforcement learning
+  \item The first application of policy gradient reinforcement learning methods
+  in simulated energy trade.
+  \item Simulation results that show how policy gradient reinforcement learning
   methods converge more slowly than value function based methods when learning
   simple power trade policies.
-  \item The demonstration that agents using policy gradient reinforcement
-  learning methods achieve greater profitability than those using value
-  function methods when when competing to supply electric power on equal terms.
+  \item Simulation results that show how agents using policy gradient
+  reinforcement learning methods achieve greater profitability than those
+  using value function methods when when competing to supply electric power on
+  equal terms.
   \item An implementation of a multi-agent system for electricity market
   simulation with discrete and continuous sensor and action space
   representations.
