@@ -1,5 +1,95 @@
 \chapter{Further Work}
 \label{sec:furtherwork}
+With the knowledge that certain reinforcement learning methods can operate
+successfully in continuous representations of electric power Engineering
+problems, the opportunity arises to revisit certain topics to which discrete
+methods have been previously applied.  Two of the most important issues that
+electric power Engineers face and that modelling and simulation can help
+address are:
+\begin{itemize}
+  \item System optimisation, close to real-time, such that sufficient reserve
+  is allocated to ensure acceptable system security while costs are minimised
+  according to the outcome of the electricity markets.
+  \item Investment planning, both by system operators needing to expand
+  transmission capacity and energy companies wanting to develop new generating
+  plant.
+\end{itemize}
+This chapter explores how the advances made in this thesis can be exploited to
+enhance studies that attempt to tackle these problems and explains how data
+from the National Grid could be used to apply the techniques in simulations of
+the UK electric power system.
+
+\section{Learning to Optimise Power Flow}
+As explained in Section \ref{sec:opf}, the objective of the classical optimal
+power flow problem is to find generator set-points that allow all system and
+plant constraints to be satisfied while the total system cost is minimised.
+Interior point methods are possibly the most robust of the techniques currently
+available for finding solutions to this problem, but it may also be
+formulated as a continuous reinforcement learning task that can be learnt by a
+system operator agent.  To illustrate the concept, this section presents a
+preliminary formulation of such a task and demonstrates how a system operator
+agent can use policy gradient reinforcement learning methods to learn to
+optimise power flow.
+
+\subsection{System Operator Task and Environment}
+The state of the system operator agent's environment is defined simply as a
+demand forecast.  That is, the environment returns a vector of active power
+demand at all system buses.  The initial demand is assumed to be peak and is
+used to normalise the values of the sensor vector to be between $-1$ and $+1$
+before input the the mutil-layer perceptron used for policy function
+approximation.  Simulations are divided into episodes (days) over which the
+demand at each bus follows the profile shown in Figure X.
+
+The agent's action and the output of the policy function approximator is a
+vector of the active power set-points of all generators, excluding the
+generator at the system slack bus.  The set-points are bound by the generator's minimum
+and maximum rated capacity. These bounds are used to denormalise the output
+values from the final Sigmoid layer (that are between $-1$ and $+1$) to give
+valid set-point values.
+
+The sequence diagram in Figure Y indicates the point at which an AC power flow
+problem for the case, with the new set-points applied, is solved using Newton's
+method \cite{tinney:67}.  The power flow solution determines the complex
+voltage at each bus, the branch power flows and losses, the reactive power
+output of the generators and the active power output of the slack bus
+generator.
+
+The reward is defined as the negative of the sum of all generator costs.  The
+negative of the costs is used since the learning methods attempt to maximise
+reward and the objective is to minimise cost.  The power flow solution does not
+satisfy system constraints, such as voltage limits or generators reactive power
+limits and penalty costs must be applied to the reward so the agent learns to
+obey them.
+
+\section{Slack Bus Generator Control}
+This initial proof of concept attempts only to enforce the set-point limit on
+the slack bus generator.  The reward is updated according to
+\begin{equation}
+r =
+\begin{cases}
+r + \phi (P_{slack} - P_{max}), & \text{$P_{slack} > P_{max}$} \\
+r, & \text{otherwise}
+\end{cases}
+\end{equation}
+The six bus network model described in Chapter \ref{ch:learningtotrade} is used
+with the coefficients of the generator's quadratic cost functions given in Table X.  Learning is conducted in batch
+mode, with 7 episodes conducted before the parameters of the policy are
+updated.  The system operator agent uses the ENAC learning method with RProp
+gradient descent and an initial value of $\sigma = 50$, which is reduced after
+each simulated week according to $\sigma_{i+1} = 0.5\sigma_i - 2$.
+
+Figure X shows the average output of each generator over 52 simulated weeks of
+control. Plotted in Figure Y is the average total system cost for each week along with
+theoretically optimal values as calcualted by DC and AC optimal power flow
+solvers.  The results show that, with suitable initial experimentation, the
+agent learns to dispatch the generators in the most economically efficient
+manner while controlling the slack bus generators to valid output levels.  The
+average total system cost converges to slightly less that of the optimal
+solution due to the disregard for other constraints, particularly the
+branch flow constraint between buses 2 and 4 which is binding at times of peak
+load.
+
+\section{Learning to Plan Investment}
 
 \section{UK Transmission System}
 Some of the more ambitious agent-based electricity market simulations have used
