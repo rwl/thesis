@@ -1,12 +1,12 @@
 \chapter{Modelling Power Trade}
 \label{ch:method}
-The present chapter defines the model used to simulate electric power trade.
-The first section explains how an optimal power flow formulation is used to
-represent a generic power exchange auction market and the interface that
-participants use.  The second section defines how market
-participants are modelled as agents that use reinforcement learning algorithms
-to adjust their bidding behaviour and how their interactions with the auction
-interface are coordinated in a multi-agent system.
+The present chapter defines the model used in this thesis to simulate electric
+power trade. The first section describes how optimal power flow solutions
+are used to clear offers and bids submitted to a power exchange auction model.
+The second section defines how market participants are modelled as agents that
+use reinforcement learning algorithms to adjust their bidding behaviour.
+The interaction of market participants with the auction is coordinated by a
+multi-agent system that can be configured in many ways.
 
 % Societies reliance on secure energy supplies and the high volumes of
 % electricity typically consumed render it impractical to experiment with
@@ -73,147 +73,166 @@ interface are coordinated in a multi-agent system.
 % competitive decision making process.
 
 \section{Electricity Market Model}
-Computation of the generator dispatch points is achieved using a bespoke
-implementation of the optimal power flow formulation from
-\matpower \cite[\S5]{pserc:mp_manual}.  Figure \ref{fig:cls_pylon} shows a
-class diagram in the Unified Modelling Language (UML) for the power system
-model used.  The DC optimal power flow formulation is used in the initial experiments
-as it is less computationally expensive.  While the more accurate AC optimal
-power flow formulation is required for the more complex experiments that test
-agents in their ability to exploit constraints in the power system models.
-The trade-offs between using DC models over AC have been examined in
-\citeA{overbye:acdc} and DC models have been found reasonable for nodal
-marginal price calculation.  Piecewise linear generator cost functions are
-modelled using the constrained cost variable method \cite{zimmerman:ccv}.  The
-standard extensions to the \matpower optimal power flow formulation that are
-not used are:
-\begin{itemize}
-  \item User-defined cost functions, and
-  \item Generator P-Q capability curves.
-\end{itemize}
+A double-sided power exchange auction market is used to compare the
+algorithms trading abilities.  To determine the dispatch of generators bespoke
+implementations of the optimal power flow formulations from \matpower
+\cite[\S5]{pserc:mp_manual} are used.  A class diagram in the Unified Modelling
+Language (UML) for the underlying power system model is shown in Figure
+\ref{fig:cls_pylon}.  Both the DC and AC formulations are utilised. The
+trade-offs between DC and AC models have been examined in \citeA{overbye:acdc}
+and DC models have been found suitable for most nodal marginal price
+calculations.  They are considerably less computationally expensive and are
+used in simple initial experiments.  The more accurate AC optimal power flow
+formulation is required for the more challenging experiments that test agents
+in their ability to exploit constraints in the power system models. As
+in \matpower, piecewise linear generator cost functions are modelled using the
+constrained cost variable method \cite{zimmerman:ccv}.  Unlike \matpower, the
+formulations are not extended to facilitate user-defined cost functions or
+observe generator P-Q capability curves.
 
 %\input{tikz/cls_pylon}
 
-The standard optimal power flow formulation constrains generator set-points
+\subsection{Unit De-commitment}
+The optimal power flow formulation used constrains generator set-points
 between upper and lower power limits.  Expensive generators can not be
 completely shutdown, even if doing so would result in a lower total system
-cost.  Algorithm~\ref{alg:ud} defines the unit de-commitment algorithm from
-\citeA[p.57]{pserc:mp_manual} and it is used to compute a least cost commitment
-and dispatch by solving repeated optimal power flow problems with different
-combinations of generating units that are at their minimum active power limit
-deactivated.  The lowest cost solution is returned when no further improvement
-can be made and no candidate generators remain. \begin{algorithm}[H]
+cost.  The online status of generators could be made an optimisation variable,
+but being boolean the resulting programs would become mixed-integer and
+considerably more difficult to solve, particularly in the case of the
+non-linear AC formulation.
+
+To compute a least cost commitment and dispatch the unit de-commitment algorithm from
+\citeA[p.57]{pserc:mp_manual} is used.  Algorithm~\ref{alg:ud} shows the
+process of shutting down the most expensive units until the minimum generation
+capacity is less than the total load capacity and then solving repeated
+optimal power flow problems with candidate generating units that are at their
+minimum active power limit deactivated.  The lowest cost solution is returned
+when no further improvement can be made and no candidate generators remain.
+\begin{algorithm}%[H]
 \caption{Unit de-commitment}
 \label{alg:ud}
 \begin{algorithmic}[1]
-\STATE $\text{initialise}~N \leftarrow 0$
-\STATE $\text{solve initial OPF}$
-\STATE $L_{tot} \leftarrow \text{total load capacity}$
-\WHILE{$\text{total min gen.\ capacity} > L_{tot}$}
-	\STATE $N \leftarrow N + 1$
+%\STATE $\text{initialise}~N \leftarrow 0$
+%\STATE $P_{d} \leftarrow \text{total load capacity}$
+%\STATE $P_{g}^{min} \leftarrow \text{total min.\ gen.\ capacity}$
+\WHILE{$\sum P_{g}^{min} > \sum P_{d}$}
+%	\STATE $N \leftarrow N + 1$
+	\STATE shutdown most expensive unit
 \ENDWHILE
 
+%\STATE $\text{solve initial OPF}$
+\STATE $f \leftarrow \text{initial total system cost}$
+
 \REPEAT
-	\FOR{c in candidates}
-		\STATE $\text{solve OPF}$
+	\STATE $c \leftarrow \text{generators at } P_{min}$
+	\FOR{$g$ in $c$}
+		\STATE $d \leftarrow \text{true}$
+		\STATE shutdown $g$
+		\STATE $f^\prime \leftarrow \text{new total system cost}$
+		\IF{$f^\prime < f$}
+			\STATE $f \leftarrow f^\prime$
+			\STATE $g_{c} \leftarrow g$
+			\STATE $d \leftarrow \text{false}$
+		\ENDIF
+		\STATE startup $g$
 	\ENDFOR
-\UNTIL{$\text{done} = \text{True}$}
+	\STATE shutdown $g_c$
+\UNTIL{$d = \text{true}$}
 \end{algorithmic}
 \end{algorithm}
 
-To present agents participating in the market with an interface more
-representative of a real power exchange market, an auction clearing
-mechanism is implemented \cite[p.92]{pserc:mp_manual}.  The interface
-converts offers to sell and bids to buy blocks of power in MW, with prices
-specified in \$/MWh, into corresponding generator capacities and piecewise
-linear cost functions.  The solution of the unit de-commitment optimal power
-flow algorithm is used to clear the offer/bid quantities and prices and the
-cleared offers/bids are used to determine revenue values from which each
-agent's earnings/losses are derived.
+\subsection{Power Exchange}
+Agents do not directly adjust the cost functions of the
+generators in their portfolio, but submit offers to sell and/or bids to buy
+blocks of active or reactive power to a power exchange auction market
+\cite[p.92]{pserc:mp_manual}, with prices specified in \$/MWh or  \$/MVArh.
+The offers/bids are converted into corresponding generator/dispatchable load
+capacities and piecewise linear cost functions.  The newly configured
+units form a unit de-commitment optimal power flow problem, the solution
+of which holds the dispatch points and nodal prices which are used to
+determine the proportion of each offer/bid block that should be cleared and
+the associated price for each.  Pricing may be uniform, where each is cleared
+at the market clearing price, or discriminatory, where the cleared price is
+that of the original offer/bid.  The cleared offers/bids are returned to the
+agents and used to determine the revenue from which each agent's earnings or
+losses are derived.
 
-The interface allows maximum offer price limits and minimum bids price limits
-to be set.  The clearing process the market begins by withholding offers/bids
-outwith these limits, along with those specifying non-positive quantities.
-Valid offers/bids for each generator are then sorted into
-non-decreasing/non-increasing order and used to form new piecewise-linear cost
-functions and adjust the generator's active power limits.
+Maximum offer price limits and minimum bids price limits can be set.  The
+clearing process the market begins by withholding offers/bids outwith these
+limits, along with those specifying non-positive quantities. Valid offers/bids
+for each generator are then sorted into non-decreasing/non-increasing order
+and used to form the new piecewise-linear cost functions and generator power
+limits.
 % TODO: Provide an example.
-
-The dispatch points and nodal prices from solving the unit de-commitment
-optimal power flow with the newly configured generators as input are used in
-to determine the proportion of each offer/bid block that should be
-cleared and the associated price for each.  Pricing may be uniform or
-discriminatory (pay-as-bid).
 
 \section{Multi-Agent System}
 \label{sec:mas}
-Participants are modelled as agents that use reinforcement learning algorithms
-to adjust their bidding behaviour and their interaction with the auction
-interface is coordinated by a multi-agent system.  Agent's do not interact
-directly with their environment, but are associated with a particular task
-that defines the agent's reward and hence the agent's purpose.  This section
-defines the agent's environment, their tasks and the design of connectionist
-systems and tables used to represent their action selection policies.  The
-process by which the policies are modified by the agent's learning algorithm is
-explained and the sequence of interactions within the multi-agent system is
-illustrated.
+Market participants are modelled using software agents from PyBrain
+\cite{schaul:2010} which use reinforcement learning algorithms to adjust their
+behaviour.  Their interaction with the market is coordinated in multi-agent
+experiments, the structure of which is derived from PyBrain's single player
+designs.  The agent's do not interact directly with their environment, but are
+associated with a particular task that defines the agent's reward and hence
+gives it a purpose.  This section defines the agent's environment, their
+task and the design of the artificial neural networks and the tables used in
+determining their action selection policies.  The process by which the policies
+are modified by the agent's learning algorithm is explained and the sequence
+of interactions within the multi-agent system is illustrated.
 
 \subsection{Environment}
-Each generator/dispatchable load in the power system model (See Figure
-\ref{fig:cls_pylon}, above) is associated with an agent\footnote{Management of
-a portfolio of generators is also supported by the architecture used, but this
-feature is not exploited.} via the agent's environment.  Figure
-\ref{fig:cls_pyreto} diagrams the class relationship between an agent's
-environment and the generator model along with the association with an instance
-of the market with allows submission of offers/bids by the agent. Two main
-operations are supported by an agent's environment.
+In each experiment, agents are endowed with a portfolio of one or more
+generators from the electric power system model (See Figure
+\ref{fig:cls_pylon}). Figure \ref{fig:cls_pyreto} illustrates the association
+between an agent's environment and the generator model along with the
+association with an instance of the market for the submission of offers/bids by
+the agent. The two operations that an environment is responsible for
+are: returning a vector representation of the current state and accepting an
+action vector which transforms the environment into a new state.
 
 %\input{tikz/cls_pyreto}
 
-For a power system with $n_b$ buses, $n_l$ branches and $n_g$ generators, the
-\texttt{getSensors} method returns a $n_s \times 1$ vector of sensor values
-$s^i_e$ for generator $i$ where $n_s = 2n_b + 2n_l + 3n_g$.  $s^i_g$ represents
-the visible state of the environment for the agent associated with generator
-$i$.  $s^i_e$ is composed of sensor values for all buses, branches and
-generators.
-\begin{equation}
-s^i_{e,l} =
-\begin{bmatrix}
-P_f\\
-Q_f\\
-P_t\\
-Q_t\\
-\mu_{S_f}\\
-\mu_{S_t}
-\end{bmatrix}, \quad
-s^i_{e,b} =
-\begin{bmatrix}
-V_m\\
-V_a\\
-\lambda_P\\
-\lambda_Q\\
-\mu_{v_{min}}\\
-\mu_{v_{max}}
-\end{bmatrix}, \quad
-s^i_{e,g} =
-\begin{bmatrix}
-P_g\\
-\mu_{p_{min}}\\
-\mu_{p_{max}}\\
-\mu_{q_{min}}\\
-\mu_{q_{max}}
-\end{bmatrix}\ \quad
-s^i_e =
-\begin{bmatrix}
-s^i_{e,b}\\
-s^i_{e,b}\\
-s^i_{e,g}
-\end{bmatrix}
-\end{equation}
-Not all of the values are used by each agent and they are filtered according
-to the agent's task.
+For a power system with $n_b$ buses and $n_l$ branches, the visible state of
+the environment is a length $n_s$ vector where $n_s = 2n_b + 2n_l$.  $s^i_g$
+represents the  for the agent associated with generator $i$.
+% $s^i_e$ is composed of sensor values for all buses, branches and generators.
+% \begin{equation}
+% s^i_{e,l} =
+% \begin{bmatrix}
+% P_f\\
+% Q_f\\
+% P_t\\
+% Q_t\\
+% \mu_{S_f}\\
+% \mu_{S_t}
+% \end{bmatrix}, \quad
+% s^i_{e,b} =
+% \begin{bmatrix}
+% V_m\\
+% V_a\\
+% \lambda_P\\
+% \lambda_Q\\
+% \mu_{v_{min}}\\
+% \mu_{v_{max}}
+% \end{bmatrix}, \quad
+% s^i_{e,g} =
+% \begin{bmatrix}
+% P_g\\
+% \mu_{p_{min}}\\
+% \mu_{p_{max}}\\
+% \mu_{q_{min}}\\
+% \mu_{q_{max}}
+% \end{bmatrix}\ \quad
+% s^i_e =
+% \begin{bmatrix}
+% s^i_{e,b}\\
+% s^i_{e,b}\\
+% s^i_{e,g}
+% \end{bmatrix}
+% \end{equation}
+% Not all of the values are used by each agent and they are filtered according
+% to the agent's task.
 
-The \texttt{performAction} method takes $n_a \times 1$ vector of action values
+The environment accepts a $n_a$ length vector of action values
 $a_e$ if $s_{bid} = 0$, otherwise a $2n_a \times 1$ vector.  If $s_{bid} = 0$,
 the $i$-th element of $a_e$ is the offered/bid price in \$/MWh, where
 $i = 1,2,\dotsc n_{in}$.  If $s_{bid} = 1$, the $j$-th element of $a_e$ is the
@@ -224,40 +243,55 @@ market.  If $s_{bid} = 0$, then $qty = p_{max}/n_{in}$.
 
 \subsection{Task}
 An agent does not interact directly with it's environment, but is associated
-with a particular task.  A task associates a purpose with an environment and
-defines what constitutes a reward.  Regardless of the learning method employed,
-the goal of each participant agent is to make a financial profit and the
-rewards are thus defined as the sum of earnings from the previous period $t$
-as calculated by the market.
+with a particular task.  This allows multiple tasks, such a profit
+maximisation or meeting a target utilisation level, to be associated with a
+single environment.  A task defines the reward returned to the agent and
+thus associates a purpose with an environment.  For all experiments in this
+thesis the goal of each participant agent is to maximise financial profit and
+the rewards are thus defined as the sum of earnings from the previous period
+$t$ as determined by the revenue from the market and any incurred costs.
 
 Sensor data from the environment is filtered according to the task being
-performed.  Agents using the value-function methods under test have a tabular
-representation of their policy with one row per environment state.  Thus,
-observations consist of a single integer value $s_v$, where $s_v \leq n_s$ and
-$s_v \in \mathbb{Z}^+$.  Agents using the policy-gradient methods under test
-have policy functions represented by connectionist systems that use an input
-vector $w_i$ of arbitrary length where the $i$-th element $\in \mathbb{R}$.
-Before input to the connectionist policy function approximator, sensor values
-are scaled to be between $-1$ and $1$. Outputs from the policy are
-denormalised using action limits before the action is performed on the
-environment.
+performed.  Agents using the value-function methods use a table to store
+state-action values, with one row per environment state.  Thus, observations
+consist of a single value $s_v$, where $s_v \leq n_s$ and $s_v \in
+\mathbb{Z}^+$.
+
+Agents using the policy-gradient methods have their policy functions
+approximated by connectionist systems that use an input vector $w_i$ of
+arbitrary length where the $i$-th element $\in \mathbb{R}$.  To condition the
+environment state before input to the connectionist system, where possible,
+each sensor $i$ in the state vector $s$ is associated with a minimum value
+$s_{i,min}$ and a maximum value $s_{i,max}$.   The state vector is normalised
+to between $-1$ and $+1$ giving a vector:
+\begin{equation}
+s_c = 2\left(\frac{s - s_{min}}{s_{max} - s_{min}}\right) - 1
+\end{equation}
+
+The output from the policy $a_c$ is denormalised using minimum action limits
+$a_{min}$ and maximum action limits $a_{max}$ giving an action vector
+\begin{equation}
+a = \left(\frac{a + 1}{2}\right)(a_{max} - a_{min}) + a_{min}
+\end{equation}
+to be performed on the environment.
 
 \subsection{Agent}
-Agent $i$ is defined as an entity capable of producing an action $a_i$
+Each agent $i$ is defined as an entity capable of producing an action $a_i$
 based on previous observations of its environment $s_i$, where $a_i$ and $s_i$
-are vectors of arbitrary length.  Each agent is associated with a
-\textit{module}, a \textit{learner} and a \textit{dataset}. The module
-represents the agent's policy for action selection and returns an action
-vector $a_m$ when activated with observation $s_t$.  The value-function
+are vectors of arbitrary length.  Figure X illustrates in UML how each agent is
+associated with a \textit{module}, a \textit{learner}, a \textit{dataset} and
+an \textit{explorer}. The module is used to determine the agent's policy for
+action selection and returns an action vector $a_m$ when activated with observation $s_t$.  The value-function
 methods under test use modules which represent a $N \times M$ table, where $N$
 is the total number of states and $M$ is the total number of actions.
 \begin{equation}
-\begin{bmatrix}
-v_{1,1}& v_{1,2}& \dotsb& v_{1,m}\\
-v_{2,1}& \ddots& & \vdots\\
-\vdots& &\ddots& \vdots\\
-v_{n,1}& \dotsb& \dotsb& v_{n,m}
-\end{bmatrix}
+\bordermatrix[{[]}]{%
+ & a_0 & a_1 & & a_n \cr
+s_0 & v_{1,1}& v_{1,2}& \dotsb & v_{1,m} \cr
+s_1 & v_{2,1}& \ddots& & \vdots \cr
+    & \vdots & & \ddots & \vdots \cr
+s_n & v_{n,1} & \dotsb & \dotsb & v_{n,m}
+}
 \end{equation}
 Whereas for the policy gradient methods, the module is a connectionist network
 of other modules.  The learner can use any
