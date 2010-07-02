@@ -817,6 +817,63 @@ Williams' \textsc{Reinforce} likelihood ratio methods \cite{williams:reinforce}
 and natural policy gradient methods such as Natural Actor-Critic
 \cite{peters:enac}.
 
+\subsubsection{Artificial Neural Networks}
+This subsection provides a very brief introduction to the theory of artificial
+neural networks, concentrating on the aspects utilised in reinforcement
+learning.  These mathematical models mimic aspects of biological neural
+networks, such as the human brain, and are widely used in supervised learning
+applications.  A wealth of literature is available that covers the field
+in great depth \cite{bishop96ann,fausett94}.
+
+In reinforcement learning, the most widely used type of artificial neural
+network is the multi-layer feedforward network (or multi-layer perceptron).
+This model consists of an input layer and an output layer of artificial neurons,
+plus any number of optional hidden layers.  Weighted connections link the
+neurons, but unlike architectures such as the recurrent neural network, only
+neurons from adjacent layers connect.  Most commonly, a fully connected scheme
+is used in which all neurons from one layer are connected to all neurons in the
+next.  Figure \label{fig:perceptron} diagrams a fully connected three layer
+feedforward network.
+
+%\input{tikz/perceptron}
+
+\citeA{mcculloch43} conceived of an artificial neuron $j$ that
+computes a function $g$ as a weighted sum of all $n$ inputs
+\begin{equation}
+y_j(x) = g \left(\sum_{i=0}^n w_ix_i\right)
+\end{equation}
+where $(w_0 \dotsc w_n)$ are weights applied to the inputs $(x_0 \dotsc x_n)$.
+In an multi-layer neural network the output $y_j$ forms part of the input
+to the neurons in any following layer.  The activation function $g$ is
+typically either:
+\begin{itemize}
+  \item Linear, where the output is simply the weighted sum of inputs,
+  \item A threshold function, with an output of either 0 or 1,
+  \item Sigmoidal, such that the output is in the range between 0 and 1,
+  \item A hyperbolic tangent, where the output ranges between -1 and 1.
+\end{itemize}
+The paramemters of these functions can be adjusted along with the
+connection weights to tune the transfer function between input and output that
+the network provides.  To simplify this process a \textit{bias} node that always outputs 1
+may be added to a layer and connected to all neurons in the following layer.
+This can be shown to allow the activation function parameters to be removed and
+for network adjustment to be purely in terms of connection weights.
+
+The output is obtained during the network's \textit{execution} phase by
+presenting an input to the input layer that propagates through.  It can be
+shown that a suitably configured feedforward network with one hidden layer can
+approximate any non-linear function [ref].
+% However, this requires the weights
+% to be adjusted in the \textit{training} or \textit{learning} phase and it was
+% not until the back-propagation algorithm was proposed by \citeA{werbos74}, 30
+% years after the inital period of neural network popularity in the 1950s, that
+% practical methods became available.  The original back-propagation method is
+% the most commonly used, but methods such as RProp \cite{riedmiller93} have been
+% introduced to overcome some of its limitations.  In supervised learning, the
+% error between the output and the expected output is propagated back though the
+% network while the weights of the network are adjusted in reduce the size of the
+% error.
+
 % \subsubsection{REINFORCE}
 % \label{sec:reinforce}
 % REINFORCE is an associative reinforcement learning method that determines
