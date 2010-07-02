@@ -1,8 +1,7 @@
 \chapter{Modelling Power Trade}
 \label{ch:method}
-The present chapter defines the model used in this thesis to simulate electric
-power trade. The first section describes how optimal power flow solutions
-are used to clear offers and bids submitted to a power exchange auction model.
+The present chapter defines the model used to simulate electric power trade in
+this thesis. The first section describes how optimal power flow solutions are used to clear offers and bids submitted to a power exchange auction model.
 The second section defines how market participants are modelled as agents that
 use reinforcement learning algorithms to adjust their bidding behaviour.
 The interaction of market participants with the auction is coordinated by a
@@ -281,9 +280,10 @@ based on previous observations of its environment $s_i$, where $a_i$ and $s_i$
 are vectors of arbitrary length.  Figure X illustrates in UML how each agent is
 associated with a \textit{module}, a \textit{learner}, a \textit{dataset} and
 an \textit{explorer}. The module is used to determine the agent's policy for
-action selection and returns an action vector $a_m$ when activated with observation $s_t$.  The value-function
-methods under test use modules which represent a $N \times M$ table, where $N$
-is the total number of states and $M$ is the total number of actions.
+action selection and returns an action vector $a_m$ when activated with
+observation $s_t$.  The value-function methods under test use a $n_s \times
+n_a$ table module, where $n_s$ is the total number of states and $n_a$ is the
+total number of actions.
 \begin{equation}
 \bordermatrix[{[]}]{%
  & a_0 & a_1 & & a_n \cr
@@ -293,66 +293,69 @@ s_1 & v_{2,1}& \ddots& & \vdots \cr
 s_n & v_{n,1} & \dotsb & \dotsb & v_{n,m}
 }
 \end{equation}
-Whereas for the policy gradient methods, the module is a connectionist network
-of other modules.  The learner can use any
-reinforcement learning algorithm and modifies the values/parameters of the
-policy module to increase expected future reward.  The dataset stores
-state-action-reward tuples for each interaction between the agent and its
-environment.  The stored history is used by value-function learners when
-computing updates to the policy values.  Policy gradient learners search
-directly in the space of the policy network parameters.
+The policy gradient methods, the module is a multi-layer feedforward neural
+network.  The learner can be any reinforcement learning algorithm and modifies
+the values/parameters of the module to increase expected future reward.  The
+dataset stores state-action-reward triples for each interaction between the
+agent and its environment.  The stored history is used by value-function
+learners when computing updates to the table values.  Policy gradient learners
+search directly in the space of the policy network parameters.
 
 % TODO: Agent, module and learner class diagram.
 
-Value-function learners have an association with an explorer module which
-returns an explorative action $a_e$ when activated with the current state $s_t$
-and action $a_m$ from the policy module.  For example, the $\epsilon$-greedy
-explorer has a randomness parameter $\epsilon$ and a decay parameter $d$.  When
-the $\epsilon$-greedy explorer is activated, a random number $x_r$ is drawn
-where $0 \leq x_r \leq 1$.  If $x_r < \epsilon$ then a random vector of the same
+Each learner may have an association with an explorer which returns an
+explorative action $a_e$ when activated with the current state $s_t$ and
+action $a_m$ from the module.  As an example, the $\epsilon$-greedy explorer
+has a randomness parameter $\epsilon$ and a decay parameter $d$.  When the
+$\epsilon$-greedy explorer is activated, a random number $x_r$ is drawn where
+$0 \leq x_r \leq 1$.  If $x_r < \epsilon$ then a random vector of the same
 length as $a_e$ is returned, otherwise $a_e = a_m$.
 
 \subsection{Simulation Event Sequence}
-
 %\input{tikz/cls_experiment}
-
-In each simulation of a system consisting of one or more task-agent pairs a
-sequence of interactions is coordinated, as illustrated in Figure
-\ref{fig:cls_experiment}.
-
+Each experiment consists one or more agent-task pairs.  Figure
+\ref{fig:cls_experiment} illustrates in UML the class relationship
 %\input{tikz/seq_action}
-
-At the beginning of each step/period the market is initialised and all
-offers/bids removed.  From each task-agent tuple $(T,A)$ an observation $s_t$
-is retrieved from $T$ and integrated into agent $A$.  When an action is
-requested from $A$ its module is activated with $s_t$ and the action $a_e$ is
-returned.  $a_e$ is performed on the environment of $A$ via its associated task
-$T$.  Recall, this process involves the submission of offer/bids to the market.
-Figure \ref{fig:seq_action} is a UML sequence diagram that illustrates the
-process of performing actions.
-
+At the beginning of each simulatin step (period) the market is initialised and
+all existing offers/bids are removed.  From each task-agent tuple $(T,A)$ an
+observation $s_t$ is retrieved from $T$ and integrated into agent $A$.  When
+an action is requested from $A$ its module is activated with $s_t$ and the
+action $a_e$ is returned.  Action $a_e$ is performed on the environment
+associated with task $T$.  This is the process that involves the submission of
+offer/bids to the market.  Figure \ref{fig:seq_action} is a UML sequence
+diagram that illustrates the process of performing an action.
 %\input{tikz/seq_reward}
-
-Once all actions have been performed the offer/bids are cleared using the
-auction mechanism.  Each task $T$ is requested to return a reinforcement reward
-$r_t$. All cleared offers/bids associated with the generator in the environment
-of $T$ are retrieved from the market and $r_t$ is computed from the difference
-between revenue and cost values.
+When all actions have been performed the offer/bids are cleared using an
+optimal power flow solution.  Each task $T$ is requested to return a reward
+$r_t$. The cleared offers/bids associated with the generators in the environment of $T$ are retrieved from the market and $r_t$ is computed from
+the difference between revenue and cost values.
 \begin{equation}
 r_t = \mbox{revenue} - (c_{fixed} + c_{variable})
 \end{equation}
-The reward $r_t$ is given to agent $A$ and the value is stored under a new
-sample is the dataset, along with the last observation $s_t$ and the last action
-performed $a_e$.  Figure \ref{fig:seq_action} is a UML sequence diagram that
-illustrates the reward process.
-
+The reward $r_t$ is given to agent $A$ and the value is stored, along with the
+previous state $s_t$ and selected action $a_e$, under a new sample is the
+dataset.  The reward process is illustrated in a UML sequence diagram in Figure
+\ref{fig:seq_action}.
 %\input{tikz/seq_learn}
+Each agent learns from its actions using $r_t$, at which point the
+values/parameters of the module associated with $A$ are updated according to
+the learner's algorithm.  Each agent is then reset and the history of states,
+actions and rewards is cleared.  The learning process is illustrated by the UML
+sequence diagram in  Figure \ref{fig:seq_learn}.
 
-As illustrated in Figure \ref{fig:seq_learn}, each agent learns from its
-actions using $r_t$, at which point the values/parameters of the module of $A$
-are updated according to the algorithm of the learner. This constitutes one
-step of the simulation and the process is repeated until the specified number
-of steps are complete.  Unless agents are reset, the complete history of
-states, actions and received rewards is stored in the dataset of each agent.
+All of this constitutes one step of the simulation and the process is repeated
+until the specified number of steps are complete.
 
 \section{Summary}
+The power exchange auction market model defined in this chapter provides a
+layer of abstraction over the underlying optimal power flow problem and
+presents agents with a simple interface that can be used for selling and buying
+power.  A highly modular simulation framework based on PyBrain has been
+described that allows different learning algorithms, policy function
+approximators and exploration techniques used interchangeably.  The framework
+can simulate competitive electric power trade with any conventional bus-branch
+power system model, requiring very little configuration, but providing the
+option to adjust many aspects of the simulation with reasonable ease.  The
+modular nature of the model and its support for numerous configurations is
+intended to allow the learning methods to be compared in a wide variety of
+different ways.
