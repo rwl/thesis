@@ -161,8 +161,77 @@ offered/bid (pay-as-bid). The cleared offers/bids are returned to the
 agents and used to determine the revenue from which each agent's earnings or
 losses are derived.
 
-\subsection{Example}
-% TODO: Provide an example.
+\subsection{Auction Example}
+This example demonstrates how a set of offers and a set of bids are cleared
+using an auction mechanism based on the Smart Market from
+\citeA{pserc:mp_manual}.  The six bus power system model used in this example
+is adapted from \citeA[pp.~104, 112, 119, 123-124, 549]{wood:pgoc} and a
+one-line diagram for the case is given in Figure \ref{fig:case6ww}.  The model
+has 3 generators with a total capacity of 530MW and the total system load is
+210MW.  The initial generator costs are defined by quadratic functions of the
+form $a + bx + cx^2$, where $x$ is the generator set-point, and the parameters
+are given in Table \ref{tbl:ex_coeffs}.
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c}
+\hline
+Generator bus & $a$ & $b$ & $c$ \\
+\hline
+1 & 215.0 & 10.0 & 0.005 \\
+2 & 200.0 & 12.0 & 0.008 \\
+3 & 240.0 & 15.0 & 0.010 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Generator cost function coefficients.}
+\label{tbl:ex_coeffs}
+\end{table}
+
+Suppose each offers half of its capacity with a markup of 10\% and the
+remainder marked up by 20\%.  This correlated to a set of offers with
+quantities and prices as given in Table \ref{tbl:ex_offers}.
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|cc|cc|}
+\hline
+Generator bus & \multicolumn{2}{c}{Offer 1} & \multicolumn{2}{|c|}{Offer 2}\\
+ & MW & \$/MWh & MW & \$/MWh \\
+\hline
+1 & 100 & 20 & 100 & 30 \\
+2 & 75  & 25 & 75  & 40 \\
+3 & 90  & 30 & 90  & 50 \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Offered quantities and prices.}
+\label{tbl:ex_offers}
+\end{table}
+Setting a price
+cap of \$45 causes the seconf offer from the generator at bus 3 to be withheld
+and ignored in the conversion to piecewise linear cost functions.  Table
+\ref{tbl:ex_pwl} lists the points of the resulting piecewise linear cost
+functions and Figure X plots the original marginal cost function and the cost
+function corresponding to the submitted offers for the generator at bus 1.
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c}
+\hline
+Generator bus & $(P_g, C)$ & $(P_g, C)$ & $(P_g, C)$ \\
+\hline
+1 & (0, 215) & (100, 10.0) & (200, 0.005) \\
+2 & (0, 200) & (75, 12.0) & (150, 0.008) \\
+3 & (0, 240) & (90, 15.0) & (180, 0.010) \\
+\hline
+\end{tabular}
+\end{center}
+\caption{Piecewise linear cost function points.}
+\label{tbl:ex_pwl}
+\end{table}
+Also plotted is the generator set-point from the \textit{optimal power flow}
+solution and the elevation of the nodal marginal price caused by network
+congestion and branch losses.  The diagram indicates the difference between the
+original marginal cost function and the cleared price that is the earnings from
+that generator and is used as part of the reward for the responsible agent.
 
 \newpage
 \section{Multi-Agent System}
