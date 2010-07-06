@@ -236,30 +236,61 @@ that generator and is used as part of the reward for the responsible agent.
 \newpage
 \section{Multi-Agent System}
 \label{sec:mas}
-Market participants are modelled using software agents from PyBrain which use
+Market participants are modelled using software agents from PyBrain that use
 reinforcement learning algorithms to adjust their behaviour \cite{schaul:2010}.
 Their interaction with the market is coordinated in multi-agent experiments,
 the structure of which is derived from PyBrain's single player designs.  In
 PyBrain, agents do not interact directly with their environment, but are
 associated with a particular \textit{task}.  This section describes the
-agent's environment, its task and the design of the policy function
-approximators and the action-value tables. The process by which each agent's
-policy is updated by a learning algorithm is explained, along with the
-sequence of interactions between multiple agents and the market.
+agent's environment, its tasks and the design of the associated policy function
+approximators and action-value tables. The process by which each agent's
+policy is updated by a learning algorithm is explained and the sequence of
+interactions between multiple agents and the market is illustrated.
 
 \subsection{Environment}
-In each experiment, agents are endowed with a portfolio of one or more
-generators from the electric power system model shown in Figure
-\ref{fig:cls_pylon}. Figure \ref{fig:cls_pyreto} illustrates the association
-between an agent's environment and the generator model along with the
-association with an instance of the market that is used the submission of
-offers/bids. Each environment is responsible for \begin{inparaenum}[(i)]
-\item returning a vector representation of the current state and \item
+In each experiment, agents are endowed with a portfolio of generators from the
+electric power system model (See Figure \ref{fig:cls_pylon}).  As Figure
+\ref{fig:cls_pyreto} shows, generators are contained within an agent's
+\textit{environment}, which also holds an association to an instance of the
+auction market that allows the submission of offers/bids. Each environment is
+responsible for \begin{inparaenum}[(i)]
+\item returning a vector representation of its current state and \item
 accepting an action vector which transforms the environment into a new state.
-\end{inparaenum}
+\end{inparaenum}  To facilitate testing of value function based and policy
+gradient learning methods, both discrete and continuous representations of an
+energy trading environment are defined.
 %\input{tikz/cls_pyreto}
 
 \subsubsection{Discrete Environment}
+For operation with learning methods that approximate an action-value function
+using look-up tables an environment with $n_s$ discrete states and $n_a$
+discrete actions is defined.  An agent can not observe offers/bids submitted by
+competitor agents, but is permitted to sense any aspect of the power system
+model.  However, to ensure that the size of the environment state space is kept
+resonable the agent is limited to observing a demand forecast.  Besides the
+actions of other agents, the total system demand is likely to be the most
+significant factor effecting the cleared quantity of its offers/bids.  The
+initial demand at each bus $P_{d0}$, as defined in the original power system
+model, is assumed to be peak and the state space is divided into discrete steps
+of size $P_d / n_s$.  As explained further in Section X, the demand at each bus
+can follow a profile at each step $t$ of the simulation.  The environment
+computes the total system demand $P_{d t}$ and returns an integer
+represntation of the state
+\begin{equation}
+s_t = \frac{P_{d t}}{P_{d0} / n_s} + 1.
+\end{equation}
+
+To define the action space, a vector of percentage markups on marginal cost
+$m_e$ and a vector of percentage markdowns on total capacity $d_e$ is defined
+for each environment $e$ along with a variable $n_o \in \mathbb{Z}^+$ which
+denotes the number of offers/bids to be submitted by the agent.  A set of all
+unique permutations of markup and markdown for $n_o$ offers/bids of length
+$n_a$ is formed, from which the agent can select.  The action vector that the
+discrete environment receives holds a single integer value, corresponding to
+the column index in the agent's action value table.  The quantity and price for
+each offer/bid submitted to the market is taken from the vector of permutations
+using the $a_t$ as the index.
+
 
 \subsubsection{Continuous Environment}
 For a power system with $n_b$ buses and $n_l$ branches, the visible state of
