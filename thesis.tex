@@ -111,61 +111,64 @@ $\kern\wd\@ne\kern -\@tempdima\left\@firstoftwo#1%
 \declaration
 
 \begin{acknowledgements}
-This research was funded by the UK Engineering and Physical Sciences Research
-Council through the Supergen Highly Distributed Power Systems project under
-grant GR/T28836/01.
-
-I take this opportunity to thank my supervisors, Prof.~Graeme~Burt and
-Dr~Stuart~Galloway, for their guidance and scholarship.  Many thanks also to
-my parents for their support and help in editing this thesis.
+I wish to thank Prof.~Jim McDonald for giving me the opportunity for
+postgraduate study and for permitting me the freedom to pursue my own research
+interests.  I am also very grateful to my supervisors, Prof.~Graeme~Burt and
+Dr~Stuart~Galloway, for their guidance and scholarship.  I wish to offer
+special thanks to my parents and my brother and sister for their support and
+tolerance throughout my PhD.
 
 This research made extensive use of software projects by researchers from other
-institutions, made available as open source.  Optimal power flow solvers
-were translated from \textsc{Matpower}, which is developed and maintained under the
-direction of Ray~Zimmerman at Cornell University.  Reinforcement learning
-algorithms and artificial neural networks were imported from PyBrain, which is
-developed by researchers from the Dalle Molle Institute for Artificial
-Intelligence (IDSIA) and the Technical University of Munich.  The Roth-Erev
-learning method was translated from the Java Reinforcement Learning Module
-(JReLM), developed by Charles Gieseler from Iowa State University.
+institutions.  I wish to thank Dr~Ray~Zimmerman
+from Cornell University for his work on the optimal power flow formulations in
+\textsc{Matpower}, the researchers from the Dalle Molle Institute for
+Artificial Intelligence (IDSIA) and the Technical University of Munich
+involved in the PyBrain project for their work on reinforcement learning
+algorithms and artificial neural networks and Charles Gieseler from Iowa State
+University for the Java Reinforcement Learning Module (JReLM) from which an
+implementation of the Roth-Erev learning method was translated.
+
+This research was funded by the United Kingdom Engineering and Physical
+Sciences Research Council through the Supergen Highly Distributed Power
+Systems consortium under grant GR/T28836/01.
 \end{acknowledgements}
 
 \begin{abstract}
 In electric power Engineering, learning algorithms can be used to model
 the strategies of electricity market participants.  The objective of this work
-is to establish if policy gradient reinforcement learning methods can be used
-to produce participant models superior to those using previously applied value
-function based methods.
+is to establish if \textit{policy gradient} reinforcement learning methods can
+provide superior models of market participants than previously applied
+\textit{value function based} methods.
 
 % Electricity is an unique commodity.  It must be supplied at the presise moment
 % that it is demanded, as there are no practical methods for significant
 % levels of storage in most systems.  There are also few options for controlling
 % the direction in which power flows around networks, so generation or
 % consumption at one point in the system has an effect at all other points.
-Supply of electricity involves technology, money, people, natural resources and the environment.  All of these aspects are changing and the
-discipline must be constantly researched to ensure that systems, such as
-electricity markets, are fit for purpose.
+Supply of electricity involves technology, money, people, natural resources
+and the environment.  All of these aspects are constantly changing and
+electricity markets must be suitably researched to ensure that they are fit for
+purpose.  In this thesis electricity markets are modelled using optimal power
+flow: a non-linear optimisation problem solved using primal-dual interior
+point methods.  Policy gradient reinforcement learning algorithms are used to
+adjust the parameters of multi-layer perceptrons that approximate market
+participant's policies for selecting quantities and prices bid into the
+marketplace.
 
-In this thesis electricity markets are modelled using security constrained
-optimal power flow that is formulated as a non-linear optimisation problem and
-solved using a primal-dual interior point method.  Policy gradient reinforcement
-learning methods are used to adjust the parameters of an artificial neural
-networks that are used to approximate the policies market participants follow
-when selecting quantities and prices to offer or bid in the marketplace.
-
-Traditional reinforcement learning methods, that learn a function which returns
-the \textit{value} associated with a particular action, have been previously
-applied in simulated electricity trade, but are largely restricted to discrete
-representations of the market environment.  Policy gradient methods have been
-shown to offer good convergence properties in continuous environments, such as
-in robotic control applications, and avoid many of the problems that mar value
-function based methods.
+Traditional reinforcement learning methods that learn a value function have
+been previously applied in simulated electricity trade, but are restricted to
+discrete representations of the market environment.  Policy gradient methods
+have been proven to offer convergence guarantees in continuous environments,
+such as in robotic control applications, and avoid many of the problems that
+mar value function based methods.
 
 The benefits of using policy gradient methods in electricity market simulation
 are explored and the results demonstrate their superior trading ability when
-operating with constrained networks.  This work provides some opportunities
-revisit previous research in this field and opens possibilites for application
-of policy gradient methods in decision support and automated energy trade.
+operating in large constrained networks.  By advancing the use of learning
+methods in electricity market simulation, this work provides the opportunity to
+revisit previous research in the field and creates the possibility for policy
+gradient methods to be used in decision support and automated energy trading
+applications.
 
 % Reinforcement learning methods that use connectionist systems for value
 % function approximation offer few convergence guarantees, even in simple

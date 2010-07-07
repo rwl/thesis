@@ -77,8 +77,8 @@ United Kingdom Copyright Acts as qualified by University of Strathclyde
 Regulation 3.51. Due acknowledgement must always be made of the use of any
 material contained in, or derived from, this thesis.
 
-% \vspace{1cm}
-% Signed:\hspace{7.6cm} Date: \today
+\vfill
+Signed:\hfill Date: \today
 \end{quote}
 \singlespacing
 \newpage
