@@ -103,9 +103,8 @@ material contained in, or derived from, this thesis.
 \begin{center}
   \section*{Abstract}
  \end{center}
- \begin{quote}
  \begingroup
-}{\newpage\endgroup\end{quote}\singlespacing}
+}{\newpage\endgroup\singlespacing}
 
 % Year and term the degree will be officially conferred
 \def\degreedate#1{\gdef\@degreedate{#1}}
