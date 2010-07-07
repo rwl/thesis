@@ -1,23 +1,57 @@
 \chapter{Further Work}
 \label{sec:furtherwork}
-With the knowledge that certain reinforcement learning methods can operate
-successfully in continuous representations of electric power Engineering
-problems, the opportunity arises to revisit certain topics to which discrete
-methods have been previously applied.  Two of the most important issues that
-electric power Engineers face and that modelling and simulation can help
-address are:
+This thesis has examined some of the traditional value function based and
+policy gradient reinforcement learning methods.  However, research in the field
+of Artificial Intelligence is highly active and there have been some
+interesting new learning algorithms presented recently that might also be
+examined in the domain of electric power trade.
+
+Improvements in reinforcement learning algorithms can can be exploited in other
+electric power Engineering problems such as:
 \begin{itemize}
   \item System optimisation, close to real-time, such that sufficient reserve
   is allocated to ensure acceptable system security while costs are minimised
-  according to the outcome of the electricity markets.
-  \item Investment planning, both by system operators needing to expand
+  according to the outcome of the electricity markets, and
+  \item Capital investment planning, both by system operators needing to expand
   transmission capacity and energy companies wanting to develop new generating
   plant.
 \end{itemize}
-This chapter explores how the advances made in this thesis can be exploited to
-enhance studies that attempt to tackle these problems and explains how data
-from the National Grid could be used to apply the techniques in simulations of
-the UK electric power system.
+
+This chapter lists some alternative learning algorithms that should be explored
+as an extension to this thesis.  It also defines two new reinforcement
+learning problems to which  advanced learning algorithms could be applied.
+It also explains how data from National Grid Ltd.~could be used in practical
+simulations of the UK electricity market.  Finally, this chapter explores some
+of the posibilities that AC optimal power flow formulations bring to to
+electric power simulation and combined market simulation.
+
+\section{Alternative Learning Algorithms}
+\citeA{riedmiller05nfq} presented Neuro Fitted Q Iteration (NFQ) algorithms
+that attempt to overcome many of the problems experienced when implementing
+Q-learning methods with value function approximation using neural networks.  It
+stores all transition experiences and performs off-line update using supervised
+learning techniques such as RProp \cite{riedmiller93}.  The method has shown
+robustness against parmeterisation and to learn quickly in standard benchmark
+tests and in real-world applications \cite{kietzmann09}.
+
+The GQ$(\lambda)$ algorithm by \citeA{maei10} is another extension of the
+Q-learning method.  Convergence guarantees have been shown and the scaling
+properties suggest that it is suitable for large-scale reinforcement learning
+applications.  Software implementations of GQ$(\lambda)$ are reportedly in
+development and due to be released soon.
+
+Four new Natural Actor-Critic algorithms are presented in \citeA{bhatnagar09}.
+As with the ENAC algorithm by \citeA{peters:enac}, these all utilise linear
+function approximation techniques, making them suitable for large-scale applications of
+reinforcement learning.  Three of the algorithms are extensions to ENAC, but
+are fully incremental: the gradient computation is never reset while the policy
+is updated at every simulation step.  The authors state a need to assess the
+ultimate utility of these algorithms through application in real-world
+problems.
+
+This thesis provides a framework that would allow implementations of these
+interesting new algorithms to be assessed and used to examine aspects of
+electricity markets.
 
 \section{Learning to Optimise Power Flow}
 As explained in Section \ref{sec:opf}, the objective of the classical optimal
@@ -61,7 +95,7 @@ satisfy system constraints, such as voltage limits or generators reactive power
 limits and penalty costs must be applied to the reward so the agent learns to
 obey them.
 
-\section{Slack Bus Generator Control}
+\subsection{Slack Bus Generator Control}
 This initial proof of concept attempts only to enforce the set-point limit on
 the slack bus generator.  The reward is updated according to
 \begin{equation}
@@ -212,6 +246,8 @@ allowances while avioding penalties for exceeding quotas.
 % CIM for markets
 %\section{Blackbox optimisation}
 % periodic
+
+\section{Summary}
 
 \chapter{Summary Conclusions}
 \label{ch:conclusion}
