@@ -745,8 +745,8 @@ random action is selected, otherwise the perceived optimal action is chosen.
 After each selection the randomness is attenuated by $d$.
 
 Action selection may also be accomplished using a form of the \textit{softmax}
-method \cite{suttonbarto:1998} using the Gibbs (or Boltzmann) distribution to
-select action $k$ for the $(t+1)^{th}$ interaction with probability
+method \cite[\S2]{suttonbarto:1998} using the Gibbs (or
+Boltzmann) distribution to select action $k$ for the $(t+1)^{th}$ interaction with probability
 \begin{equation}
 p_{jk}(t+1) = \frac{e^{q_{jk}(t+1)/\tau}}{\sum_{l=0}^K e^{q_{jl}(t+1)/\tau}}
 \end{equation}
