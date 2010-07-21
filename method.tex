@@ -5,8 +5,8 @@ power trade. The first section describes how optimal power flow solutions are
 used to clear offers and bids submitted to a simulated power exchange auction.
 The second section defines how market participants are modelled as agents that
 use reinforcement learning algorithms to adjust their bidding behaviour. It
-explains the modular structure of a multi-agent system that coordinates the
-interactions of the auction model and the market participants.
+explains the modular structure of a multi-agent system that coordinates
+interactions between the auction model and market participants.
 
 % Societies reliance on secure energy supplies and the high volumes of
 % electricity typically consumed render it impractical to experiment with
@@ -73,42 +73,95 @@ interactions of the auction model and the market participants.
 % competitive decision making process.
 
 \section{Electricity Market Model}
-It is a double-sided power exchange auction market model is used in this
+A double-sided power exchange auction market model is used in this
 thesis to compare the learning algorithm's trading abilities.  To determine the
 dispatch of generators, bespoke implementations of the optimal power flow
 formulations from \matpower \cite[\S5]{pserc:mp_manual} are used.  Both the DC
 and AC formulations are utilised. The trade-offs between DC and AC models have
-been examined in \citeA{overbye:acdc} and DC models have been found suitable
-for most nodal marginal price calculations.  They are considerably less
-computationally expensive and are used in the more simple initial experiments.
-The accurate AC optimal power flow formulation is required for the more
-challenging experiments which test learning algorithms in their ability to
-exploit constraints in the power system models.  A class diagram in the
-Unified Modelling Language (UML) for the object-orientated power system model
-used is shown in Figure \ref{fig:cls_pylon}.  As in \textsc{Matpower},
-piecewise linear generator cost functions are modelled using the constrained cost variable
-method \cite{zimmerman:ccv}.  Unlike \textsc{Matpower}, the optimal power flow
-formulations are not extended to facilitate user-defined cost functions or
-observe generator P-Q capability curves.
+been examined in \citeA{overbye:acdc}. DC models were found suitable for most
+nodal marginal price calculations and are considerably less computationally
+expensive. The accurate AC optimal power flow formulation is used in
+experiments which test the learning algorithms in their ability to exploit the
+intricacies of the electric power system representations.  A class diagram in
+the Unified Modelling Language (UML) for the object-orientated power system
+model used is shown in Figure \ref{fig:cls_pylon}.
 
 %\input{tikz/cls_pylon}
+
+As in \textsc{Matpower} \cite[p.26]{pserc:mp_manual}, generator active
+power, and optionally reactive power, output costs may be defined by convex
+$n$-segment piecewise linear cost functions
+\begin{equation}
+c^{(i)}(x) = m_ip + c_i
+\end{equation}
+for $p_i \leq p \leq p_{i+1}$ with $i = 1,2,\dotsc n$ where $m_{i+1} \geq m_i$
+and $p_{i+1} > p_i$ as diagramed in \citeA[Figure5-3]{pserc:mp_manual} and
+Figure \ref{fig:ccv_function}. Since these costs are non-differentiable, the
+constrained cost variable approach from \cite{zimmerman:ccv} is used to render
+the optimisation problem smooth.  For each generator $i$ a helper cost
+variable $y_i$ added to the vector of optimisation variables.  The additional
+inequality constraints
+\begin{equation}
+y_i \geq m_{i,j}(p-p_j) + c_j, \quad j = 1\dotsc n
+\end{equation}
+ensure that $y_i$ lies on the epigraph\footnote{Informally, the epigraph of a
+function is a set of points lying on or above its graph.} of $c^{(i)}(x)$. The
+objective of the optimal power flow problem used in the auction process
+becomes the minimisation of the sum of cost variables for all generators:
+\begin{equation}
+\min_{\theta, V_m, P_g, Q_g, y} \sum_{i=1}^{n_g}y_i
+\end{equation}
+
+The extensions to the optimal power flow formulations defined in
+\textsc{Matpower} for user-defined cost functions and generator P-Q capability
+curves are not utilised.
+
+%
+% \section{DC OPF Formulation}
+% Piecewise linear cost functions are also used to define generator active power
+% costs in the DC optimal power flow formulation.  Since the power flow equations
+% are linearised, following the assumptions in equations (\ref{eq:lossless}),
+% (\ref{eq:oneperunit}) and (\ref{eq:busangdiff}), the optimal power flow
+% problem simplifies to a linear program.  The voltage magnitude variables $V_m$
+% and generator reactive power set-point variable $Q_g$ are eliminated following
+% the assumption in equation (\ref{eq:busangdiff}) since branch reactive power
+% flows depend on bus voltage angle differences.  The objective function reduces to
+% \begin{equation}
+% \min_{\theta, P_g, y} \sum_{i=1}^{n_g}y_i
+% \end{equation}
+% Combining the nodal real power injections, expressed as a function of $\Theta$,
+% from equation (\ref{eq:bbus}), with active power generation $P_g$ and active
+% demand $P_d$, the power balance constraint is
+% \begin{equation}
+% B_{bus}\Theta + P_{bus,ph} + P_d - C_gP_g = 0
+% \end{equation}
+% Limits on branch active power flows $B_f\Theta$ and $B_t\Theta$ are enforced by
+% the inequality constraints
+% \begin{eqnarray}
+% B_f\Theta + P_{f,ph} - F_{max}& \leq& 0\\
+% -B_f\Theta + P_{f,ph} - F_{max}& \leq& 0
+% \end{eqnarray}
+% The reference bus voltage angle equality constraint from
+% equation (\ref{eq:refbusang}) and the $p_g$ limit constraint from
+% (\ref{eq:pglim}) are also applied.
 
 \subsection{Unit De-commitment}
 The optimal power flow formulations used constrain generator set-points
 between upper and lower power limits.  Expensive generators can not be
 completely shutdown, even if doing so would result in a lower total system
-cost.  The formulations could incorporate the online status of generators in
-the optimisation variable, but mixed-integer non-linear programs (MINLP) are
-typically very challenging to solve.
+cost.  The online status of generators could be incorporated into the vector of
+optimisation variables, but as they are Boolean the problems would become a
+mixed-integer non-linear programs which are typically very challenging to
+solve.
 
-To compute a least cost commitment and dispatch the unit de-commitment algorithm from
-\citeA[p.57]{pserc:mp_manual} is used.  Algorithm~\ref{alg:ud} shows how the
-process involves shutting down the most expensive units until
-the minimum generation capacity is less than the total load capacity and then solving repeated
-optimal power flow problems with candidate generating units that are at their
-minimum active power limit deactivated.  The lowest cost solution is returned
-when no further improvement can be made and no candidate generators remain.
-\begin{algorithm}%[H]
+To compute a least cost commitment and dispatch the unit de-commitment
+algorithm from \citeA[p.57]{pserc:mp_manual} is used.  Algorithm~\ref{alg:ud}
+shows how this involves shutting down the most expensive units until the
+minimum generation capacity is less than the total load capacity and then
+solving repeated optimal power flow problems with candidate generating units
+that are at their minimum active power limit deactivated.  The lowest cost
+solution is returned when no further improvement can be made and no candidate
+generators remain. \begin{algorithm}%[H]
 \caption{Unit de-commitment}
 \label{alg:ud}
 \begin{algorithmic}[1]
@@ -142,11 +195,13 @@ when no further improvement can be made and no candidate generators remain.
 \end{algorithm}
 
 \subsection{Power Exchange}
-In the simulated power trade model, agents representing market participants do
-not provide cost functions for the generators in their portfolio, but submit
+To simulate electric power trade a model is used in which agents representing
+market participants do not provide cost functions for the generators in their portfolio, but submit
 offers to sell and/or bids to buy blocks of active or reactive power.  The
 offers/bids are submitted to a power exchange auction market based on that from
-\citeA[p.92]{pserc:mp_manual}.  The clearing process the begins by withholding
+\citeA[p.92]{pserc:mp_manual}.
+
+The clearing process begins by withholding
 offers/bids outwith maximum offer and minimum bid price limits, along with
 those specifying non-positive quantities. Valid offers/bids for each generator
 are then sorted into non-decreasing/non-increasing order and are converted
@@ -154,23 +209,29 @@ into corresponding generator/dispatchable load capacities and piecewise linear
 cost functions. The newly configured units form a unit de-commitment optimal
 power flow problem, the solution of which holds generator set-points and nodal
 prices which are used to determine the proportion of each offer/bid block that
-should be cleared and the associated price for each.  Pricing may be uniform,
-where each offer/bid is cleared at the price of the marginal unit, or
-discriminatory, where the offer/bid is cleared at the price at which it
-offered/bid (pay-as-bid). The cleared offers/bids are returned to the
-agents and used to determine the revenue from which each agent's earnings or
-losses are derived.
+should be cleared and the associated price for each.
+
+% Pricing may be uniform,
+% where each offer/bid is cleared at the price of the marginal unit, or
+% discriminatory, where the offer/bid is cleared at the price at which it
+% offered/bid (pay-as-bid).
+
+A basic nodal marginal pricing scheme is used in which the price of each
+offer/bid is cleared at the value of the Lagrangian multiplier on the power
+balance constraint for the bus at which the associated generator is connected.
+Cleared offers/bids are returned to the agents and used to determine revenue
+values from which each agent's earnings or losses are derived.
 
 \subsection{Auction Example}
 This example demonstrates how a set of offers and a set of bids are cleared
-using an auction mechanism based on the Smart Market from
-\citeA{pserc:mp_manual}.  The six bus power system model used in this example
-is adapted from \citeA[pp.~104, 112, 119, 123-124, 549]{wood:pgoc} and a
-one-line diagram for the case is given in Figure \ref{fig:case6ww}.  The model
-has 3 generators with a total capacity of 530MW and the total system load is
-210MW.  The initial generator costs are defined by quadratic functions of the
-form $a + bx + cx^2$, where $x$ is the generator set-point, and the parameters
-are given in Table \ref{tbl:ex_coeffs}.
+using the auction mechanism based on Smart Market by \citeA{pserc:mp_manual}.
+The six bus power system model used in this example is adapted from
+\citeA[pp.~104, 112, 119, 123-124, 549]{wood:pgoc} and a one-line diagram for
+the case is given in Figure \ref{fig:case6ww}.  The model has 3 generators
+with a total capacity of 530MW and the total system load is 210MW.  The
+initial generator costs are defined by quadratic functions of the form $a + bx
++ cx^2$, where $x$ is the generator set-point, with the parameters are given in
+Table \ref{tbl:ex_coeffs}.
 \begin{table}
 \begin{center}
 \begin{tabular}{c|c|c|c}
@@ -188,18 +249,18 @@ Generator bus & $a$ & $b$ & $c$ \\
 \end{table}
 
 Suppose each offers half of its capacity with a markup of 10\% and the
-remainder marked up by 20\%.  This correlated to a set of offers with
-quantities and prices as given in Table \ref{tbl:ex_offers}.
+remainder marked up by 20\%.  This correlates to a set of offers with
+quantities and prices given in Table \ref{tbl:ex_offers}.
 \begin{table}
 \begin{center}
-\begin{tabular}{|c|cc|cc|}
+\begin{tabular}{c|cc|cc}
 \hline
-Generator bus & \multicolumn{2}{c}{Offer 1} & \multicolumn{2}{|c|}{Offer 2}\\
+Generator bus & \multicolumn{2}{c}{Offer 1} & \multicolumn{2}{|c}{Offer 2}\\
  & MW & \$/MWh & MW & \$/MWh \\
 \hline
 1 & 100 & 20 & 100 & 30 \\
 2 & 75  & 25 & 75  & 40 \\
-3 & 90  & 30 & 90  & 50 \\
+3 & 90  & 30 & \sout{90}  & \sout{50} \\
 \hline
 \end{tabular}
 \end{center}
@@ -207,8 +268,10 @@ Generator bus & \multicolumn{2}{c}{Offer 1} & \multicolumn{2}{|c|}{Offer 2}\\
 \label{tbl:ex_offers}
 \end{table}
 Setting a price
-cap of \$45 causes the seconf offer from the generator at bus 3 to be withheld
-and ignored in the conversion to piecewise linear cost functions.  Table
+cap of \$45 causes the second offer from the generator at bus 3 to be withheld
+and ignored in the conversion to piecewise linear cost functions.
+
+Table
 \ref{tbl:ex_pwl} lists the points of the resulting piecewise linear cost
 functions and Figure X plots the original marginal cost function and the cost
 function corresponding to the submitted offers for the generator at bus 1.
@@ -227,25 +290,26 @@ Generator bus & $(P_g, C)$ & $(P_g, C)$ & $(P_g, C)$ \\
 \caption{Piecewise linear cost function points.}
 \label{tbl:ex_pwl}
 \end{table}
-Also plotted is the generator set-point from the \textit{optimal power flow}
+Also plotted is the generator set-point from the optimal power flow
 solution and the elevation of the nodal marginal price caused by network
 congestion and branch losses.  The diagram indicates the difference between the
 original marginal cost function and the cleared price that is the earnings from
-that generator and is used as part of the reward for the responsible agent.
+that generator and would be used as part of the reward for the responsible
+agent.
 
-\newpage
 \section{Multi-Agent System}
 \label{sec:mas}
 Market participants are modelled using software agents from PyBrain that use
 reinforcement learning algorithms to adjust their behaviour \cite{schaul:2010}.
 Their interaction with the market is coordinated in multi-agent experiments,
-the structure of which is derived from PyBrain's single player designs.  In
-PyBrain, agents do not interact directly with their environment, but are
-associated with a particular \textit{task}.  This section describes the
-agent's environment, its tasks and the design of the associated policy function
-approximators and action-value tables. The process by which each agent's
-policy is updated by a learning algorithm is explained and the sequence of
-interactions between multiple agents and the market is illustrated.
+the structure of which is derived from PyBrain's single player design.
+
+In PyBrain, agents do not interact directly with their environment, but are
+associated with a particular \textit{task}.  This section describes agent's
+environments, their tasks and the modules used for policy function
+approximation and storing state-action values in tables. The process by which
+each agent's policy is updated by a learning algorithm is explained and the
+sequence of interactions between multiple agents and the market is illustrated.
 
 \subsection{Environment}
 In each experiment, agents are endowed with a portfolio of generators from the
@@ -258,14 +322,13 @@ responsible for \begin{inparaenum}[(i)]
 accepting an action vector which transforms the environment into a new state.
 \end{inparaenum}  To facilitate testing of value function based and policy
 gradient learning methods, both discrete and continuous representations of an
-energy trading environment are defined.
+electric power trading environment are defined.
 %\input{tikz/cls_pyreto}
 
 \subsubsection{Discrete Environment}
-For operation with learning methods that approximate an action-value function
-using look-up tables an environment with $n_s$ discrete states and $n_a$
-discrete actions is defined.  An agent can not observe offers/bids submitted by
-competitor agents, but is permitted to sense any aspect of the power system
+For operation with learning methods that use look-up tables to store
+state-action values, an environment with $n_s$ discrete states and $n_a$
+discrete actions is defined.  An agent can not observe offers/bids submitted by competitor agents, but is permitted to sense any aspect of the power system
 model.  However, to ensure that the size of the environment state space is kept
 resonable the agent is limited to observing a demand forecast.  Besides the
 actions of other agents, the total system demand is likely to be the most
@@ -351,7 +414,7 @@ $q_e^i = 0$, then $qty = p_{max}/n_{in}$.
 To allow different goals for an agent (such a profit maximisation or the
 meeting some target level for plant utilisation) to be associated with a single
 type of environment, an agent does not interact directly with it,
-but is instead paired with a particular \textit{task}. A task defines the
+but is paired with a particular \textit{task}. A task defines the
 reward returned to the agent and thus defines the agent's purpose.  For all
 experiments in this thesis the goal of each participant agent is to maximise
 financial profit and the rewards are thus defined as the sum of earnings from
@@ -361,12 +424,12 @@ risk adjusted return would simply involve the definition of a new task without
 any need for modification of the environment.
 
 Sensor data from the environment is filtered according to the task
-being performed.  Agents using the value-function methods use a table to store
-state-action values, with one row per environment state.  Thus, observations
+being performed.  Agents with value-function learning methods use a table to
+store state-action values, with one row per environment state.  Thus, observations
 consist of a single value $s_v$, where $s_v \leq n_s$ and $s_v \in
 \mathbb{Z}^+$.
 
-Agents using the policy-gradient learning methods approximate their policy
+Agents with policy-gradient learning methods approximate their policy
 functions using artificial neural networks that are presented with input vector
 $w$ of length $n_i$ where $w_i < n_i$ and $w_i \in \mathbb{R}$.  To condition
 the environment state before input to the connectionist system, where possible,
@@ -418,16 +481,18 @@ search directly in the space of the policy network parameters.
 
 Each learner may have an association with an explorer which returns an
 explorative action $a_e$ when activated with the current state $s_t$ and
-action $a_m$ from the module.  For example, the $\epsilon$-greedy explorer
-has a randomness parameter $\epsilon$ and a decay parameter $d$.  When the
-$\epsilon$-greedy explorer is activated, a random number $x_r$ is drawn where
-$0 \leq x_r \leq 1$.  If $x_r < \epsilon$ then a random vector of the same
-length as $a_e$ is returned, otherwise $a_e = a_m$.
+action $a_m$ from the module.
+
+% For example, the $\epsilon$-greedy explorer
+% has a randomness parameter $\epsilon$ and a decay parameter $d$.  When the
+% $\epsilon$-greedy explorer is activated, a random number $x_r$ is drawn where
+% $0 \leq x_r \leq 1$.  If $x_r < \epsilon$ then a random vector of the same
+% length as $a_e$ is returned, otherwise $a_e = a_m$.
 
 \subsection{Simulation Event Sequence}
 %\input{tikz/cls_experiment}
-Each experiment consists one or more agent-task pairs and Figure
-\ref{fig:cls_experiment} illustrates the class relationship.
+Each experiment consists one or more agent-task pairs. The class associations
+are illustrated in Figure \ref{fig:cls_experiment}.
 %\input{tikz/seq_action}
 At the beginning of each simulation step (trading period) the market is
 initialised and all existing offers/bids are removed.  From each task-agent tuple $(T,A)$ an
@@ -437,8 +502,10 @@ action $a_e$ is returned.  Action $a_e$ is performed on the environment
 associated with task $T$.  This is the process that involves the submission of
 offer/bids to the market.  Figure \ref{fig:seq_action} is a UML sequence
 diagram that illustrates the process of performing an action.
+
 %\input{tikz/seq_reward}
-When all actions have been performed the offer/bids are cleared using an
+
+When all actions have been performed the offers/bids are cleared using an
 optimal power flow solution.  Each task $T$ is requested to return a reward
 $r_t$. The cleared offers/bids associated with the generators in the environment of $T$ are retrieved from the market and $r_t$ is computed from
 the difference between revenue and cost values.
@@ -449,26 +516,27 @@ The reward $r_t$ is given to agent $A$ and the value is stored, along with the
 previous state $s_t$ and selected action $a_e$, under a new sample is the
 dataset.  The reward process is illustrated in a UML sequence diagram in Figure
 \ref{fig:seq_action}.
+
 %\input{tikz/seq_learn}
+
 Each agent learns from its actions using $r_t$, at which point the
 values/parameters of the module associated with $A$ are updated according to
 the learner's algorithm.  Each agent is then reset and the history of states,
 actions and rewards is cleared.  The learning process is illustrated by the UML
 sequence diagram in  Figure \ref{fig:seq_learn}.
 
-All of this constitutes one step of the simulation and the process is repeated
+This constitutes one step of the simulation and the process is repeated
 until the specified number of steps are complete.
 
 \section{Summary}
 The power exchange auction market model defined in this chapter provides a
 layer of abstraction over the underlying optimal power flow problem and
-presents agents with a simple virtual interface for selling
-and buying power.  The highly modular simulation framework described allows
-different types of learning algorithm, policy function approximator,
-exploration technique and task to be used interchangeably. The framework can
+presents agents with a virtual interface for selling
+and buying power.  The modular nature of the simulation framework described
+allows the type of learning algorithm, policy function approximator,
+exploration technique and task to be changed with ease. The framework can
 simulate competitive electric power trade using any conventional bus-branch
-power system model, requiring very little configuration, but providing the
-options to adjust a large number of aspects of the simulation with reasonable
-ease. The modular nature of the model and its support for easy
-configuration is intended to allow learning methods to be compared in this
-domain under a number of different metrics.
+power system model, requiring little configuration, but provides the facility
+to easily adjust the main aspects of the simulation. The modular framework and
+its support for easy configuration is intended to allow transparent comparison
+of learning methods in this domain under a number of different metrics.
