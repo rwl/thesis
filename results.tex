@@ -34,53 +34,96 @@ power flow formulation (See Section \ref{sec:opf}, above) is used to clear the
 market and reactive power trade is omitted.
 % The Python code used to conduct the simulations is provided in Listing X.
 
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|c|c}
+\hline
+Bus &$P_d$ &$Q_d$ &$G_s$ &$B_s$ &$V_{base}$ &$V_{max}$ &$V_{min}$\\
+\hline\hline
+\input{tables/case6ww_bus}
+\hline
+\end{tabular}
+\caption{6-bus case bus data.}
+\label{tbl:case6ww_bus}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c}
+\hline
+Bus &$P_{max}$ &$P_{min}$ &$V_g$ &$Q_{max}$ &$Q_{min}$\\
+\hline\hline
+\input{tables/case6ww_gen}
+\hline
+\end{tabular}
+\caption{6-bus case generator data.}
+\label{tbl:case6ww_gen}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|c|c}
+\hline
+From &To &$r$ &$x$ &$b_c$ &$S_{max}$ &$\tau$ &$\theta_{ph}$\\
+\hline\hline
+\input{tables/case6ww_branch}
+\hline
+\end{tabular}
+\caption{6-bus case branch data.}
+\label{tbl:case6ww_branch}
+\end{center}
+\end{table}
+
+
 \section{Results}
 \section{Discussion}
 \section{Critical Analysis}
 
 
-\chapter{Competitive Power Trade}
-Having compared the learning methods in a one-player context, this section
-describes the method used to pit them against one and other and compare their
-performance.
-
-\section{Aims \& Objectives}
-Competition is fundamental to markets and this experiment aims to compare
-learning methods in a complex dynamic market environment with multiple
-competing participants.  The objective is to compare:
-\begin{itemize}
-  \item Performance, in terms of profitability, over a finite number of
-  periods,
-  \item Profitability when trading both active and reactive power.
-  \item Consistency of profit making and,
-  \item Sensitivity to algorithm parameter changes.
-\end{itemize}
-
-%\input{tikz/case6ww}
-
-\section{Method of Simulation}
-Figure X illustrates the structure of the six bus power system model, from
-\cite{wood:pgoc}, with three generators and fixed demand at three of the buses
-used to provide a dynamic environment with typical system values.  Bus,
-branch and generator attribute values are stated in Tables X, Y, Z,
-respectively.  Three learning methods are compared in six simulations
-encapsulating all method--generator combinations.
-
-A price cap $c_{cap}$ of twice the marginal cost of the most expensive generator
-at full capacity is set by the market.  The simulations are repeated for with agents
-actions composing both price and quantity and with just price.  For the
-value-function methods, the state is defined by the market clearing price from
-the previous period, divided equally into $x_s$ discrete states between $0$ and
-$c_{cap}$.  The state vector $s_t$ for the policy gradient methods consists of
-the market clearing price and generator set-point from the previous period.
-\begin{equation}
-s_t =
-\begin{bmatrix}
-c_{mcp}\\
-p_g
-\end{bmatrix}
-\end{equation}
-The script used to conduct the simulation is provided in Listing X.
+% \chapter{Competitive Power Trade}
+% Having compared the learning methods in a one-player context, this section
+% describes the method used to pit them against one and other and compare their
+% performance.
+%
+% \section{Aims \& Objectives}
+% Competition is fundamental to markets and this experiment aims to compare
+% learning methods in a complex dynamic market environment with multiple
+% competing participants.  The objective is to compare:
+% \begin{itemize}
+%   \item Performance, in terms of profitability, over a finite number of
+%   periods,
+%   \item Profitability when trading both active and reactive power.
+%   \item Consistency of profit making and,
+%   \item Sensitivity to algorithm parameter changes.
+% \end{itemize}
+%
+% %\input{tikz/case6ww}
+%
+% \section{Method of Simulation}
+% Figure X illustrates the structure of the six bus power system model, from
+% \cite{wood:pgoc}, with three generators and fixed demand at three of the buses
+% used to provide a dynamic environment with typical system values.  Bus,
+% branch and generator attribute values are stated in Tables X, Y, Z,
+% respectively.  Three learning methods are compared in six simulations
+% encapsulating all method--generator combinations.
+%
+% A price cap $c_{cap}$ of twice the marginal cost of the most expensive generator
+% at full capacity is set by the market.  The simulations are repeated for with agents
+% actions composing both price and quantity and with just price.  For the
+% value-function methods, the state is defined by the market clearing price from
+% the previous period, divided equally into $x_s$ discrete states between $0$ and
+% $c_{cap}$.  The state vector $s_t$ for the policy gradient methods consists of
+% the market clearing price and generator set-point from the previous period.
+% \begin{equation}
+% s_t =
+% \begin{bmatrix}
+% c_{mcp}\\
+% p_g
+% \end{bmatrix}
+% \end{equation}
+% The script used to conduct the simulation is provided in Listing X.
 
 \section{Results}
 \section{Discussion}
@@ -103,6 +146,64 @@ their total accumulated reward.
 % \section{Experiment \Rmnum{3}: Constraint Exploitation}
 
 %\input{tikz/ieee30}
+
+\section{Method}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|c|c}
+\hline
+Bus &$P_d$ &$Q_d$ &$G_s$ &$B_s$ &$V_{base}$ &$V_{max}$ &$V_{min}$\\
+\hline\hline
+\input{tables/ieee_rts_bus}
+\hline
+\end{tabular}
+\caption{IEEE RTS bus data.}
+\label{tbl:rtsbus}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|c}
+\hline
+Bus &$P_{max}$ &$P_{min}$ &$V_g$ &$Q_{max}$ &$Q_{min}$ &Type\\
+\hline\hline
+\input{tables/ieee_rts_gen}
+\hline
+\end{tabular}
+\caption{IEEE RTS generator data.}
+\label{tbl:rtsgen}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|c|c}
+\hline
+From &To &$r$ &$x$ &$b_c$ &$S_{max}$ &$\tau$ &$\theta_{ph}$\\
+\hline\hline
+\input{tables/ieee_rts_branch}
+\hline
+\end{tabular}
+\caption{IEEE RTS branch data.}
+\label{tbl:rtsbranch}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c}
+\hline
+Gen &$C_{up}$ &$a$ &$b$ &$c$ &Type\\
+\hline\hline
+\input{tables/ieee_rts_gencost}
+\hline
+\end{tabular}
+\caption{IEEE RTS generator cost data.}
+\label{tbl:rtsgencost}
+\end{center}
+\end{table}
 
 \section{Results}
 \section{Discussion}
