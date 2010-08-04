@@ -3,8 +3,8 @@
 This chapter examines the convergence to a Nash equilibrium of agents
 compteting with portfolios of generating plant.  Value function based and
 policy gradient reinforcement learning algorithms are compared in their speed
-of convergence and paramenter sensitivity using a simple 6-bus electric power
-system model.
+of convergence and sensitivity to parameter changes using a six bus electric
+power system model.
 
 \section{Introduction}
 To the best of the author's knowledge, this thesis presents the first case of
@@ -16,20 +16,20 @@ equilibrium that conventional closed-form simulation techniques produce.
 This is the same approach by \citeA{krause:nash06} before performing the study
 of congestion management techniques that is reviewed in Section
 \ref{sec:related_cong}.  Informally, a Nash equlibrium is a point at which no
-player is motivated to deviate from its strategy.  This point can be difficult
+player is motivated to deviate from its strategy.  This can be difficult
 to determine in complex systems so the experiment presented here utilises a
-model simple enough that it can be determined through brute-force search.
+model simple enough that it can be determined through exhaustive search.
 
 By observing the actions taken and the reward received by each agent over the
 initial simulation periods it is possible to compare different configurations
 of the algorithms in their speed of convergence to an optimal policy.  In the
 following sections the objectives of this experiment are explictly defined, the
-setup of the simulations is explained and simulation results provided with
+setup of the simulations is explained and simulation results are provided with
 discussion and critical analysis.
 
 \section{Aims and Objectives}
 Some elements of this experiment are very similar to those presented in
-\citeA{krause:nash06} and one aim is to reproduce those results.  Additionally
+\citeA{krause:nash06} and one aim is to reproduce those results.  Additionally,
 the specific objectives are to show that:
 \begin{itemize}
   \item Policy gradient methods converge to the same Nash equilibrium as value
@@ -39,8 +39,8 @@ the specific objectives are to show that:
   \item The sensitivity of policy convergence to algorithm parameter choices
   and policy function approximation structure.
 \end{itemize}
-Meeting these objectives aims to provide to provide a basis for more
-complicated experiments that are less intuitively tractable.
+Meeting these objectives aims to provide a basis for more complicated
+experiments that are less intuitively tractable.
 
 \section{Method of Simulation}
 % Each learning method is tested individually using a range of parameter
@@ -59,34 +59,35 @@ complicated experiments that are less intuitively tractable.
 % power flow formulation (See Section \ref{sec:opf}, above) is used to clear the
 % market and reactive power trade is omitted.
 Learning methods are compared in this experiment by repeating the same
-simulation with agents utilising the different algorithms.  An alternative
+simulation with the different algorithms in-place.  An alternative
 might be to use a combination of methods in the same simulation, but the
-approach used here extends the work of \citeA{krause:nash06}.
+approach used here is intended to be an extension of the work in
+\citeA{krause:nash06}.
 
 Each simulation uses the 6-bus electric power system model from \citeA[pp.~104,
-112, 119, 123-124, 549]{wood:pgoc}.  The 6 buses in this model are connected by
-11 transmission lines at 230kV.  It contains 3 generating units with a total
-capacity of 530MW and loads a 3 locations, each of 70MW.  The generator
-opertaing costs are linear functions of production, defined by the parameters
-in Table \ref{tbl:case6ww_gencost} and plotted in Figure X.  The connectivity
-of the branches and the locations of the generators and the load is shown in
-Figure~\ref{fig:case6ww}.  Data for the power system model is provided in
-Appendix \ref{adx:case6ww} and is distributed with the software developed for
-this thesis (See Appendix \ref{sec:pylon}).
+112, 119, 123-124, 549]{wood:pgoc}.  The six buses in this model are at 230kV
+and are connected by eleven transmission lines.  It contains three generating
+units with a total capacity of 530MW and loads at three locations, each of
+70MW. The generator opertaing costs are linear functions of production, defined by
+the parameters in Table \ref{tbl:case6ww_gencost} and plotted in Figure X.
+The connectivity of the branches and the locations of the generators and the
+load is shown in Figure~\ref{fig:case6ww}.  Data for the power system model is
+provided in Appendix \ref{adx:case6ww} and is distributed with the software
+developed for this thesis (See Appendix \ref{sec:pylon}).
 
 %\input{tikz/case6ww}
 
 No load profile is defined, the system load is assumed to be peak for all
 simulation periods, so only one system state is defined for the value function
-based algorithms.  The minimum operating point $P_{min}$ for all generators is
-assumed to be $0.0$ so as to simplify the experiment and avoid the need to use
-the unit decommitment algorithm defined in Section \ref{sec:decommit}.
+based algorithms.  The minimum operating point, $P^{min}$, for all generators
+is made to be zero so as to simplify the experiment and avoid the need to
+use the unit decommitment algorithm defined in Section \ref{sec:decommit}.
 
 Two active agents, and one passive agent that always offers at marginal cost,
-are defined in each simulation and associated with one generating unit.  Their
-activity in the market is restricted to one offer in each period of maximum
-capacity at a price representing a markup of between 0 and 30\% on marginal
-cost.  Value function based methods are restricted to discrete markup steps of
+are defined in each simulation and are each associated with one generating
+unit. Their activity in the market is restricted to one offer of maximum
+capacity in each period, at a price representing a markup of between 0 and 30\%
+on marginal cost.  Value function based methods are restricted to discrete markup steps of
 10\%, giving possible markup actions of 0, 10, 20 and 30\%, as illustrated in
 Figure X.  The market price cap is set such that it is never reached by any
 markup and does not complicate the experiment.
@@ -164,23 +165,22 @@ agent's generator.
 % periods, resulting in elevated nodal marginal prices in particular areas.  The
 % methods are tested in their ability to exploit these constraints and improve
 % their total accumulated reward.
-This chapter explores the exploitation of constraints in an electric power
+This chapter explores the exploitation of constraints in electric power
 system models by agents whose behaviour is determined by reinforcement learning
 algorithms.  Value function based and policy gradient methods are compared
-using the IEEE Reliability Test System, with dynamic loads and probibalistic
+using the IEEE Reliability Test System, with dynamic loads and probabilistic
 transmission line outages.
 
 \section{Introduction}
-Having explored the basic properties of various learning methods in Chapter
-\ref{ch:learningtotrade}, this experiment examines them under a complex dynamic
-scenario.  Policy gradient methods have been used in robotic control
+Having explored the basic properties of various learning methods in
+Chapter~\ref{ch:learningtotrade}, this experiment examines them under a complex dynamic scenario.  Policy gradient methods have been used in robotic control
 applications with multi-dimensional, continuous state and action spaces, and
-exhibit a degree of robustness to sensor noise.  In this experiment, these same
-properties are explioited in the context of learning to trade power.  Control
-of a portfolio of generators using continous sensor data from simulation of a
-standard test power system model with realisitic load dynamics is examined.  To
-force the system into a constrained state at certain times, transmission line
-outages are simualated according to the probabilities given in Table Z.  By
+exhibit a degree of robustness to sensor noise.  In this experiment,
+these features are explored in the context of learning to trade power.
+
+Control of a portfolio of generators using continous sensor data from
+simulations of a standard test power system model with realisitic load dynamics
+is examined.  To force the system into a constrained state at certain times, transmission line outages are simualated according to the probabilities given in Table Z.  By
 observing the actions taken and the reward received by an agent during these
 periods it is examined if these methods can be used to exploit such
 occurances.
@@ -206,7 +206,7 @@ different types of algorithm in-place.  Some simplification of the state
 and action domains for the value function based methods is required, but the
 portfolios of generation and load profiles are constant.
 
-The IEEE Reliability test System \cite{ieee79rts} provides the power system
+The IEEE Reliability Test System \cite{ieee79rts} provides the power system
 model, load profiles and outage probabilities used in each simulation.  The
 model has 24 bus locations, connected by 32 transmission lines, 4 transformers
 and 2 underground cables.  The transformers tie together two system areas at
@@ -221,7 +221,7 @@ Figure~Y.
 
 The generating stock is divided into 5 portfolios, as listed in Table Z, that
 are each endowed to a learning agent.  The synchronous generator is associated
-with a passive agent that always offers at marginal cost i.e.~\$/MWh~0.0.
+with a passive agent that always offers at marginal cost i.e.~\$/MWh~0.
 Markups of offer price are restricted a maximum of 30\% and discrete markup
 steps of 10\% are defined for value function based methods.
 
