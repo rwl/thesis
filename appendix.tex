@@ -319,9 +319,120 @@ under more restrictive terms than the original Apache license.  This is in
 contrast to ``copyleft'' licenses, such as the GNU GPL, that require the same
 rights to be preserved in modified versions of the work.
 
-% \chapter{PSS/E data for UK Transmission System}
-% \section{Power Flow}
-% \label{sec:nget_pf}
-%
-% \section{Optimal Power Flow}
-% \label{sec:nget_opf}
+\chapter{Case Data}
+\section{6-Bus Case}
+\label{adx:case6ww}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|c|c}
+\hline
+Bus &$P_d$ &$Q_d$ &$G_s$ &$B_s$ &$V_{base}$ &$V_{max}$ &$V_{min}$\\
+\hline\hline
+\input{tables/case6ww_bus}
+\hline
+\end{tabular}
+\caption{6-bus case bus data.}
+\label{tbl:case6ww_bus}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c}
+\hline
+Bus &$P_{max}$ &$P_{min}$ &$V_g$ &$Q_{max}$ &$Q_{min}$\\
+\hline\hline
+\input{tables/case6ww_gen}
+\hline
+\end{tabular}
+\caption{6-bus case generator data.}
+\label{tbl:case6ww_gen}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|c|c}
+\hline
+From &To &$r$ &$x$ &$b_c$ &$S_{max}$ &$\tau$ &$\theta_{ph}$\\
+\hline\hline
+\input{tables/case6ww_branch}
+\hline
+\end{tabular}
+\caption{6-bus case branch data.}
+\label{tbl:case6ww_branch}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c}
+\hline
+Gen &$C_{up}$ &$a$ &$b$ &$c$ &Type\\
+\hline\hline
+\hline
+\end{tabular}
+\caption{6-bus case generator cost data.}
+\label{tbl:case6ww_gencost}
+\end{center}
+\end{table}
+
+\section{IEEE Reliability Test System}
+\label{adx:ieee_rts}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|c|c}
+\hline
+Bus &$P_d$ &$Q_d$ &$G_s$ &$B_s$ &$V_{base}$ &$V_{max}$ &$V_{min}$\\
+\hline\hline
+\input{tables/ieee_rts_bus}
+\hline
+\end{tabular}
+\caption{IEEE RTS bus data.}
+\label{tbl:rtsbus}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|c}
+\hline
+Bus &$P_{max}$ &$P_{min}$ &$V_g$ &$Q_{max}$ &$Q_{min}$ &Type\\
+\hline\hline
+\input{tables/ieee_rts_gen}
+\hline
+\end{tabular}
+\caption{IEEE RTS generator data.}
+\label{tbl:rtsgen}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|c|c}
+\hline
+From &To &$r$ &$x$ &$b_c$ &$S_{max}$ &$\tau$ &$\theta_{ph}$\\
+\hline\hline
+\input{tables/ieee_rts_branch}
+\hline
+\end{tabular}
+\caption{IEEE RTS branch data.}
+\label{tbl:rtsbranch}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c}
+\hline
+Gen &$C_{up}$ &$a$ &$b$ &$c$ &Type\\
+\hline\hline
+\input{tables/ieee_rts_gencost}
+\hline
+\end{tabular}
+\caption{IEEE RTS generator cost data.}
+\label{tbl:rtsgencost}
+\end{center}
+\end{table}
