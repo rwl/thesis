@@ -1,4 +1,4 @@
-\chapter{Learning to Trade Power}
+\chapter{Nash Equilibrium Analysis}
 \label{ch:learningtotrade}
 This chapter examines the convergence to a Nash equilibrium of agents
 compteting with portfolios of generating plant.  Value function based and
@@ -98,7 +98,49 @@ adjustment are\ldots.
 
 As in \citeA{krause:nash06}, the point of Nash equilibrium is established by
 computing each agent's reward for all possible combinations of markup.  The
-value are given in Table Y.
+value are given in Table \ref{tbl:nash1}.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c.{2.2}|.{2.1}.{3.1}|.{2.1}.{3.1}|.{2.1}.{3.1}|.{2.1}.{3.1}|}
+\cline{3-10}
+ & &\multicolumn{8}{c|}{$G_1$} \\
+\cline{3-10}
+ & &\multicolumn{2}{c|}{0.0\%} &\multicolumn{2}{c|}{10.0\%} &\multicolumn{2}{c|}{20.0\%} &\multicolumn{2}{c|}{30.0\%} \\
+ & &r_1 &r_2 &r_1 &r_2 &r_1 &r_2 &r_1 &r_2 \\
+\hline
+\multicolumn{1}{|c|}{\multirow{4}{*}{$G_2$}} &0.0\% &0.0 &0.0 &51.0 &0.0 &0.0 &0.0 &0.0 &0.0 \\
+\multicolumn{1}{|c|}{} &10.0\% &0.0 &49.5 &51.0 &49.5 &0.0 &49.5 &0.0 &49.5 \\
+\multicolumn{1}{|c|}{} &20.0\% &0.0 &92.2 &51.0 &99.0 &0.0 &99.0 &0.0 &99.0 \\
+\multicolumn{1}{|c|}{} &30.0\% &0.0 &126.8 &54.8 &138.4 &0.0 &148.5 &0.0 &148.5 \\
+\hline
+\end{tabular}
+\caption{Agent rewards for Nash equilibrium analysis under cost
+configuration~1}
+\label{tbl:nash1}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c.{2.2}|.{2.1}.{2.1}|.{2.1}.{2.1}|.{2.1}.{2.1}|.{3.1}.{2.1}|}
+\cline{3-10}
+ & &\multicolumn{8}{c|}{$G_1$} \\
+\cline{3-10}
+ & &\multicolumn{2}{c|}{0.0\%} &\multicolumn{2}{c|}{10.0\%} &\multicolumn{2}{c|}{20.0\%} &\multicolumn{2}{c|}{30.0\%} \\
+ & &r_1 &r_2 &r_1 &r_2 &r_1 &r_2 &r_1 &r_2 \\
+\hline
+\multicolumn{1}{|c|}{\multirow{4}{*}{$G_2$}} &0.0\% &0.0 &0.0 &40.0 &0.0 &80.0 &0.0 &120.0 &0.0 \\
+\multicolumn{1}{|c|}{} &10.0\% &0.0 &33.0 &40.0 &33.0 &80.0 &33.0 &120.0 &33.0 \\
+\multicolumn{1}{|c|}{} &20.0\% &0.0 &66.0 &40.0 &66.0 &80.0 &66.0 &120.0 &66.0 \\
+\multicolumn{1}{|c|}{} &30.0\% &0.0 &99.0 &40.0 &99.0 &80.0 &99.0 &120.0 &99.0 \\
+\hline
+\end{tabular}
+\caption{Agent rewards for Nash equilibrium analysis under cost
+configuration~2}
+\label{tbl:nash2}
+\end{center}
+\end{table}
 
 As one would intuitively expect, the optimal policy for each agent is to apply
 the maximum markup to each offer as this never results in a generator failing
@@ -106,21 +148,122 @@ to be dispatched.
 
 They show that the optimal point is where the agent with the lowest cost
 generator applies the maximum markup and the agent with the medimum priced
-generator offers a proce just below the marginal cost of the passive
+generator offers a price just below the marginal cost of the passive
 agent's generator.
 
+\section{Simulation Results}
+Each action taken by an agent and the consequent reward is recorded for each
+simulation.  Values are averaged over the 10 simulation runs and standard
+deviations calculated using the conventional formula
+\begin{equation}
+SD = \sum_{i=0}^{N}\frac{(x_i - m)^2}{N-1}
+\end{equation}
+where $x_i$ is the action or reward value in simulation $i$ of $N$ simulation
+runs and $m$ is the mean of the values.
 
-\section{Results}
+Figure \ref{fig:5_1_action_a1} plots the average markup on marginal cost and
+the standard deviation over the 10 simulation runs for Agent 1 under the first
+price configuration using the variant Roth-Erev, Q-learning, REINFORCE and ENAC
+learning methods.  The second $y$-axis in each plot concerns the value of
+the exploration parameter for each method.  Figure \ref{fig:5_1_action_a2}
+plots the same quantities for Agent 2.  Generator prices and the market are
+configured such that an agent's reward is directly proportional to its action,
+so plots of reward are not given.
 
 \begin{figure}
   \centering
-  \includegraphics{figures/fig5_1_g1_action}
+  \includegraphics{figures/fig5_1_action_a1}
   \caption{Average markup for agent 1 and standard deviation over 10 runs.}
-  \label{fig:libpsat}
+  \label{fig:5_1_action_a1}
 \end{figure}
 
-\section{Discussion}
-\section{Conclusions}
+\begin{figure}
+  \centering
+  \includegraphics{figures/fig5_1_action_a2}
+  \caption{Average markup for agent 2 and standard deviation over 10 runs.}
+  \label{fig:5_1_action_a2}
+\end{figure}
+
+Figures \ref{fig:5_2_action_a1} and \ref{fig:5_2_action_a2} plot the average
+markup for Agent 1 and Agent 2, respectively, under the second price
+configuration and again for the variant Roth-Erev, Q-learning, REINFORCE and
+ENAC learning methods.  Figures \ref{fig:5_2_reward_a1} and
+\ref{fig:5_2_reward_a2} plot the associated average \textit{rewards} for
+Agent 1 and Agent 2.  Again the standard deviation and exploration parameter
+values are plotted. The plots are vertically aligned and have equal $x$-axis
+limits to aid algorithm comparison.
+\begin{figure}
+  \centering
+  \includegraphics{figures/fig5_2_action_a1}
+  \caption{Average markup for agent 1 and standard deviation.}
+  \label{fig:5_2_action_a1}
+\end{figure}
+\begin{figure}
+  \centering
+  \includegraphics{figures/fig5_2_action_a2}
+  \caption{Average markup for agent 2 and standard deviation.}
+  \label{fig:5_2_action_a2}
+\end{figure}
+\begin{figure}
+  \centering
+  \includegraphics{figures/fig5_2_reward_a1}
+  \caption{Average reward for agent 1 and standard deviation.}
+  \label{fig:5_2_reward_a1}
+\end{figure}
+\begin{figure}
+  \centering
+  \includegraphics{figures/fig5_2_reward_a2}
+  \caption{Average reward for agent 2 and standard deviation.}
+  \label{fig:5_2_reward_a2}
+\end{figure}
+
+\section{Discussion and Critical Analysis}
+Under the first generator price configuration the agents face a very simple
+control task and receive a clear reward signal that is directly proportional to
+their markup action.  The results show that all of the methods consistently
+converge to the Nash equilibrium point.  A multitude of parameter and nerual
+network structures could be investigated and would produce a sea of similar
+plots.  The author's experience is that the speed of convergence is largely
+determined by the rate at which the exploration parameter value is reduced.
+The policy gradient methods are sensitive to high learning rate parameter
+values, but make only very small policy adjustments if this parameter is set
+too low. All of the plots for REINFORCE and ENAC show that the methods only converge to a
+stable policy if the exploration parameter $\sigma$ is manually reduced to
+below approximately minus two.
+
+The second pricing configuration provides a more challenging control problem in
+which there is some interdependence between the agent's rewards and where
+Agent~1 must learn to undercut the passive agent.  The results show that the
+variant Roth-Erev and Q-learning methods both consistantly learn their optimal
+policy and converge to the Nash equilibrium.  It should be noted that Agent~1
+can markup its marginal price by slightly more than 10\% and still undercut
+the passive agent, but these methods are restricted to discrete actions.
+
+When using REINFORCE or ENAC, Agent~2 tends also to learn to maximise its
+markup, but less consistantly.  Agent~1 typically learns to undercut the
+passive agent, but does not converge to a consistant value.  The problem is
+similar to the cliff-edge walking problems often used as benchmarks in
+reinforcement learning research and may be difficult to approximate a policy
+for using a small number of $\tanh$ functions. It may be possible to improve
+the performance of these agents through more educated policy function
+approximator design, but their methods are not really intended for operation in
+such simple environments.
+
+This experiment confirms the convergence to a Nash equilibrium of the
+Q-learning methods that is published in \citeA{krause:nash06} and, to a degree,
+extends the conclusion to policy gradient methods.  The results show that
+while these methods do converge to the same or similar policies as the
+Q-learning and Roth-Erev methods, they do not exhibit the same level of
+consistancy.
+
+Value function based methods or the Roth-Erev method may be the
+most suitable choice of algorithm in the simple electricity market simulations
+typlically found in the literature.  The simulations conducted here do not
+exploit any of the abilities of policy gradient methods to utilise
+multi-dimensional continuous state information and it would be desirable to
+investigate their behaviour in a more complex environment.
+
+%\section{Summary}
 
 
 % \chapter{Competitive Power Trade}
@@ -208,7 +351,7 @@ determine:
 Meeting these objectives aims to demonstrate the value of policy gradient
 methods in electricity market participant modelling.
 
-\section{Method}
+\section{Method of Simulation}
 The learning methods are compared by repeating the same simulation with
 different types of algorithm in-place.  Some simplification of the state
 and action domains for the value function based methods is required, but the
@@ -227,6 +370,14 @@ for the model is provided in Appendix \ref{adx:ieee_rts} and the connectivity
 of branches and the location of generators and loads is illustrated in
 Figure~Y.
 
+\begin{figure}
+  \centering
+  \includegraphics{figures/ieee_rts_profiles}
+  \caption{Hourly, daily and weekly load profile plots from the IEEE
+  Reliability Test System}
+  \label{fig:iee_rts_profiles}
+\end{figure}
+
 The generating stock is divided into 5 portfolios, as listed in Table Z, that
 are each endowed to a learning agent.  The synchronous generator is associated
 with a passive agent that always offers at marginal cost i.e.~\$/MWh~0.
@@ -235,8 +386,7 @@ steps of 10\% are defined for value function based methods.
 
 %\input{tikz/ieee79rts}
 
-
-\section{Results}
-\section{Discussion}
+\section{Simulation Results}
+\section{Discussion and Critical Analysis}
 \label{sec:discuss}
-\section{Conclusions}
+\section{Summary}

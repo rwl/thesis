@@ -6,6 +6,7 @@
 \usepackage[mathscr]{eucal}
 \usepackage{ifpdf}
 \usepackage{multirow}
+\usepackage{dcolumn}
 \usepackage{eurosym}
 \usepackage{rotating}
 \usepackage{pdflscape}
@@ -46,6 +47,9 @@ connection/.style={thick, dotted},
 \usepackage[underline=true,rounded corners=false]{pgf-umlsd}
 
 \input{tikz/tikz_cmd}
+
+\newcolumntype{d}[1]{D{.}{\cdot}{#1}}
+\newcolumntype{.}[1]{D{.}{.}{#1}}
 
 \makeatletter
 \newcommand{\rmnum}[1]{\romannumeral #1}
