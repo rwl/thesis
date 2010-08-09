@@ -1,17 +1,20 @@
-\chapter{Further Work}
-\label{sec:furtherwork}
-The present chapter concerns ideas for further development of the contributions
-made by this thesis.  It introduces some relatively new learning algorithms
-that have been developed for operation in continuous domains and might
-also be compared.  Two new electric
-power Engineering reinforcement learning problems are defined, some initial
-simulation results for which are provided.  Also explained is how data from
-National Grid Ltd.~could be used in practical simulations of the UK
-electricity market.  Finally, some of the posibilities that AC optimal power
-flow brings to to electric power market simulation and multi-market simulation
-are explored.
+\chapter{Conclusions and Further Work}
+This chapter summarizes the conclusions that can be drawn from the
+results that are presented in this thesis and presents several ideas for
+further development of the contributions that have been made.
 
-\section{Alternative Learning Algorithms}
+\section{Further Work}
+\label{sec:furtherwork}
+This section introduces some relatively new learning algorithms that have
+also been developed for operation in continuous multi-dimensional domains and
+might also be used for simulating electricity trade.  Also, two new
+reinforcement learning problem formulations are defined that concern two
+highly pertinent issues in electric power Engineering.  Finally, it explained
+is how data from National Grid Ltd.~could be used in practical simulations of the UK
+electricity market and some of the posibilities that AC optimal power
+flow brings to to electric power market simulation are explored.
+
+\subsection{Alternative Learning Algorithms}
 This thesis has concentrated on traditional value function based and policy
 gradient reinforcement learning methods.  However, research in the field of
 Artificial Intelligence is highly active and there have been some interesting
@@ -45,7 +48,7 @@ This thesis provides a framework that would allow implementations of these
 interesting new algorithms to be assessed and used to examine aspects of
 electricity markets.
 
-\section{Learning to Optimise Power Flow}
+\subsection{Learning to Optimise Power Flow}
 Two important problems in electric power Engineering, to which to the
 application of advanced reinforcement learning algorithms would be of value,
 are:
@@ -69,7 +72,7 @@ To illustrate the concept, this section presents a preliminary formulation of
 such a task and demonstrates how a system operator agent can use policy
 gradient methods to learn to optimise power flow.
 
-\subsection{System Operator Task and Environment}
+\subsubsection{System Operator Task and Environment}
 The state of the system operator agent's environment is defined simply as a
 demand forecast.  That is, the environment returns a vector of active power
 demand at all system buses.  The initial demand is assumed to be peak and is
@@ -98,7 +101,7 @@ satisfy system constraints, such as voltage limits or generators reactive power
 limits and penalty costs must be applied to the reward so the agent learns to
 obey them.
 
-\subsection{Slack Bus Generator Control}
+\subsubsection{Slack Bus Generator Control}
 This initial proof of concept attempts only to enforce the set-point limit on
 the slack bus generator.  The reward is updated according to
 \begin{equation}
@@ -126,9 +129,9 @@ solution due to the disregard for other constraints, particularly the
 branch flow constraint between buses 2 and 4 which is binding at times of peak
 load.
 
-\section{Learning to Plan Investment}
+\subsection{Learning to Plan Investment}
 
-\section{UK Transmission System}
+\subsection{UK Transmission System}
 Some of the more ambitious agent-based electricity market simulations have used
 stylised models of national transmission systems
 \cite{cincotti:09,weidlich:06}.  This work has often been motivated by recent
@@ -174,7 +177,7 @@ power flow solver.  Agent-based simulation lends itself to parallelisation and
 the artificial neural networks could be processed in multiple threads on
 multi-core processors or on distributed memory architectures.
 
-\section{AC Optimal Power Flow}
+\subsection{AC Optimal Power Flow}
 To the best of the author's knowledge this is the first application of security
 constrained optimal power flow in agent-based electricity market simulation.
 AC optimal power flow is more difficult to implement and more computationally
@@ -207,7 +210,7 @@ implement variable phase shifting transformers.  These offer a degree of
 control in directing power flows and the formulation would allow advanced
 constraint management schemes to be researched.
 
-\section{Multi-Market Simulation}
+\subsection{Multi-Market Simulation}
 Policy gradient method's superior use of sensory data and their ability to
 operate in large action domains opens opportunities for more detailed study of
 inter-market relationships.  The global economy is a holistic system of
@@ -256,9 +259,9 @@ for exceeding quotas.
 %\section{Blackbox optimisation}
 % periodic
 
-\section{Summary}
+%\subsection{Summary}
 
-\chapter{Summary Conclusions}
+\section{Summary Conclusions}
 \label{ch:conclusion}
 
 % restate contributions
