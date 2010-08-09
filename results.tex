@@ -370,68 +370,128 @@ must be examined.
 This chapter explores the exploitation of constraints in electric power
 system models by agents whose behaviour is determined by reinforcement learning
 algorithms.  Value function based and policy gradient methods are compared
-using the IEEE Reliability Test System, with dynamic loads and probabilistic
-transmission line outages.
+using the 24-bus IEEE Reliability Test System with dynamic loads.
 
 \section{Introduction}
-Having explored the basic properties of various learning methods in
-Chapter~\ref{ch:learningtotrade}, this experiment examines them under a complex dynamic scenario.  Policy gradient methods have been used in robotic control
-applications with multi-dimensional, continuous state and action spaces, and
-exhibit a degree of robustness to sensor noise.  In this experiment,
-these features are explored in the context of learning to trade power.
+Having explored the basic properties of four learning methods in
+Chapter~\ref{ch:learningtotrade}, this experiment examines them under a
+more complex dynamic scenario.  The experiment explores the multi-dimensional,
+continuous state space handling abilities of policy gradient methods in the
+context of \textit{learning to trade power}.
 
 Control of a portfolio of generators using continous sensor data from
-simulations of a standard test power system model with realisitic load dynamics
-is examined.  To force the system into a constrained state at certain times, transmission line outages are simualated according to the probabilities given in Table Z.  By
-observing the actions taken and the reward received by an agent during these
-periods it is examined if these methods can be used to exploit such
-occurances.
+simulations of the IEEE Reliability Test System \cite{ieee79rts} is
+investigated.  The system is constrained by bus voltage, branch flow and generator capacity
+limits as the system demand cycles daily over the course of a year. By
+observing the actions taken and the rewards received by the agents during these
+periods it is examined if policy gradient methods can successfully observe and
+exploit the constraints.
 
 \section{Aims and Objectives}
 This experiment aims to compare the operation of learning methods in dynamic
-electric power system environments.  Specifically, the objective are to
+electric power system environments.  Specifically, the objectives are to
 determine:
 \begin{itemize}
   \item If policy gradient methods can be used to achieve greater profit under
   dynamic loading conditions.
-  \item If policy gradient methods can exploit outages and the resulting system
-  constraints to further increased profit.
+%   \item If policy gradient methods can exploit outages and the resulting system
+%   constraints to further increased profit.
   \item The value of using AC optimal power flow formulations in agent base
   electricity market simulation.
 \end{itemize}
 Meeting these objectives aims to demonstrate the value of policy gradient
-methods in electricity market participant modelling.
+methods in electricity market participant modelling and determine if they
+warrant further research in this domain.
 
 \section{Method of Simulation}
-The learning methods are compared by repeating the same simulation with
-different types of algorithm in-place.  Some simplification of the state
-and action domains for the value function based methods is required, but the
-portfolios of generation and load profiles are constant.
+In this experiment learning methods are compared by repeating the simulations
+of competitive electricity trade with different types of algorithm used by the
+participating agents. Some simplification of the state and action domains for
+the value function based methods is required, but the portfolios of generation
+and load profiles are constant.
 
-The IEEE Reliability Test System \cite{ieee79rts} provides the power system
-model, load profiles and outage probabilities used in each simulation.  The
-model has 24 bus locations, connected by 32 transmission lines, 4 transformers
+The IEEE Reliability Test System provides the power system model and load
+profiles used in each simulation.  The model has 24 bus locations, connected by 32 transmission lines, 4 transformers
 and 2 underground cables.  The transformers tie together two system areas at
 230kV and 138kV.  The model has 32 generators of 9 different types (See Table
-X) with a total capacity of 3.45GW and load at 17 locations, totalling 2.85GW.
-Generator costs are quadratic functions of output, defined by the parameters in
-Table Y.  Figure X plots the cost functions for each type of generator over
-their production range and illustrates their categorisation by fuel type.  Data
-for the model is provided in Appendix \ref{adx:ieee_rts} and the connectivity
-of branches and the location of generators and loads is illustrated in
-Figure~Y.
+\ref{tbl:ieee_rts_gencosts}) with a total capacity of 3.45GW and load at 17
+locations, totalling 2.85GW. Generator costs are quadratic functions of
+output, defined by the parameters in Table \ref{tbl:ieee_rts_gencosts}.
+Figure \ref{fig:ieee_rts_gencost_plot} plots the cost functions for each type
+of generator over their production range and illustrates their categorisation
+by fuel type.  Data for the model is provided in Appendix \ref{adx:ieee_rts}
+and the connectivity of branches and the location of generators and loads is
+illustrated in Figure \ref{fig:ieee79rts}.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{r|c|.{1.5}|.{3.4}|.{3.3}|l}
+\hline
+Code &$C_{up}$ &\multicolumn{1}{c}{$a$} &\multicolumn{1}{|c|}{$b$}
+&\multicolumn{1}{c|}{$c$} &Type \\
+\hline\hline
+U12	 &1500	&0.32841	&56.564	&86.385 &Oil \\
+U20	 &1500	&0.0	&130.0	&400.685 &Oil \\
+U50	 &1500	&0.0	&0.001	&0.001 &Hydro \\
+U76	 &1500	&0.01414	&16.0811	&212.308 &Coal \\
+U100 &1500	&0.05267	&43.6615	&781.521 &Oil \\
+U155 &1500	&0.00834	&12.3883	&382.239 &Coal \\
+U197 &1500	&0.00717	&48.5804	&832.758 &Oil \\
+U350 &1500	&0.00490	&11.8495	&665.109 &Coal \\
+U400 &1500	&0.00021	&4.4231	&395.375 &Nuclear \\
+\hline
+\end{tabular}
+\caption{Cost parameters IEEE RTS generator types.}
+\label{tbl:ieee_rts_gencosts}
+\end{center}
+\end{table}
+
+\begin{figure}
+  \centering
+  \includegraphics{figures/ieee_rts_gencosts}
+  \caption{Generator cost functions for the IEEE Reliability Test System}
+  \label{fig:ieee_rts_gencost_plot}
+\end{figure}
 
 \begin{figure}
   \centering
   \includegraphics{figures/ieee_rts_profiles}
   \caption{Hourly, daily and weekly load profile plots from the IEEE
   Reliability Test System}
-  \label{fig:iee_rts_profiles}
+  \label{fig:ieee_rts_profiles}
 \end{figure}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c}
+\hline
+Agent &Type &\multicolumn{1}{c}{Buses} \\
+\hline\hline
+\multirow{3}{*}{$A_1$} &U20 &1,1,2,2 \\
+ & U76 &1,1,2,2 \\
+ & U100 &7,7,7\\
+\hline
+\multirow{3}{*}{$A_2$} &U155 &23,23 \\
+ & U197 &13,13,13 \\
+ & U300 &23 \\
+\hline
+\multirow{2}{*}{$A_3$} &U12 &15,15,15,15,15 \\
+ & U155 &15,16 \\
+\hline
+\multirow{2}{*}{$A_4$} &U50 &22,22,22,22,22,22 \\
+ & U400 &18,21 \\
+\hline
+$A_5$ & Sync.~Cond. &14 \\
+\hline
+\end{tabular}
+\caption{Agent portfolios by type and location.}
+\label{tbl:agent_portfolios}
+\end{center}
+\end{table}
 
 The generating stock is divided into 5 portfolios, as listed in Table Z, that
 are each endowed to a learning agent.  The synchronous generator is associated
-with a passive agent that always offers at marginal cost i.e.~\$/MWh~0.
+with a passive agent that always offers at marginal cost i.e.~\$/MWh~$0.0$.
 Markups of offer price are restricted a maximum of 30\% and discrete markup
 steps of 10\% are defined for value function based methods.
 
