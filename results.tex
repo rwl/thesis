@@ -1,5 +1,5 @@
 \chapter{Nash Equilibrium Analysis}
-\label{ch:learningtotrade}
+\label{ch:nashanalysis}
 This chapter examines the convergence to a Nash
 equilibrium\footnote{Informally, a Nash equlibrium is a point at which no
 player is motivated to deviate from its strategy as it would result in lower
@@ -374,7 +374,7 @@ using the 24-bus IEEE Reliability Test System with dynamic loads.
 
 \section{Introduction}
 Having explored the basic properties of four learning methods in
-Chapter~\ref{ch:learningtotrade}, this experiment examines them under a
+Chapter~\ref{ch:nashanalysis}, this experiment examines them under a
 more complex dynamic scenario.  The experiment explores the multi-dimensional,
 continuous state space handling abilities of policy gradient methods in the
 context of \textit{learning to trade power}.
@@ -461,6 +461,13 @@ U400 &1500	&0.00021	&4.4231	&395.375 &Nuclear \\
   \label{fig:ieee_rts_profiles}
 \end{figure}
 
+The generating stock is divided into 5 portfolios, as listed in Table
+\ref{tbl:agent_portfolios}, that are each endowed to a learning agent.  The
+synchronous generator is associated with a passive agent that always offers at
+marginal cost i.e.~\$/MWh~$0.0$. Markups of offer price are restricted a
+maximum of 30\% and discrete markup steps of 10\% are defined for value
+function based methods.
+
 \begin{table}
 \begin{center}
 \begin{tabular}{c|c|c}
@@ -488,12 +495,6 @@ $A_5$ & Sync.~Cond. &14 \\
 \label{tbl:agent_portfolios}
 \end{center}
 \end{table}
-
-The generating stock is divided into 5 portfolios, as listed in Table Z, that
-are each endowed to a learning agent.  The synchronous generator is associated
-with a passive agent that always offers at marginal cost i.e.~\$/MWh~$0.0$.
-Markups of offer price are restricted a maximum of 30\% and discrete markup
-steps of 10\% are defined for value function based methods.
 
 %\input{tikz/ieee79rts}
 

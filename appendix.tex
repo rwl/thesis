@@ -320,10 +320,22 @@ contrast to ``copyleft'' licenses, such as the GNU GPL, that require the same
 rights to be preserved in modified versions of the work.
 
 \chapter{Case Data}
+This appendix provides the data for the electric power system models used in
+Chapters \ref{ch:nashanalysis} and \ref{ch:exploitation}.
+
 \section{6-Bus Case}
 \label{adx:case6ww}
+The data for the six bus case adapted from \citeA[pp.~104, 112, 119, 123-124,
+549]{wood:pgoc} is presented in this section.  The data was imported from the
+``case6ww.m'' case file provided with \textsc{Matpower}.  Figure
+\ref{fig:case6ww2} illustrates the structure of the model and shows the bus
+injections for the AC unit de-commitment optimal power flow solution.  Table
+\ref{tbl:case6ww_bus} lists the bus data, Table \ref{tbl:case6ww_gen} lists
+the generator data and Table \ref{tbl:case6ww_branch} lists the branch data.
 
-\begin{table}
+%\input{tikz/case6ww2}
+
+\begin{table}[h]
 \begin{center}
 \begin{tabular}{c|c|c|c|c|c|c|c}
 \hline
@@ -337,7 +349,7 @@ Bus &$P_d$ &$Q_d$ &$G_s$ &$B_s$ &$V_{base}$ &$V_{max}$ &$V_{min}$\\
 \end{center}
 \end{table}
 
-\begin{table}
+\begin{table}[h]
 \begin{center}
 \begin{tabular}{c|c|c|c|c|c}
 \hline
@@ -351,7 +363,7 @@ Bus &$P_{max}$ &$P_{min}$ &$V_g$ &$Q_{max}$ &$Q_{min}$\\
 \end{center}
 \end{table}
 
-\begin{table}
+\begin{table}[h]
 \begin{center}
 \begin{tabular}{c|c|c|c|c|c|c|c}
 \hline
@@ -365,23 +377,22 @@ From &To &$r$ &$x$ &$b_c$ &$S_{max}$ &$\tau$ &$\theta_{ph}$\\
 \end{center}
 \end{table}
 
-\begin{table}
-\begin{center}
-\begin{tabular}{c|c|c|c|c|c}
-\hline
-Gen &$C_{up}$ &$a$ &$b$ &$c$ &Type\\
-\hline\hline
-\hline
-\end{tabular}
-\caption{6-bus case generator cost data.}
-\label{tbl:case6ww_gencost}
-\end{center}
-\end{table}
-
 \section{IEEE Reliability Test System}
 \label{adx:ieee_rts}
+This appendix provides the data from the IEEE Reliability Test System
+\cite{ieee79rts} that was imported from the ``case24\_ieee\_rts.m'' case file
+that is provided with \matpower and was originally contributed by Bruce
+Wollenberg.  Figure \ref{fig:ieee79rts2} illustrates the model struture and
+shows the bus injections for the AC unit de-commitment optimal power flow
+solution for all generators at marginal cost.  Table \ref{tbl:rtsbus} lists the
+bus data, Table \ref{tbl:rtsgen} lists the generator data, Table
+\ref{tbl:rtsbranch} lists the branch data and Table \ref{tbl:rtsgencost} lists
+the generator cost data provided by Georgia Tech Power Systems Control and
+Automation Laboratory.
 
-\begin{table}
+%\input{tikz/ieee79rts2}
+
+\begin{table}[h]
 \begin{center}
 \begin{tabular}{c|c|c|c|c|c|c|c}
 \hline
@@ -395,7 +406,7 @@ Bus &$P_d$ &$Q_d$ &$G_s$ &$B_s$ &$V_{base}$ &$V_{max}$ &$V_{min}$\\
 \end{center}
 \end{table}
 
-\begin{table}
+\begin{table}[h]
 \begin{center}
 \begin{tabular}{c|c|c|c|c|c|c}
 \hline
@@ -409,7 +420,7 @@ Bus &$P_{max}$ &$P_{min}$ &$V_g$ &$Q_{max}$ &$Q_{min}$ &Type\\
 \end{center}
 \end{table}
 
-\begin{table}
+\begin{table}[h]
 \begin{center}
 \begin{tabular}{c|c|c|c|c|c|c|c}
 \hline
@@ -423,7 +434,7 @@ From &To &$r$ &$x$ &$b_c$ &$S_{max}$ &$\tau$ &$\theta_{ph}$\\
 \end{center}
 \end{table}
 
-\begin{table}
+\begin{table}[h]
 \begin{center}
 \begin{tabular}{c|c|c|c|c|c}
 \hline
