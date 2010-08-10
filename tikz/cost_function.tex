@@ -1,7 +1,6 @@
 \begin{figure}
-\label{fig:poolbids}
 \centering
-\begin{tikzpicture}[thick]
+\begin{tikzpicture}[thick,yscale=0.85]
   \tikzstyle{incr}=[above,sloped,text width=30mm,text centered]
 
   \coordinate (orig) at (0,0);
@@ -46,61 +45,62 @@
 
 \end{tikzpicture}
 \caption{Pool bid structure.}
+\label{fig:poolbids}
 \end{figure}
 
 
-% \begin{figure}
-% \label{fig:cost_function}
-% \centering
-% \begin{Large}
-% \begin{tikzpicture}[thick]
-% %  \draw[step=1.0cm,color=gray] (0,0) grid (8,5);
-% %  \node at (4.5,9.5) {Active power cost function};
-%   \coordinate (y) at (0,9);
-%   \coordinate (x) at (10,0);
-%   \coordinate (p0) at (0,0.1);
-%   \coordinate (p1) at (3.2,0.4);
-%   \coordinate (p2) at (5.2,1.0);
-%   \coordinate (p3) at (7,2.5);
-%   \coordinate (p4) at (8.6,5);
-%   \coordinate (pn) at (9.5,8.5);
-%
-%   \foreach \pnt in {p0,p1,p2,p3,pn}
-%     \node[circle,draw,minimum width=4pt,inner sep=0pt,fill=black] at (\pnt) {};
-%
-% %   \draw[axis] (y) -- node[anchor=south,rotate=90,minimum size=15mm]
-% %   {Cost \$/MWh} (0,0) -- node[anchor=north,minimum size=15mm] {Set-point (MW)}
-% %   (x);
-%   \draw[axis] (y) node[above]{$c$} -- (0,0) -- (x) node[right]{$p$};
-% %  \coordinate (offprca) at ($0.8*(y)$);
-% %  \coordinate (offprcb) at ($0.533*(y)$);
-% %  \coordinate (offqtya) at ($.6*(x)$);
-% %  \coordinate (offqtyb) at ($.9*(x)$);
-% %  \draw[] let \p1=(offprca), \p2=(offqtya) in
-% %  (\p1) node[left] {$\alpha$} -- (\p2);
-%   \draw[line width=1.5pt] (p0) -- (p1) -- (p2) -- (p3);
-%   \draw[line width=1.5pt] (p3) -- ($(p3)!0.6!(p4)$);
-%   \draw[dotted] ($(p3)!0.6!(p4)$) -- ($(p3)!1.5!(p4)$);
-%   \draw[dashed,line width=1.5pt,shorten >=15pt] ($(p3)!0.6!(p4)$) -- (p4);
-%
-%   \draw[line width=1.5pt] ($(p4)!0.4!(pn)$) -- (pn);
-%   \draw[dotted] ($(p4)!-0.5!(pn)$) -- ($(p4)!0.4!(pn)$);
-%   \draw[dashed,line width=1.5pt,shorten >=15pt] ($(p4)!0.4!(pn)$) -- (p4);
-%
-%   \draw[help lines] (p1 |- x) node[below]{$p_1$} -- (p1) -- (y |- p1)
-%   node[left]{$c_1$};
-%   \draw[help lines] (p2 |- x) node[below]{$p_2$} -- (p2) -- (y |- p2)
-%   node[left]{$c_2$};
-%   \draw[help lines] (p3 |- x) node[below]{$p_3$} -- (p3) -- (y |- p3)
-%   node[left]{$c_3$};
-%   \draw[help lines] (pn |- x) node[below]{$p_n$} -- (pn) -- (y |- pn)
-%   node[left]{$c_n$};
-%
-%   \foreach \x in {2,3.5,5,6.5}
-%     \draw[->,line width=2pt] (\x,6.2) -- (\x,5);
-%   \node at (4.25,6.2) {$y$};
-% \end{tikzpicture}
-% \end{Large}
-% \caption{Piecewise linear active power cost function and illustration of
-% constrained cost variable minimsation, adapted from [ref].}
-% \end{figure}
+\begin{figure}
+\centering
+\begin{Large}
+\begin{tikzpicture}[thick,yscale=0.85]
+%  \draw[step=1.0cm,color=gray] (0,0) grid (8,5);
+%  \node at (4.5,9.5) {Active power cost function};
+  \coordinate (y) at (0,9);
+  \coordinate (x) at (10,0);
+  \coordinate (p0) at (0,0.1);
+  \coordinate (p1) at (3.2,0.4);
+  \coordinate (p2) at (5.2,1.0);
+  \coordinate (p3) at (7,2.5);
+  \coordinate (p4) at (8.6,5);
+  \coordinate (pn) at (9.5,8.5);
+
+  \foreach \pnt in {p0,p1,p2,p3,pn}
+    \node[circle,draw,minimum width=4pt,inner sep=0pt,fill=black] at (\pnt) {};
+
+%   \draw[axis] (y) -- node[anchor=south,rotate=90,minimum size=15mm]
+%   {Cost \$/MWh} (0,0) -- node[anchor=north,minimum size=15mm] {Set-point (MW)}
+%   (x);
+  \draw[axis] (y) node[above]{$c$} -- (0,0) -- (x) node[right]{$p$};
+%  \coordinate (offprca) at ($0.8*(y)$);
+%  \coordinate (offprcb) at ($0.533*(y)$);
+%  \coordinate (offqtya) at ($.6*(x)$);
+%  \coordinate (offqtyb) at ($.9*(x)$);
+%  \draw[] let \p1=(offprca), \p2=(offqtya) in
+%  (\p1) node[left] {$\alpha$} -- (\p2);
+  \draw[line width=1.5pt] (p0) -- (p1) -- (p2) -- (p3);
+  \draw[line width=1.5pt] (p3) -- ($(p3)!0.6!(p4)$);
+  \draw[dotted] ($(p3)!0.6!(p4)$) -- ($(p3)!1.5!(p4)$);
+  \draw[dashed,line width=1.5pt,shorten >=15pt] ($(p3)!0.6!(p4)$) -- (p4);
+
+  \draw[line width=1.5pt] ($(p4)!0.4!(pn)$) -- (pn);
+  \draw[dotted] ($(p4)!-0.5!(pn)$) -- ($(p4)!0.4!(pn)$);
+  \draw[dashed,line width=1.5pt,shorten >=15pt] ($(p4)!0.4!(pn)$) -- (p4);
+
+  \draw[help lines] (p1 |- x) node[below]{$p_1$} -- (p1) -- (y |- p1)
+  node[left]{$c_1$};
+  \draw[help lines] (p2 |- x) node[below]{$p_2$} -- (p2) -- (y |- p2)
+  node[left]{$c_2$};
+  \draw[help lines] (p3 |- x) node[below]{$p_3$} -- (p3) -- (y |- p3)
+  node[left]{$c_3$};
+  \draw[help lines] (pn |- x) node[below]{$p_n$} -- (pn) -- (y |- pn)
+  node[left]{$c_n$};
+
+  \foreach \x in {2,3.5,5,6.5}
+    \draw[->,line width=2pt] (\x,6.2) -- (\x,5);
+  \node at (4.25,6.2) {$y$};
+\end{tikzpicture}
+\end{Large}
+\caption{Piecewise linear active power cost function with constrained cost
+variable minimsation illustrated.}
+\label{fig:ccv_function}
+\end{figure}

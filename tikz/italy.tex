@@ -1,46 +1,230 @@
 \begin{figure}
-\label{fig:italy}
 \centering
-\begin{scriptsize}
 \begin{tikzpicture}[thick]
+  \tikzstyle{busbar} = [rectangle,draw,fill=black,inner sep=0pt];
+  \tikzstyle{hbus} = [busbar,minimum width=15mm,minimum height=2pt];
+  \tikzstyle{vbus} = [busbar,minimum width=2pt,minimum height=15mm];
+  \tikzstyle{overhead} = [-,thick];
+  \tikzstyle{genset} = [circle,draw,thick,inner sep=0pt,minimum width=5mm];
+  \tikzstyle{every pin edge}=[-,shorten <=1pt,thin];
+  \tikzstyle{to}=[->,thin];
+  \tikzstyle{from}=[<-,thin];
 
-\coordinate (csicily) at (0,2.5);
-\coordinate (cprgp) at (2,0);
+\coordinate (csicily) at (0,3.5);
+\coordinate (cprgp) at (1.3,0);
 \coordinate (crosn) at (4.5,0);
 \coordinate (cbrnn) at (7,0);
-\coordinate (csouth) at (8,3);
-\coordinate (cfogn) at (10,5);
-\coordinate (ccs) at (8,7);
-\coordinate (ccn) at (8,10.5);
-\coordinate (csardinia) at (0,10.5);
+\coordinate (csouth) at (8,2.5);
+\coordinate (cfogn) at (9,5);
+\coordinate (ccs) at (8,7.5);
+\coordinate (ccn) at (8,11);
+\coordinate (csardinia) at (0,11);
 \coordinate (cmftv) at (8,14);
 \coordinate (cnorth) at (4,16);
 
-\vbusbar{sicily}{csicily}{30mm}
-\busbar{prgp}{cprgp}{15mm}
-\busbar{rosn}{crosn}{20mm}
-\busbar{brnn}{cbrnn}{15mm}
-\vbusbar{south}{csouth}{20mm}
-\vbusbar{fogn}{cfogn}{20mm}
-\vbusbar{cs}{ccs}{20mm}
-\vbusbar{cn}{ccn}{30mm}
-\vbusbar{sardinia}{csardinia}{20mm}
-\vbusbar{mftv}{cmftv}{20mm}
-\busbar{north}{cnorth}{20mm}
+\node[vbus,minimum height=20mm,label=above:Sicily] (sicily) at (csicily) {};
+\node[hbus,label=above left:PRGP] (prgp) at (cprgp) {};
+\node[hbus,minimum width=20mm,label=left:ROSN] (rosn) at (crosn) {};
+\node[hbus,label=above right:BRNN] (brnn) at (cbrnn) {};
+\node[vbus,minimum height=25mm,label=above:South] (south) at (csouth) {};
+\node[vbus,minimum height=10mm,label=above:FOGN] (fogn) at (cfogn) {};
+\node[vbus,minimum height=20mm,label=above:Central South] (cs) at (ccs) {};
+\node[vbus,minimum height=30mm,label=above:Central North] (cn) at (ccn) {};
+\node[vbus,minimum height=20mm,label=above right:Sardinia] (sard) at
+(csardinia) {};
+\node[vbus,minimum height=15mm,label=above:MFTV] (mftv) at
+(cmftv) {};
+\node[hbus,minimum width=30mm,label=right:North] (north) at (cnorth) {};
 
-\draw[line] ([yshift=-7.5mm] sicily.east) -- ++(1,0) -| (prgp.north);
-\draw[line] ([yshift=7.5mm] sicily.east) -- ++(3,0) -| ([xshift=-5mm]
-rosn.north);
-\draw[line] (rosn.north) -- ++(0,2.5) -| ([yshift=-5mm] south.west);
-\draw[line] ([xshift=5mm] rosn.north) -- ++(0,1) -| (brnn.north);
-\draw[line] (south.west) -- ++(-2,0) |- ([yshift=-5mm] cs.west);
-\draw[line] ([yshift=5mm] south.west) -- ++(-1,0) |- (fogn.west);
-\draw[line] ([yshift=5mm] cs.west) -- ++(-2,0) |- ([yshift=-7.5mm] cn.west);
-\draw[line] (cn.west) -- (sardinia.east);
-\draw[line] ([yshift=7.5mm] cn.west) -| ([xshift=-5mm] north.south);
-\draw[line] ([xshift=5mm] north.south) |- (mftv.west);
+\draw[overhead] ([yshift=0mm] sicily.east) -- node (sicily-prgp) {}
+++(1.3,0) -- (prgp.north);
+\draw[overhead] ([yshift=8mm] sicily.east) -- node (sicily-rosn) {}
+++(4,0) -- ([xshift=-5mm] rosn.north);
+\draw[overhead] (rosn.north) |- ([yshift=-5mm] south.west);
+\draw[overhead] ([xshift=5mm] rosn.north) -- ++(0,1) -| (brnn.north);
+\draw[overhead] (south.west) -- ++(-2,0) |- ([yshift=0mm] cs.west);
+\draw[overhead] ([yshift=5mm] south.west) -- ++(-1,0) |- (fogn.west);
+\draw[overhead] ([yshift=5mm] cs.west) -- ++(-2,0) |- ([yshift=-7.5mm] cn.west);
+\draw[overhead] (cn.west) -- (sard.east);
+\draw[overhead] ([yshift=7.5mm] cn.west) -| ([xshift=-5mm] north.south);
+\draw[overhead] ([xshift=5mm] north.south) |- (mftv.west);
+
+\begin{small}
+% Generators @ Sicily.
+\node[genset,label=left:480 MW] (ccsicily) at ($(csicily)+(-0.5,0.8)$)
+{\sffamily\tiny CC};
+\draw[overhead] ([yshift=8mm] sicily.west) -- (ccsicily.east);
+\node[genset,label=left:1525 MW] (ofsicily) at ($(csicily)+(-0.5,0)$)
+{\sffamily\tiny OF};
+\draw[overhead] (sicily.west) -- (ofsicily.east);
+\node[genset,label=left:176 MW] (tgsicily) at ($(csicily)+(-0.5,-0.8)$)
+{\sffamily\tiny TG};
+\draw[overhead] ([yshift=-8mm] sicily.west) -- (tgsicily.east);
+
+% Generators @ PRGP.
+\node[genset,label=left:750 MW] (ccprgp) at ($(cprgp)+(-0.5,-0.5)$)
+{\sffamily\tiny CC};
+\draw[overhead] ([xshift=-5mm] prgp.south) -- (ccprgp.north);
+
+% Generators @ ROSN.
+\node[genset,label=below:1660 MW] (rprosn) at ($(crosn)+(-0.5,-0.5)$)
+{\sffamily\tiny RP};
+\draw[overhead] ([xshift=-5mm] rosn.south) -- (rprosn.north);
+
+% Generators @ BRNN.
+\node[genset,label=below:3026 MW] (cfbrnn) at ($(cbrnn)+(-0.5,-0.5)$)
+{\sffamily\tiny CF};
+\draw[overhead] ([xshift=-5mm] brnn.south) -- (cfbrnn.north);
+\node[genset,label=right:1110 MW] (ccbrnn) at ($(cbrnn)+(0.5,-0.5)$)
+{\sffamily\tiny CC};
+\draw[overhead] ([xshift=5mm] brnn.south) -- (ccbrnn.north);
+
+% Generators @ South.
+\node[genset,label=right:1516 MW] (ccsouth) at ($(csouth)+(0.5,0.8)$)
+{\sffamily\tiny CC};
+\draw[overhead] ([yshift=8mm] south.east) -- (ccsouth.west);
+\node[genset,label=right:195 MW] (ofsouth) at ($(csouth)+(0.5,0)$)
+{\sffamily\tiny OF};
+\draw[overhead] ([yshift=0mm] south.east) -- (ofsouth.west);
+\node[genset,label=right:334 MW] (tgsouth) at ($(csouth)+(0.5,-0.8)$)
+{\sffamily\tiny TG};
+\draw[overhead] ([yshift=-8mm] south.east) -- (tgsouth.west);
+
+% Generators @ FOGN.
+\node[genset,label=right:360 MW] (ccfogn) at ($(cfogn)+(0.5,0)$)
+{\sffamily\tiny CC};
+\draw[overhead] (fogn.east) -- (ccfogn.west);
+
+% Generators @ Central South.
+\node[genset,label=right:1254 MW] (cccs) at ($(ccs)+(0.5,0.8)$)
+{\sffamily\tiny CC};
+\draw[overhead] ([yshift=8mm] cs.east) -- (cccs.west);
+\node[genset,label=right:3288 MW] (rpcs) at ($(ccs)+(0.5,0)$)
+{\sffamily\tiny RP};
+\draw[overhead] ([yshift=0mm] cs.east) -- (rpcs.west);
+\node[genset,label=right:910 MW] (tgcs) at ($(ccs)+(0.5,-0.8)$)
+{\sffamily\tiny TG};
+\draw[overhead] ([yshift=-8mm] cs.east) -- (tgcs.west);
+
+% Generators @ Central North.
+\node[genset,label=right:136 MW] (cfcn) at ($(ccn)+(0.5,1)$)
+{\sffamily\tiny CF};
+\draw[overhead] ([yshift=10mm] cn.east) -- (cfcn.west);
+\node[genset,label=right:373 MW] (cccn) at ($(ccn)+(0.5,0.5)$)
+{\sffamily\tiny CC};
+\draw[overhead] ([yshift=5mm] cn.east) -- (cccn.west);
+\node[genset,label=right:1565 MW] (ofcn) at ($(ccn)+(0.5,0)$)
+{\sffamily\tiny OF};
+\draw[overhead] ([yshift=0mm] cn.east) -- (ofcn.west);
+\node[genset,label=right:298 MW] (tgcn) at ($(ccn)+(0.5,-0.5)$)
+{\sffamily\tiny TG};
+\draw[overhead] ([yshift=-5mm] cn.east) -- (tgcn.west);
+
+% Generators @ Sardinia.
+\node[genset,label=left:789 MW] (cfsard) at ($(csardinia)+(-0.5,0.8)$)
+{\sffamily\tiny CF};
+\draw[overhead] ([yshift=8mm] sard.west) -- (cfsard.east);
+\node[genset,label=left:740 MW] (ofsard) at ($(csardinia)+(-0.5,0)$)
+{\sffamily\tiny OF};
+\draw[overhead] ([yshift=0mm] sard.west) -- (ofsard.east);
+\node[genset,label=left:256 MW] (tgsard) at ($(csardinia)+(-0.5,-0.8)$)
+{\sffamily\tiny TG};
+\draw[overhead] ([yshift=-8mm] sard.west) -- (tgsard.east);
+
+% Generators @ MFTV.
+\node[genset,label=right:316 MW] (cfmftv) at ($(cmftv)+(0.5,0.3)$)
+{\sffamily\tiny CF};
+\draw[overhead] ([yshift=3mm] mftv.east) -- (cfmftv.west);
+\node[genset,label=right:620 MW] (ofmftv) at ($(cmftv)+(0.5,-0.3)$)
+{\sffamily\tiny OF};
+\draw[overhead] ([yshift=-3mm] mftv.east) -- (ofmftv.west);
+
+% Generators @ North.
+\node[genset,label=left:2641 MW] (cfnorth) at ($(cnorth)+(-1,0.5)$)
+{\sffamily\tiny CF};
+\draw[overhead] ([xshift=-10mm] north.north) -- (cfnorth.south);
+\node[genset,pin={[pin distance=2mm]95:14000 MW}] (ccnorth) at
+($(cnorth)+(-0.5,0.5)$) {\sffamily\tiny CC};
+\draw[overhead] ([xshift=-5mm] north.north) -- (ccnorth.south);
+\node[genset,pin={[pin distance=5mm]above:796 MW}] (rpnorth) at
+($(cnorth)+(0,0.5)$) {\sffamily\tiny RP};
+\draw[overhead] ([xshift=0mm] north.north) -- (rpnorth.south);
+\node[genset,pin={[pin distance=2mm]75:3015 MW}] (ofnorth) at
+($(cnorth)+(0.5,0.5)$) {\sffamily\tiny OF};
+\draw[overhead] ([xshift=5mm] north.north) -- (ofnorth.south);
+\node[genset,label=right:449 MW] (tgnorth) at ($(cnorth)+(1,0.5)$)
+{\sffamily\tiny TG};
+\draw[overhead] ([xshift=10mm] north.north) -- (tgnorth.south);
+
+% Load @ Sicily.
+\draw[loadline] ([yshift=-8mm] sicily.east) -- ++(3mm,0) -- ++(0,-1.3)
+node[left] {3126 MW};
+% Load @ PRGP.
+\draw[loadline] ([xshift=5mm] prgp.south) -- ++(0,-1.3) node[below] {435 MW};
+% Load @ ROSN.
+\draw[loadline] ([xshift=5mm] rosn.south) -- ++(0,-1.3) node[below] {656 MW};
+% Load @ South.
+\draw[loadline] ([yshift=-10mm] south.west) -- ++(-3mm,0) -- ++(0,-0.8)
+node[above right] {6450 MW};
+% Load @ Central South.
+\draw[loadline] ([yshift=-5mm] cs.west) -- ++(-5mm,0) -- ++(0,-0.8)
+node[below] {5371 MW};
+% Load @ Central North.
+\draw[loadline] ([yshift=-10mm] cn.east) -- ++(3mm,0) -- ++(0,-0.8)
+node[above right] {6066 MW};
+% Load @ Sardinia.
+\draw[loadline] ([yshift=-8mm] sard.east) -- ++(5mm,0) -- ++(0,-0.8)
+node[below] {1870 MW};
+% Load @ North.
+\draw[loadline] ([xshift=-10mm] north.south) -- ++(0,-1) node[left]
+{29483 MW};
+
+\end{small}
+
+\begin{tiny}
+% Sicily - PRGP
+\draw[to] (1.5,2.5) -- node[below,rotate=90] {800 MW} ++(0,-1);
+\draw[from] (1.1,2.5) -- node[above,rotate=90] {600 MW} ++(0,-1);
+
+% Sicily - ROSN
+\draw[to] (2,4.1) -- node[below] {600 MW} ++(1,0);
+\draw[from] (2,4.5) -- node[above] {100 MW} ++(1,0);
+
+% ROSN - BRNN
+\draw[to] (5.5,0.9) -- node[below] {4300 MW} ++(1.1,0);
+\draw[from] (5.5,1.2) -- node[above] {10000 MW} ++(1.1,0);
+
+% ROSN - South
+\draw[to] (5.7,1.85) -- node[below] {4500 MW} ++(1,0);
+\draw[from] (5.7,2.15) -- node[above] {1000 MW} ++(1,0);
+
+% South - Central South
+\draw[to] (5.75,5.5) -- node[above,rotate=90] {2000 MW} ++(0,-1.1);
+\draw[from] (6.15,5.5) -- node[below,rotate=90] {2000 MW} ++(0,-1.1);
+
+% South - FOGN
+\draw[to] (6.8,4.6) -- node[above,rotate=90] {10000 MW} ++(0,-1.1);
+\draw[from] (7.1,4.6) -- node[below,rotate=90] {1100 MW} ++(0,-1.1);
+
+% Central South - Central North
+\draw[to] (5.75,9.7) -- node[above,rotate=90] {1800 MW} ++(0,-1.1);
+\draw[from] (6.15,9.7) -- node[below,rotate=90] {2200 MW} ++(0,-1.1);
+
+% Central North - Sardinia
+\draw[to] (3.3,10.8) -- node[below] {300 MW} ++(1,0);
+\draw[from] (3.3,11.2) -- node[above] {250 MW} ++(1,0);
+
+% Central North - North
+\draw[to] (3.3,13.5) -- node[above,rotate=90] {2750 MW} ++(0,-1.1);
+\draw[from] (3.7,13.5) -- node[below,rotate=90] {1450 MW} ++(0,-1.1);
+
+% North - MFTV
+\draw[to] (5.3,13.8) -- node[below] {10000 MW} ++(1.1,0);
+\draw[from] (5.3,14.2) -- node[above] {1450 MW} ++(1.1,0);
+
+\end{tiny}
 
 \end{tikzpicture}
-\end{scriptsize}
 \caption{One-line diagram for a stylised Italian grid model.}
+\label{fig:italy}
 \end{figure}

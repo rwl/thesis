@@ -8,7 +8,7 @@ learning algorithms later used to model market participant behaviour are provide
 
 \section{Electric Power Supply}
 
-%\input{tikz/structure}
+\input{tikz/structure}
 
 Generation and bulk movement of electricity in the UK takes place in a
 three-phase alternating current (AC) power system.  The \textit{phases} are
@@ -54,12 +54,18 @@ power stations, which offer economies of scale and lower operating costs. It all
 % upto 500MW from Auchencrosh in Scotland to Ballycronan More in Northern
 % Ireland or import upto 80MW.  Further HVDC interconnectors are planned between
 % England and the Netherlands and between Wales and The Republic of Ireland.
-Figure \ref{fig:uk_gen} shows the UK's existing HVDC interconnectors and
+Figure \ref{fig:ngt_gen} shows the UK's existing HVDC interconnectors and
 how larger power stations are located away from load centres and close to
 sources of fuel, such as the coal fields in northern England and gas supply
 terminals near Cardiff and London.
 
 %\input{tikz/uk}
+\begin{figure}
+  \centering
+  \includegraphics{figures/ngt_gen}
+  \caption{UK power station locations.}
+  \label{fig:ngt_gen}
+\end{figure}
 
 For delivery to most consumers, electric energy is transferred at a
 substation from the transmission system to the grid supply point of a distribution
@@ -130,7 +136,7 @@ by generating companies and organisations with interconnects to the England
 and Wales grid to formulate bids that had to be submitted to the grid operator
 by 10AM on the day before the schedule day.
 
-%\input{tikz/cost_function}
+\input{tikz/cost_function}
 
 Figure \ref{fig:poolbids} illustrates four of the five price parameters
 that made up a bid.  A start-up price would also be stated, representing the
@@ -336,7 +342,7 @@ i_s = v_s \left( \frac{1}{\tau^2} \left(y_s + \frac{b_c}{2}\right) \right) +
 v_r \left(\frac{y_s}{\tau e^{-j\theta}}\right)
 \end{equation}
 
-%\input{tikz/branch_model}
+\input{tikz/branch_model}
 
 Combining equations (\ref{eq:ito}) and (\ref{eq:ifrom}), the \textit{from}
 and \textit{to} end complex current injections for branch $l$ are
@@ -657,7 +663,7 @@ chosen action $a_t$ and the reinforcement signal $r_{t+1}$ before beginning
 its next interaction.  Figure \ref{fig:seq_rl} diagrams the classical
 agent-environment interaction event sequence in reinforcement learning.
 
-%\input{tikz/seq_rl}
+\input{tikz/seq_rl}
 
 %\subsection{Markov Decision Processes}
 For a finite number of states $\mathscr{S}$, if all states are Markov, the
@@ -948,7 +954,7 @@ is used in which all neurons from one layer are connected to all neurons in the
 next.  Figure \label{fig:perceptron} diagrams a fully connected three layer
 feedforward network.
 
-%\input{tikz/perceptron}
+\input{tikz/perceptron}
 
 \citeA{mcculloch43} conceived of an artificial neuron $j$ that
 computes a function $g$ as a weighted sum of all $n$ inputs

@@ -1,0 +1,258 @@
+\newcommand{\genunit}[3]{
+  \node[circle,draw,thick,minimum width=6mm,#3] (#1) at (#2) {};
+  \draw[thick] ($(#2)-(2mm,0)$) sin ++(1mm,1mm) cos ++(1mm,-1mm)
+  sin ++(1mm,-1mm) cos ++(1mm,1mm);
+}
+
+\begin{figure}
+\centering
+\small
+\begin{tikzpicture}[thick,label distance=0mm]
+  \tikzstyle{busbar} = [rectangle,draw,fill=black!50,inner sep=0pt];
+  \tikzstyle{hbus} = [busbar,minimum width=10mm,minimum height=2pt];
+  \tikzstyle{vbus} = [busbar,minimum width=2pt,minimum height=10mm];
+  \tikzstyle{overhead} = [-,thick];
+  \tikzstyle{cable} = [thick];
+  \tikzstyle{trxcircle} = [circle,draw=black,inner sep=0pt,minimum width=5mm];
+  \tikzstyle{every pin edge}=[-,shorten <=1pt,thin];
+
+\node[hbus,minimum width=15mm,label=left:Bus 1] (bus1) at (5,0) {};
+\node[hbus,minimum width=15mm,label=right:Bus 2] (bus2) at (7,0) {};
+\node[hbus,label=right:Bus 3] (bus3) at (0,6) {};
+\node[vbus,label=above:Bus 4] (bus4) at (3,4) {};
+\node[vbus,label=above:Bus 5] (bus5) at (6.5,3) {};
+\node[vbus,label=above:Bus 6] (bus6) at (12,5.3) {};
+\node[hbus,label=right:Bus 7] (bus7) at (11,0.5) {};
+\node[vbus,label=above:Bus 8] (bus8) at (12,3) {};
+\node[hbus,minimum width=20mm,label=left:Bus 9] (bus9) at (5,6) {};
+\node[hbus,minimum width=20mm,label=right:Bus 10] (bus10) at (8,6) {};
+\node[hbus,minimum width=20mm,label=left:Bus 11] (bus11) at (5,8) {};
+\node[hbus,minimum width=20mm,label=right:Bus 12] (bus12) at (8,8) {};
+\node[vbus,label={[xshift=-4mm]below:Bus 13}] (bus13) at (12,10) {};
+\node[vbus,label=above:Bus 14] (bus14) at (3.5,11.5) {};
+\node[hbus,minimum width=20mm,label=right:Bus 15] (bus15) at (0.5,12) {};
+\node[hbus,minimum width=15mm,label=right:Bus 16] (bus16) at (0,14) {};
+\node[vbus,minimum height=20mm,label=above:Bus 17] (bus17) at (-1,16) {};
+\node[hbus,minimum width=20mm,label=right:Bus 18] (bus18) at (2,18) {};
+\node[hbus,label=below right:Bus 19] (bus19) at (4.5,14) {};
+\node[hbus,minimum width=15mm,label=below right:Bus 20] (bus20) at (7,14) {};
+\node[hbus,minimum width=25mm,label=right:Bus 21] (bus21) at (5,17) {};
+\node[hbus,label=right:Bus 22] (bus22) at (9,17) {};
+\node[vbus,minimum height=15mm,label=above:Bus 23] (bus23) at (11,14.55) {};
+\node[hbus,label=right:Bus 24] (bus24) at (0,8) {};
+
+% Branch 1-2.
+\draw[cable] ([xshift=5mm] bus1.north) -- ++(0,5mm) node[xshift=5mm,above]
+{cable} -| ([xshift=-5mm] bus2.north);
+% Branch 1-3.
+\draw[overhead] ([xshift=-5mm] bus1.north) -- ([xshift=-5mm,yshift=5mm]
+bus1.north) -- ([xshift=0mm,yshift=-5mm] bus3.south) -- (bus3.south);
+% Branch 1-5.
+\draw[overhead] (bus1.north) |- (bus5.west);
+% Branch 2-4.
+\draw[overhead] (bus2.north) -- ([yshift=5mm] bus2.north) -- ([xshift=5mm]
+bus4.east) -- (bus4.east);
+% Branch 2-6.
+\draw[overhead] ([xshift=5mm] bus2.north) -- ([xshift=5mm,yshift=5mm]
+bus2.north) -- ([xshift=-5mm,yshift=-3mm] bus6.west) -- ([yshift=-3mm]
+bus6.west);
+% Branche 3-9.
+\draw[overhead] ([xshift=3mm] bus3.south) -- ++(0,-5mm) -| ([xshift=-5mm]
+bus9.south);
+% Branch 3-24.
+\draw node[trxcircle,yshift=-1mm,above of=bus3] (t3-24p) {};
+\draw node[trxcircle,yshift=1mm,above of=bus3] (t3-24s) {};
+\draw[overhead] (bus3.north) -- (t3-24p.south);
+\draw[overhead] (t3-24s.north) -- (bus24.south);
+% Branch 4-9.
+\draw[overhead] ([yshift=3mm] bus4.east) -- ([xshift=5mm,yshift=3mm] bus4.east)
+-- ([yshift=-5mm] bus9.south) -- (bus9.south);
+% Branch 5-10.
+\draw[overhead] (bus5.east) -| (bus10.south);
+% Branch 6-10.
+\draw[overhead] (bus6.west) -| node[above right] {cable} ([xshift=5mm]
+bus10.south);
+% Branch 7-8.
+\draw[overhead] ([xshift=-3mm] bus7.north) |- ([yshift=-3mm] bus8.west);
+% Branch 8-9.
+\draw[overhead] (bus8.west) -- ([xshift=-5mm] bus8.west) --
+([xshift=5mm,yshift=-5mm] bus9.south) -- ([xshift=5mm] bus9.south);
+% Branch 8-10;
+\draw[overhead] ([yshift=3mm] bus8.west) -- ([xshift=-5mm,yshift=3mm]
+bus8.west) -- ([xshift=-5mm,yshift=-10mm] bus10.south) -- ([xshift=-5mm]
+bus10.south);
+% Branch 9-11.
+\draw node[trxcircle,yshift=-1mm,xshift=-5mm,above of=bus9] (t9-11p) {};
+\draw node[trxcircle,yshift=1mm,xshift=-5mm,above of=bus9] (t9-11s) {};
+\draw[overhead] ([xshift=-5mm] bus9.north) -- (t9-11p.south);
+\draw[overhead] (t9-11s.north) -- ([xshift=-5mm] bus11.south);
+% Branch 9-12.
+\draw node[trxcircle,yshift=-1mm,xshift=-5mm,node distance=7mm,below of=bus12]
+(t9-12p) {};
+\draw node[trxcircle,yshift=1mm,xshift=-5mm,node distance=7mm,below of=bus12]
+(t9-12s) {};
+\draw[overhead] ([xshift=5mm] bus9.north) -- ([xshift=5mm,yshift=3mm]
+bus9.north) -- ([yshift=-3mm] t9-12p.south) -- (t9-12p.south);
+\draw[overhead] (t9-12s.north) -- ([xshift=-5mm] bus12.south);
+% Branch 10-11.
+\draw node[trxcircle,yshift=-1mm,xshift=5mm,node distance=7mm,below of=bus11]
+(t10-11p) {};
+\draw node[trxcircle,yshift=1mm,xshift=5mm,node distance=7mm,below of=bus11]
+(t10-11s) {};
+\draw[overhead] ([xshift=-5mm] bus10.north) -- ([xshift=-5mm,yshift=3mm]
+bus10.north) -- ([yshift=-3mm] t10-11p.south) -- (t10-11p.south);
+\draw[overhead] (t10-11s.north) -- ([xshift=5mm] bus11.south);
+% Branch 10-12.
+\draw node[trxcircle,yshift=-1mm,xshift=5mm,above of=bus10] (t10-12p) {};
+\draw node[trxcircle,yshift=1mm,xshift=5mm,above of=bus10] (t10-12s) {};
+\draw[overhead] ([xshift=5mm] bus10.north) -- (t10-12p.south);
+\draw[overhead] (t10-12s.north) -- ([xshift=5mm] bus12.south);
+% Branch 11-13.
+\draw[overhead] ([xshift=5mm] bus11.north) -- ([xshift=5mm,yshift=5mm]
+bus11.north) -- ([xshift=-5mm] bus13.west) -- (bus13.west);
+% Branch 11-14.
+\draw[overhead] ([xshift=-5mm] bus11.north) |- ([yshift=-3mm] bus14.east);
+% Branch 12-13.
+\draw[overhead] ([xshift=-5mm] bus12.north) -- ([xshift=-5mm,yshift=7mm]
+bus12.north) -- ([xshift=-5mm,yshift=-3mm] bus13.west) -- ([yshift=-3mm]
+bus13.west);
+% Branch 12-23.
+\draw[overhead] ([xshift=5mm] bus12.north) |- ([yshift=-5mm] bus23.west);
+% Branch 13-23.
+\draw[overhead] ([yshift=3mm] bus13.west) -- ([xshift=-5mm,yshift=3mm]
+bus13.west) |- ([yshift=-5mm] bus23.east);
+% Branch 14-16.
+\draw[overhead] ([yshift=3mm] bus14.west) -- ([xshift=-6mm,yshift=3mm]
+bus14.west) |- ([xshift=5mm,yshift=-5mm] bus16.south) -- ([xshift=5mm]
+bus16.south);
+% Branch 15-16.
+\draw[overhead] ([xshift=-5mm] bus15.north) -- (bus16.south);
+% Branches 15-21.
+\draw[overhead] (bus15.north) -- ([yshift=5mm] bus15.north) -- ([yshift=-10mm]
+bus21.south) -- (bus21.south);
+\draw[overhead] ([xshift=5mm] bus15.north) -- ([xshift=5mm,yshift=5mm]
+bus15.north) -- ([xshift=5mm,yshift=-10mm] bus21.south) -- ([xshift=5mm]
+bus21.south);
+% Branch 15-24.
+\draw[overhead] ([xshift=-5mm] bus15.south) -- (bus24.north);
+% Branch 16-17.
+\draw[overhead] ([xshift=-5mm] bus16.north) |- ([yshift=-5mm] bus17.east);
+% Branch16-19.
+\draw[overhead] ([xshift=5mm] bus16.north) -- ([xshift=5mm,yshift=5mm]
+bus16.north) -| ([xshift=-3mm] bus19.north);
+% Branch 17-18.
+\draw[overhead] ([yshift=5mm] bus17.east) -| ([xshift=-5mm] bus18.south);
+% Branch 17-22.
+\draw[overhead] (bus17.east) -- ([xshift=20mm] bus17.east) -- ([xshift=20mm,
+yshift=-5mm] bus17.east) -| ([xshift=3mm] bus22.south);
+% Branches 18-21.
+\draw[overhead] (bus18.south) -- ([yshift=-20mm] bus18.south) -|
+([xshift=-5mm] bus21.south);
+\draw[overhead] ([xshift=5mm] bus18.south) -- ([xshift=5mm,yshift=-15mm]
+bus18.south) -| ([xshift=-10mm] bus21.south);
+% Branches 19-20.
+\draw[overhead] (bus19.north) -- ([yshift=10mm] bus19.north) -|
+([xshift=-1.5mm] bus20.north);
+\draw[overhead] ([xshift=3mm] bus19.north) -- ([xshift=3mm,yshift=5mm]
+bus19.north) -| ([xshift=-4.5mm] bus20.north);
+% Branches 20-23.
+\draw[overhead] ([xshift=1.5mm] bus20.north) |- ([yshift=5mm] bus23.west);
+\draw[overhead] ([xshift=4.5mm] bus20.north) |- (bus23.west);
+% Branch 21-22.
+\draw[overhead] ([xshift=10mm] bus21.south) -- ([xshift=10mm,yshift=-7.5mm]
+bus21.south) -| ([xshift=-3mm] bus22.south);
+
+% Generator @ Bus 1.
+\genunit{gen1}{4.5,-0.8}{label=left:192 MW,pin={[pin distance=12mm,text
+centered,text width=10.5mm]165:2$\times$U20 2$\times$U76}};
+\draw[overhead] ([xshift=-5mm] bus1.south) -- (gen1.north);
+% Generator @ Bus 2.
+\genunit{gen2}{7.5,-0.8}{label=right:192 MW,pin={[pin distance=12mm,text
+centered,text width=10.5mm]15:2$\times$U20 2$\times$U76}};
+\draw[overhead] ([xshift=5mm] bus2.south) -- (gen2.north);
+% Generator @ Bus 7.
+\genunit{gen3}{11,-0.3}{label=right:300 MW,pin=below:3$\times$U100};
+\draw[overhead] (bus7.south) -- (gen3.north);
+% Generator @ Bus 13.
+\genunit{gen4}{12.3,10.9}{label=above:591 MW,pin={[pin distance=8mm]
+left:3$\times$U197}};
+\draw[overhead] ([yshift=3mm] bus13.east) -- ([yshift=3mm,xshift=2.5mm]
+bus13.east) -- (gen4.south);
+% Generator @ Bus 14.
+\genunit{gen5}{4.3,11.8}{label={[text justified,text
+width=15mm]right:Synch. Cond.}}; \draw[overhead] ([yshift=3mm] bus14.east) --
+(gen5.west);
+% Generator @ Bus 15.
+\genunit{gen6}{0.5,11.2}{label={[text centered,text width=10mm]below:215 MW},
+pin={[pin distance=5mm,text centered,text width=15mm]-70:5$\times$U12
+1$\times$U155}}; \draw[overhead] (bus15.south) -- (gen6.north);
+% Generator @ Bus 16.
+\genunit{gen7}{0.0,15}{label=right:155 MW};
+\draw[overhead] (bus16.north) -- (gen7.south);
+% Generator @ Bus 18.
+\genunit{gen8}{1.5,18.8}{label=left:400 MW,pin={[pin distance=6mm]below
+left:Nuclear}}; \draw[overhead] ([xshift=-5mm] bus18.north) -- (gen8.south);
+% Generator @ Bus 21.
+\genunit{gen9}{5,17.8}{label=right:400 MW,pin={above right:Nuclear}};
+\draw[overhead] (bus21.north) -- (gen9.south);
+% Generator @ Bus 22.
+\genunit{gen10}{9,17.8}{label=right:300 MW,pin={above:Hydro, 6$\times$U50}};
+\draw[overhead] (bus22.north) -- (gen10.south);
+% Generator @ Bus 23.
+\genunit{gen11}{11.8,15.05}{label=below:660 MW,pin={[text centered,text
+width=15mm]above:2$\times$U155 1$\times$U350}};
+\draw[overhead] ([yshift=5.05mm] bus23.east) -- (gen11.west);
+
+% Load @ Bus 1.
+\draw[loadline] ([xshift=5mm] bus1.south) -- ++(0,-0.8) node[text centered,text
+width=10mm,below] {108 MW};
+% Load @ Bus 2.
+\draw[loadline] ([xshift=-5mm] bus2.south) -- ++(0,-0.8) node[text
+centered,text width=10mm,below] {97 MW};
+% Load @ Bus 3.
+\draw[loadline] ([xshift=-3mm] bus3.south) -- ++(0,-0.8) node[text
+centered,text width=10mm,below] {108 MW};
+% Load @ Bus 4.
+\draw[loadline] ([yshift=-3mm] bus4.east) -- ++(3mm,0) -- ++(0,-0.8)
+node[below] {74 MW};
+% Load @ Bus 5.
+\draw[loadline] ([yshift=-3mm] bus5.east) -- ++(3mm,0) --
+++(0,-0.8) node[below] {71 MW};
+% Load @ Bus 6.
+\draw[loadline] (bus6.east) -- ++(3mm,0) -- ++(0,-0.8) node[below] {136 MW};
+% Load @ Bus 7.
+\draw[loadline] ([xshift=3mm] bus7.north) -- ++(0,0.8) node[right] {125 MW};
+% Load @ Bus 8.
+\draw[loadline] (bus8.east) -- ++(3mm,0) -- ++(0,-0.8) node[left] {171 MW};
+% Load @ Bus 9.
+\draw[loadline] ([xshift=2.5mm] bus9.south) -- ++(0,-1) node[below] {175 MW};
+% Load @ Bus 10.
+\draw[loadline] ([xshift=7.5mm] bus10.north) -- ++(0,3mm) -- ++(8mm,0)
+node[above right] {195 MW};
+% Load @ Bus 13.
+\draw[loadline] ([yshift=-3mm] bus13.east) -- ++(2.5mm,0) -- ++(0,-1)
+node[below] {265 MW};
+% Load @ Bus 14.
+\draw[loadline] ([yshift=-3mm] bus14.west) -- ++(-3mm,0) -- ++(0,-0.8)
+node[below] {194 MW};
+% Load @ Bus 15.
+\draw[loadline] ([xshift=7mm] bus15.south) -- ++(0,-0.8) node[right]
+{317 MW};
+% Load @ Bus 16.
+\draw[loadline] ([xshift=-5mm] bus16.south) -- ++(0,-0.8) node[text centered,
+text width=10mm,below] {100 MW};
+% Load @ Bus 18.
+\draw[loadline] ([xshift=5mm] bus18.north) -- ++(0,0.8) node[right] {333 MW};
+% Load @ Bus 19.
+\draw[loadline] (bus19.south) -- ++(0,-0.8) node[right] {181 MW};
+% Load @ Bus 20.
+\draw[loadline] (bus20.south) -- ++(0,-0.8) node[below] {128 MW};
+
+% Area voltage labels.
+\node[draw] at (1,2) {\normalsize{138 kV}};
+\node[draw] at (6.5,10.3) {\normalsize{230 kV}};
+
+\end{tikzpicture}
+\caption{IEEE Reliability Test System}
+\label{fig:ieee79rts}
+\end{figure}

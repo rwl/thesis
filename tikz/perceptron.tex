@@ -1,0 +1,151 @@
+
+% \newcommand{\neuron}[4]{
+% \node[minimum size=20pt,inner sep=1pt,rotate=-90,name=s,shape=circle
+% split,draw,#4] (#1) at (#2,#3)
+% {\begin{sideways}\tiny$\hspace{0.5mm}f$\end{sideways}\nodepart{lower}\begin{sideways}\tiny$\sum$\end{sideways}};
+% }
+
+\def\layersep{3cm}
+% \begin{figure}
+% \centering
+% \begin{tikzpicture}[shorten >=1pt,->,draw=black!50, node distance=\layersep]
+%     \tikzstyle{every pin edge}=[<-,shorten <=1pt]
+%     \tikzstyle{neuron}=[circle,draw=black!25,minimum size=20pt,inner sep=0pt]
+%     \tikzstyle{input neuron}=[neuron];
+%     \tikzstyle{output neuron}=[neuron];
+%     \tikzstyle{hidden neuron}=[neuron];
+%     \tikzstyle{annot} = [text width=4em, text centered]
+%
+%     % Input layer nodes.
+%     \foreach \name / \y in {1,...,4}
+% %        \node[input neuron, pin=left:Input \y] (I-\name) at (0,-\y) {\tiny$f$};
+%         \neuron{I-\name}{0}{-\y}{pin=south:Input \y};
+%
+%     % Hidden layer nodes.
+%     \foreach \name / \y in {1,...,5} {
+%         \path[yshift=0.5cm]
+%             node[minimum size=20pt,inner sep=1pt,rotate=-90,name=s,shape=circle
+%             split,draw] (H-\name) at (\layersep,-\y cm)
+%             {\begin{sideways}\tiny$\hspace{0.5mm}g$\end{sideways}\nodepart{lower}\begin{sideways}\tiny$\sum$\end{sideways}};
+%
+% %             node[hidden neuron] (H-\name) at (\layersep,-\y cm)
+% %             {\scriptsize$\sum$};
+% %        \draw[-,yshift=0.5cm] (\layersep-1cm,-\y-1) cos (\layersep,-\y) sin
+% %        (\layersep+1cm,-\y+1);
+%     }
+%
+%     % Output layer nodes.
+% %    \node[output neuron,pin={[pin edge={->}]right:Output}, right of=H-3] (O){};
+%     \node[minimum size=20pt,inner sep=1pt,rotate=-90,name=s,shape=circle
+%     split,draw,pin={[pin edge={->}]north:Output},above of=H-3] (O)
+%     {\begin{sideways}\tiny$\hspace{0.5mm}h$\end{sideways}\nodepart{lower}\begin{sideways}\tiny$\sum$\end{sideways}};
+%
+%
+%     % Input layer - hidden layer connections.
+%     \foreach \source in {1,...,4}
+%         \foreach \dest in {1,...,5}
+%             \path (I-\source) edge (H-\dest);
+%
+%     % Hidden layer - output layer connections.
+%     \foreach \source in {1,...,5}
+%         \path (H-\source) edge (O);
+%
+%     % Annotate the layers
+%     \node[annot,above of=H-1, node distance=1cm] (hl) {Hidden Layer};
+%     \node[annot,left of=hl] {Input Layer};
+%     \node[annot,right of=hl] {Output Layer};
+% \end{tikzpicture}
+% \caption{Multi-layer feed-forward perceptron with bias nodes.}
+% \label{fig:perceptron}
+% \end{figure}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[shorten >=1pt,->,draw=black, node distance=\layersep]
+	\tikzstyle{neuron}=[minimum size=21pt,inner sep=1pt,rotate=-90,name=s,
+  		shape=circle split,draw,drop shadow,fill=white];
+	\tikzstyle{every pin edge}=[<-,shorten <=1pt];
+    \tikzstyle{annot} = [text width=4em, text centered];
+    \tikzstyle{conn} = [draw=black];
+
+% Input layer bias node.
+\node[neuron] (I-0) at (0, 0)
+{\begin{sideways}\tiny\hspace{0.5mm}1\end{sideways}};
+
+% Input layer neurons.
+\node[neuron,pin=south:Input 1] (I-1) at (0,-1 cm)
+{\begin{sideways}\tiny\hspace{0.3mm}$f$\end{sideways}};
+\node[neuron,pin=south:Input 2] (I-2) at (0,-2 cm)
+{\begin{sideways}\tiny\hspace{0.3mm}$f$\end{sideways}};
+\node[neuron,pin=south:Input 3] (I-3) at (0,-3 cm)
+{\begin{sideways}\tiny\hspace{0.3mm}$f$\end{sideways}};
+
+% Hidden layer bias node.
+\node[neuron,xshift=-5mm] (H-0) at (\layersep, 0)
+{\begin{sideways}\tiny\hspace{0.5mm}1\end{sideways}};
+
+% Hidden layer neurons.
+\node[neuron,xshift=-5mm] (H-1) at (\layersep,-1 cm)
+{\begin{sideways}\tiny$\hspace{0.5mm}g$\end{sideways}\nodepart{lower}\begin{sideways}\tiny$\sum$\end{sideways}};
+\node[neuron,xshift=-5mm] (H-2) at (\layersep,-2 cm)
+{\begin{sideways}\tiny$\hspace{0.5mm}g$\end{sideways}\nodepart{lower}\begin{sideways}\tiny$\sum$\end{sideways}};
+\node[neuron,xshift=-5mm] (H-3) at (\layersep,-3 cm)
+{\begin{sideways}\tiny$\hspace{0.5mm}g$\end{sideways}\nodepart{lower}\begin{sideways}\tiny$\sum$\end{sideways}};
+\node[neuron,xshift=-5mm] (H-4) at (\layersep,-4 cm)
+{\begin{sideways}\tiny$\hspace{0.5mm}g$\end{sideways}\nodepart{lower}\begin{sideways}\tiny$\sum$\end{sideways}};
+
+% Output layer neurons.
+\node[neuron,xshift=-5mm,pin={[pin edge={->}]north:Output 1},above of=H-2]
+(O-1) {\begin{sideways}\tiny$\hspace{0.5mm}h$\end{sideways}\nodepart{lower}\begin{sideways}\tiny$\sum$\end{sideways}};
+\node[neuron,xshift=-5mm,pin={[pin edge={->}]north:Output 2},above of=H-3]
+(O-2) {\begin{sideways}\tiny$\hspace{0.5mm}h$\end{sideways}\nodepart{lower}\begin{sideways}\tiny$\sum$\end{sideways}};
+
+
+% Layer annotations.
+\node[annot,above of=H-0, node distance=1cm] (hl) {Hidden Layer};
+\node[annot,left of=hl] {Input Layer};
+\node[annot,right of=hl] {Output Layer};
+
+
+% Input layer - hidden layer connections.
+\foreach \source in {0,...,3}
+    \foreach \dest in {0,...,4}
+        \path[conn] (I-\source) edge (H-\dest);
+
+% Hidden layer - output layer connections.
+\foreach \source in {0,...,4}
+    \foreach \dest in {1,...,2}
+    	\path[conn] (H-\source) edge (O-\dest);
+
+\end{tikzpicture}
+\caption{Multi-layer feed-forward perceptron with bias nodes.}
+\label{fig:perceptron}
+\end{figure}
+
+% \begin{tikzpicture}
+%   \node[rotate=-90,name=s,shape=circle split,draw] (neuron) at (2,5)
+%   {\begin{sideways}$~g$\end{sideways}\nodepart{lower}\begin{sideways}$\sum$\end{sideways}};
+% \end{tikzpicture}
+
+% \begin{tikzpicture}
+%   \matrix (network)
+%     [matrix of nodes,%
+%      nodes in empty cells,
+%      nodes={outer sep=0pt,circle,minimum size=4pt,draw},
+%      column sep={1cm,between origins},
+%      row sep={1cm,between origins}]
+%   {
+%                   &                 &                & \\
+%                   &                 &                & \\
+%     |[draw=none]| & |[xshift=1mm]| & |[xshift=-1mm]|   \\
+%   };
+%   \foreach \a in {1,...,4}{
+%     \draw (network-3-2) -- (network-2-\a);
+%     \draw (network-3-3) -- (network-2-\a);
+%     \draw [-stealth] ([yshift=5mm]network-1-\a.north) -- (network-1-\a);
+%     \foreach \b in {1,...,4}
+%       \draw (network-1-\a) -- (network-2-\b);
+%   }
+%   \draw [stealth-] ([yshift=-5mm]network-3-2.south) -- (network-3-2);
+%   \draw [stealth-] ([yshift=-5mm]network-3-3.south) -- (network-3-3);
+% \end{tikzpicture}

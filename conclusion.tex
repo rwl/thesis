@@ -153,7 +153,7 @@ to 1990 levels.
 
 Examination of the situation could be enhanced by the advanced participant
 behavioural models and the accurate electric power system simulations
-presented in this thesis.  Figure \ref{fig:uk_branch} illustrates a model of
+presented in this thesis.  Figure \ref{fig:ngt_grid} illustrates a model of
 the UK transmission system that has been derived from data provided in
 \citeA{ngtsys2010}.  This model has been converted into a PSS/E version 30 raw
 file and is distributed with the code developed for this thesis (See Appendix
@@ -166,6 +166,13 @@ file and is distributed with the code developed for this thesis (See Appendix
 % power flow data file in Appendix \ref{sec:nget_opf}.  Execution times for
 % solving this case using DC, AC and unit de-commitment optimal power flow are
 % shown in Table X.
+
+\begin{figure}
+  \centering
+  \includegraphics{figures/ngt_grid}
+  \caption{UK transmission system.}
+  \label{fig:ngt_grid}
+\end{figure}
 
 It is currently too computationally expensive for this model to be solved
 repeatedly in an agent-based simulation.  However, optimisation efforts might

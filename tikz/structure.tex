@@ -1,9 +1,101 @@
 
+\newcommand{\transformer}[2]{
+  % Transformer.
+  \begin{scope}[very thick,yshift=#1,xshift=#2]
+    \draw (0,0) rectangle (6mm,8mm);
+    \filldraw[fill=black] (-0.1mm,0) rectangle (6.2mm,-0.1mm);
+    \filldraw[fill=black] (-0.2mm,8mm) rectangle (6.2mm,8.1mm);
+
+    \draw[thick] (0,0.5mm) rectangle (-2.5mm,7mm);
+    \foreach \x in {-0.05,-0.09,...,-0.25}
+      \draw[thin] (\x,0.5mm) -- ++(0,6.5mm);
+
+    \draw[line join=round,thick] (0.5mm,8mm) -- ++(-1mm,4mm) -- (2mm,8mm);
+    \draw[thick] (-0.05mm,8.8mm) -- ++(1.9mm,0);
+    \draw[thick] (-0.15mm,9.4mm) -- ++(1.65mm,0);
+    \draw[thick] (-0.26mm,10mm) -- ++(1.4mm,0);
+    \draw[thick] (-0.39mm,10.6mm) -- ++(1.15mm,0);
+
+    \draw[thick] (6mm,0.5mm) rectangle (8.5mm,7mm);
+    \foreach \x in {0.65,0.69,...,0.85}
+      \draw[thin] (\x,0.5mm) -- ++(0,6.5mm);
+
+    \draw[line join=round,thick] (5.5mm,8mm) -- ++(1mm,4mm) -- (4mm,8mm);
+    \draw[thick] (6.05mm,8.8mm) -- ++(-1.9mm,0);
+    \draw[thick] (6.15mm,9.4mm) -- ++(-1.65mm,0);
+    \draw[thick] (6.26mm,10mm) -- ++(-1.4mm,0);
+    \draw[thick] (6.39mm,10.6mm) -- ++(-1.15mm,0);
+  \end{scope}
+}
+
+\newcommand{\transmissiontower}[2]{
+
+  % Transmission tower.
+  \begin{scope}[xscale=0.1,yscale=0.7,xshift=#1,yshift=#2,very thick]
+    % top box
+	\draw[line join=round] (-2,0) -- (-2,1.8) -- ( 2,1.8) -- ( 2,0) -- cycle;
+	\draw[line join=bevel] (-2,0) -- ++(4,0.9) -- ++(-4,0.9);% -- ++(4,0.75);
+	\draw[line join=bevel] (2,0) -- ++(-4,0.9) -- ++(4,0.9);% -- ++(-4,0.75);
+    \draw[line join=round] (-2,1.8) -- (0,2.05) -- (2,1.8);
+    % left arms
+    \draw[line join=round] (-2,0) -- ++(-6,0) -- (-2,0.35) -- (-4,0) --
+    (-5.5,0.15);
+    \draw[line join=round] (-2,0.7) -- ++(-8,0) -- (-2,1.14) -- (-4.5,0.7) --
+    ++(-2,0.2);
+    \draw[line join=round] (-2,1.5) -- ++(-5,0) -- (-2,1.8) -- (-3.5,1.5) --
+    ++(-1.3,0.15);
+    % right arms
+    \draw[line join=round] (2,0) -- ++(6,0) -- (2,0.35) -- (4,0) --
+    (5.5,0.15);
+    \draw[line join=round] (2,0.7) -- ++(8,0) -- (2,1.14) -- (4.5,0.7) --
+    ++(2,0.2);
+    \draw[line join=round] (2,1.5) -- ++(5,0) -- (2,1.8) -- (3.5,1.5) --
+    ++(1.3,0.15);
+
+    \draw[ultra thick] (-7.8,0) -- ++(0,-0.4);
+    \draw[ultra thick] (-9.8,0.7) -- ++(0,-0.4);
+    \draw[ultra thick] (-6.8,1.5) -- ++(0,-0.4);
+
+    \draw[ultra thick] (7.8,0) -- ++(0,-0.4);
+    \draw[ultra thick] (9.8,0.7) -- ++(0,-0.4);
+    \draw[ultra thick] (6.8,1.5) -- ++(0,-0.4);
+
+    \draw[line join=round]
+          (-2,0) -- (-5,-3) -- (0,-2.5)
+          ( 2,0) -- ( 5,-3) -- (0,-2.5)
+          (-2,0) -- (2,0)
+
+          (-2, 0) -- ( 3,-1)
+          ( 2, 0) -- (-3,-1)
+          ( 3,-1) -- (-3,-1)
+
+          ( 3,-1) -- (-4.5,-2.5)
+          (-3,-1) -- ( 4.5,-2.5)
+          (-4.5,-2.5) -- (4.5,-2.5)
+
+%          (0,-2.5) -- (-5,-3)
+          (-4.5,-2.5) -- (-2.8,-2.8)
+%          (0,-2.5) -- ( 5,-3)
+          (4.5,-2.5) -- (2.8,-2.8);
+  \end{scope}
+}
+
+\newcommand{\dormer}[1]{
+    \draw (#1) rectangle ++(0.4,0.4);
+    \draw[thick] ($(#1)+(0.1,0.1)$) rectangle ++(0.2,0.2);
+    \draw ($(#1)+(-0.05,0.4)$) -- ++(0.5,0) -- ++(-0.25,0.2) -- cycle;
+    \draw[thick] ($(#1)+(0.2,0.1)$) -- ++(0,0.2);
+    \draw[thick] ($(#1)+(0.1,0.2)$) -- ++(0.2,0);
+}
 
 \begin{figure}
-  \label{fig:powersystem}
   \centering
-  \begin{tikzpicture}[thick]
+  \begin{footnotesize}
+  \begin{tikzpicture}[thick,scale=0.95]
+
+  \tikzstyle{generation lines}=[thick,dotted]
+  \tikzstyle{transmission lines}=[thick]
+  \tikzstyle{distribution lines}=[densely dotted]
 
   % Power Station.
   \begin{scope}[very thick]
@@ -30,7 +122,7 @@
     \filldraw[ultra thick,fill=white] (14mm,0) rectangle ++(14mm,8mm);
     \filldraw[fill=black] (14mm,5mm) rectangle ++(14mm,1.5mm);
 
-    \filldraw[ultra thick,fill=white] (28mm,0) rectangle ++(10mm,4mm);
+    \filldraw[ultra thick,fill=white] (28mm,0) rectangle ++(8mm,4mm);
 
 %     \begin{scope}[xshift=2cm,yshift=3cm]
 %       \draw (0,0) to[out=30,in=270]
@@ -40,83 +132,50 @@
 %     \end{scope}
   \end{scope}
 
-  % Transformer.
-  \begin{scope}[very thick,xshift=4.5cm]
-    \draw (0,0) rectangle (6mm,8mm);
-    \filldraw[fill=black] (-0.1mm,0) rectangle (6.2mm,-0.1mm);
-    \filldraw[fill=black] (-0.2mm,8mm) rectangle (6.2mm,8.1mm);
+  \transformer{0cm}{4.2cm}
+  \transformer{0cm}{11.3cm}
 
-    \draw[thick] (0,0.5mm) rectangle (-2.5mm,7mm);
-    \foreach \x in {-0.05,-0.09,...,-0.25}
-      \draw[thin] (\x,0.5mm) -- ++(0,6.5mm);
+  \transmissiontower{60cm}{29.75mm}
+  \transmissiontower{100cm}{29.75mm}
 
-    \draw[line join=round,thick] (0.5mm,8mm) -- ++(-1mm,4mm) -- (2mm,8mm);
-    \draw[thick] (-0.05mm,8.8mm) -- ++(1.9mm,0);
-    \draw[thick] (-0.15mm,9.4mm) -- ++(1.65mm,0);
-    \draw[thick] (-0.26mm,10mm) -- ++(1.4mm,0);
-    \draw[thick] (-0.39mm,10.6mm) -- ++(1.15mm,0);
+  \draw[generation lines] (2.8,0.8) -- (3.7,1.4) -- ++(0.33,0) -- (4.15,1.2);
+  \draw[generation lines] (2.8,0.8) -- (3.7,1.2) -- (4.15,1.2);
+  \draw[generation lines] (2.8,0.8) -- (3.7,1) -- ++(0.33,0) -- (4.15,1.2);
 
-    \draw[thick] (6mm,0.5mm) rectangle (8.5mm,7mm);
-    \foreach \x in {0.65,0.69,...,0.85}
-      \draw[thin] (\x,0.5mm) -- ++(0,6.5mm);
+  \coordinate (trx12) at (4.85,1.2);
+  \coordinate (trx21) at (11.25,1.2);
+  \coordinate (trx22) at (11.95,1.2);
+  \draw[transmission lines] (trx12) -- (5.33,2.88) -- ++(5.35,0) -- (trx21);
+  \draw[transmission lines] (trx12) -- (5.03,2.33) -- ++(5.95,0) -- (trx21);
+  \draw[transmission lines] (trx12) -- (5.23,1.84) -- ++(5.55,0) -- (trx21);
+  % generator transformer
+  \draw[transmission lines] (4.85,1.2) -- (6.68,2.88);
+  \draw[transmission lines] (4.85,1.2) -- (7,2.33);
+  \draw[transmission lines] (4.85,1.2) -- (6.8,1.84);
+  % substation transformer
+  \draw[transmission lines] (trx21) -- (9.3,2.88);
+  \draw[transmission lines] (trx21) -- (9.04,2.33);
+  \draw[transmission lines] (trx21) -- (9.25,1.84);
+  % transmission customer
+  \draw[transmission lines] (7.85,2.88) -- ++(0,-2.2);
+  \draw[transmission lines] (7.6,2.33) -- ++(0,-1.85);
+  \draw[transmission lines] (7.35,1.84) -- ++(0,-1.1);
 
-    \draw[line join=round,thick] (5.5mm,8mm) -- ++(1mm,4mm) -- (4mm,8mm);
-    \draw[thick] (6.05mm,8.8mm) -- ++(-1.9mm,0);
-    \draw[thick] (6.15mm,9.4mm) -- ++(-1.65mm,0);
-    \draw[thick] (6.26mm,10mm) -- ++(-1.4mm,0);
-    \draw[thick] (6.39mm,10.6mm) -- ++(-1.15mm,0);
-  \end{scope}
-
-  % Transmission tower.
-  \begin{scope}[xscale=0.1,yscale=0.7,xshift=65cm,yshift=30mm,very thick]
-	\draw[line join=round] (-2,0) -- (-2,1.8) -- ( 2,1.8) -- ( 2,0) -- cycle;
-	\draw[line join=bevel] (-2,0) -- ++(4,0.9) -- ++(-4,0.9);% -- ++(4,0.75);
-	\draw[line join=bevel] (2,0) -- ++(-4,0.9) -- ++(4,0.9);% -- ++(-4,0.75);
-    \draw[line join=round] (-2,1.8) -- (0,2.05) -- (2,1.8);
-
-    \draw[line join=round] (-2,0) -- ++(-6,0) -- (-2,0.35) -- (-4,0) --
-    (-5.5,0.15);
-    \draw[line join=round] (-2,0.7) -- ++(-8,0) -- (-2,1.14) -- (-4.5,0.7) --
-    ++(-2,0.2);
-    \draw[line join=round] (-2,1.5) -- ++(-5,0) -- (-2,1.8) -- (-3.5,1.5) --
-    ++(-1.3,0.15);
-
-    \draw[line join=round] (2,0) -- ++(6,0) -- (2,0.35) -- (4,0) --
-    (5.5,0.15);
-    \draw[line join=round] (2,0.7) -- ++(8,0) -- (2,1.14) -- (4.5,0.7) --
-    ++(2,0.2);
-    \draw[line join=round] (2,1.5) -- ++(5,0) -- (2,1.8) -- (3.5,1.5) --
-    ++(1.3,0.15);
-
-    \draw[ultra thick] (-7.8,0) -- ++(0,-0.4);
-    \draw[ultra thick] (-9.8,0.7) -- ++(0,-0.4);
-    \draw[ultra thick] (-6.8,1.5) -- ++(0,-0.4);
-
-    \draw[ultra thick] (7.8,0) -- ++(0,-0.4);
-    \draw[ultra thick] (9.8,0.7) -- ++(0,-0.4);
-    \draw[ultra thick] (6.8,1.5) -- ++(0,-0.4);
-
-    \draw (-2,0) -- (-5,-3)
-          ( 2,0) -- ( 5,-3)
-          (-2,0) -- (2,0)
-
-          (-2, 0) -- ( 3,-1)
-          ( 2, 0) -- (-3,-1)
-          ( 3,-1) -- (-3,-1)
-
-          ( 3,-1) -- (-4.5,-2.5)
-          (-3,-1) -- ( 4.5,-2.5)
-          (-4.5,-2.5) -- (4.5,-2.5)
-
-          (0,-2.5) -- (-5,-3)
-          (-4.5,-2.5) -- (-3,-2.75)
-          (0,-2.5) -- ( 5,-3)
-          (4.5,-2.5) -- (3,-2.75);
-
-  \end{scope}
+  \draw[distribution lines] (13.25,-4.2) -- (13.25,0.9) -- (12.2,0.9) --
+  (trx22);
+  \draw[distribution lines] (13.6,-4.1) -- (13.6,1.2) -- (trx22);
+  \draw[distribution lines] (13.98,-3.9) -- (13.98,1.5) -- (12.2,1.5) --
+  (trx22);
+  % primary customer
+  \draw[distribution lines] (13.25,-3.6) -- (11.05,-3.6);
+  \draw[distribution lines] (13.6,-3.3) -- (11.05,-3.3);
+  \draw[distribution lines] (13.98,-3.0) -- (11.05,-3.0);
+  % secondary customer
+  \draw[distribution lines] (13.55,-4.65)  .. controls (13.2,-5.) and
+  (11.5,-4.9) .. (10.9,-4.8);
 
   % Transmission customer.
-  \begin{scope}[xshift=8cm,yshift=0cm,line join=round,ultra
+  \begin{scope}[xshift=7.1cm,yshift=0cm,line join=round,ultra
   thick,xscale=0.5,yscale=0.5]
     \draw[draw=gray!70,xshift=2.5pt,yshift=-2.5pt]
     (0,0) -- (0,1) -- (0.5,1.5) -- (1,1) -- (1.5,1.5) -- (2,1) -- (2,3) --
@@ -147,8 +206,8 @@
   \end{scope}
 
   % House.
-  \begin{scope}[xscale=0.6,yscale=0.6,xshift=15cm,yshift=-10cm,ultra thick,line
-  join=round]
+  \begin{scope}[xscale=0.6,yscale=0.6,xshift=15.1cm,yshift=-10cm,ultra
+  thick,line join=round]
     \draw (0,0) rectangle ++(3,1);
     \draw (3,0) rectangle ++(0.18,2.6);
     \filldraw[fill=white] (-0.1,1) rectangle ++(3.2,1.2);
@@ -157,24 +216,26 @@
     \draw (1.3,0) rectangle ++(0.4,0.8);
     \draw (1.9,0.4) rectangle ++(0.9,0.4);
 
-    \draw (0.4,1.3) rectangle ++(0.4,0.4);
-    \draw[thick] (0.5,1.4) rectangle ++(0.2,0.2);
-    \draw (0.35,1.7) -- ++(0.5,0) -- ++(-0.25,0.2) -- cycle;
-    \draw[thick] (0.6,1.4) -- ++(0,0.2);
-    \draw[thick] (0.5,1.5) -- ++(0.2,0);
+    \coordinate (d1) at (0.45,1.3);
+    \coordinate (d2) at (2.15,1.3);
+    \dormer{d1};
+    \dormer{d2};
   \end{scope}
 
   \node[text width=33mm,text centered] at (2,-1) {Generating Station
   \newline 11kV--25kV};
-  \node[text width=3cm,text centered] at (5,-1) {Step-Up Transformer};
+  \node[text width=2.5cm,text centered] at (4.6,-1) {Generator Step-Up
+  Transformer};
   \node[text width=8cm,text centered] at (8,4) {Transmission Lines 400kV,
   275kV or 138kV};
-  \node[text width=4cm,text centered] at (9,-1) {Transmission Customer \newline
-  275kV and 132kV};
-  \node[text width=4cm,text centered] at (6.5,-3) {Primary Customer 33kV, 11kV
-  or 6.6kV};
-  \node[text width=4cm,text centered] at (6.5,-5) {Secondary Customer 400V and
-  220V};
+  \node[text width=4cm,text centered] at (8.3,-1) {Transmission Customer
+  \newline 275kV and 132kV};
+  \node[text width=3cm,text centered] at (11.6,-1) {Substation Step-Down
+  Transformer};
+  \node[text width=4cm,text centered] at (6.8,-3.2) {Primary Customer 33kV,
+  11kV or 6.6kV};
+  \node[text width=4cm,text centered] at (6.8,-5.2) {Secondary Customer 400V
+  and 220V};
 
   % Line key.
   \begin{scope}[yshift=-6cm]
@@ -182,17 +243,17 @@
 %    \node[above right] at (0.1,1.5) {\textbf{Line Key}};
 
     \node[above right] at (0.1,1.1) {Generation:};
-    \draw[dashed] (2.8,1.3) -- ++(1,0);
+    \draw[generation lines] (2.8,1.3) -- ++(1,0);
 
     \node[above right] at (0.1,0.6) {Transmission:};
-    \draw (2.8,0.8) -- ++(1,0);
+    \draw[transmission lines] (2.8,0.8) -- ++(1,0);
 
     \node[above right] at (0.1,0.1) {Distribution:};
-    \draw[densely dotted] (2.8,0.3) -- ++(1,0);
+    \draw[distribution lines] (2.8,0.3) -- ++(1,0);
   \end{scope}
 
   % Pole.
-  \begin{scope}[xshift=13cm,yshift=-5.5cm,thick]
+  \begin{scope}[xscale=0.7,yscale=0.7,xshift=19.5cm,yshift=-5.8cm,thick]
     \draw (-0.63,-0.49) -- ++(1.15,0.6) -- ++(0,0.1) -- ++(-1.15,-0.6) -- cycle;
     \filldraw[fill=white] (-0.6,-0.5) -- ++(1.15,0.6) -- ++(0,0.1) --
     ++(-1.15,-0.6) -- cycle;
@@ -218,5 +279,7 @@
   \end{scope}
 
   \end{tikzpicture}
+  \end{footnotesize}
   \caption{Basic structure of a three phase AC power system.}
+  \label{fig:powersystem}
 \end{figure}
