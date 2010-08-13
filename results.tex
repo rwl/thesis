@@ -83,7 +83,7 @@ Table \ref{tbl:case6ww_gencost2} and narrows the cost differences such that
 offer prices overlap and may exceed the marginal cost of the most expensive
 generator.
 
-\input{tikz/case6ww}
+\ifthenelse{\boolean{includefigures}}{\input{tikz/case6ww}}{}
 
 \begin{table}
 \begin{center}
@@ -219,19 +219,21 @@ plots the same quantities for Agent 2.  Plots of reward are not given as
 generator prices and the market are configured such that an agent's reward is
 directly proportional to its action.
 
-\begin{figure}
-  \centering
-  \includegraphics{figures/fig5_1_action_a1}
-  \caption{Average markup for agent 1 and standard deviation over 10 runs.}
-  \label{fig:5_1_action_a1}
-\end{figure}
+\ifthenelse{\boolean{includefigures}}{
+	\begin{figure}
+	  \centering
+	  \includegraphics{figures/fig5_1_action_a1}
+	  \caption{Average markup for agent 1 and standard deviation over 10 runs.}
+	  \label{fig:5_1_action_a1}
+	\end{figure}
 
-\begin{figure}
-  \centering
-  \includegraphics{figures/fig5_1_action_a2}
-  \caption{Average markup for agent 2 and standard deviation over 10 runs.}
-  \label{fig:5_1_action_a2}
-\end{figure}
+	\begin{figure}
+	  \centering
+	  \includegraphics{figures/fig5_1_action_a2}
+	  \caption{Average markup for agent 2 and standard deviation over 10 runs.}
+	  \label{fig:5_1_action_a2}
+	\end{figure}
+}{}
 
 Figures \ref{fig:5_2_action_a1} and \ref{fig:5_2_action_a2} plot the average
 markup for Agent 1 and Agent 2, respectively, under price
@@ -241,30 +243,32 @@ ENAC learning methods.  Figures \ref{fig:5_2_reward_a1} and
 Agent 1 and Agent 2.  Again the standard deviation and exploration parameter
 values are plotted. The plots are vertically aligned and have equal $x$-axis
 limits to assist algorithm comparison.
-\begin{figure}
-  \centering
-  \includegraphics{figures/fig5_2_action_a1}
-  \caption{Average markup for agent 1 and standard deviation.}
-  \label{fig:5_2_action_a1}
-\end{figure}
-\begin{figure}
-  \centering
-  \includegraphics{figures/fig5_2_action_a2}
-  \caption{Average markup for agent 2 and standard deviation.}
-  \label{fig:5_2_action_a2}
-\end{figure}
-\begin{figure}
-  \centering
-  \includegraphics{figures/fig5_2_reward_a1}
-  \caption{Average reward for agent 1 and standard deviation.}
-  \label{fig:5_2_reward_a1}
-\end{figure}
-\begin{figure}
-  \centering
-  \includegraphics{figures/fig5_2_reward_a2}
-  \caption{Average reward for agent 2 and standard deviation.}
-  \label{fig:5_2_reward_a2}
-\end{figure}
+\ifthenelse{\boolean{includefigures}}{
+	\begin{figure}
+	  \centering
+	  \includegraphics{figures/fig5_2_action_a1}
+	  \caption{Average markup for agent 1 and standard deviation.}
+	  \label{fig:5_2_action_a1}
+	\end{figure}
+	\begin{figure}
+	  \centering
+	  \includegraphics{figures/fig5_2_action_a2}
+	  \caption{Average markup for agent 2 and standard deviation.}
+	  \label{fig:5_2_action_a2}
+	\end{figure}
+	\begin{figure}
+	  \centering
+	  \includegraphics{figures/fig5_2_reward_a1}
+	  \caption{Average reward for agent 1 and standard deviation.}
+	  \label{fig:5_2_reward_a1}
+	\end{figure}
+	\begin{figure}
+	  \centering
+	  \includegraphics{figures/fig5_2_reward_a2}
+	  \caption{Average reward for agent 2 and standard deviation.}
+	  \label{fig:5_2_reward_a2}
+	\end{figure}
+}{}
 
 \section{Discussion and Critical Analysis}
 Under the first generator price configuration the agents face a
@@ -448,20 +452,22 @@ U400 &1500	&0.00021	&4.4231	&395.375 &Nuclear \\
 \end{center}
 \end{table}
 
-\begin{figure}
-  \centering
-  \includegraphics{figures/ieee_rts_gencosts}
-  \caption{Generator cost functions for the IEEE Reliability Test System}
-  \label{fig:ieee_rts_gencost_plot}
-\end{figure}
+\ifthenelse{\boolean{includefigures}}{
+	\begin{figure}
+	  \centering
+	  \includegraphics{figures/ieee_rts_gencosts}
+	  \caption{Generator cost functions for the IEEE Reliability Test System}
+	  \label{fig:ieee_rts_gencost_plot}
+	\end{figure}
 
-\begin{figure}
-  \centering
-  \includegraphics{figures/ieee_rts_profiles}
-  \caption{Hourly, daily and weekly load profile plots from the IEEE
-  Reliability Test System}
-  \label{fig:ieee_rts_profiles}
-\end{figure}
+	\begin{figure}
+	  \centering
+	  \includegraphics{figures/ieee_rts_profiles}
+	  \caption{Hourly, daily and weekly load profile plots from the IEEE
+	  Reliability Test System}
+	  \label{fig:ieee_rts_profiles}
+	\end{figure}
+}{}
 
 The generating stock is divided into 5 portfolios (See Table
 \ref{tbl:agent_portfolios}) that are each endowed to a learning agent.  The
@@ -514,7 +520,7 @@ $A_5$ & Sync.~Cond. &14 \\
 \end{center}
 \end{table}
 
-\input{tikz/ieee79rts}
+\ifthenelse{\boolean{includefigures}}{\input{tikz/ieee79rts}}{}
 
 \section{Simulation Results}
 \section{Discussion and Critical Analysis}

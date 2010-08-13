@@ -11,6 +11,7 @@
 \usepackage{rotating}
 \usepackage{pdflscape}
 \usepackage{paralist}
+\usepackage{ifthen}
 
 %\usepackage{pslatex}
 %\usepackage{palatino}
@@ -94,6 +95,9 @@ $\kern\wd\@ne\kern -\@tempdima\left\@firstoftwo#1%
 }
 \makeatother
 
+% Remove figures to speed up build.
+\newboolean{includefigures}
+\setboolean{includefigures}{true}
 
 \ifpdf
 \pdfinfo{/Author (Richard W. Lincoln)

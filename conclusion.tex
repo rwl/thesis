@@ -167,12 +167,14 @@ file and is distributed with the code developed for this thesis (See Appendix
 % solving this case using DC, AC and unit de-commitment optimal power flow are
 % shown in Table X.
 
-\begin{figure}
-  \centering
-  \includegraphics{figures/ngt_grid}
-  \caption{UK transmission system.}
-  \label{fig:ngt_grid}
-\end{figure}
+\ifthenelse{\boolean{includefigures}}{
+	\begin{figure}
+	  \centering
+	  \includegraphics{figures/ngt_grid}
+	  \caption{UK transmission system.}
+	  \label{fig:ngt_grid}
+	\end{figure}
+}{}
 
 It is currently too computationally expensive for this model to be solved
 repeatedly in an agent-based simulation.  However, optimisation efforts might

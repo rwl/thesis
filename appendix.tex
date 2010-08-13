@@ -139,12 +139,14 @@ to construct cases such as the network from the UK Generic Distribution System
 shown in Figure \ref{fig:ukgds_ehv3}.  A slightly modified version of PSAT that
 can be run from the \textsc{Gnu}/Octave command-line is also available.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=20cm,angle=90]{figures/psat}
-  \caption{UKGDS EHV3 model in PSAT Simulink network editor.}
-  \label{fig:ukgds_ehv3}
-\end{figure}
+\ifthenelse{\boolean{includefigures}}{
+	\begin{figure}
+	  \centering
+	  \includegraphics[width=20cm,angle=90]{figures/psat}
+	  \caption{UKGDS EHV3 model in PSAT Simulink network editor.}
+	  \label{fig:ukgds_ehv3}
+	\end{figure}
+}{}
 
 Optimal power flow problems are solved via an interface to the General
 Algebraic Modeling System (GAMS).  GAMS defines optimisation
@@ -333,8 +335,8 @@ injections for the AC unit de-commitment optimal power flow solution.  Table
 \ref{tbl:case6ww_bus} lists the bus data, Table \ref{tbl:case6ww_gen} lists
 the generator data and Table \ref{tbl:case6ww_branch} lists the branch data.
 
-\input{tikz/case6ww}
-%\input{tikz/case6ww2}
+\ifthenelse{\boolean{includefigures}}{\input{tikz/case6ww}}{}
+%\ifthenelse{\boolean{includefigures}}{\input{tikz/case6ww2}}{}
 
 \begin{table}[h]
 \begin{center}
@@ -391,8 +393,8 @@ bus data, Table \ref{tbl:rtsgen} lists the generator data, Table
 the generator cost data provided by Georgia Tech Power Systems Control and
 Automation Laboratory.
 
-%\input{tikz/ieee79rts2}
-\input{tikz/ieee79rts}
+\ifthenelse{\boolean{includefigures}}{\input{tikz/ieee79rts}}{}
+%\ifthenelse{\boolean{includefigures}}{\input{tikz/ieee79rts2}}{}
 
 \begin{table}[h]
 \begin{center}

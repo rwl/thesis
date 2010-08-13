@@ -86,7 +86,7 @@ in the Unified Modelling Language (UML) for the object-orientated power system
 model that is used to compute optimal power flow solutions is shown in Figure
 \ref{fig:cls_pylon}.
 
-\input{tikz/cls_pylon}
+\ifthenelse{\boolean{includefigures}}{\input{tikz/cls_pylon}}{}
 
 As in \textsc{Matpower} \cite[p.26]{pserc:mp_manual}, generator active
 power, and optionally reactive power, output costs may be defined by convex
@@ -329,7 +329,7 @@ accepting an action vector which transforms the environment into a new state.
 gradient learning methods, both discrete and continuous representations of an
 electric power trading environment are defined.
 
-\input{tikz/cls_pyreto}
+\ifthenelse{\boolean{includefigures}}{\input{tikz/cls_pyreto}}{}
 
 \subsubsection{Discrete Environment}
 For operation with learning methods that use look-up tables to store
@@ -527,7 +527,7 @@ the module.
 % length as $a_e$ is returned, otherwise $a_e = a_m$.
 
 \subsection{Simulation Event Sequence}
-\input{tikz/cls_experiment}
+\ifthenelse{\boolean{includefigures}}{\input{tikz/cls_experiment}}{}
 Each experiment consists one or more agent-task pairs. At the beginning of each
 simulation step (trading period) the market is initialised and all existing
 offers/bids are removed.  From each task-agent tuple $(T,A)$ an observation
@@ -539,8 +539,8 @@ market.  Figure \ref{fig:seq_action} provides a UML sequence diagram that
 illustrates the process of performing an action and Figure
 \ref{fig:cls_experiment} shows the class associations of an experiment.
 
-\input{tikz/seq_action}
-\input{tikz/seq_reward}
+\ifthenelse{\boolean{includefigures}}{\input{tikz/seq_action}}{}
+\ifthenelse{\boolean{includefigures}}{\input{tikz/seq_reward}}{}
 
 When all actions have been performed the offers/bids are cleared by the
 market using the solution of an optimal power flow problem.  Each task is
@@ -555,7 +555,7 @@ along with the previous state $s_t$ and selected action $a_e$, under a new
 sample is the dataset.  The reward process is illustrated in a UML sequence
 diagram in Figure \ref{fig:seq_action}.
 
-\input{tikz/seq_learn}
+\ifthenelse{\boolean{includefigures}}{\input{tikz/seq_learn}}{}
 
 Each agent learns from its actions using $r_t$, at which point the
 values/parameters of the module associated with the agent is updated according
