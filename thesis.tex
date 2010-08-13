@@ -97,16 +97,16 @@ $\kern\wd\@ne\kern -\@tempdima\left\@firstoftwo#1%
 
 % Remove figures to speed up build.
 \newboolean{includefigures}
-\setboolean{includefigures}{true}
+\setboolean{includefigures}{false}
 % Select chapters to build.
 \includeonly{
 	introduction,
-	background,
-	related_work,
-	method,
-	results,
-	conclusion,
-	appendix
+% 	background,
+% 	related_work,
+% 	method,
+% 	results,
+% 	conclusion,
+% 	appendix
 }
 
 \ifpdf
@@ -131,22 +131,20 @@ $\kern\wd\@ne\kern -\@tempdima\left\@firstoftwo#1%
 \declaration
 
 \begin{acknowledgements}
-I wish to thank Prof.~Jim McDonald for giving me the opportunity for
+I wish to thank Professor Jim McDonald for giving me the opportunity for
 postgraduate study and for permitting me the freedom to pursue my own research
-interests.  I am also very grateful to my supervisors, Prof.~Graeme~Burt and
-Dr~Stuart~Galloway, for their guidance and scholarship.  I wish to offer
+interests.  I am also very grateful to my supervisors, Professor~Graeme~Burt
+and Dr~Stuart~Galloway, for their guidance and scholarship.  I wish to offer
 special thanks to my parents, my brother and my sister for their support
 throughout my PhD.
 
-This research made extensive use of software projects by researchers from other
-institutions.  I wish to thank Dr~Ray~Zimmerman
-from Cornell University for his work on the optimal power flow formulations in
-\textsc{Matpower}, the researchers from the Dalle Molle Institute for
-Artificial Intelligence (IDSIA) and the Technical University of Munich
-involved in the PyBrain project for their work on reinforcement learning
-algorithms and artificial neural networks and Charles Gieseler from Iowa State
-University for the Java Reinforcement Learning Module (JReLM) from which an
-implementation of the Roth-Erev learning method was translated.
+This thesis makes extensive use of open source software projects developed by
+researchers from other institutions.  I wish to thank Dr Ray Zimmerman from
+Cornell University for his work on optimal power flow, researchers from the Dalle Molle Institute for
+Artificial Intelligence (IDSIA) and the Technical University of Munich for
+their work on reinforcement learning algorithms and artificial neural networks
+and Charles Gieseler from Iowa State University for his implementation of the
+Roth-Erev reinforcement learning method.
 
 This research was funded by the United Kingdom Engineering and Physical
 Sciences Research Council through the Supergen Highly Distributed Power
@@ -154,7 +152,7 @@ Systems consortium under grant GR/T28836/01.
 \end{acknowledgements}
 
 \begin{abstract}
-In electric power Engineering, learning algorithms can be used to model
+In Electrical Power Engineering, learning algorithms can be used to model
 the strategies of electricity market participants.  The objective of this work
 is to establish if \textit{policy gradient} reinforcement learning methods can
 provide superior models of market participants than previously applied
@@ -166,19 +164,19 @@ provide superior models of market participants than previously applied
 % the direction in which power flows around networks, so generation or
 % consumption at one point in the system has an effect at all other points.
 Supply of electricity involves technology, money, people, natural resources
-and the environment.  All of these aspects are constantly changing and
-electricity markets must be suitably researched to ensure that they are fit for
-purpose.  In this thesis electricity markets are modelled using optimal power
-flow: a non-linear optimisation problem solved using primal-dual interior
-point methods.  Policy gradient reinforcement learning algorithms are used to
-adjust the parameters of multi-layer perceptrons that approximate market
-participant's policies for selecting quantities and prices bid into the
-marketplace.
+and the environment.  All of these aspects are changing and the markets for
+electricity must be suitably researched to ensure that their designs are fit
+for purpose.  In this thesis electricity markets are modelled as non-linear
+constrained optimisation problems that are solved using a primal-dual interior
+point method.  Policy gradient reinforcement learning algorithms are used to
+adjust the parameters of multi-layer feed-forward neural networks that
+approximate each market participant's policy for selecting quantities of
+power and prices that are offered in the simulated marketplace.
 
 Traditional reinforcement learning methods that learn a value function have
-been previously applied in simulated electricity trade, but are restricted to
-discrete representations of the market environment.  Policy gradient methods
-have been proven to offer convergence guarantees in continuous environments,
+been previously applied in simulated electricity trade, but are
+largely restricted to discrete representations of a market environment.
+Policy gradient methods have been proven to offer convergence guarantees in continuous environments,
 such as in robotic control applications, and avoid many of the problems that
 mar value function based methods.
 

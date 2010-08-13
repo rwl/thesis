@@ -74,7 +74,7 @@ which has led to the award of a degree.
 
 The copyright of this thesis belongs to the author under the terms of the
 United Kingdom Copyright Acts as qualified by University of Strathclyde
-Regulation 3.51. Due acknowledgement must always be made of the use of any
+Regulation 3.50. Due acknowledgement must always be made of the use of any
 material contained in, or derived from, this thesis.
 
 \vfill
