@@ -1,9 +1,9 @@
 \chapter{Related Work}
 \label{ch:related_work}
 This chapter describes the research in this thesis in the context of similar
-work.  It reviews previously published research with particular focus made on
-the learning methods and simulation models used.  For a similar review with
-greater emphasis on criticism of simulation results and the conclusions drawn
+work.  It reviews previously published research with particular focus on the
+learning methods and simulation models used.  For a similar review with
+greater criticism of simulation results and the conclusions drawn
 from them, the interested reader is referred to \citeA{weidlich:08}.
 % In the interests of repeatability, the software developed for this thesis has
 % been released as open source \cite{lincoln:pyreto}.  The second section in
@@ -12,9 +12,9 @@ from them, the interested reader is referred to \citeA{weidlich:08}.
 
 \section{Custom Learning Methods}
 The earliest agent-based electricity market simulations in the literature do
-not utilise traditional learning methods from Artificial Intelligence, but rely
-upon custom heuristic methods.  They are typically formulated using the
-author's intuition and represent basic trading rules, but do not encapsulate
+not use traditional learning methods from the field of Artificial Intelligence,
+but rely upon custom heuristic methods.  These are typically formulated using
+the author's intuition and represent basic trading rules, but do not encapsulate
 many of the key concepts from reinforcement learning theory.
 
 \subsection{Market Power}
@@ -40,7 +40,7 @@ are calculated at the end of each trading day and are determined either by the
 bid price of the marginal unit or the generator's own bid price.  Each
 generating plant is characterised in part by an estimated target utilisation
 rate that represents its desire for forward contract cover.  The agents learn
-to achieve this utilisation rate and then improve profitability.
+to achieve this utilisation rate and then to improve profitability.
 
 % TODO: Algorithm X defines the rules followed by each agent.
 If the utilisation rate is not achieved, a random percentage from a uniform
@@ -64,11 +64,11 @@ for both market models.  Agents with larger portfolios are shown to have a
 significant advantage over smaller generators due to their greater ability to
 gather scarce market price information and distribute it among generators.
 
-The research question addressed is a common one in agent-based electricity
-market simulation and the paper demonstrates the use of a relatively simple
-learning method.  It is an example of how such simulations need not be
-restricted to simple models, but can be scaled to study systems at a national
-level.
+The existence of market power is a common research question in agent-based
+electricity market simulation and the paper uses a relatively simple learning
+method to try to answer it.  This is a good example of how such simulations
+need not be restricted to simple models, but can be scaled to study systems at
+a national level.
 
 In \citeA{bower:2001b} a more sophisticated custom learning method, resembling
 the Roth-Erev method, is applied to a
@@ -80,7 +80,7 @@ limiting the number of off/on cycles per day.  Again, transmission constraints
 and regional price variations are ignored.
 
 Supplier and generator agents are assigned an optimal value for
-exposure to the balancing mechanism that is typically low due to high price and
+exposure to the balancing mechanism that is set low due to high price and
 volume uncertainty.  The agents learn to maximise profit, but profits are
 penalised if the objective for balancing mechanism exposure is not
 achieved.  They learn policies for pricing markups on the bids submitted
@@ -120,11 +120,10 @@ inquiry by the Competition Commission into whether two specific companies in the
 England and Wales electricity market had enough market power to operate against
 the public interest.
 
-These papers show that previous research by a respected author was perceived
-to be of sufficient value for the approach the be pursued further, but the need
-to improve participant and market models was recognised.  Despite neglecting
-transmission system constraints, the work is an ambitious attempt to
-extrapolate results out to consquences for a national market.
+These papers show a progression towards more complex participant and market
+models.  The work neglects all transmission system constraints, but is an
+ambitious attempt to extrapolate results out to consquences for a national
+market.
 
 \citeA{visud:99} is another early publication on agent-based simulation of
 electricity markets in which a custom learning method is used.  The simulations
@@ -134,8 +133,8 @@ are modelled.  The single-step supply function (SSF) model requires each
 generator agent to submit a price and a quantity, where the quantity is
 determined by the generator's marginal cost function.  The linear supply
 function (LSF) model requires each generator agent to submit a value
-corresponding to the slope of its supply function.  The bid price or slope value for generator
-$i$ after simulation period $t$ is
+corresponding to the slope the function.  The bid price or slope
+value for generator $i$ after simulation period $t$ is
 \begin{equation}
 x_i(t+1) = x_i(t) + b_i (p_m(t)) u_i(t)
 \end{equation}
@@ -217,7 +216,7 @@ where $\alpha$ is a constant \textit{step-size} parameter with $0 < \alpha
 Extensive simulation results are presented and the choice of learning method is
 found to have a significant impact on agent performance, but no quantitative
 comparison measure is provided and no conclusions are drawn as to which method
-is the superior.
+is superior.
 
 \subsection{Financial Transmission Rights}
 In \citeA{ernst:04} a custom learning method is defined and used to study
@@ -305,12 +304,11 @@ revisited as advances in the field are made.
 % defined, but none model the AC transmission system.  A common approach is to
 % use categorised market price from the previous period as state
 % information\cite{bakirtzis:psce,xiong:discrim}.
-Recent agent-based simulations of electricity markets has been carried out
-with participant's behavioral aspects modelled using the Q-learning methods
-described in Section \ref{sec:qlearning}.
+More recent agent-based simulations of electricity markets has been carried out
+with participant's behavioral aspects modelled using Q-learning methods.
 
 \subsection{Nash Equilibrium Convergence}
-The most prominent work in which Q-learning is applied was conducted
+The most prominent work in which Q-learning is used was conducted
 at the Swiss Federal Institutes of Technology in Zurich and Lausanne. The
 foundations for this work were laid in \citeA{krause:nash04} with a comparison
 of agent-based modelling using reinforcement learning and Nash equilibrium
@@ -327,8 +325,8 @@ C_{g,i}(P_{g,i}) = b_{g,i} + s_{g,i}P_{g,i}
 \end{equation}
 are defined for each generator $i$ where $P_{g,i}$ is the active power output,
 $s_{g,i}$ is the slope of the cost function and $b_{g,i}$ is the intercept.
-Suppliers are given the option to markup their bids to the market not by increasing $s_{g,i}$, but increasing $b_{g,i}$ by either 0,
-10, 20 or 30\%.
+Suppliers are given the option to markup their bids to the market not by
+increasing $s_{g,i}$, but by increasing $b_{g,i}$ by either 0, 10, 20 or 30\%.
 %A price cap of \$60/MW is set, but may not be exceeded by any of the
 %available markups.
 
@@ -395,7 +393,7 @@ of the network.  Power flows within the zones are not represented and all lines
 between zones are aggregated into one equivalent interconnector.
 
 As an alternative to the conventional DC optimal power flow formulation, line
-power flows computation is done using a power transfer distribution
+power flow computation is done using a power transfer distribution
 factor (PTDF) matrix.  The $(i,j)^{th}$ element of the PTDF matrix corresponds
 to the change in active power flow on line $j$ given an additional injection of
 1MW at the slack bus and corresponding withdrawal of 1MW at node $i$
@@ -446,8 +444,8 @@ creating discrete representations of largely continuous environments.
 
 \subsection{Electricity-Emissions Market Interactions}
 Researchers at the Argonne National Laboratory have published results from a
-preliminary study of interactions between \textit{emissions} and electricity
-markets \cite{wang:09}.  A cap-and-trade system for emissions is modelled where
+preliminary study of interactions between emissions allowance markets and
+electricity markets \cite{wang:09}.  A cap-and-trade system for emissions is modelled where
 generator companies are allocated with $\mbox{CO}_2$ allowances that may
 subsequently be traded.  Generator companies are assumed to have negligible
 influence on market clearing prices in the emissions market and allowance
@@ -472,15 +470,15 @@ when having a surplus, they learn to sell at this time.  In the third case, the
 authors show the sensitivity of profits to initial allocations and conclude
 that the experimental results can not be generalised.  The authors cite
 further model validation and agent learning method improvements as necessary
-future work.
+further work.
 
 The complexity of the combined electricity and emissions market model
 illustrates how the search spaces for learning methods grows dramatically as
-models are expanded.  A problem that policy gradient learning methods
+models are expanded: a problem that policy gradient learning methods
 seek to address.
 
 \subsection{Tacit Collusion}
-The SA-Q-learning method was previously used in \citeA{tellidou:tacit} by
+The SA-Q-learning method was used earlier in \citeA{tellidou:tacit} by
 researchers from the University of Thessaloniki to study capacity withholding
 and tacit collusion among electricity market participants.  A mandatory spot
 market is implemented, where bid quantities may be less than net capacity and
@@ -500,9 +498,9 @@ level of competition. The experimental results show that generators learn to
 withhold capacity and develop tacit collusion strategies to capture
 congestion profits.
 
-This work is similar to earlier research from other institutions and makes only
-a minor contribution.  It suggests that there is potential to accelerate
-advancement in this field through increased collaboration and sharing of
+This work is similar to earlier research from other institutions and makes
+minimal further contribution.  It suggests that there is potential to
+accelerate advancement in this field through increased collaboration and sharing of
 software source code.
 
 \section{Simulations Applying Roth-Erev}
@@ -523,7 +521,7 @@ ATC values.  Two issues with the original Roth-Erev method are observed and
 the modified version defined in Section \ref{sec:variant} is proposed.
 
 A maximum markup (markdown) of \$40/MWh is specified for each seller (buyer).
-Traders are not permitted to make negative profits and the feasible price range
+Traders are not able to make negative profits and the feasible price range
 is divided into 30 offer prices for 1000 auction rounds cases and 100 offer
 prices for 10000 auction round cases.  The parameters of the Roth-Erev method
 are calibrated using direct search within reasonable ranges.  Nine combinations of
@@ -556,8 +554,8 @@ with five generators and three dispatchable loads is defined and capacity
 withholding is represented by permitting traders to bid lower than true
 operating capacity and higher than true marginal costs.
 
-Comparing results from a benchmark case (in which true production costs are
-reported, but higher than marginal cost functions may be reported) and cases in
+Comparing results from a benchmark case, in which true production costs are
+reported, but higher than marginal cost functions may be reported, and cases in
 which reported production limits may be less than the true values, the authors
 find that with sufficient capacity reserve there is no evidence to suggest
 potential for inducing higher net earnings through capacity withholding in the
@@ -566,9 +564,9 @@ market design.
 AMES was the first agent-based electricity market simulation program to be
 released as open source, but while there are serveral publications on the
 project, papers involving its application are scarce.  This shows how
-niche the field is and the challenge faced if such projects are to benefits
-from the collaboration of communities that often leads to successful open
-source software projects.
+niche this field is and the challenge that is faced if such projects are to
+benefits from the collaboration of communities that often leads to the success
+of open source software projects.
 
 \subsection{Italian Wholesale Electricity Market}
 
@@ -588,13 +586,15 @@ capacity and may markup bid prices in steps of 5\%, with a maximum markup of
 % TODO: One-line diagram of Italian grid model.
 
 Bids are cleared using a DC optimal power flow formulation with
-generation capacity constraints and zone interconnector flow limits.  Agents are
-rewarded according to a uniform national price, computed as a weighted average
-of zonal prices with respect to zonal load.  Using real hourly load data it
-is shown that in experiments in which agents learn their optimal
-strategy, historical trends can be replicated in all but certain hours of
-peak load.  The authors state a desire to test different learning methods and perform
-further empirical validation.
+generation capacity constraints and zone interconnector flow limits.
+Interestingly, the flow limits in the model are different depending on the flow
+direction, requiring cutomisation of the optimal power flow formulation.
+Agents are rewarded according to a uniform national price, computed as a
+weighted average of zonal prices with respect to zonal load.  Using real
+hourly load data it is shown that in experiments in which agents learn their
+optimal strategy, historical trends can be replicated in all but certain hours
+of peak load.  The authors state a desire to test different learning methods
+and perform further empirical validation.
 
 \subsection{Vertically Related Firms and Crossholding}
 In \citeA{micola:08} a multi-tier model of wholesale natural gas, wholesale
@@ -617,8 +617,8 @@ R_2(t) = (1-\alpha)r_2(t) + \alpha r_1(t).
 \end{equation}
 Each action $a$ is a single price bid between zero and the clearing price from
 the preceding market.  The Roth-Erev method is modified such that similar
-actions, $a-1$ and $a+1$, are reinforced also.  For each agent $i$, the action
-selection propensities in auction round $t$ are
+actions, $a-1$ and $a+1$, are also reinforced.  For each agent $i$, the
+action selection propensities in auction round $t$ are
 \begin{equation}
 p^i_a(t) = \begin{cases}
 (1-\gamma)p^i_a(t-1) + R_i(t)& \text{if $s=k$}\\
@@ -670,8 +670,8 @@ must be paid for the quantity to be kept on standby and the work price must be
 paid if that quantity is called upon for transmission system stabilisation. No
 optimal power flow formulation or power system model is defined.
 
-At the day-ahead stage, contract market and balancing market (according to
-reserve price) bids are cleared by stacking in order of ascending price until the
+At the day-ahead stage, contract market and balancing market bids are cleared,
+according to reserve price, by stacking in order of ascending price until the
 forecast demand is met.  On the following day, accepted balancing bids are
 cleared according to work price such that requirements for reserve dispatch
 are met.
@@ -798,7 +798,7 @@ defined by the current expected delays in the standard and premium service
 classes and by $n_k \tau_k$: the product of the number of CPUs requested and
 the job execution time.  The reward $r(s,a)$ for action $a$ in state $s$ is the
 total price paid for the job.  The policy gradient method employed is a
-modified version of Williams' REINFORCE \cite{williams:reinforce} where
+modified version of REINFORCE \cite{williams:reinforce} where
 % TODO: Validate against Chapter 2.
 \begin{equation}
 Q(s_t,a_t) = \sum_{t=1}^T r(s_t,a_t) - \overline{r}_t
@@ -831,13 +831,13 @@ sought to tackle important Electric Power Engineering problems including:
 \begin{itemize}
   \item Market power,
   \item Congestion management,
-  \item Tacit collusions,
+  \item Tacit collusion,
   \item Discriminatory vs.~pay-as-bid pricing,
   \item Financial transmission rights, and
   \item Day ahead markets vs.~bilateral trade.
 \end{itemize}
-Improvements in these areas have the potential to provide large financial
-benefits to societies.
+Improvements in these areas have the potential to provide major financial
+benefits to society.
 
 There is a trend in the literature towards the use of more complex learning
 methods for participant behavioural representation and increasingly accurate
@@ -845,7 +845,7 @@ electric power system models.  Some of the more ambitious studies have used
 stylised models of national transmission systems for countires including the
 UK, Italy, Belgium and Germany.  There have been previous attempts to compare
 learning methods for simulated electricity trade, but no concensus exisits as
-to which are most appropriate for particular applications.
+to which are most appropriate methods for particular applications.
 
 Actions spaces are growing as researchers extend their studies to investigate
 energy business structures and the relationships between electricity, fuel and
