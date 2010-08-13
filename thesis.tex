@@ -98,6 +98,16 @@ $\kern\wd\@ne\kern -\@tempdima\left\@firstoftwo#1%
 % Remove figures to speed up build.
 \newboolean{includefigures}
 \setboolean{includefigures}{true}
+% Select chapters to build.
+\includeonly{
+	introduction,
+	background,
+	related_work,
+	method,
+	results,
+	conclusion,
+	appendix
+}
 
 \ifpdf
 \pdfinfo{/Author (Richard W. Lincoln)
@@ -214,22 +224,22 @@ applications.
 
 % Set the scene and problem statement. Introduce structure of thesis, state
 % contributions (3-5).
-\input{introduction}
+\include{introduction}
 
 % Demonstrate wider appreciation (context). Provide motivation.
-\input{background}
+\include{background}
 
 % Survey and critical assessment. Relation to own work.
-\input{related_work}
+\include{related_work}
 
 % Analysis, design, implementation and interpretation of results.
-\input{method}
+\include{method}
 
 % Critical assessment of own work.
-\input{results}
+\include{results}
 
 % State hypothesis. Further Work. Restate contribution.
-\input{conclusion}
+\include{conclusion}
 
 \bibliographystyle{apacite}
 \renewcommand{\bibname}{Bibliography}
@@ -237,6 +247,6 @@ applications.
 %\addcontentsline{toc}{chapter}{Bibliography}
 
 \appendix
-\input{appendix}
+\include{appendix}
 
 \end{document}
