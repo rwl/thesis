@@ -97,16 +97,16 @@ $\kern\wd\@ne\kern -\@tempdima\left\@firstoftwo#1%
 
 % Remove figures to speed up build.
 \newboolean{includefigures}
-\setboolean{includefigures}{false}
+\setboolean{includefigures}{true}
 % Select chapters to build.
 \includeonly{
-%	introduction,
-% 	background,
+	introduction,
+ 	background,
  	related_work,
  	method,
-% 	results,
-% 	conclusion,
-% 	appendix
+ 	results,
+ 	conclusion,
+ 	appendix
 }
 
 \ifpdf

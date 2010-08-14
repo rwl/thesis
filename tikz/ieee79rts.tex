@@ -1,14 +1,16 @@
-\newcommand{\generatorunit}[3]{
-  \node[circle,draw,thick,minimum width=6mm,#3] (#1) at (#2) {};
-  \draw[thick] ($(#2)-(2mm,0)$) sin ++(1mm,1mm) cos ++(1mm,-1mm)
-  sin ++(1mm,-1mm) cos ++(1mm,1mm);
+\newcommand{\genunit}[4]{
+  \node[circle,draw,thick,minimum width=6mm,inner sep=0pt,drop
+  shadow,fill=white,#3] (#1) at (#2) {\scriptsize#4};
+%   \draw[thick] ($(#2)-(2mm,0)$) sin ++(1mm,1mm) cos ++(1mm,-1mm)
+%   sin ++(1mm,-1mm) cos ++(1mm,1mm);
 }
 
 \begin{figure}
 \centering
 \small
 \begin{tikzpicture}[thick,label distance=0mm]
-  \tikzstyle{busbar} = [rectangle,draw,fill=black!50,inner sep=0pt];
+  \tikzstyle{busbar} = [rectangle,draw,fill=black,inner sep=0pt,drop
+  shadow];
   \tikzstyle{hbus} = [busbar,minimum width=10mm,minimum height=2pt];
   \tikzstyle{vbus} = [busbar,minimum width=2pt,minimum height=10mm];
   \tikzstyle{overhead} = [-,thick];
@@ -16,10 +18,10 @@
   \tikzstyle{trxcircle} = [circle,draw=black,inner sep=0pt,minimum width=5mm];
   \tikzstyle{every pin edge}=[-,shorten <=1pt,thin];
 
-\node[hbus,minimum width=15mm,label=left:Bus 1] (bus1) at (5,0) {};
+\node[hbus,minimum width=15mm,label=left:Bus 1] (bus1) at (4.5,0) {};
 \node[hbus,minimum width=15mm,label=right:Bus 2] (bus2) at (7,0) {};
 \node[hbus,label=right:Bus 3] (bus3) at (0,6) {};
-\node[vbus,label=above:Bus 4] (bus4) at (3,4) {};
+\node[vbus,label=above:Bus 4] (bus4) at (2.75,4) {};
 \node[vbus,label=above:Bus 5] (bus5) at (6.5,3) {};
 \node[vbus,label=above:Bus 6] (bus6) at (12,5.3) {};
 \node[hbus,label=right:Bus 7] (bus7) at (11,0.5) {};
@@ -163,44 +165,47 @@ bus19.north) -| ([xshift=-4.5mm] bus20.north);
 bus21.south) -| ([xshift=-3mm] bus22.south);
 
 % Generator @ Bus 1.
-\generatorunit{gen1}{4.5,-0.8}{label=left:192 MW,pin={[pin distance=12mm,text
-centered,text width=10.5mm]165:2$\times$U20 2$\times$U76}};
+\genunit{gen1}{4.0,-0.8}{label=left:192 MW,pin={[pin distance=12mm,text
+centered,text width=10.5mm]165:2$\times$U20 2$\times$U76}}{A1};
 \draw[overhead] ([xshift=-5mm] bus1.south) -- (gen1.north);
 % Generator @ Bus 2.
-\generatorunit{gen2}{7.5,-0.8}{label=right:192 MW,pin={[pin distance=12mm,text
-centered,text width=10.5mm]15:2$\times$U20 2$\times$U76}};
+\genunit{gen2}{7.5,-0.8}{label=right:192 MW,pin={[pin distance=12mm,text
+centered,text width=10.5mm]15:2$\times$U20 2$\times$U76}}{A1};
 \draw[overhead] ([xshift=5mm] bus2.south) -- (gen2.north);
 % Generator @ Bus 7.
-\generatorunit{gen3}{11,-0.3}{label=right:300 MW,pin=below:3$\times$U100};
+\genunit{gen3}{11,-0.3}{label=right:300 MW,pin=below:3$\times$U100}{A1};
 \draw[overhead] (bus7.south) -- (gen3.north);
 % Generator @ Bus 13.
-\generatorunit{gen4}{12.3,10.9}{label=above:591 MW,pin={[pin distance=8mm]
-left:3$\times$U197}};
+\genunit{gen4}{12.3,10.9}{label=above:591 MW,pin={[pin distance=8mm]
+left:3$\times$U197}}{A2};
 \draw[overhead] ([yshift=3mm] bus13.east) -- ([yshift=3mm,xshift=2.5mm]
 bus13.east) -- (gen4.south);
 % Generator @ Bus 14.
-\generatorunit{gen5}{4.3,11.8}{label={[text justified,text
-width=15mm]right:Synch. Cond.}}; \draw[overhead] ([yshift=3mm] bus14.east) --
-(gen5.west);
+\genunit{gen5}{4.3,11.8}{label={[text justified,text
+width=15mm]right:Synch. Cond.}}{A5};
+\draw[overhead] ([yshift=3mm] bus14.east) -- (gen5.west);
 % Generator @ Bus 15.
-\generatorunit{gen6}{0.5,11.2}{label={[text centered,text width=10mm]below:215 MW},
+\genunit{gen6}{0.5,11.2}{label={[text centered,text width=10mm]below:215 MW},
 pin={[pin distance=5mm,text centered,text width=15mm]-70:5$\times$U12
-1$\times$U155}}; \draw[overhead] (bus15.south) -- (gen6.north);
+1$\times$U155}}{A3};
+\draw[overhead] (bus15.south) -- (gen6.north);
 % Generator @ Bus 16.
-\generatorunit{gen7}{0.0,15}{label=right:155 MW};
+\genunit{gen7}{0.0,15}{label=right:155 MW}{A3};
 \draw[overhead] (bus16.north) -- (gen7.south);
 % Generator @ Bus 18.
-\generatorunit{gen8}{1.5,18.8}{label=left:400 MW,pin={[pin distance=6mm]below
-left:Nuclear}}; \draw[overhead] ([xshift=-5mm] bus18.north) -- (gen8.south);
+\genunit{gen8}{1.5,18.8}{label=left:400 MW,pin={[pin distance=6mm]below
+left:Nuclear}}{A4};
+\draw[overhead] ([xshift=-5mm] bus18.north) -- (gen8.south);
 % Generator @ Bus 21.
-\generatorunit{gen9}{5,17.8}{label=right:400 MW,pin={above right:Nuclear}};
+\genunit{gen9}{5,17.8}{label=right:400 MW,pin={above right:Nuclear}}{A4};
 \draw[overhead] (bus21.north) -- (gen9.south);
 % Generator @ Bus 22.
-\generatorunit{gen10}{9,17.8}{label=right:300 MW,pin={above:Hydro, 6$\times$U50}};
+\genunit{gen10}{9,17.8}{label=right:300 MW,pin={above:Hydro,
+6$\times$U50}}{A4};
 \draw[overhead] (bus22.north) -- (gen10.south);
 % Generator @ Bus 23.
-\generatorunit{gen11}{11.8,15.05}{label=below:660 MW,pin={[text centered,text
-width=15mm]above:2$\times$U155 1$\times$U350}};
+\genunit{gen11}{11.8,15.05}{label=below:660 MW,pin={[text centered,text
+width=15mm]above:2$\times$U155 1$\times$U350}}{A2};
 \draw[overhead] ([yshift=5.05mm] bus23.east) -- (gen11.west);
 
 % Load @ Bus 1.
@@ -249,7 +254,7 @@ text width=10mm,below] {100 MW};
 \draw[loadline] (bus20.south) -- ++(0,-0.8) node[below] {128 MW};
 
 % Area voltage labels.
-\node[draw] at (1,2) {\normalsize{138 kV}};
+\node[draw] at (0.5,1.0) {\normalsize{138 kV}};
 \node[draw] at (6.5,10.3) {\normalsize{230 kV}};
 
 \end{tikzpicture}

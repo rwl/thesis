@@ -2,7 +2,7 @@
 \tikzstyle{loadline}=[->,thick,>=stealth']
 
 \tikzstyle{final}=[rectangle, draw, fill=white, text=black, drop shadow,
-		text width=3cm, text centered, rounded corners]
+		text width=3cm, text centered, rounded corners=2pt]
 % \tikzstyle{comment}=[rectangle, draw=black, rounded corners, fill=green,
 %     drop shadow, text centered, anchor=north, text=white, text width=3cm]
 \tikzstyle{genarrow}=[->, >=open triangle 90, thick]
@@ -33,11 +33,17 @@
   sep=0pt,rotate=180] (#1) at (#2) {};
 }
 
-\newcommand{\genset}[2]{
-  \node[circle,draw,thick,minimum width=10mm] (#1) at (#2) {};
-  \draw[thick] ($(#2)-(3mm,0)$) sin ++(1.5mm,1.5mm) cos ++(1.5mm,-1.5mm)
-  sin ++(1.5mm,-1.5mm) cos ++(1.5mm,1.5mm);
-}
+% \newcommand{\genset}[2]{
+%   \node[circle,draw,thick,minimum width=10mm] (#1) at (#2) {};
+%   \draw[thick] ($(#2)-(3mm,0)$) sin ++(1.5mm,1.5mm) cos ++(1.5mm,-1.5mm)
+%   sin ++(1.5mm,-1.5mm) cos ++(1.5mm,1.5mm);
+% }
+
+\newcommand{\genset}[3]{
+  \node[circle,draw,thick,minimum width=6mm,inner sep=0pt,drop
+  shadow,fill=white,#3] (#1) at (#2) {};
+  \draw[thick] ($(#2)-(2mm,0)$) sin ++(1mm,1mm) cos ++(1mm,-1mm) sin
+  ++(1mm,-1mm) cos ++(1mm,1mm); }
 
 \newcommand{\loadd}[2]{
   \node[draw,regular polygon,regular polygon sides=3,minimum size=1cm,
