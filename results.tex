@@ -1,7 +1,7 @@
 \chapter{Nash Equilibrium Analysis}
 \label{ch:nashanalysis}
 This chapter examines the convergence to Nash
-equilibria of agents compteting with portfolios of generating plant.  Value
+equilibria of agents competing with portfolios of generating plant.  Value
 function based and policy gradient reinforcement learning algorithms are
 compared in their ability to converge to an optimal policy using a six bus
 electric power system model.
@@ -24,8 +24,8 @@ model simple enough that it can be determined through exhaustive search.
 By observing the actions taken and the reward received by each agent over the
 initial simulation periods it is possible to compare different configurations
 of the algorithms in their speed of convergence to an optimal policy.  In the
-following sections the objectives of this experiment are explictly defined, the
-setup of the simulations is explained and simulation results, with discussion
+following sections the objectives of this experiment are explicitly defined,
+the setup of the simulations is explained and simulation results, with discussion
 and critical analysis, are provided.
 
 \section{Aims and Objectives}
@@ -125,7 +125,7 @@ use the unit de-commitment algorithm.
 
 The maximum capacity for the most expensive generator $P^{max}_3=220$MW such
 that it may supply almost all of the load if it is dispatched.  This
-generator is associated with a passive agent that always offers a maginal
+generator is associated with a passive agent that always offers a marginal
 cost.  For the other generators $P^{max}_1=110$MW and $P^{max}_2=110$MW.  These
 two generators are each associated with an active learning agent whose activity
 in the market is restricted to one offer of maximum capacity in each period,
@@ -133,7 +133,7 @@ at a price representing a markup of between 0 and 30\% on marginal cost.
 Value function based methods are restricted to discrete markup steps of 10\%,
 giving possible markup actions of 0, 10, 20 and 30\%. The market price cap is
 set such that it is never reached by any markup and does not complicate the
-experiment.  Discrimnatory pricing (pay-as-bid) is used in order to provide a
+experiment.  Discriminatory pricing (pay-as-bid) is used in order to provide a
 clearer reward signal to agents with low cost generators.
 
 The learning methods compared are Q-learning, ENAC, REINFORCE and the variant
@@ -273,28 +273,29 @@ limits to assist algorithm comparison.
 \section{Discussion and Critical Analysis}
 Under the first generator price configuration the agents face a
 relatively simple control task and receive a clear reward signal that is
-directly proportional to their markup action.  The results show that all of the methods consistently
-converge to the point of Nash equilibrium.  A multitude of parameter and nerual
-network structure variations could be investigated and a sea of similar
-plots would be produced.  However, the author's experience is that the speed of
-convergence is largely determined by the rate at which the exploration parameter value is reduced.
-The policy gradient methods are sensitive to high learning rate parameter
-values, but make only very small policy adjustments if this parameter is set
-too low. All of the plots for REINFORCE and ENAC show that the methods only converge to a
+directly proportional to their markup action.  The results show that all of
+the methods consistently converge to the point of Nash equilibrium.  A
+multitude of parameter and neural network structure variations could be
+investigated and a sea of similar plots would be produced.  However, the
+author's experience is that the speed of convergence is largely determined by
+the rate at which the exploration parameter value is reduced. The policy
+gradient methods are sensitive to high learning rate parameter values, but
+make only very small policy adjustments if this parameter is set too low. All
+of the plots for REINFORCE and ENAC show that the methods only converge to a
 stable policy if the exploration parameter $\sigma$ is manually reduced to
 below approximately~$-2$.
 
 The second pricing configuration provides a more challenging control problem in
 which there is some interdependence between the agent's rewards and where
 Agent~1 must learn to undercut the passive agent.  The results show that the
-variant Roth-Erev and Q-learning methods both consistantly learn their optimal
+variant Roth-Erev and Q-learning methods both consistently learn their optimal
 policy and converge to the Nash equilibrium.  It should be noted that Agent~1
 can markup its marginal price by slightly more than 10\% and still undercut
 the passive agent, but these methods are restricted to discrete actions.
 
 When using REINFORCE or ENAC, Agent~2 tends also to learn to maximise its
-markup, but less consistantly.  Agent~1 typically learns to undercut the
-passive agent, but does not converge to a consistant value.  The problem is
+markup, but less consistently.  Agent~1 typically learns to undercut the
+passive agent, but does not converge to a consistent value.  The problem is
 similar to the cliff-edge walking problems often used as benchmarks in
 reinforcement learning research and may be difficult to approximate a policy
 for using a small number of $\tanh$ functions. It may be possible to improve
@@ -310,7 +311,7 @@ while these methods do converge to the same or similar policies as the
 Q-learning and Roth-Erev methods, they do not exhibit the same level of
 consistency.  Value function based methods or the Roth-Erev method may be the
 most suitable choice of algorithm in the simple electricity market simulations
-typlically found in the literature.
+typically found in the literature.
 
 \section{Summary}
 The simulations conducted here do not exploit any of
@@ -383,7 +384,7 @@ more complex dynamic scenario.  The experiment explores the multi-dimensional,
 continuous state space handling abilities of policy gradient methods in the
 context of \textit{learning to trade power}.
 
-Control of a portfolio of generators using continous sensor data from
+Control of a portfolio of generators using continuous sensor data from
 simulations of the IEEE Reliability Test System (RTS) \cite{ieee79rts} is
 investigated.  The system is constrained by bus voltage and generator capacity
 limits as the system demand cycles through daily load profiles. By
@@ -414,20 +415,19 @@ algorithm. Some simplification of the state and action domains for the value
 function based methods is required, but the portfolios of generation and load
 profiles are constant.
 
-The IEEE RTS provides the power system model and load
-profiles used in each simulation.  The model has 24 bus locations, connected by 32 transmission lines, 4 transformers
-and 2 underground cables.  The transformers tie together two areas at
-230kV and 138kV.  The model has 32 generators of 9 different types (See Table
-\ref{tbl:ieee_rts_gencosts}) with a total capacity of 3.45GW and load at 17
-locations, totalling 2.85GW. Generator costs are quadratic functions of
-output, defined by the parameters in Table \ref{tbl:ieee_rts_gencosts}.
-Figure \ref{fig:ieee_rts_gencost_plot} plots the cost functions for each type
-of generator over their production range and illustrates their categorisation
-by fuel type.  The generator cost data was provided by Georgia Tech Power
-Systems Control and Automation Laboratory.  All of the data for the model is
-provided in Appendix \ref{adx:ieee_rts} and the connectivity of branches and
-the location of generators and loads is illustrated in Figure
-\ref{fig:ieee79rts}.
+The IEEE RTS provides the power system model and load profiles used in each
+simulation.  The model has 24 bus locations, connected by 32 transmission lines,
+4 transformers and 2 underground cables.  The transformers tie together two
+areas at 230kV and 138kV.  The model has 32 generators of 9 different types (See
+Table \ref{tbl:ieee_rts_gencosts}) with a total capacity of 3.45GW and load at
+17 locations, totalling 2.85GW. Generator costs are quadratic functions of
+output, defined by the parameters in Table \ref{tbl:ieee_rts_gencosts}. Figure
+\ref{fig:ieee_rts_gencost_plot} plots the cost functions for each type of
+generator over their production range and illustrates their categorisation by
+fuel type.  The generator cost data was provided by Georgia Tech Power Systems
+Control and Automation Laboratory.  All of the data for the model is provided in
+Appendix \ref{adx:ieee_rts} and the connectivity of branches and the location of
+generators and loads is illustrated in Figure \ref{fig:ieee79rts}.
 
 \begin{table}
 \begin{center}

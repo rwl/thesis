@@ -122,7 +122,7 @@ the public interest.
 
 These papers show a progression towards more complex participant and market
 models.  The work neglects all transmission system constraints, but is an
-ambitious attempt to extrapolate results out to consquences for a national
+ambitious attempt to extrapolate results out to consequences for a national
 market.
 
 \citeA{visud:99} is another early publication on agent-based simulation of
@@ -155,10 +155,11 @@ paper is demonstrates a drawback of implementing custom learning methods that
 is exacerbated when defining multiple strategies.
 
 A similar custom learning method is compared with two other algorithms in
-\citeA{visud:thesis}.  The custom method is designed specifically for the power pool model used and employs separate policies for
-selecting bid quantities and prices according to several if-then rules that
-attempt to capture capacity withholding behaviour.  The method is compared
-with algorithms developed in \citeA{auer:03} for application to the $n$-armed
+\citeA{visud:thesis}.  The custom method is designed specifically for the
+power pool model used and employs separate policies for selecting bid
+quantities and prices according to several if-then rules that attempt to
+capture capacity withholding behaviour.  The method is compared with
+algorithms developed in \citeA{auer:03} for application to the $n$-armed
 bandit problem \cite[\S2.1]{robbins:53,suttonbarto:1998} and a method based on
 evaluative feedback with softmax action selection.
 
@@ -352,11 +353,11 @@ of the combinations.
 The significance of this research is that is verifies
 that the agent-based approach settles at the same theoretical optimum as with closed-form
 equilibrium approaches and that exploratory policies result in the exploitation
-of multiple equlibria if they exist.
+of multiple equilibria if they exist.
 
 Convergence to a Nash equilibrium is also shown in \citeA{sistani:06}.
-Boltzman (soft-max) exploration is used for action selection with the temperature
-parameter adjusted during the simulations.  A modified version of the IEEE 30
+Boltzmann (soft-max) exploration is used for action selection with the
+temperature parameter adjusted during the simulations.  A modified version of the IEEE 30
 bus test system is used with the number of generators reduced from nine to
 six.  No optimal power flow formulation or details of the reward signal used
 are provided.  Generators are given a three step action space where the slope of a
@@ -562,7 +563,7 @@ potential for inducing higher net earnings through capacity withholding in the
 market design.
 
 AMES was the first agent-based electricity market simulation program to be
-released as open source, but while there are serveral publications on the
+released as open source, but while there are several publications on the
 project, papers involving its application are scarce.  This shows how
 niche this field is and the challenge that is faced if such projects are to
 benefits from the collaboration of communities that often leads to the success
@@ -640,20 +641,20 @@ increased and greater profits for integrated firms.
 
 The same alternative formulation of the Roth-Erev method is also used in
 \citeA{micola:08b} to analyse the effect on market prices of different degrees
-of producer crossholding\footnote{Crossholdings occur when one publicly
+of producer cross-holding\footnote{Cross-holdings occur when one publicly
 traded firm owns stock in another such firm.} under private and public bidding
-information.  Crossholding is represented with the introduction of a factor
+information.  Cross-holding is represented with the introduction of a factor
 to each agent's reward function that controls the fraction of profit from
-the crossowned rival that the agent receives.  Public information availability
+the cross-owned rival that the agent receives.  Public information availability
 is modelled using a vector of probabilities for selection of each
 possible action that is the average of each agent's private probability and is
 available to all agents.
 
 The degree to which the public probabilities
 influence the agent's action selection probability from equation (\ref{eq:re_prob}) is varied
-systematically in a series of experiments, along with crossholding levels and
+systematically in a series of experiments, along with cross-holding levels and
 buyer numbers.  The results are illustrated using three-dimensional
-plots and show a direct relationship between crossholding and market price.
+plots and show a direct relationship between cros-sholding and market price.
 The conclusions drawn on market concentration by the authors are dependant upon
 the ability to model both the demand and supply side participation in the
 market and the authors state that this shows, to a certain extent, the value
@@ -701,7 +702,7 @@ market that is cleared using a DC optimal power flow formulation with line
 flows calculated using a PTDF matrix.  The authors state that suppliers utility
 functions are to include aspects of risk aversion in future work.  The use of
 some measure of risk adjusted return to assess performance is commonplace in
-economics research, but is currently lacking from the agent-based electicity
+economics research, but is currently lacking from the agent-based electricity
 market simulation literature.
 
 Zonal prices are set in the forward market as weighted averages of nodal prices
@@ -842,9 +843,9 @@ benefits to society.
 There is a trend in the literature towards the use of more complex learning
 methods for participant behavioural representation and increasingly accurate
 electric power system models.  Some of the more ambitious studies have used
-stylised models of national transmission systems for countires including the
+stylised models of national transmission systems for countries including the
 UK, Italy, Belgium and Germany.  There have been previous attempts to compare
-learning methods for simulated electricity trade, but no concensus exisits as
+learning methods for simulated electricity trade, but no consensus exists as
 to which are most appropriate methods for particular applications.
 
 Actions spaces are growing as researchers extend their studies to investigate

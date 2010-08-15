@@ -101,22 +101,22 @@ $\kern\wd\@ne\kern -\@tempdima\left\@firstoftwo#1%
 % Select chapters to build.
 \includeonly{
 	introduction,
- 	background,
- 	related_work,
- 	method,
- 	results,
- 	conclusion,
- 	appendix
+%  	background,
+%  	related_work,
+%  	method,
+%  	results,
+%  	conclusion,
+%  	appendix
 }
 
 \ifpdf
 \pdfinfo{/Author (Richard W. Lincoln)
-  		 /Title  (Reinforcement Learning for Power Trade)
+  		 /Title  (Learning Power Trade)
          /Subject (Electrical Power Engineering)}
 \fi
 
-%\title{Learning to Trade Power}
 \title{Learning to Trade Power}
+%\title{Learning Power Trade}
 \author{Richard W. Lincoln}
 
 \pagestyle{plain}
@@ -131,12 +131,12 @@ $\kern\wd\@ne\kern -\@tempdima\left\@firstoftwo#1%
 \declaration
 
 \begin{acknowledgements}
-I wish to thank Professor Jim McDonald for giving me the opportunity for
-postgraduate study and for permitting me the freedom to pursue my own research
-interests.  I am also very grateful to my supervisors, Professor~Graeme~Burt
-and Dr~Stuart~Galloway, for their guidance and scholarship.  I wish to offer
-special thanks to my parents, my brother and my sister for their support
-throughout my PhD.
+I wish to thank Professor Jim McDonald for giving me the opportunity to study
+at The Institute for Energy and Environment and for giving me the freedom
+to pursue my own research interests.  I also wish to thank my supervisors,
+Professor~Graeme~Burt and Dr~Stuart~Galloway, for their guidance and
+ scholarship.  I wish to offer very special thanks to my parents, my big
+brother and my little sister for all of their support throughout my PhD.
 
 This thesis makes extensive use of open source software projects developed by
 researchers from other institutions.  I wish to thank Dr Ray Zimmerman from
@@ -155,8 +155,8 @@ Systems consortium under grant GR/T28836/01.
 In Electrical Power Engineering, learning algorithms can be used to model
 the strategies of electricity market participants.  The objective of this work
 is to establish if \textit{policy gradient} reinforcement learning methods can
-provide superior models of market participants than previously applied
-\textit{value function based} methods.
+provide superior participant models than previously applied \textit{value
+function based} methods.
 
 % Electricity is an unique commodity.  It must be supplied at the presise moment
 % that it is demanded, as there are no practical methods for significant
@@ -164,14 +164,14 @@ provide superior models of market participants than previously applied
 % the direction in which power flows around networks, so generation or
 % consumption at one point in the system has an effect at all other points.
 Supply of electricity involves technology, money, people, natural resources
-and the environment.  All of these aspects are changing and the markets for
-electricity must be suitably researched to ensure that their designs are fit
+and the environment.  All of these aspects are changing and electricity market
+designs must be suitably researched to ensure that they are fit
 for purpose.  In this thesis electricity markets are modelled as non-linear
-constrained optimisation problems that are solved using a primal-dual interior
+constrained optimisation problems that are solved with a primal-dual interior
 point method.  Policy gradient reinforcement learning algorithms are used to
-adjust the parameters of multi-layer feedforward neural networks that
-approximate each market participant's policy for selecting quantities of
-power and prices that are offered in the simulated marketplace.
+adjust the parameters of multi-layer feed-forward neural networks that
+approximate each market participant's policy for selecting power quantities
+and prices that are offered in a simulated marketplace.
 
 Traditional reinforcement learning methods that learn a value function have
 been previously applied in simulated electricity trade, but are
@@ -180,13 +180,13 @@ Policy gradient methods have been proven to offer convergence guarantees in cont
 such as in robotic control applications, and avoid many of the problems that
 mar value function based methods.
 
-The benefits of using policy gradient methods in electricity market simulation
-are explored and the results demonstrate their superior trading ability when
-operating in large constrained networks.  By advancing the use of learning
-methods in electricity market simulation, this work provides the opportunity to
-revisit previous research in the field and creates the possibility for policy
-gradient methods to be used in decision support and automated energy trading
-applications.
+% The benefits of using policy gradient methods in electricity market simulation
+% are explored and the results demonstrate their superior trading ability when
+% operating in large constrained networks.
+% By introducing advanced unsupervised learning methods to electricity market
+% simulation, previous research in the field may be revisited and enhanced and
+% an opportunity to use policy gradient methods in decision support and automated
+% energy trading applications is opened.
 
 % Reinforcement learning methods that use connectionist systems for value
 % function approximation offer few convergence guarantees, even in simple

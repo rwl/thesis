@@ -39,7 +39,7 @@ reason that transmission towers are large and undergrounding systems is
 expensive.
 
 The UK transmission system operates at 400kV and 275kV (and 132kV in
-Scotland), but systems with voltages upto and beyond 1000kV are used in
+Scotland), but systems with voltages up to and beyond 1000kV are used in
 larger countries such as Canada and China.  For transmission over very long
 distances or undersea, high voltage DC (HVDC) systems have become economically
 viable in recent years.  The reactance of a transmission line is proportional
@@ -438,8 +438,8 @@ Q_i = \sum_{n=1}^{n_b} \vert Y_{ij}V_iV_j \vert \sin(\delta_i - \delta_j -
 \theta_{ij})
 \end{equation}
 entering the network at bus $i$ are non-linear functions of $V_i$, as indicated
-by the presence of the sine and cosine terms.  Kirchoff's Current Law requires that the net
-complex power injection (generation - load) at each bus equals the sum of
+by the presence of the sine and cosine terms.  Kirchhoff's Current Law requires
+that the net complex power injection (generation - load) at each bus equals the sum of
 complex power flows on each branch connected to the bus.  The power balance
 equations
 \begin{equation}
@@ -908,10 +908,10 @@ while low values promote exploitation of past experience.
 % space of the policy parameters.  The agent's policy function approximator is
 % updated according to the gradient of expected reward with respect to its
 % parameters.
-Value function based methods have been successfully applied with discrete lookup
-table parameterisation to many problems.  However, the number of
-discrete states required increases rapdily as the dimensions of the state space
-increase and if all possibly relevant situations are to be covered, these
+Value function based methods have been successfully applied with discrete
+look-up table parameterization to many problems.  However, the number of
+discrete states required increases rapidly as the dimensions of the state
+space increase and if all possibly relevant situations are to be covered, these
 methods become subject to Bellman's Curse of Dimensionality
 \cite{bellman:1961}.  Value function based methods can be used in conjunction
 with function approximation techniques (artificial neural networks typically)
@@ -953,14 +953,14 @@ applications.  A wealth of literature is available that covers the field
 in much greater depth \cite{bishop96ann,fausett94}.
 
 In reinforcement learning, the most widely used type of artificial neural
-network is the multi-layer feedforward network (or multi-layer perceptron).
+network is the multi-layer feed-forward network (or multi-layer perceptron).
 This model consists of an input layer and an output layer of artificial neurons,
 plus any number of optional hidden layers.  Weighted connections link the
 neurons, but unlike architectures such as the recurrent neural network, only
 neurons from adjacent layers connect.  Most commonly, a fully connected scheme
 is used in which all neurons from one layer are connected to all neurons in the
 next.  Figure \label{fig:perceptron} diagrams a fully connected three layer
-feedforward neural network.
+feed-forward neural network.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/perceptron}}{}
 
@@ -980,7 +980,7 @@ typically either:
   \item A hyperbolic tangent function, where the output ranges between -1 and
   1.
 \end{itemize}
-The paramemters of the activation functions could be adjusted along with the
+The parameters of the activation functions could be adjusted along with the
 connection weights to tune the transfer function between input and output that
 the network provides.  To simplify this process a \textit{bias} node that always outputs 1
 may be added to a layer and connected to all neurons in the following layer.
@@ -989,7 +989,7 @@ for network adjustment to occur using only connection weights.
 
 The output is obtained during the network's \textit{execution} phase by
 presenting an input to the input layer that propagates through.  It can be
-shown that a suitably configured feedforward network with one hidden layer can
+shown that a suitably configured feed-forward network with one hidden layer can
 approximate any non-linear function.
 % However, this requires the weights
 % to be adjusted in the \textit{training} or \textit{learning} phase and it was
@@ -1128,7 +1128,7 @@ result from interactions between goal driven individuals.
 Reinforcement learning is an unsupervised machine learning technique that can
 be used to model the dynamic behaviour of these individuals.  Traditional
 methods associated a \textit{value} with each state and the available actions,
-but are limited to realtively small discrete problems.  Policy gradient methods
-that search directly in the space of the parameters of an action selection
-policy can operate in continuous environements and have been shown to
+but are limited to relatively small discrete problems.  Policy gradient
+methods that search directly in the space of the parameters of an action selection
+policy can operate in continuous environments and have been shown to
 exhibit good convergence properties.

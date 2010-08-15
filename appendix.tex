@@ -157,7 +157,7 @@ can model maximisation of social benefit, maximisation of the distance to
 the maximum loading condition or multi-objective of a combination of these.
 Multi-period optimal power flow is formulated as a mixed integer problem with
 linearised power balance constraints.  The objective function models
-maximisation of social welfare, but is extended to include startup and
+maximisation of social welfare, but is extended to include start-up and
 shutdown costs.
 
 Power flow and dynamic data are typically separated in electric power
@@ -228,12 +228,13 @@ program designed for both distribution and transmission system simulation.
 
 OpenDSS supports steady-state analysis in the frequency domain, including power
 flow, harmonics and dynamics.  Arbitrary $n$-phase unbalanced circuit analysis
-is supported using an object orientated data model.  Circuit elements are defined in Object Pascal and solutions are found using a linear sparse matrix solver written in C and
-C++.  OpenDSS is available under the Berkeley Software Distribution (BSD)
-license, which allows use for almost any purpose.  Circuits are defined in
-scripts, using a domain specific language, that may be executed through a
-graphical user interface or a Common Object Model (COM) interface.  The user
-interface also provides circuit data editing, plotting and power flow
+is supported using an object orientated data model.  Circuit elements are
+defined in Object Pascal and solutions are found using a linear sparse matrix
+solver written in C and C++.  OpenDSS is available under the Berkeley Software
+Distribution (BSD) license, which allows use for almost any purpose.  Circuits
+are defined in scripts, using a domain specific language, that may be executed
+through a graphical user interface or a Common Object Model (COM) interface.
+The user interface also provides circuit data editing, plotting and power flow
 visualisation tools.
 
 The power flow solver is fast and can be configured for repeated
@@ -293,14 +294,14 @@ systems.
 \pylon is a translation of \matpower and Matdyn to the Python programming
 language.  It has extensions for agent-based electricity market simulation
 that provide features similar to those of AMES.  Both the DC and AC
-forumlations of the extensible optimal power flow model \cite{zimmerman:mp_pes}
+formulations of the extensible optimal power flow model \cite{zimmerman:mp_pes}
 from \matpower are implemented.  Either a Python version of MIPS or an
 interface to the cp solver from CVXOPT can be used to compute solutions.  The
 sparsity of the problems is exploited throughout the solution process using
 matrix packages from SciPy and bindings to SuperLU or UMFPACK for solver sparse
 set of linear equations and performing LU decomposition.  Scripts are provided
 for reading and writing data files in PSS/E, \matpower and PSAT format. A wide
-variety of learing methods are available in \pylon due to its use of the
+variety of learning methods are available in \pylon due to its use of the
 PyBrain machine learning library \cite{schaul:2010}.  PyBrain also provides
 the artificial neural network models used for policy function approximation
 and they may be accelerated using C extension modules from the ARAC project.
@@ -311,11 +312,11 @@ state estimation, continuation power flow and time domain simulation.  \pylon
 includes a rudimentary GUI that uses the Tkinter library that is included
 with Python and thus imposes no additional dependencies.  A more feature
 rich GUI is provided by plug-ins for Puddle -- an extensible, GUI
-toolkit independant integrated development environment, created for the
+toolkit independent integrated development environment, created for the
 purposes of this thesis also.  The use of matrix libraries from NumPy and
 SciPy has allowed \pylon (with the permission of the \matpower developers) to
 be released under the Apache license, version 2.0. This allows \pylon to be
-used in the developement of proprietary software as well as free and open
+used in the development of proprietary software as well as free and open
 source software since derivatives of the source code may be made available
 under more restrictive terms than the original Apache license.  This is in
 contrast to ``copyleft'' licenses, such as the GNU GPL, that require the same
@@ -385,7 +386,7 @@ From &To &$r$ &$x$ &$b_c$ &$S_{max}$ &$\tau$ &$\theta_{ph}$\\
 This appendix provides the data from the IEEE Reliability Test System
 \cite{ieee79rts} that was imported from the ``case24\_ieee\_rts.m'' case file
 that is provided with \matpower and was originally contributed by Bruce
-Wollenberg.  Figure \ref{fig:ieee79rts2} illustrates the model struture and
+Wollenberg.  Figure \ref{fig:ieee79rts2} illustrates the model structure and
 shows the bus injections for the AC unit de-commitment optimal power flow
 solution for all generators at marginal cost.  Table \ref{tbl:rtsbus} lists the
 bus data, Table \ref{tbl:rtsgen} lists the generator data, Table

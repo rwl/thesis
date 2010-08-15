@@ -334,17 +334,18 @@ electric power trading environment are defined.
 \subsubsection{Discrete Environment}
 For operation with learning methods that use look-up tables to store
 state-action values, an environment with $n_s$ discrete states and $n_a$
-discrete actions is defined.  An agent can not observe offers/bids submitted by competitor agents, but is permitted to sense any aspect of the power system
-model.  However, to ensure that the size of the environment state space is kept
-resonable the agent is limited to observing a demand forecast.  Besides the
-actions of other agents, the total system demand is likely to be the most
+discrete actions is defined.  An agent can not observe offers/bids submitted
+by competitor agents, but is permitted to sense any aspect of the power system
+model.  However, to ensure that the size of the environment state space is
+kept reasonable the agent is limited to observing a demand forecast.  Besides
+the actions of other agents, the total system demand is likely to be the most
 significant factor effecting the cleared quantity of its offers/bids.  The
 initial demand at each bus $P_{d0}$, as defined in the original power system
-model, is assumed to be peak and the state space is divided into discrete steps
-of size $P_d / n_s$.  As explained further in Chapter \ref{ch:exploitation},
-the demand at each bus can follow a profile at each step $t$ of the
-simulation.  The environment computes the total system demand $P_{d t}$ and
-returns an integer represntation of the state
+model, is assumed to be peak and the state space is divided into discrete
+steps of size $P_d / n_s$.  As explained further in Chapter
+\ref{ch:exploitation}, the demand at each bus can follow a profile at each
+step $t$ of the simulation.  The environment computes the total system demand
+$P_{d t}$ and returns an integer representation of the state
 \begin{equation}
 s_t = \frac{P_{d t}}{P_{d0} / n_s} + 1.
 \end{equation}
@@ -358,7 +359,7 @@ $n_a$ is formed, from which the agent can select.  The action vector that the
 discrete environment receives holds a single integer value, corresponding to
 the column index in the agent's action value table.  The quantity and price for
 each offer/bid submitted to the market is taken from the vector of permutations
-using the $a_t$ as the index.  An example of the possible permuatations of 0,
+using the $a_t$ as the index.  An example of the possible permutations of 0,
 10 and 20\% markups for a portfolio of two generators is given in Table
 \ref{tbl:example_actions}.  It should be clear how quickly the number of
 possible actions can grow as the number of possible markups and the size of the
@@ -444,7 +445,7 @@ action vector is converted into offers/bids and submitted to the market.
 \subsection{Task}
 To allow different goals (such a profit maximisation or the
 meeting some target level for plant utilisation) to be associated with a single
-type of environment, an agent does not interact directly with the environmetn,
+type of environment, an agent does not interact directly with the environment,
 but is paired with a particular \textit{task}. A task defines the
 reward returned to the agent and thus defines the agent's purpose.  For all
 experiments in this thesis the goal of each agent is to maximise
@@ -452,7 +453,7 @@ financial profit and the rewards are thus defined as the sum of earnings from
 the previous period $t$ as determined by the revenue from the market and any
 incurred costs.  As explained in Section \ref{sec:moody}, utilising some
 measure of risk adjusted return might be of interest in the context of
-simulated electricty trade and this would simply involve the definition of a
+simulated electricity trade and this would simply involve the definition of a
 new task without any need for modification of the environment.
 
 Sensor data from the environment is filtered according to the task
@@ -473,7 +474,7 @@ s_c = 2\left(\frac{s - s_{min}}{s_{max} - s_{min}}\right) - 1
 \end{equation}
 such that $-1 \leq s_c^i \leq 1$.
 
-The output from the policy function approximator, $a_c$, is denormalised using
+The output from the policy function approximator, $a_c$, is denormalized using
 minimum and maximum action limits, $a_{min}$ and $a_{max}$ respectively, giving
 an action vector
 \begin{equation}
@@ -505,11 +506,12 @@ s_1 & v_{2,1}& \ddots& & \vdots \cr
 s_n & v_{n,1} & \dotsb & \dotsb & v_{n,m}
 }
 \end{equation}
-When using a policy gradient method, the module is a multi-layer feedforward
+When using a policy gradient method, the module is a multi-layer feed-forward
 artificial neural network.
 
 The learner can be any reinforcement learning algorithm that modifies the
-values/parameters of the module to increase expected future reward.  The dataset stores state-action-reward triples for each interaction between the
+values/parameters of the module to increase expected future reward.  The
+dataset stores state-action-reward triples for each interaction between the
 agent and its environment.  The stored history is used by value-function
 learners when computing updates to the table values.  Policy gradient learners
 search directly in the space of the policy network parameters.
