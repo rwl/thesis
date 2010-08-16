@@ -1,0 +1,84 @@
+\begin{figure}
+  \centering
+  \begin{small}
+  \begin{tikzpicture}[thick]
+
+
+    \node (Agt) [final, rectangle split, rectangle split parts=3,
+    		      		 text width=4.2cm] {
+      \textbf{LearningAgent}
+        \nodepart[text justified]{second}%
+        learning: bool\newline
+        logging: bool
+		\nodepart[text justified]{third}%
+		getAction()\newline
+		giveReward(reward)\newline
+		integrateObservation(obs)\newline
+		newEpisode()\newline
+		learn()\newline
+		reset()
+    };
+
+%    \node (AuxNode01) [text width=4mm,text height=1cm,below of= Agt] {};
+
+
+    \node (Mod) [final, rectangle split, rectangle split parts=3,
+    		     text width=5.2cm,below of=Agt,node distance=6cm] {
+      \textbf{ActionValueTable}
+        \nodepart[text justified]{second}%
+        numActions: int\newline
+        numStates: int
+		\nodepart[text justified]{third}%
+		updateValue(row, column, value)\newline
+		getValue(row, column)\newline
+		getMaxAction(state)\newline
+		initialize(value)
+    }
+    edge [<-] node[near start,right,text width=15mm,yshift=2mm] {module 1..1}
+    (Agt);
+
+
+    \node (Lrn) [final, rectangle split, rectangle split parts=3,
+    		     text width=4.2cm] at (7,-2.8) {
+      \textbf{VariantRothErev}
+        \nodepart[text justified]{second}%
+        batchMode: bool\newline
+        offPolicy: bool\newline
+        experimentation: float\newline
+        recency: float
+		\nodepart[text justified]{third}%
+		learn()
+    }
+    edge [<-] node[near start,below,text width=15mm] {learner 0..1} (Agt);
+
+
+    \node (Dat) [final, rectangle split, rectangle split parts=3,
+    		     text width=5.2cm,above of=Lrn,node distance=4cm] {
+      \textbf{ReinforcementDataSet}
+        \nodepart[text justified]{second}%
+        learning: bool\newline
+        logging: bool
+		\nodepart[text justified]{third}%
+		addSample(state, action, reward)\newline
+		learn()
+    }
+    edge [<-] node[near start,above,text width=15mm] {history 1..1} (Agt);
+
+
+    \node (Exp) [final, rectangle split, rectangle split parts=3,
+    		     text width=4.2cm,below of=Lrn,node distance=4cm] {
+      \textbf{BoltzmannExplorer}
+        \nodepart[text justified]{second}%
+        epsilon: float = 2.0\newline
+        decay: float = 0.9995
+		\nodepart[text justified]{third}%
+		activate()
+    }
+    edge [<-] node[near start,right,text width=15mm,yshift=2mm] {explorer 0..1}
+    (Lrn);
+
+  \end{tikzpicture}
+  \end{small}
+  \caption{Learning agent UML class diagram.}
+  \label{fig:cls_agent}
+\end{figure}
