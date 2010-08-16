@@ -315,11 +315,11 @@ the structure of which is derived from PyBrain's single player design.
 
 % In PyBrain, agents do not interact directly with their environment, but are
 % associated with a particular \textit{task}.
-This section describes the environment of each agent, their tasks and the
-modules used for policy function approximation and storing state-action values
-in tables. The process by which each agent's policy is updated by a learning
-algorithm is explained and the sequence of interactions between multiple
-agents and the market is described and illustrated.
+This section describes the discrete and continuous environments for agents,
+their tasks and the modules used for policy function approximation and storing
+state-action values.  The process by which each agent's policy is updated by a
+learning algorithm is explained and the sequence of interactions between
+multiple agents and the market is described and illustrated.
 
 \subsection{Environment}
 In each experiment, agents are endowed with a portfolio of generators from the
@@ -344,7 +344,7 @@ by competitor agents, but may sense other aspects of the power system
 model.  To ensure that the size of the environment state space is
 kept reasonable, the agent is limited to observing a demand forecast.  The
 initial demand at each bus $P_{d0}$, as defined in the original power system
-model, is assumed to be peak and the demand at each bus can follow a profile at each
+model, is assumed to be peak and the demand can follow a profile at each
 step $t$ of the simulation (See Chapter \ref{ch:exploitation}).  The state
 space is divided into discrete steps of size $P_{step} = (P_{d0} - P_d^{min}) /
 n_s$, where $P_d^{min}$ is the total demand at the lowest point of the profile.  The

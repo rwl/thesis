@@ -250,24 +250,24 @@ limits to assist algorithm comparison.
 	  \caption{Average markup for agent 1 and standard deviation.}
 	  \label{fig:5_2_action_a1}
 	\end{figure}
-	\begin{figure}
-	  \centering
-	  \includegraphics{figures/fig5_2_action_a2}
-	  \caption{Average markup for agent 2 and standard deviation.}
-	  \label{fig:5_2_action_a2}
-	\end{figure}
+% 	\begin{figure}
+% 	  \centering
+% 	  \includegraphics{figures/fig5_2_action_a2}
+% 	  \caption{Average markup for agent 2 and standard deviation.}
+% 	  \label{fig:5_2_action_a2}
+% 	\end{figure}
 	\begin{figure}
 	  \centering
 	  \includegraphics{figures/fig5_2_reward_a1}
 	  \caption{Average reward for agent 1 and standard deviation.}
 	  \label{fig:5_2_reward_a1}
 	\end{figure}
-	\begin{figure}
-	  \centering
-	  \includegraphics{figures/fig5_2_reward_a2}
-	  \caption{Average reward for agent 2 and standard deviation.}
-	  \label{fig:5_2_reward_a2}
-	\end{figure}
+% 	\begin{figure}
+% 	  \centering
+% 	  \includegraphics{figures/fig5_2_reward_a2}
+% 	  \caption{Average reward for agent 2 and standard deviation.}
+% 	  \label{fig:5_2_reward_a2}
+% 	\end{figure}
 }{}
 
 \section{Discussion and Critical Analysis}
@@ -433,18 +433,18 @@ generators and loads is illustrated in Figure \ref{fig:ieee79rts}.
 \begin{center}
 \begin{tabular}{r|c|.{1.5}|.{3.4}|.{3.3}|l}
 \hline
-Code &$C_{up}$ &\multicolumn{1}{c}{$a$} &\multicolumn{1}{|c|}{$b$}
+Code &$C_{down}$ &\multicolumn{1}{c}{$a$} &\multicolumn{1}{|c|}{$b$}
 &\multicolumn{1}{c|}{$c$} &Type \\
 \hline\hline
-U12	 &1500	&0.32841	&56.564	&86.385 &Oil \\
-U20	 &1500	&0.0	&130.0	&400.685 &Oil \\
-U50	 &1500	&0.0	&0.001	&0.001 &Hydro \\
-U76	 &1500	&0.01414	&16.0811	&212.308 &Coal \\
-U100 &1500	&0.05267	&43.6615	&781.521 &Oil \\
-U155 &1500	&0.00834	&12.3883	&382.239 &Coal \\
-U197 &1500	&0.00717	&48.5804	&832.758 &Oil \\
-U350 &1500	&0.00490	&11.8495	&665.109 &Coal \\
-U400 &1500	&0.00021	&4.4231	&395.375 &Nuclear \\
+% U12 &0.0 &0.32841 &56.564 &86.385 &Oil \\
+% U20 &0.0 &0.0 &130.0 &400.685 &Oil \\
+U50 &0 &0.0 &0.001 &0.001 &Hydro \\
+U76	 &0	&0.01414	&16.0811	&212.308 &Coal \\
+U100 &0	&0.05267	&43.6615	&781.521 &Oil \\
+U155 &0	&0.00834	&12.3883	&382.239 &Coal \\
+U197 &0	&0.00717	&48.5804	&832.758 &Oil \\
+U350 &0	&0.00490	&11.8495	&665.109 &Coal \\
+U400 &0	&0.00021	&4.4231	&395.375 &Nuclear \\
 \hline
 \end{tabular}
 \caption{Cost parameters IEEE RTS generator types.}
@@ -494,28 +494,41 @@ be hidden from the agents.
 
 \begin{table}
 \begin{center}
-\begin{tabular}{c|c|c}
+% \begin{tabular}{c|c|c}
+% \hline
+% Agent &Type &\multicolumn{1}{c}{Buses} \\
+% \hline\hline
+% \multirow{3}{*}{$A_1$} &U20 &1,1,2,2 \\
+%  & U76 &1,1,2,2 \\
+%  & U100 &7,7,7\\
+% \hline
+% \multirow{3}{*}{$A_2$} &U155 &23,23 \\
+%  & U197 &13,13,13 \\
+%  & U300 &23 \\
+% \hline
+% \multirow{2}{*}{$A_3$} &U12 &15,15,15,15,15 \\
+%  & U155 &15,16 \\
+% \hline
+% \multirow{2}{*}{$A_4$} &U50 &22,22,22,22,22,22 \\
+%  & U400 &18,21 \\
+% \hline
+% $A_5$ & Sync.~Cond. &14 \\
+% \hline
+% \end{tabular}
+
+\begin{tabular}{c|c|c|c|c|c|c|c|c}
 \hline
-Agent &Type &\multicolumn{1}{c}{Buses} \\
-\hline\hline
-\multirow{3}{*}{$A_1$} &U20 &1,1,2,2 \\
- & U76 &1,1,2,2 \\
- & U100 &7,7,7\\
+\multirow{2}{*}{Agent} &U50 &U76 &U100 &U155 &U197 &U350 &U400 &Total \\
+ &Hydro &Coal &Oil &Coal &Oil &Coal &Nuclear &(MW) \\
 \hline
-\multirow{3}{*}{$A_2$} &U155 &23,23 \\
- & U197 &13,13,13 \\
- & U300 &23 \\
-\hline
-\multirow{2}{*}{$A_3$} &U12 &15,15,15,15,15 \\
- & U155 &15,16 \\
-\hline
-\multirow{2}{*}{$A_4$} &U50 &22,22,22,22,22,22 \\
- & U400 &18,21 \\
-\hline
-$A_5$ & Sync.~Cond. &14 \\
+1 & &2$\times$ & &1$\times$ & & &1$\times$ &707 \\
+2 & &2$\times$ & &1$\times$ & & &1$\times$ &707 \\
+3 &6$\times$ & & & &3$\times$ & & &891 \\
+4 & & &3$\times$ &2$\times$ & &1$\times$ & &960 \\
 \hline
 \end{tabular}
-\caption{Agent portfolios by type and location.}
+
+\caption{Agent portfolios.}
 \label{tbl:agent_portfolios}
 \end{center}
 \end{table}
