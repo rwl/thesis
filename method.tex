@@ -1,12 +1,14 @@
 \chapter{Modelling Power Trade}
 \label{ch:method}
-The present chapter defines the model used in this thesis to simulate electric
-power trade. The first section describes how optimal power flow solutions are
-used to clear offers and bids submitted to a simulated power exchange auction.
-The second section defines how market participants are modelled as agents that
-use reinforcement learning algorithms to adjust their bidding behaviour. It
-explains the modular structure of a multi-agent system that coordinates
-interactions between the auction model and market participants.
+This chapter defines the model that is later used in chapters
+\ref{ch:nashanalysis} and \ref{ch:exploitation} to simulate electric power
+trade and compare learning algorithms. The first section describes how optimal
+power flow solutions are used to clear offers and bids submitted to a
+simulated power exchange auction. The second section defines how market
+participants are modelled as agents that use the reinforcement learning
+algorithms to adjust their bidding behaviour. It explains the modular
+structure of a multi-agent system that coordinates interactions between the
+auction model and market participants.
 
 % Societies reliance on secure energy supplies and the high volumes of
 % electricity typically consumed render it impractical to experiment with
@@ -73,22 +75,60 @@ interactions between the auction model and market participants.
 % competitive decision making process.
 
 \section{Electricity Market Model}
-A model of a power exchange auction market is used in this thesis to compare
-reinforcement learning algorithms.  It accepts offers of and bids for blocks of
-power at specified prices.  The auction withholds invalid offers and bids and
-determines the cleared quantities and prices.
+A power exchange auction market based on SmartMarket from
+\citeA[p.92]{pserc:mp_manual} is used in this thesis to compare reinforcement
+learning methods.  In each trading period the auction accepts offers to sell
+blocks of power from participating agents\footnote{A double-sided auction,
+in which bids to buy blocks of power may be submitted by agents associated
+with dispatchable loads, is also implemented, but the feature is not used in
+this thesis.}.
+%\subsection{Clearing Process}
+% To simulate electric power trade a model is used in which agents representing
+% market participants do not provide cost functions for the generators in their portfolio, but submit
+% offers to sell and/or bids to buy blocks of active or reactive power.  The
+% offers/bids are submitted to a power exchange auction market model based on
+% SmartMarket from \citeA[p.92]{pserc:mp_manual}.
+The clearing process begins by withholding offers above the price cap, along
+with those specifying non-positive quantities.  Valid offers for each
+generator are sorted into non-decreasing order with respect to price and
+converted into corresponding generator capacities and piecewise linear cost
+functions (See Section \ref{sec:pw_linear} below).  The newly configured units
+form an optimal power flow problem, the solution of which provides generator
+set-points and nodal marginal prices which are used to determine the
+proportion of each offer block that is cleared and the clearing price for each.
+The cleared offers determine each agent's revenue and therefore the profit
+which is used as a reward signal.
+
+% Pricing may be uniform,
+% where each offer/bid is cleared at the price of the marginal unit, or
+% discriminatory, where the offer/bid is cleared at the price at which it
+% offered/bid (pay-as-bid).
+
+A nodal marginal pricing scheme is used in which the price of each offer is
+cleared at the value of the Lagrangian multiplier on the power balance
+constraint for the bus at which the offer's generator is connected.
+Alternatively, a discriminatory pricing scheme may be used in which offers are
+cleared at the price at which they were submitted (pay-as-bid).  The
+alternative auction types from \matpower that scale nodal marginal prices
+are not used.
 
 \subsection{Optimal Power Flow}
+\label{sec:pw_linear}
 Bespoke implementations of the optimal power flow formulations from \matpower
-are used in the clearing process \cite[\S5]{pserc:mp_manual}.
-Both the DC and AC formulations are used!  The trade-offs between DC and AC
-models have been examined by \citeA{overbye:acdc}.  DC models were found suitable for most nodal marginal
+are used in the auction clearing process \cite[\S5]{pserc:mp_manual}.
+Both the DC and AC formulations are used!
+
+The trade-offs between DC and AC models have been examined by
+\citeA{overbye:acdc}.  DC models were found suitable for most nodal marginal
 price calculations and are considerably less computationally expensive.  The
 AC optimal power flow formulation is used in this thesis to examine the
-exploitation of voltage constraints that are not part of a DC formulation.
+exploitation of voltage constraints, that are not part of a DC formulation.
+
 A class diagram in the Unified Modelling Language (UML) for the
 object-orientated power system model that is used to compute optimal power
-flow solutions is shown in Figure \ref{fig:cls_pylon}.
+flow solutions is shown in Figure \ref{fig:cls_pylon}.  Each branch is
+associated with two buses and forms an edge in the nodal power system
+representation.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/cls_pylon}}{}
 
@@ -96,28 +136,32 @@ As in \textsc{Matpower} \cite[p.26]{pserc:mp_manual}, generator active
 power, and optionally reactive power, output costs may be defined by convex
 $n$-segment piecewise linear cost functions
 \begin{equation}
-c^{(i)}(x) = m_ip + c_i
+c^{(i)}(p) = m_ip + b_i
 \end{equation}
-for $p_i \leq p \leq p_{i+1}$ with $i = 1,2,\dotsc n$ where $m_{i+1} \geq m_i$
-and $p_{i+1} > p_i$, as diagramed in Figure \ref{fig:ccv_function}
-\cite[Figure5-3]{pserc:mp_manual}. Since these costs are non-differentiable,
-the constrained cost variable approach from \cite{zimmerman:ccv} is used to
-make the optimisation problem smooth.  For each generator $i$ a helper cost
-variable $y_i$ added to the vector of optimisation variables.  The additional
-inequality constraints
+where $p$ is the generator set-point for $p_i \leq p \leq p_{i+1}$ with
+$i = 1,2,\dotsc n$, $m_i$ is the variable cost for segment $i$ in
+\$/MWh where $m_{i+1} \geq m_i$ and $p_{i+1} > p_i$, and $b_i$ is the
+$y$-intercept in \$ for segment $i$.  Offers submitted to the market are
+converted into a piecewise linear cost function for the associated generator.
+Since these cost functions are non-differentiable, the constrained cost
+variable approach from \citeA{zimmerman:ccv} is used to make the optimisation
+problem smooth.  For each generator $j$ a helper cost variable $y_j$ is added
+to the vector of optimisation variables.  Figure~\ref{fig:ccv_function}
+illustrates how the additional inequality constraints
 \begin{equation}
-y_i \geq m_{i,j}(p-p_j) + c_j, \quad j = 1\dotsc n
+y_j \geq m_{j,i}(p-p_i) + c_i, \quad i = 1\dotsc n
 \end{equation}
-ensure that $y_i$ lies on or above $c^{(i)}(x)$. The
-objective of the optimal power flow problem becomes the minimisation of the
-sum of cost variables for all generators:
+ensure that $y_j$ lies on or above $c^{(i)}(p)$
+\cite[Figure5-3]{pserc:mp_manual}.  The objective function for the optimal
+power flow formulation used in the auction clearing process is the minimisation
+of the sum of cost variables for all generators:
 \begin{equation}
-\min_{\theta, V_m, P_g, Q_g, y} \sum_{i=1}^{n_g}y_i
+\min_{\theta, V_m, P_g, Q_g, y} \sum_{j=1}^{n_g}y_j
 \end{equation}
 
 The extensions to the optimal power flow formulations defined in
 \textsc{Matpower} for user-defined cost functions and generator P-Q capability
-curves are not utilised.
+curves are not used in this thesis.
 
 %
 % \section{DC OPF Formulation}
@@ -154,7 +198,7 @@ The optimal power flow formulations constrain generator set-points between
 upper and lower power limits.  The output of expensive generators can be
 reduced to the lower limit, but they can not be completely shutdown.  The
 online status of generators could be incorporated into the vector of
-optimisation variables, but as they are Boolean the problems would become
+optimisation variables, but being Boolean the problems would become
 mixed-integer non-linear programs which are typically very difficult to
 solve.
 
@@ -199,36 +243,6 @@ generators remain.
 \UNTIL{$d = \text{true}$}
 \end{algorithmic}
 \end{algorithm}
-
-\subsection{Power Exchange}
-To simulate electric power trade a model is used in which agents representing
-market participants do not provide cost functions for the generators in their portfolio, but submit
-offers to sell and/or bids to buy blocks of active or reactive power.  The
-offers/bids are submitted to a power exchange auction market model based on
-SmartMarket from \citeA[p.92]{pserc:mp_manual}.
-
-The clearing process begins by withholding
-offers/bids outwith maximum offer and minimum bid price limits, along with
-those specifying non-positive quantities. Valid offers/bids for each generator
-are then sorted into non-decreasing/non-increasing order and are converted
-into corresponding generator/dispatchable load capacities and piecewise linear
-cost functions. The newly configured units are used in a unit de-commitment
-optimal power flow problem, the solution of which holds generator set-points
-and nodal marginal prices which are used to determine the proportion of each
-offer/bid block that should be cleared and the cleared price for each.
-
-% Pricing may be uniform,
-% where each offer/bid is cleared at the price of the marginal unit, or
-% discriminatory, where the offer/bid is cleared at the price at which it
-% offered/bid (pay-as-bid).
-
-A basic nodal marginal pricing scheme is used in which the price of each
-offer/bid is cleared at the value of the Lagrangian multiplier on the power
-balance constraint for the bus at which the associated generator is connected.
-Alternatively, a discriminatory pricing scheme may be used in which offer/bids
-are cleared at the price at which they were submitted (pay-as-bid). Cleared
-offers/bids are returned to the agents and used to determine revenue values
-from which each agent's earnings or losses are derived.
 
 %\subsection{Auction Example}
 % This example demonstrates how a set of offers and a set of bids are cleared
@@ -305,7 +319,7 @@ from which each agent's earnings or losses are derived.
 % that generator and would be used as part of the reward for the responsible
 % agent.
 
-\newpage
+%\newpage
 \section{Multi-Agent System}
 \label{sec:mas}
 Market participants are modelled with software agents from PyBrain that use
@@ -321,7 +335,7 @@ state-action values.  The process by which each agent's policy is updated by a
 learning algorithm is explained and the sequence of interactions between
 multiple agents and the market is described and illustrated.
 
-\subsection{Environment}
+\subsection{Market Environment}
 In each experiment, agents are endowed with a portfolio of generators from the
 electric power system model (See Figure \ref{fig:cls_pylon}).  As
 illustrated by the UML class diagram in Figure \ref{fig:cls_pyreto},
@@ -337,38 +351,70 @@ electric power trading environment are defined.
 \ifthenelse{\boolean{includefigures}}{\input{tikz/cls_pyreto}}{}
 
 \subsubsection{Discrete Environment}
-For operation with learning methods that use look-up tables to store
-state-action values, an environment with $n_s$ discrete states and $n_a$
-discrete actions is defined.  An agent can not observe offers/bids submitted
-by competitor agents, but may sense other aspects of the power system
-model.  To ensure that the size of the environment state space is
-kept reasonable, the agent is limited to observing a demand forecast.  The
-initial demand at each bus $P_{d0}$, as defined in the original power system
-model, is assumed to be peak and the demand can follow a profile at each
-step $t$ of the simulation (See Chapter \ref{ch:exploitation}).  The state
-space is divided into discrete steps of size $P_{step} = (P_{d0} - P_d^{min}) /
-n_s$, where $P_d^{min}$ is the total demand at the lowest point of the profile.  The
-environment computes the total system demand $P_{dt}$ at step $t$ and returns
-an integer representation of the state
-\begin{equation}
-s_t = \frac{(P_{dt} - P_d^{min})}{P_{step}} + 1.
-\end{equation}
+For agents operating learning methods that use look-up tables an environment
+with $n_s$ discrete states and $n_a$ discrete action possibilities is defined.
+The environment produces a state $s$, where $0\leq s \leq n_s$ and $s \in Z$,
+at each simulation step and accepts an action $a$, where $0\leq a \leq n_a$
+and $a \in R$.
 
-To define the action space, a vector of percentage markups on marginal cost
-$m_e$ is defined for each environment $e$ along with a variable $n_o \in
-\mathbb{Z}^+$ which denotes the number of offers/bids to be submitted by the
-agent.  (A similar vector of percentage markdowns on total capacity has also
-been implemented, but is not used in this thesis.)  A set of all unique
-permutations of markup for $n_o$ offers/bids of length $n_a$ is formed, from
-which the agent must select select.  The action vector that the discrete
-environment is passed consists of a single integer value, corresponding to the
-column index in the agent's action value table.  The quantity and price for
-each offer/bid submitted to the market is taken from the vector of
-permutations using the $a_t$ as the index.  An example of the possible
-permutations of 0, 10 and 20\% markups for a portfolio of two generators is
-given in Table \ref{tbl:example_actions}.  It should be clear how quickly the
-number of possible actions can grow as the number of possible markups and the
-size of the portfolio increases.
+To keep the size of the state space reasonable, the state is derived only
+from the total system demand $d=\sum P_d$.  Each simulation episode of $n_t$
+steps has a demand profile vector $u$ of length $n_t$, where $0 \leq u_i \leq 1$.
+The load at each bus in simulation period $t$ is $P_{dt} = u_tP_{d0}$, where
+$P_{d0}$ is the initial demand vector.  The size of each state is
+\begin{equation}
+d_s = \frac{d(\max u - \min u)}{n_s}
+\end{equation}
+and the state space vector is $S=d_si$ for $i=1\dotsc n_s$.  At simulation step
+$t$, the state returned by the environment $s_t = i$ if $S_i \leq P_{dt} \leq
+S_{i+1}$ for $i = 0\dotsc n_s$.
+
+The action space for a discrete environment is defined by a vector $m$, where
+$0 \leq m_i \leq 100$, of percentage markups on marginal cost with length
+$n_m$, a vector $w$, where $0 \leq w_i \leq 100$, of percentage withholds of
+capacity with length $n_w$ and the number of offer $n_o$, where $n_o \in Z^+$,
+to be submitted for each generator associated with the environment.  A $n_a
+\times 2n_gn_o$ matrix is formed that contains all permutations of markup and
+withhold for each offer that is to be submitted for each generator.  For
+example, Table \ref{tbl:example_actions} shows all possible actions when
+markups are restricted to 0, 10\% or 30\% and 0\% of capacity may be withheld.
+Each row corresponds to an action and the column values specify the percentage
+of capacity to be withheld and the percentage price markup for each of the
+$n_on_g$ offers.  The size of the permutation matrix grows rapidly as $n_o$,
+$n_g$, $n_m$ and $n_w$ increase.
+
+% For operation with learning methods that use look-up tables to store
+% state-action values, an environment with $n_s$ discrete states and $n_a$
+% discrete actions is defined.  An agent can not observe offers/bids submitted
+% by competitor agents, but may sense other aspects of the power system
+% model.  To ensure that the size of the environment state space is
+% kept reasonable, the agent is limited to observing a demand forecast.  The
+% initial demand at each bus $P_{d0}$, as defined in the original power system
+% model, is assumed to be peak and the demand can follow a profile at each
+% step $t$ of the simulation (See Chapter \ref{ch:exploitation}).  The state
+% space is divided into discrete steps of size $P_{step} = (P_{d0} - P_d^{min}) /
+% n_s$, where $P_d^{min}$ is the total demand at the lowest point of the profile.  The
+% environment computes the total system demand $P_{dt}$ at step $t$ and returns
+% an integer representation of the state
+% \begin{equation}
+% s_t = \frac{(P_{dt} - P_d^{min})}{P_{step}} + 1.
+% \end{equation}
+%
+% To define the action space, a vector of percentage markups on marginal cost
+% $m_e$ is defined for each environment $e$ along with a variable $n_o \in
+% \mathbb{Z}^+$ which denotes the number of offers/bids to be submitted by the
+% agent.  (A similar vector of percentage markdowns on total capacity has also
+% been implemented, but is not used in this thesis.)  A set of all unique
+% permutations of markup for $n_o$ offers/bids of length $n_a$ is formed, from
+% which the agent must select select.  The action vector that the discrete
+% environment is passed consists of a single integer value, corresponding to the
+% column index in the agent's action value table.  The quantity and price for
+% each offer/bid submitted to the market is taken from the vector of
+% permutations using the $a_t$ as the index.  An example of the possible
+% permutations of 0, 10 and 20\% markups for a portfolio of two generators is
+% given in Table \ref{tbl:example_actions}.  It should be clear how quickly the
+% number of possible actions can grow as the number of possible markups and the
+% size of the portfolio increases.
 
 \begin{table}
 \begin{center}
@@ -434,23 +480,46 @@ $a_i$ &$m_1$ &$m_2$ \\
 % Not all of the values are used by each agent and they are filtered according
 % to the agent's task.
 
-For agents operating policy gradient methods, continuous environments that
-output $n_s$ sensors and accept $n_a$ actions are defined.  Each environment
-may be configured for actions that specify just price or price and quantity.  If
-$q_e^i = 0$ where $q_e^i \in (0,1)$ then the agent's action is price selection
-and the offer/bid quantity is determined by the maximum rated capacity of the
-generator in question divided by the number of offers being submitted for it.
-The environment accepts an action vector $a_e$ of length $n_a$ if $q_e^i = 0$,
-otherwise of length $2n_a$.  If $q_e^i = 0$, the $i$-th element of $a_e$ is
-the offered/bid price in \$/MWh, where $i = 1,2,\dotsc n_{in}$.  If $q_e^i =
-1$, the $i$-th element of $a_e$ is the offered/bid price in \$/MWh, where $i =
-1,3,5,\dotsc n_{in}-1$ and the $j$-th element of $a_e$ is the offered/bid
-quantity in MW where $j = 2,4,6,\dotsc n_{in}$.  The action vector passed to
-the environment is converted into sets of offers/bids that are submitted to
-the market model.
-%If $q_e^i = 0$, then $qty = p_{max}/n_{in}$.
+% For agents operating policy gradient methods, continuous environments that
+% output $n_s$ sensors and accept $n_a$ actions are defined.  Each environment
+% may be configured for actions that specify just price or price and quantity.  If
+% $q_e^i = 0$ where $q_e^i \in (0,1)$ then the agent's action is price selection
+% and the offer/bid quantity is determined by the maximum rated capacity of the
+% generator in question divided by the number of offers being submitted for it.
+% The environment accepts an action vector $a_e$ of length $n_a$ if $q_e^i = 0$,
+% otherwise of length $2n_a$.  If $q_e^i = 0$, the $i$-th element of $a_e$ is
+% the offered/bid price in \$/MWh, where $i = 1,2,\dotsc n_{in}$.  If $q_e^i =
+% 1$, the $i$-th element of $a_e$ is the offered/bid price in \$/MWh, where $i =
+% 1,3,5,\dotsc n_{in}-1$ and the $j$-th element of $a_e$ is the offered/bid
+% quantity in MW where $j = 2,4,6,\dotsc n_{in}$.  The action vector passed to
+% the environment is converted into sets of offers/bids that are submitted to
+% the market model.
+% %If $q_e^i = 0$, then $qty = p_{max}/n_{in}$.
 
-\subsection{Task}
+A continuous market environment that outputs a state vector $s$, where $s_i
+\in R$, and accepts an action vector $a$, where $a\in R$, is defined for agents
+operating policy gradient methods.  Scalar variables $m_{max}$ and
+$W_{max}$ define the maximum allowable percentage markup on marginal cost and
+the maximum allowable percentage capacity withhold, respectively.  Again, $n_o$
+defines the number of offers to be submitted for each generator associated with
+the environment.
+
+The state vector may consist of any data from the power system or market model
+e.g.~bus voltage, branch power flows, generator limit Lagrangian multipliers
+etc.  Each element of the vector provides one input to the neural network used
+for policy function approximation.
+
+The action vector $a$ has length $2n_gn_o$.  Element $a_i$, where $0\leq a_i
+\leq m_{max}$, corresponds to the price markup and $a_{i+1}$, where $0\leq
+a_{i+1} \leq w_{max}$, to the withhold of capacity for the $(i/2)^{th}$ offer,
+where $i=0,2,4,\dotsc,2n_gn_o$.
+
+Not having to discretize the state space and compute a matrix of action
+permutations greatly simplifies the implementation of a continuous environment
+and increases in $n_g$ and $n_o$ only impact upon the number of output nodes
+required for the policy function approximator.
+
+\subsection{Agent Task}
 To allow alternative goals, such a profit maximisation or the meeting some
 target level for plant utilisation, to be associated with a single type of
 environment, an agent does not interact directly with its environment, but is paired with a particular \textit{task}. A task defines the
@@ -489,7 +558,7 @@ a = \left(\frac{y + 1}{2}\right)(a_{max} - a_{min}) + a_{min}
 \end{equation}
 with valid values for price, and optionally quantity.
 
-\subsection{Agent}
+\subsection{Participant Agent}
 Each agent $i$ is defined as an entity capable of producing an action $a_i$
 based on previous observations of its environment $s_i$, where $a_i$ and $s_i$
 are vectors of length $n_a$ and $n_s$ respectively, where
