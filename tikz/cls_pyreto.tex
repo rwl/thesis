@@ -1,24 +1,25 @@
 \begin{figure}
   \centering
-  \begin{tikzpicture}[node distance=2cm,thick]
+  \begin{small}
+  \begin{tikzpicture}[node distance=1.75cm,thick]
 
     \node (Mkt) [final, rectangle split, rectangle split parts=3,
-    		      		 text width=6.2cm] {
+    		      		 text width=4.2cm] {
       \textbf{SmartMarket}
         \nodepart[text justified]{second}%
-        price\_cap: float = 500\newline
-        auction\_type: string = ``first price"\newline
-        period: float = 1\newline
-        limits: dict = $\lbrace \rbrace$\newline
-        offers: list = [ ]\newline
-        bids: list = [ ]
+        auctionType: string\newline
+        priceCap: float = 500\newline
+        period: float\newline
+        limits: dict\newline
+        offers: list\newline
+        bids: list
 		\nodepart[text justified]{third}%
 		run()\newline
-		get\_offbids(generator)
+		getOffbids(generator)
     };
 
     \node (Gen) [final, rectangle split, rectangle split parts=3,
-    		     text width=4.5cm, below=of Mkt]{
+    		     text width=4.0cm, below=of Mkt,yshift=10mm]{
       \textbf{Generator}
         \nodepart[text justified]{second}%
         name: string\newline
@@ -43,8 +44,8 @@
       \textbf{MarketEnvironment}
         \nodepart[text justified]{second}%
         name: string\newline
-        n\_offbids: int = 2\newline
-        offbid\_qty: bool = False\newline
+        numOffbids: int = 1\newline
+        offbidQty: bool = False\newline
         markups: tuple
 		\nodepart[text justified]{third}%
 		getSensors()\newline
@@ -52,25 +53,28 @@
 		reset()
     }
 
-    edge [->] node[near end,text width=10mm] {market 1..1} (Mkt)
-    edge [->] node[near end,text width=10mm] {generators 1..*} (Gen);
+    edge [->] node[near end,above,text width=10mm,xshift=-3mm] {market 1..1}
+    (Mkt)
+    edge [->] node[near end,above, text width=10mm,
+    xshift=1mm,yshift=3mm] {generators 1..*} (Gen);
 
     \node (Task) [final, rectangle split, rectangle split parts=3,
-    		      		 text width=4.5cm,below=of Env] {
+    		      		 text width=4.0cm,below=of Env] {
       \textbf{ProfitTask}
         \nodepart[text justified]{second}%
         name: string\newline
-        sensor\_limits: list = [ ]\newline
-        actor\_limits: list = [ ]
+        sensor\_limits: list\newline
+        actor\_limits: list
 		\nodepart[text justified]{third}%
 		getObservation()\newline
 		performAction(action)\newline
 		getReward()
     }
 
-    edge [->] node[near end,text width=6mm] {env 1..1} (Env);
+    edge [->] node[near end,left,text width=6mm] {env 1..1} (Env);
 
   \end{tikzpicture}
-  \caption{Class diagram for the Pyreto.}
+  \end{small}
+  \caption{Agent environment UML class diagram.}
   \label{fig:cls_pyreto}
 \end{figure}

@@ -1,9 +1,10 @@
 \begin{figure}
   \centering
+  \begin{small}
   \begin{tikzpicture}[thick]
 
     \node (Agent) [final, rectangle split, rectangle split parts=3,
-    		       text width=5.8cm] {
+    		       text width=5.0cm, node distance=5cm] {
       \textbf{LearningAgent}
         \nodepart[text justified]{second}%
         name: string\newline
@@ -21,7 +22,7 @@
 
 
     \node (Task) [final, rectangle split, rectangle split parts=3,
-    		      text width=4.5cm,right=of AuxNode01] {
+    		      text width=3.8cm,right=of AuxNode01] {
       \textbf{ProfitTask}
         \nodepart[text justified]{second}%
         name: string\newline
@@ -35,17 +36,20 @@
 
 
     \node (Expr) [final, rectangle split, rectangle split parts=3,
-    		      text width=5cm,above=of AuxNode01] {
+    		      text width=4.5cm,above=of AuxNode01] {
       \textbf{MarketExperiment}
         \nodepart[text justified]{second}%
-        market: SmartMarket
+        market: SmartMarket\newline
+        profile: array
 		\nodepart[text justified]{third}%
-		doInteractions(number=1)
+		doEpisodes(number=1)
     }
-    edge [->] node[near end,right,text width=6mm] {agents 1..*} (Agent)
-    edge [->] node[near end,right,text width=6mm] {tasks 1..*} (Task);
+    edge [->] node[near end,left,xshift=-3mm,text width=6mm] {agents 1..*}
+    (Agent) edge [->] node[near end,right,xshift=2mm,text width=6mm] {tasks
+    1..*} (Task);
 
   \end{tikzpicture}
-  \caption{Class diagram for Pyreto market experiment.}
+  \end{small}
+  \caption{Market experiment UML class diagram.}
   \label{fig:cls_experiment}
 \end{figure}
