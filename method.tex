@@ -519,6 +519,8 @@ Each learner has an association with an explorer that returns an explorative
 action $a_e$ when activated with the current state $s$ and action $a_m$ from
 the module.
 
+%TODO: PG explorer module.
+
 % For example, the $\epsilon$-greedy explorer
 % has a randomness parameter $\epsilon$ and a decay parameter $d$.  When the
 % $\epsilon$-greedy explorer is activated, a random number $x_r$ is drawn where
@@ -545,7 +547,9 @@ When all actions have been performed the offers are cleared by the market using
 the solution of an optimal power flow problem.  The cleared offers associated
 with the generators in the task's environment are retrieved from the market
 and the reward $r_t$ in \$ is computed from the difference between revenue and
-marginal cost at the total cleared quantity.
+marginal cost at the total cleared quantity.  For each generator in the agent's
+portfolio that was previously online and is not dispatched, a shutdown cost
+$C_{down}$ is subtracted from the reward.
 % \begin{equation}
 % r_t = \mbox{revenue} - (c_{fixed} + c_{variable})
 % \end{equation}
