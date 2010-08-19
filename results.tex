@@ -1,9 +1,10 @@
 \chapter{Nash Equilibrium Analysis}
 \label{ch:nashanalysis}
-This chapter examines the convergence to a Nash equilibrium of agents competing
-with portfolios of generating plant.  Value function based and policy gradient
-reinforcement learning algorithms are compared in convergence to an optimal
-policy using a six bus electric power system model.
+This chapter presents a simulation that examines the convergence to a Nash
+equilibrium of agents competing to sell electricity.  Value
+function based and policy gradient reinforcement learning algorithms are
+compared in their convergence to an optimal policy using a six bus electric
+power system model.
 
 \section{Introduction}
 This thesis presents the first case of
@@ -13,7 +14,7 @@ these methods, a system of multiple agents will converge to the same Nash
 equilibrium\footnote{Informally, a Nash equlibrium is a point in a
 non-cooperative game at which no player is motivated to deviate from its
 strategy, as it would result in lower gain \cite{nash50,nash51}.} that
-traditional closed-form simulation techniques produce.
+a traditional closed-form simulation would produce.
 
 This is the same approach used by \citeA{krause:nash06} before performing the
 study of congestion management techniques that is reviewed in Section
@@ -22,11 +23,11 @@ to determine in complex systems so the experiment presented here utilises a
 model simple enough that it can be determined through exhaustive search.
 
 By observing the actions taken and the reward received by each agent over the
-initial simulation periods it is possible to compare different algorithms in
-the speed and accuracy of their convergence to an optimal policy.  In the
-following sections the objectives of this experiment are explicitly defined,
-the setup of the simulations is explained and simulation results, with
-discussion and critical analysis, are provided.
+initial simulation periods it is possible to compare the speed and consistency
+with which different algorithms converge to an optimal policy. In the following
+sections the objectives of the simulations are explicitly defined, the setup of
+the simulations is explained and simulation results, with discussion and
+critical analysis, are provided.
 
 \section{Aims and Objectives}
 Some elements of the simulations reported in this chapter are similar to those
@@ -36,15 +37,15 @@ objectives are to show:
 \begin{itemize}
   \item That policy gradient methods converge to the same Nash equilibrium as
   value function based methods and tradtional closed-form simulations,
-  \item The charateristics of different learning methods by examining the
-  nature of their convergence to an optimal policy.
+  \item Differences in the characteristics of policy gradient and value
+  function based methods by examining the nature of their convergence to an
+  optimal policy.
 %   \item The sensitivity of policy convergence to algorithm parameter choices
 %   and policy function approximation structure.
 \end{itemize}
-In meeting these objectives a basis for using policy gradient methods in more
-complex simulations would be created.  It would show that they are capable of
-learning basic policies and provide guidance for the selection of algorithm
-parameters.
+Meeting these objectives aims to provide a basis for using policy gradient
+methods in more complex simulations, to show that they can learn basic policies
+and to provide guidance for algorithm parameter selection.
 
 \section{Method of Simulation}
 % Each learning method is tested individually using a range of parameter
@@ -62,36 +63,36 @@ parameters.
 % marginal cost of the $l$ at full capacity, $p_{g,l}^{min}$.  The DC optimal
 % power flow formulation (See Section \ref{sec:opf}, above) is used to clear the
 % market and reactive power trade is omitted.
-Learning methods are compared in this experiment by repeating the same
+Learning methods are compared in this chapter by repeating the same
 simulation with different algorithms used by the agents.  An alternative
 might be to use a combination of methods in the same simulation, but the
 approach used here is intended to be an extension of the work by
 \citeA{krause:nash06}.
 
-Each simulation uses the six bus electric power system model adapted from
+Each simulation uses a six bus electric power system model adapted from
 \citeA[pp.~104, 112, 119, 123-124, 549]{wood:pgoc}.  The model provides a simple
-environment for trade with a small number of generators and branch flow
-constraints that slightly increase the complexity of the Nash equilibria.  The
-six buses are connected by eleven transmission lines at 230kV. The model
+environment for electricity trade with a small number of generators and branch
+flow constraints that slightly increase the complexity of the Nash equilibria.
+The buses are connected by eleven transmission lines at 230kV. The model
 contains three generating units with a total capacity of 440MW and loads at
 three locations, each of 70MW. The connectivity of the branches and the
-locations of the generators and loads is shown in Figure~\ref{fig:case6ww}.
-Data for the power system model was taken from a case provided with
-\textsc{Matpower}, is listed in Appendix \ref{adx:case6ww} and is distributed
-with the software developed for this thesis (See Appendix \ref{sec:pylon}).
+locations of the generators and loads is shown in Figure~\ref{fig:case6ww}. Data
+for the power system model was taken from a case provided with \textsc{Matpower}
+and is listed in Appendix \ref{adx:case6ww}.
 
 Two sets of quadratic generator operating cost functions, of the form
 $c(p_i)=ap_i^2+bp_i+c$ where $p_i$ is the out put of generator $i$, are defined
 in order to create two different equilibria for investigation.  The coefficients
-$a$, $b$ and $c$ for the first cost configuration are listed in Table
-\ref{tbl:case6ww_gencost1}. This cost configuration defines two low cost
+$a$, $b$ and $c$ for cost configuration 1 are listed in Table
+\ref{tbl:case6ww_gencost1}.  This cost configuration defines two low cost
 generators that can not offer a price greater than the marginal cost of the most
-expensive generator when the maximum markup is applied.  The second set of
-coefficients is listed in Table \ref{tbl:case6ww_gencost2}.  This configuration
-narrows the cost differences such that offer prices may overlap and may exceed
-the marginal cost of the most expensive generator.  To strengthen the penalty
-for not being dispatched and shudown cost $C_{down}$ of \$100 is specified in
-this configuration.
+expensive generator when they apply the maximum possible markup. The set of
+coefficients for cost configuration 2 is listed in Table
+\ref{tbl:case6ww_gencost2}.  This configuration narrows the cost differences
+such that offer prices may overlap and may exceed the marginal cost of the most
+expensive generator.
+% To strengthen the penalty for not being dispatched and
+% shutdown cost $C_{down}$ of \$100 is specified in this configuration.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/case6ww}}{}
 
@@ -117,9 +118,9 @@ Gen &$C_{down}$ &$a$ &$b$ &$c$ \\
 \hline
 Gen &$C_{down}$ &$a$ &$b$ &$c$ \\
 \hline\hline
- 1 &100 &0.0 &5.1 &200.0 \\
- 2 &100 &0.0 &4.5 &200.0 \\
- 3 &100 &0.0 &6.0 &200.0 \\
+ 1 &0 &0.0 &5.1 &200.0 \\
+ 2 &0 &0.0 &4.5 &200.0 \\
+ 3 &0 &0.0 &6.0 &200.0 \\
 \hline
 \end{tabular}
 \caption{Generator cost configuration 2.}
@@ -127,41 +128,43 @@ Gen &$C_{down}$ &$a$ &$b$ &$c$ \\
 \end{center}
 \end{table}
 
-As in \citeA{krause:nash06}, no load profile is defined for the simulation.
-The system load is assumed to be peak for all simulation periods, thus only one state is defined for methods
-using look-up tables.  Each simulation step is assumed to be one hour long.
+As in \citeA{krause:nash06}, no load profile is defined for the simulation. The
+system load is assumed to be peak in all periods and only one state is defined
+for methods using look-up tables.  Each simulation step is assumed to be one
+hour in length.
 
-The minimum operating point, $P^{min}$, for all generators is zeroed so as to
-simplify the experiment and avoid the need to use the unit de-commitment
-algorithm.  The maximum capacity for the most expensive generator
-$P^{max}_3=220$MW such that it may supply almost all of the load if dispatched.
-This generator is associated with a passive agent that always offers full
-capacity at marginal cost.  For the other generators $P^{max}_1=110$MW and
-$P^{max}_2=110$MW.  These two generators are each associated with an active
-learning agent whose activity in the market is restricted to one offer of
+For all generators $P^{min}=0$ so as to simplify the equilbria and avoid the
+need to use the unit de-commitment algorithm.  The maximum capacity for the most
+expensive generator $P^{max}_3=220$MW such that it may almost supply all of the
+load if dispatched.  This generator is associated with a passive agent that
+always offers full capacity at marginal cost.  For the less expensive generators
+$P^{max}_1=P^{max}_2=110$MW.  These two generators are each associated with an
+active learning agent whose activity in the market is restricted to one offer of
 maximum capacity in each period, at a price representing a markup of between 0
-and 30\% on marginal cost.  Methods restricted to discrete action may markup in
-steps of 10\%, giving possible markup actions of 0\%, 10\%, 20\% and 30\%.  No
-capacity withholding is allowed.  The market price cap is set such that it is
-never reached by any markup and does not complicate the experiment.
+and 30\% on marginal cost.  Methods restricted to discrete actions may markup in
+steps of 10\%, giving possible markup actions of 0, 10\%, 20\% and 30\%.  No
+capacity withholding is implemented.
+% The market price cap is set such that it is never reached by any markup and
+% does not complicate the experiment.
 Discriminatory pricing (pay-as-bid) is used in order to provide a clearer reward
 signal to agents with low cost generators.
 
-This simulation compares Q-learning, ENAC, REINFORCE and the variant Roth-Erev
-technique.  Default algorithm parameter values from PyBrain are used and no
-attempt to study parameter sensitivity or function approximator design is made.
+The algorithms which are compared are Q-learning, ENAC, REINFORCE and the
+modified Roth-Erev technique (See Section \ref{sec:rl}). Default algorithm
+parameter values from PyBrain are used and no attempt to study parameter sensitivity or variations in function approximator
+design is made.
 
-For Q-learning $\alpha=0.3$, $\gamma=0.99$ and $\epsilon$-greedy action
-selection is used with $\epsilon=0.9$ and $d=0.98$. For Roth-Erev learning
-$\epsilon=0.55$, $\phi=0.3$ and Boltzmann action selection is used with
-$\tau=100$ and $d=0.99$.
+For the Q-learning algorithm $\alpha=0.3$, $\gamma=0.99$ and $\epsilon$-greedy
+action selection is used with $\epsilon=0.9$ and $d=0.98$.  For the Roth-Erev
+technique $\epsilon=0.55$, $\phi=0.3$ and Boltzmann action selection is used
+with $\tau=100$ and $d=0.99$.
 
-Both REINFORCE and ENAC use a two-layer neural network
-with one linear input node, one $\tanh$ output node, no bias nodes and with
-weights initialised to zero.  A two-step episode is defined for the policy
-gradient methods and five episodes are performed per learning step.  The
-exploration paramter $\sigma$ for these methods is initialised to zero and
-adjusted manually after each episode such that:
+Both REINFORCE and ENAC use a two-layer neural network with one linear input
+node, one linear output node, no bias nodes and with the connection weight
+initialised to zero.  A two-step episode is defined for the policy gradient methods and five
+episodes are performed per learning step.  The exploration paramter $\sigma$ for
+these methods is initialised to zero and adjusted manually after each episode
+such that:
 \begin{equation}
 \label{eq:sigmadecay}
 \sigma_{t} = d(\sigma_{t-1}-\sigma_{n})+\sigma_{n}
@@ -169,18 +172,18 @@ adjusted manually after each episode such that:
 where $d=0.998$ is a decay parameter and $\sigma_{n}=-0.5$ specifies the
 value that is converged to asymtotically.  In each simulation the learning rate
 $\gamma=0.01$ for the policy gradient methods, apart from for ENAC under cost
-configuration 2 where $\gamma=0.005$.  All active agents use the same parameter
-values in each simulation.
+configuration 2 where $\gamma=0.005$.  Both active agents use the same
+parameter values in each simulation.
 
 As in \citeA{krause:nash06}, the point of Nash equilibrium is established by
 computing each agent's reward for all possible combinations of markup.  The
 rewards for Agent 1 and Agent 2 under cost configuration 1 are given in Table
-\ref{tbl:nash1}.  The Nash equilibrium points are marked with a *.  It shows
-that the optimal policy for each agent is to apply the maximum markup to each
-offer as this never results in their generators failing to be dispatched. The
-rewards under cost configuration 2 are given in Table \ref{tbl:nash2}. It
-shows that the optimal point occurs when Agent 2 applies its maximum markup
-and Agent 1 offers a price just below the marginal cost of the passive agent's
+\ref{tbl:nash1}.  The Nash equilibrium points are marked with a *.  The table
+shows that the optimal policy for each agent is to apply the maximum markup to
+each offer as their generators are always dispatched.
+The rewards under cost configuration~2 are given in Table \ref{tbl:nash2}. This
+table shows that the optimal point occurs when Agent 2 applies its maximum
+markup and Agent 1 offers a price just below the marginal cost of the passive agent's
 generator.
 
 \begin{table}
@@ -239,15 +242,14 @@ SD = \sqrt{\frac{1}{N-1}\sum_{i=0}^{N}(x_i - \bar{x})^2}
 where $x_i$ is the action or reward value in simulation $i$ of $N$ simulation
 runs and $\bar{x}$ is the mean of the values.
 
-Figure \ref{fig:5_1_action_a1} shows the average markup on marginal cost and
-the standard deviation over the ten simulation runs for Agent 1 under price
-configuration 1 using the variant Roth-Erev, Q-learning, REINFORCE and ENAC
-learning methods.  The second $y$-axis in each plot realtes to the exploration
-parameter for each method.  Figure \ref{fig:5_1_action_a2} plots the same
-quantities for Agent 2.  Plots of reward are not given as generator prices and
-the market are configured such that an agent's reward is directly proportional
-to its action.  The plots are vertically aligned and have equal $x$-axis limits
-to assist algorithm comparison.
+Figure \ref{fig:5_1_action_a1} shows the average markup on marginal cost and the
+standard deviation over the ten simulation runs for Agent 1 under price
+configuration 1 using the four learning methods.  The second $y$-axis in each
+plot realtes to the exploration parameter for each method.  Figure
+\ref{fig:5_1_action_a2} shows the same quantities for Agent 2.  Plots of reward
+are not given as generator prices and the market are configured such that an
+agent's reward is directly proportional to its action.  The plots are vertically
+aligned and have equal $x$-axis limits to assist algorithm comparison.
 
 \ifthenelse{\boolean{includefigures}}{
 	\begin{figure}
@@ -267,11 +269,11 @@ to assist algorithm comparison.
 
 Figures \ref{fig:5_2_action_a1} and \ref{fig:5_2_reward_a1} plot the average
 markup and reward over ten simulation runs for Agent 1 and Agent 2,
-respectively, under price configuration 2 and for the variant Roth-Erev,
-Q-learning learning methods.  The figures show actual values for one simulation
-run of REINFORCE and ENAC as the number of interactions and variation in values
-makes the results difficult to observe.  Not all $x$-axis extents are equal in
-these two figures.
+respectively, under price configuration 2 for the variant Roth-Erev,
+Q-learning learning methods.  The plots for REINFORCE and ENAC in these figures
+are for actual values in one simulation run as the number of interactions and
+variation in values makes the results difficult to observe otherwise.  Not all
+$x$-axis extents are equal in these two figures.
 
 \ifthenelse{\boolean{includefigures}}{
 	\begin{figure}
@@ -303,19 +305,23 @@ these two figures.
 \section{Discussion and Critical Analysis}
 Under cost configuration 1 the agents face a relatively simple control task and
 receive a clear reward signal that is directly proportional to their markup. The
-results show that all of the methods consistently converge to the point of Nash
-equilibrium.  The variant Roth-Erev method show least variation around the mean
-when converged due to the use of Boltmann exploration with a then low
-temperature parameter value.  The constant variation around the mean that can be
-seen for Q-learning once is has converged is due to the use of $\epsilon$-greedy
-action selection and can be removed if a Boltmann explorer is used.  Empirical
-studies have also shown that the speed of convergence is largely determined by
-the rate at which the exploration parameter value is reduced.  However, the
-episodic nature of the policy gradient methods requires them to make several
-interaction per learning step and therefore a larger number of initial
-exploration steps.  Policy gradient methods can also be highly sensitive to
-the learning rate parameter and high values must be avoided if the policy is
-to converge.
+results show that all of the methods consistently converge to the Nash
+equilibrium point.  The variant Roth-Erev method shows very little variation
+around the mean once converged due to the use of Boltmann exploration with a
+then low temperature parameter value.  The constant variation around the mean
+that can be seen for Q-learning once it has converged is due to the use of
+$\epsilon$-greedy action selection and can be removed if a Boltmann explorer is
+used.
+
+Empirical studies have also shown that the speed of convergence is largely
+determined by the rate at which the exploration parameter value is reduced.
+However, the episodic nature of the policy gradient methods requires them to
+make several interactions per learning step and therefore a larger number of
+initial exploration steps are needed.  Policy gradient methods have also been
+found to be highly sensitive to the choice of learning rate.  High
+values cause large changes to policy parameters to be made at each step and
+may cause the algorithm to fail to converge, but low values cause the
+algorithm to learn very slowly.
 
 Cost configuration 2 provides a more challenging control problem in which
 Agent~1 must learn to undercut the passive agent.  The results show that the
@@ -323,18 +329,18 @@ variant Roth-Erev and Q-learning methods both consistently learn their optimal
 policy and converge to the Nash equilibrium.  However, there is space for
 Agent~1 to markup its offer by slightly more than 10\% and still undercut the
 passive agent, but methods with discrete actions are not able to exploit this
-and receive the additional profit.
+and do not receive the additional profit.
 
 The results for the policy gradient methods under cost configuration 2 show that
 these methods learn to reduce their markup if their offer price starts to exceed
 that of the passive agent and the reward signal drops.  However, a chattering
-effect below the Nash equilibrium point can be clearly seen for ENAC and the method
-does not learn to always undercut the other agent.  These methods also require
-a much larger number of simulation steps and for the exploration parameter to
-be decayed more slowly if they are to produce this behaviour.  This is
-due to the need for a lower learning rate that ensures fine policy
-adjustments can be made and again for several interactions to be performed between each learning
-step.
+effect below the Nash equilibrium point can be clearly seen for ENAC and the
+method does not learn to always undercut the other agent.  These methods also
+require a much larger number of simulation steps and for the exploration
+parameter to be decayed more slowly if they are to produce this behaviour.  This
+is due to the need for a lower learning rate that ensures fine policy
+adjustments can be made and for several interactions to be performed between
+each learning step.
 % When using REINFORCE or ENAC, Agent~2 tends also to learn to maximise its
 % markup, but less consistently.  Agent~1 typically learns to undercut the
 % passive agent, but does not converge to a consistent value.  The problem is
@@ -346,19 +352,19 @@ step.
 % in such simple environments.
 
 \section{Summary}
-This experiment confirms the convergence to a Nash equilibrium of the
-Q-learning methods that is published in \citeA{krause:nash06} and, to a degree,
-extends the conclusion to policy gradient methods.  The results show that
-while these methods do converge to the same or similar policies as the
-Q-learning and Roth-Erev methods, they do not exhibit the same level of
-consistency.  Value function based methods or the Roth-Erev method may be the
-most suitable choice of algorithm in the simple electricity market simulations
-typically found in the literature.
-
-The simulations conducted here do not exploit any of the abilities of policy
-gradient methods to utilise multi-dimensional continuous state information and
-their behaviour in more complex electricity market environments deserves
-investigation.
+% This experiment confirms the convergence to a Nash equilibrium of the
+% Q-learning methods that is published in \citeA{krause:nash06} and, to a degree,
+% extends the conclusion to policy gradient methods.  The results show that
+% while these methods do converge to the same or similar policies as the
+% Q-learning and Roth-Erev methods, they do not exhibit the same level of
+% consistency.  Value function based methods or the Roth-Erev method may be the
+% most suitable choice of algorithm in the simple electricity market simulations
+% typically found in the literature.
+%
+% The simulations conducted here do not exploit any of the abilities of policy
+% gradient methods to utilise multi-dimensional continuous state information and
+% their behaviour in more complex electricity market environments deserves
+% investigation.
 
 %\section{Summary}
 
