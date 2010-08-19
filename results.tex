@@ -163,6 +163,7 @@ gradient methods and five episodes are performed per learning step.  The
 exploration paramter $\sigma$ for these methods is initialised to zero and
 adjusted manually after each episode such that:
 \begin{equation}
+\label{eq:sigmadecay}
 \sigma_{t} = d(\sigma_{t-1}-\sigma_{n})+\sigma_{n}
 \end{equation}
 where $d=0.998$ is a decay parameter and $\sigma_{n}=-0.5$ specifies the
@@ -406,72 +407,81 @@ investigation.
 \chapter{System Constraint Exploitation}
 \label{ch:exploitation}
 % One of the main features of agents using policy gradient learning methods and
-% artifical neural networks for policy function approximation is their ability to
-% accept many signals of continuous sensor data.  This section describes an
+% artifical neural networks for policy function approximation is their ability
+% to accept many signals of continuous sensor data.  This section describes an
 % experiment in which the power system is severly constrained for certain
 % periods, resulting in elevated nodal marginal prices in particular areas.  The
 % methods are tested in their ability to exploit these constraints and improve
 % their total accumulated reward.
-This chapter explores the exploitation of constraints in electric power
-system models by agents whose behaviour is determined by reinforcement learning
-algorithms.  Value function based and policy gradient methods are compared
-using the 24-bus IEEE Reliability Test System with dynamic load.
+This chapter explores learning agents exploitation of constraints in electric
+power system models.  Value function based and policy gradient reinforcement
+learning methods are compared using a dynamic 24-bus power system model
+from the IEEE Reliability Test System.
 
 \section{Introduction}
-Having explored the basic properties of four learning methods in
-Chapter~\ref{ch:nashanalysis}, this experiment examines them under a
-more complex dynamic scenario.  The experiment explores the multi-dimensional,
-continuous state space handling abilities of policy gradient methods in the
-context of \textit{learning to trade power}.
+Having examined the basic learning characterisitics of four algorithms in
+Chapter~\ref{ch:nashanalysis}, this experiment extends the approach to examine
+their operation in a complex dynamic environment.  It explores the ability of
+policy gradient methods to operate with multi-dimensional, continuous state and
+action spaces in the context of \textit{learning to trade power}.
 
-Control of a portfolio of generators using continuous sensor data from
-simulations of the IEEE Reliability Test System (RTS) \cite{ieee79rts} is
-investigated.  The system is constrained by bus voltage and generator capacity
-limits as the system demand cycles through daily load profiles. By
-observing the actions taken and the rewards received by the agents during these
-periods it is examined if policy gradient methods can successfully observe and
-exploit the constraints.
+A well established electric power system model from the IEEE Reliability Test
+System \cite{ieee79rts} provides a realistic environment in which agents compete
+with their portfolios of generating plant to supply dynamic loads. System
+constraints change as agents adjust their behaviour and the loads follow a daily
+profile that varies over the course of a simulated year.  By observing profits
+at different times of day, the ability of methods to successfully observe and
+exploit constraints is examined.
 
 \section{Aims and Objectives}
-This experiment aims to compare the operation of learning methods in dynamic
-electric power system environments.  Specifically, the objectives are to
-determine:
+This experiment aims to compare policy gradient and traditional learning methods
+in a dynamic electricity trading environment.  Specifically, the objectives are
+to determine:
 \begin{itemize}
-  \item If policy gradient methods can be used to achieve greater profit under
-  dynamic loading conditions.
+  \item If the policy gradient methods can achieve greater profitability
+  under dynamic system constraints.
 %   \item If policy gradient methods can exploit outages and the resulting system
 %   constraints to further increased profit.
-  \item The value of using AC optimal power flow formulations in agent base
+  \item The value of using an AC optimal power flow formulation in agent based
   electricity market simulation.
 \end{itemize}
-Meeting these objectives aims to demonstrate the value of policy gradient
-methods in electricity market participant modelling and determine if they
-warrant further research in this domain.
+Meeting these objectives would demonstrate some of the value of using policy
+gradient methods in electricity market participant modelling and determine if
+they warrant further research in this domain.
 
 \section{Method of Simulation}
-In this experiment learning methods are compared by repeating simulations
-of competitive electricity trade with agents using different types of
-algorithm. Some simplification of the state and action domains for the value
-function based methods is required, but the portfolios of generation and load
-profiles are constant.
+In this experiment learning methods are compared by repeating simulations of
+competitive electricity trade with different algorithms used by the competing
+agents. Some simplification of the state and action representations for value
+function based methods is required, but the portfolios of generation and
+the load profiles are the same for each algorithm test.
 
-The IEEE RTS provides the power system model and load profiles used in each
-simulation.  The model has 24 bus locations, connected by 32 transmission lines,
-4 transformers and 2 underground cables.  The transformers tie together two
-areas at 230kV and 138kV.  The model has 32 generators of 9 different types (See
-Table \ref{tbl:ieee_rts_gencosts}) with a total capacity of 3.45GW and load at
-17 locations, totalling 2.85GW. Generator costs are quadratic functions of
-output, defined by the parameters in Table \ref{tbl:ieee_rts_gencosts}. Figure
-\ref{fig:ieee_rts_gencost_plot} plots the cost functions for each type of
-generator over their production range and illustrates their categorisation by
-fuel type.  The generator cost data was provided by Georgia Tech Power Systems
-Control and Automation Laboratory.  All of the data for the model is provided in
-Appendix \ref{adx:ieee_rts} and the connectivity of branches and the location of
-generators and loads is illustrated in Figure \ref{fig:ieee79rts}.
+The IEEE Reliability Test System (RTS) provides the power system model and load
+profiles used in each simulation.  The model has 24 bus locations that are
+connected by 32 transmission lines, 4 transformers and 2 underground cables. The
+transformers tie a 230kV area to an area at 138kV.  The original model has 32
+generators of 9 different types with a total capacity of 3.45GW.  To reduce the
+size of the discrete action domain, five 12MW and four 20MW generators are
+removed.  This is deemed reasonable as their combined capacity is only 4.1\% of
+the original total generation capacity and the remaining capacity is more than
+sufficient to meet demand.  To further reduce action space sizes all generators
+of the same type at the same bus are aggregated into one generating unit. The
+model has loads at 17 locations and the total demand at system peak is 2.85GW.
+
+Generator costs are quadratic functions of output, defined by the parameters in
+Table \ref{tbl:ieee_rts_gencosts}. Figure \ref{fig:ieee_rts_gencost_plot} shows
+the cost functions for each of the seven types of generator and illustrates
+their categorisation by fuel type.  Generator cost function coefficients were
+taken from a website hosted by Georgia Tech Power Systems Control and Automation
+Laboratory\footnote{http://pscal.ece.gatech.edu/testsys/} that assumes Coal
+costs of 1.5~\$/MBtu\footnote{1 Btu $\approx$ 1055 Joules}, Oil costs of
+5.5~\$/MBtu and Uranium costs of 0.46~\$/MBtu.  Data for the modified model is
+provided in Appendix \ref{adx:ieee_rts} and the connectivity of branches and the
+location of generators and loads is illustrated in Figure \ref{fig:ieee79rts}.
 
 \begin{table}
 \begin{center}
-\begin{tabular}{r|c|.{1.5}|.{3.4}|.{3.3}|l}
+\begin{tabular}{c|c|.{1.5}|.{3.4}|.{3.3}|c}
 \hline
 Code &$C_{down}$ &\multicolumn{1}{c}{$a$} &\multicolumn{1}{|c|}{$b$}
 &\multicolumn{1}{c|}{$c$} &Type \\
@@ -509,28 +519,44 @@ U400 &0	&0.00021	&4.4231	&395.375 &Nuclear \\
 	\end{figure}
 }{}
 
-The generating stock is divided into 5 portfolios (See Table
-\ref{tbl:agent_portfolios}) that are each endowed to a learning agent.  The
-synchronous condenser is associated with a passive agent that always offers
-at marginal cost i.e.~\$/MWh~$0.0$
+The generating stock is divided into 4 portfolios (See Table
+\ref{tbl:agent_portfolios}) that are each endowed to a learning agent.
+Portfolios were chosen such that each agent has: a mix of base load and peaking
+plant, approximately the same total generation capacity and generators in
+different areas of the network.  The generator labels in Figure
+\ref{fig:ieee79rts} specify the associated agent.  The synchronous condenser is
+associated with a passive agent that always offers 0 MW at 0~\$/MWh (the
+unit can be dispatched to provide or absorb reactive power).
 
-Markups on marginal cost are restricted a maximum of 30\% and discrete markup
-steps of 10\% are defined for value function based methods.  Agents using
-policy gradient learning methods can markdown the capacity offered for each of
-its generators by a maximum of 30\%.
+Markups on marginal cost are restricted a maximum of 30\% and discrete markups
+of 0 or 30\% are defined for value function based methods.  Upto 30\% of the
+total capacity of each generator can be withheld and discrete withholds of
+0~or~30\% are defined.  Agent~3 has the largest discrete action space with XX
+possible actions to be explored in each state.
 
-The environment state for all agents contains a forecast of total system
-demand.  The system demand follows an hourly profile that is adjusted according
-to the day of the week and the time of year.  The profiles are provided by the
-IEEE RTS and are shown in Figure \ref{fig:ieee_rts_profiles}.  When using
-value function based methods or the Roth-Erev learning algorithm, the
-continuous state is divided into 10 discrete states between minimum and maximum
-total system load.  The state vector for agents with policy gradient methods
-additionally contains the voltage magnitude at each bus.  Branch flow limits in
-the RTS are high and are not reached at peak demand.  Otherwise, the state
-vector might also contain branch power flow values.  Generator capacity limits
-are often binding in the RTS, but the output of other generators is deemed to
-be hidden from the agents.
+The state for all algoithm tests contains a forecast of the total system demand
+for the period that capacity is being offered for.  The system demand follows an
+hourly profile that is adjusted according to the day of the week and the time of
+year.  The profiles are taken from the RTS and are shown in Figure
+\ref{fig:ieee_rts_profiles}.  For tests of value function based methods or the
+Roth-Erev learning algorithm, the continuous state is divided into XX discrete
+states between minimum and maximum total system load.  The state vector for
+agents using policy gradient methods additionally contains the voltage magnitude
+at each bus.  Branch flows are not included in the state vector as the flow
+limits in the RTS are high and none are reached when the system is at peak
+demand.  Generator capacity limits are binding in most states of the RTS, but
+the output of other generators is deemed to be hidden from the agents.
+
+The nodal marginal pricing scheme is used in which cleared offer prices are
+determined by the Lagrangian multiplier on the power balance constraint for the
+bus at which the generator associated with the offer is connected.
+
+Typical parameter values are used for each of the algorithms.  Learning rates
+are set low and the exploration parameters are decayed slowly due to the length
+and complexity of each simulation.  For Q-learning $\alpha=0.3$, $\gamma=0.99$
+and $\epsilon$-greedy action selection is used with $\epsilon=0.9$ and $d=0.98$.
+For Roth-Erev learning $\epsilon=0.55$, $\phi=0.3$ and Boltzmann action
+selection is used with $\tau=100$ and $d=0.99$.
 
 \begin{table}
 \begin{center}
