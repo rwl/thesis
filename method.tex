@@ -522,7 +522,11 @@ search directly in the space of the policy network parameters.
 
 Each learner has an association with an explorer that returns an explorative
 action $a_e$ when activated with the current state $s$ and action $a_m$ from
-the module.
+the module.  Softmax and $\epsilon$-greedy explorer are implemented for
+explorations of discrete action sets.  Policy gradient methods use a module
+that adds Gaussian noise to the output of the policy function approximator
+module and the standard deviation $\sigma$ of the normal distribution may be
+manually adjusted after each episode of a simulation.
 
 %TODO: PG explorer module.
 
