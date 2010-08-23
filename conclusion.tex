@@ -1,7 +1,7 @@
 \chapter{Conclusions and Further Work}
 \label{ch:conclusion}
 This chapter summarizes the conclusions that can be drawn from the
-results that are presented in this thesis and presents several ideas for
+results that are presented in this thesis and presents ideas for
 further development of the contributions that have been made.
 
 \section{Summary and Conclusions}
@@ -10,30 +10,32 @@ algorithms for modelling electricity market participant strategies.  Over the
 last two decades markets have become an essential component in the electricity
 supply industries of many large countries.  They will play an important role in
 the future as the world population grows and finite primary energy fuel
-resources become increasingly scarce.  Electricity market design are unique
-amongst commodity markets and new architectures are expensive and risky to
+resources become increasingly scarce.  Market designs for electricity are
+unique amongst commodity markets and new architectures are expensive and risky to
 implement.
 
-Computational simulation is a well established for evaluating market design
-concepts and an agent-based approach allows large complex systems to be
-simulated.  The literature includes many examples of learning algorithms being
-used to model electricity market participants, but policy gradient methods have
-not been previously applied.  They \textit{have} been used successfully in
-other market related research and in robotic control and network routing
-applications.
+Computational simulation is a well established technique for evaluating market
+design concepts and agent-based simulation is an approach that allows large
+complex systems to be modelled.  There are many examples of learning algorithms
+being used to model electricity market participants in the literature, but
+policy gradient methods have not been previously applied.  They are a method
+that can use function approximation techniques to operate in continuous state
+and action spaces and have been used successfully in network routing and robot
+control applications.
 
-To examine the properties of policy gradient methods and to compare them with
-previously applied value function based methods a modular simulation framework
-has been defined and implemented.  The framework includes a power exchange
-auction market model with nodal marginal pricing that provides an environment
-in which agents learn to trade electricity competitively.
+To examine the properties of policy gradient methods and compare their
+performance with previously applied value function based methods a modular
+simulation framework has been defined and implemented.  The framework uses a
+power exchange auction market model with nodal marginal pricing to provide an
+environment in which agents learn to trade electricity competitively.
 
-The framework is first used in a simulation that compares the convergence to a
-Nash equilibrium of four learning algorithms.  The simulation reproduces the
-findings of \citeA{krause:nash06} produced similar results for policy gradient
-methods.  These methods were found to require a larger number of interactions
-before learning an optimal policy and learning rate and exploration rate decay
-parameters had to be set low for the more complex equilibrium to be approached.
+The framework is first used in a simulation that compares the convergence to
+Nash equilibria of four different learning algorithms.  The simulation
+reproduced the findings of \citeA{krause:nash06} and presented similar results
+for policy gradient methods.  Policy gradient methods were found to require a
+larger number of interactions before learning an optimal policy and for learning
+rate and exploration rate decay parameters to be low for the more complex
+equilibrium to be approached.
 
 In a second simulation the same algorithms were compared in a complex dynamic
 electricity trading environment.  A reference electric power system model for
@@ -49,52 +51,55 @@ simple problems.  It has been how even moderately complex electricity market
 simulations produce state and action spaces that are too large for value
 function based methods to explore.  Policy gradient methods have been shown to
 produce consistent behaviour in increasingly complex dynamic trading problems.
-Further developement of this research could opens the opportunity for policy
-gradient methods to be used in descision support and automated energy trading
+Further developement of this research could provide an opportunity for policy
+gradient methods to be used in descision support and automated energy trade
 applications.
 
 \section{Further Work}
 \label{sec:furtherwork}
-This section introduces some relatively new learning algorithms that have
-also been developed for operation in continuous multi-dimensional domains and
-might also be used to simulate electricity trade.
+This final section describes some of the shortcommings of the simulations
+presented in this thesis and how the models could be further developed.  It
+introduces some alternative learning algorithms that might also be used to
+simulate electricity market participant behaviour.
 % Also, two new reinforcement learning problem formulations are defined that
 % concern two highly pertinent issues in electric power Engineering.
-It also explains is how data from National Grid Ltd.~could be used in practical
-simulations of the UK electricity market and some of the possibilities that AC
-optimal power flow brings to to electric power market simulation.
+Finally, it explains is how a model formulated using data from National Grid
+Ltd.~could be used in practical simulations of the UK electricity market and
+describes some further possibilities for using AC optimal power flow in
+agent-based electric power market simulation.
 
-\subsection{Parameter Sensitivity Analysis}
+\subsection{Parameter Sensitivity and Delayed Reward}
 The simulations presented in this thesis use typical algorithm parameters that
-are either the default values from PyBrain or taken from the literature.
-However, the sensitivity of the results to parameters changes deserves
-investigation.  There are also other function approximation and
-back-propagation techniques that could be used with policy gradient methods.
-Parameter sensitivity analysis is typically conducted by the algorithm
-developers using standard benchmark problems, such as mazes and pole balancing
-tasks, to allow results to be compared.  The shortage of published results and
-lack of standardised electricity trading models would limit the benefit of
-using this domain for general sensitivity analysis.
+are either the default values from PyBrain or taken from the literature. No
+investigation of parameter sensitivity is performed. Alternative function
+approximation and back-propagation techniques for use with policy gradient
+methods also deserve investigation.  Parameter sensitivity analysis is typically
+conducted by the algorithm developers using standard benchmark problems, such as
+mazes and pole balancing problems, that are familar to researchers in Artificial
+Intelligence and allow results to be compared. The shortage of published results
+and lack of standardised electricity trading models might limit the benefits of
+using this problem for general parameter sensitivity analysis.
 
-\subsection{Delayed Reward}
-The reward received by each agent in all of the simulations presented in this
-thesis is a direct result of its previous action.  In reality, payment for
-electricity generation is delayed considerably in the settlement process.  Time
-did not permit analysis of value function based methods with eligibility traces
-(See Section \ref{sec:eligibility}) or policy gradient methods under delayed
-reward.
+The reward signals received by agents in all of the simulations presented in
+this thesis result directly from the agent's previous action.  In
+reality, market settlement processes introduce delays to payments for
+electricity production. Time did not permit value function based methods with
+eligibility traces (See Section \ref{sec:eligibility}) to be compared with
+policy gradient methods, but the ability to learn under delayed reward is a
+fundamental part of reinforcement learning and deserves investigation in this
+context.
 
-Actions in previous states not only effect the reward signal, but the current
-range of possible actions.  The rate at which generator types can ramp up or
-ramp down production is a typical constraining factor in this regard.
-Multi-period optimal power flow formulations may incorporate such constraint,
-but are challenging to implement and solve.
+% Actions in previous states not only effect the reward signal, but the current
+% range of possible actions.  The rate at which generator types can ramp up or
+% ramp down production is a typical constraining factor in this regard.
+% Multi-period optimal power flow formulations may incorporate such constraints,
+% but are challenging to implement and solve.
 
 \subsection{Alternative Learning Algorithms}
 This thesis has concentrated on traditional value function based and two policy
-gradient reinforcement learning methods.  However, there have been some
-interesting new learning algorithms presented recently and they might also be
-examined in the domain of electric power trade.
+gradient reinforcement learning methods.  However, there are other
+learning algorithms that have been published recently and might also be
+used in electric power trade simulations.
 
 \citeA{riedmiller05nfq} presented Neuro-Fitted Q-Iteration (NFQ) algorithms
 that attempt to overcome many of the problems experienced when implementing
@@ -104,23 +109,23 @@ supervised learning techniques such as RProp \cite{riedmiller93}.  The method
 has been shown to be robust against parameterization and to learn quickly in
 standard benchmark tests and in real-world applications \cite{kietzmann09}.
 
-The GQ$(\lambda)$ algorithm by \citeA{maei10} is another extension of the
-Q-learning method for operation in continuous spaces.  Convergence guarantees
-have been shown and the scaling properties suggest it is suitable for
-large-scale reinforcement learning applications.  Software implementations of
-GQ$(\lambda)$ are reportedly in development and due to be made available soon.
+The GQ$(\lambda)$ algorithm by \citeA{maei10} is another extension of Q-learning
+for operation in continuous environments.  Convergence guarantees have been
+shown and the scaling properties suggest the method is suitable for large-scale
+reinforcement learning applications.  A software implementation of GQ$(\lambda)$
+has been developed by the authors and made available as open source.
 
-Four new Natural Actor-Critic algorithms are presented in \citeA{bhatnagar09}.
-They all use function approximation techniques, making them suitable for
-large-scale applications of reinforcement learning.  Three of the algorithms
-are extensions to ENAC \cite{peters:enac}, but are fully incremental: the
-gradient computation is never reset while the policy is updated at every
-simulation step.  The authors state a need to assess the ultimate utility of
-these algorithms through application in real-world problems.
+Four new Natural Actor-Critic algorithms have been presented by
+\citeA{bhatnagar09}. Like ENAC \cite{peters:enac}, they too use function
+approximation techniques and are suitable for large-scale applications of reinforcement learning.  Three
+of the algorithms are extensions to ENAC, but are fully
+incremental: the gradient computation is never reset while the policy is updated
+at every simulation step.  The authors state a need to assess the ultimate
+utility of these algorithms through application in real-world problems.
 
 This thesis provides a framework that would allow implementations of these
-interesting new algorithms to be assessed and used to examine aspects of
-electricity markets.
+algorithms to be assessed and used to examine many aspects of electricity
+markets.
 
 % \subsection{Learning to Optimise Power Flow}
 % Two important problems in electric power Engineering, to which to the
@@ -210,39 +215,38 @@ Some of the more ambitious agent-based electricity market simulations have used
 stylised models of national transmission systems
 \cite{cincotti:09,weidlich:06}.  This work has often been motivated by recent
 or expected changes to the arrangements in the associated regions.
-
 % The drop in
 % oil prices around the time of the global economic crash in 2008 was not
 % reflected quickly in energy prices and this amplified concerns over liquiduty
 % levels in the UK electricity markets.  Ofgem found competition to be
 % sufficient[ref], but the concerns persists and the market arrangements have
 % been re-examined under Project Discovery[ref].
+In the UK, nine large power stations are due to be decommissioned by 2016 in
+accordance with EU Large Combustion Plant Directive \cite{ngt07lcpd}.  Coupled
+with obligations, made in the Climate Change Act 2008, to cut greenhouse gas
+emissions by 80\% by 2050, coming years are likely to see major changes in the
+way the UK power system is operated.
+% The ability of the market to sufficiently incentivize new
+% investment in generation that will cover the resulting shortfall is in question.  The concern extends
+% to the need for long-term investment in new nuclear power plant that is deemed
+% necessary for the UK to meet the legally binding obligations, made in the
+% Climate Change Bill, to cut greenhouse gas emissions by 80\% by 2050, compared
+% to 1990 levels.
+Examination of the situation could be enhanced by advanced participant
+behavioural models and accurate electric power system simulations such as those
+presented in this thesis.
 
-Several of the the UK's largest power stations are due to be decommissioned
-around 2015 in accordance with EU Large Combustion Plant Directive.  The
-ability of the market to sufficiently incentivize new investment in generation
-that will cover the resulting shortfall is in question.  The concern extends
-to the need for long-term investment in new nuclear power plant that is deemed
-necessary for the UK to meet the legally binding obligations, made in the
-Climate Change Bill, to cut greenhouse gas emissions by 80\% by 2050, compared
-to 1990 levels.
-
-Examination of the situation could be enhanced by the advanced participant
-behavioural models and the accurate electric power system simulations
-presented in this thesis.  Figure \ref{fig:ngt_grid} illustrates a model of
-the UK transmission system that has been derived from data provided in
-\citeA{ngtsys2010}.  This model has been converted into a PSS/E version 30 raw
-file and is distributed with the code developed for this thesis (See Appendix
-\ref{sec:pylon}).
-%Generator set-points were determined using the state estimator from Pylon
-% [Crow].  The power flow results are shown in Figure X and correlate
-% accurately with those in [SYS], having a mean variance of X.XX.
-% Cost data for each of the aggregated generating units has
-% been estimated from public sources and stored in the PSS/E version 30 optimal
-% power flow data file in Appendix \ref{sec:nget_opf}.  Execution times for
-% solving this case using DC, AC and unit de-commitment optimal power flow are
-% shown in Table X.
-
+Figure \ref{fig:ngt_grid} illustrates a model of the UK transmission system that
+has been formulated from data provided by the \citeA{ngtsys2010}.  This model
+has been converted into a PSS/E version 30 raw file that is distributed with the
+code developed for this thesis (See Appendix \ref{sec:pylon}).
+% Generator set-points were determined using the state estimator from Pylon
+% [Crow].  The power flow results are shown in Figure X and correlate accurately
+% with those in [SYS], having a mean variance of X.XX. Cost data for each of the
+% aggregated generating units has been estimated from public sources and stored
+% in the PSS/E version 30 optimal power flow data file in Appendix
+% \ref{sec:nget_opf}.  Execution times for solving this case using DC, AC and
+% unit de-commitment optimal power flow are shown in Table X.
 \ifthenelse{\boolean{includefigures}}{
 	\begin{figure}
 	  \centering
@@ -251,10 +255,9 @@ file and is distributed with the code developed for this thesis (See Appendix
 	  \label{fig:ngt_grid}
 	\end{figure}
 }{}
-
-It is currently too computationally expensive for this model to be solved
-repeatedly in an agent-based simulation.  However, optimisation efforts might
-allow for it to be used to examine issues pertinent to the UK energy industry.
+It is currently too computationally expensive to be solved repeatedly in an
+agent-based simulation, but optimisation efforts might allow it to be used
+to study issues highly pertinent to the UK energy industry.
 
 % However, significant improvements in
 % speed should be possible through more efficient construction of the Hessian
@@ -264,28 +267,28 @@ allow for it to be used to examine issues pertinent to the UK energy industry.
 % memory architectures.
 
 \subsection{AC Optimal Power Flow}
-To the best of the author's knowledge this is the first application of AC
-optimal power flow in agent-based electricity market simulation.  AC optimal
-power flow formulations are more difficult to implement and the problems are
-more computationally expensive than than their linearised DC counterparts.  The
-additional time and effort does not always bring sufficient value to
-electricity market simulations.  However, the option to use an AC formulation
-offers some interesting possibilities for further work.
+This thesis presents the first application of AC optimal power flow in
+electricity market simulation using reinforcement learning agents.  AC optimal
+power flow formulations are more difficult to implement and more computationally
+expensive when solving than than their linearised DC counterparts.  The
+additional time and effort required for their use does not always add sufficient
+value to simulations.  However, the option to use AC formulations does
+provide certain opportunities for further work.
 
 The inclusion of reactive power costs in the objective function of an AC
 optimal power flow problem means that parallel auctions for voltage support
 could be added to simulations.  This could be open to agents associated with
 reactive compensation equipment such as that commonly needed for wind farm
-developments.  Reactive power markets have traditionally been largely
-academic, but as the UK makes greater use of wind power the topic could
-become of increasing interest.
+developments.  Traditionally, reactive power markets have been largely
+academic, but as the UK makes greater use of on and off-shore wind power the
+topic could become of increasing interest.
 
 Bus voltages are not all assumed to be 1~per-unit in AC optimal power flow
 problems, but are part of the vector of optimisation variables.  Adjusting
-phase shift angles, $\theta_{ph}$, offers a degree of control over the
-direction of power flows.  The control the transformer tap ratios, $\tau$, and
-the shift angles by learning agents could be of interest in the evaluation of
-congestion management techniques.
+phase shift angles, $\theta_{ph}$, can offer a degree of control over
+power flow directions.  The control the transformer tap ratios, $\tau$, and
+the phase shift angles by learning agents could be of particular interest in
+congestion management scheme evaluations.
 
 \subsection{Multi-Market Simulation}
 % Policy gradient method's superior use of sensory data and their ability to
@@ -293,19 +296,20 @@ congestion management techniques.
 % inter-market relationships.
 The global economy is a holistic system of
 systems and the analysis of markets independently must be of limited value.
-Recent agent-based electricity market simulations studies have investigated the
-interaction between electricity, gas and emission allowances markets
+Recent agent-based electricity market studies have investigated the
+interaction between electricity, gas and emissions allowance markets
 \cite{krause:gas,wang:09}.
 % Non-linear models [ref] have been published for gas flows in pipelines such as
 % those of the UK gas network.
-The information on the UK gas network provided in \citeA{ngtsys2010} is
-relatively limited to that of the electricity transmission system, but
-suitable models could be used in conjunction to study the the relationships
-between gas and electricity markets.  As in \citeA{krause:gas}, actions in the
-gas market would constrain the generators options to sell power in subsequent
-electricity auctions.  Add to this the option to trade in carbon markets and
-the agent's state and action spaces would quickly become very large and
-suitable learning methods would be required.
+
+The information on the UK gas network provided by the \citeA{ngtsys2010} is
+relatively limited compared to that on the electricity transmission system,
+but suitable models could be used in conjunction to study the the relationships
+between UK gas and electricity markets.  As in \citeA{krause:gas}, actions in
+the gas market would constrain the generators options to sell power in subsequent
+electricity auctions.  Add to this the option to trade in emissions allowance
+markets and the associated state and action spaces for agents would be very
+large and require the use of suitable learning methods.
 
 % \subsection{Common Information Model}
 % Many tools exist for steady-state analysis of balanced three-phase AC networks

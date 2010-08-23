@@ -241,7 +241,7 @@ generators remain.
 % \end{algorithmic}
 % \end{algorithm}
 
-\newpage
+%\newpage
 \section{Multi-Agent System}
 \label{sec:mas}
 Market participants are modelled with software agents from PyBrain that use
@@ -522,11 +522,18 @@ search directly in the space of the policy network parameters.
 
 Each learner has an association with an explorer that returns an explorative
 action $a_e$ when activated with the current state $s$ and action $a_m$ from
-the module.  Softmax and $\epsilon$-greedy explorer are implemented for
-explorations of discrete action sets.  Policy gradient methods use a module
-that adds Gaussian noise to the output of the policy function approximator
-module and the standard deviation $\sigma$ of the normal distribution may be
-manually adjusted after each episode of a simulation.
+the module.  Softmax and $\epsilon$-greedy explorers are implemented for
+discrete action spaces.  Policy gradient methods use a module
+that adds Gaussian noise to the output of the policy function approximation
+module.  The explorer has a parameter $\sigma$ that relates to the standard
+deviation of the normal distribution.  The actual standard deviation
+\begin{equation}
+\sigma_e = \begin{cases}
+\ln(\sigma + 1) + 1 & \text{if $\sigma \geq 0$}\\
+\exp(\sigma) & \text{if $\sigma < 0$}
+\end{cases}
+\end{equation}
+to allow for negative $\sigma$ values.
 
 %TODO: PG explorer module.
 
