@@ -1,4 +1,4 @@
-\chapter{Open Source Power Engineering Software}
+\chapter{Open Source Electric Power Engineering Software}
 \label{sec:oss}
 For the purposes of this thesis the Matlab source code from \matpower was translated
 into the Python programming language and released under the project name: Pylon.
@@ -26,7 +26,7 @@ AMES & Java & GPL & & & \stable & & & & & & & \stable & \stable \\
 %Cimphony & Java & LGPL & & & & & & & & & \stable & \\
 %CIMTool & Java & LGPL & & & & & & & & & \stable & \\
 DCOPFJ & Java & GPL & & & \stable & & & & & & & & \\
-GridLab-D & C++ & BSD & \stable & \stable & & & & & & & \stable & & \\
+GridLab-D & \CC & BSD & \stable & \stable & & & & & & & \stable & & \\
 MatDyn & \matlab & & & & & & & & \stable & & \stable & & \\
 \matpower & \matlab & GPL & \stable & & \stable & \stable & \unstable & & &
 \unstable & \stable & & \\
@@ -59,7 +59,7 @@ which the team created a power exchange auction market simulator that could be
 accessed by multiple users simultaneously through a web-based interface.
 \matpower was originally available under a custom license that permitted use for
 any purpose providing the project and authors were cited correctly, but since
-version 4.0b2 it has been released under the less permissive GNU General Public
+version 4.0b2 it has been released under the less permissive \textsc{Gnu} General Public
 License (GPL), version 3. \matpower has become very popular in education and
 research and has an active mailing list that is moderated by Dr Ray Zimmerman of PSERC.
 
@@ -74,22 +74,23 @@ allow solvers to scale well with very large systems.  All functions are run
 from the \matlab command-line or from within users programs and no graphical
 user interface is provided.
 
-Starting with version 4.0, \matpower includes the
-\matlab Interior Point Solver (MIPS) that can be used for solving
-DC and AC optimal power flow problems \cite{zimmerman:ccv}.  Previously,
-FMINCON from the \matlab Optimization Toolbox\footnote{Optimization
-Toolbox is a registered trademark of The Mathworks, Inc.} was required or one
-of a suite of high performance closed-source solvers:  TSPOPF is a
-collection of three AC optimal power flow solvers, implemented in the C
-programming language and released as \matlab MEX files.  It includes
-the original implementation of the step-controlled interior point method from
-which MIPS was derived.  MINOPF provides an interface to the
-Fortran based MINOS\footnote{MINOS is trademark of Stanford
-Business Software, Inc.} solver, developed at the Systems Optimization
-Laboratory at Stanford University, and is available only for educational and
-research purposes. DC optimal power flow problems can be solved with
-a Quadratic Programming interface to MIPS or using a MEX interface to BPMPD --
-a commercial interior point method for linear and quadratic programming.
+Starting with version 4.0, \matpower includes the \matlab Interior Point Solver
+(MIPS) that can be used for solving DC and AC optimal power flow problems
+\cite{zimmerman:ccv}.  Previously, FMINCON from the \matlab Optimization
+Toolbox\footnote{Optimization Toolbox is a registered trademark of The
+Mathworks, Inc.} was required or one of a suite of high performance
+closed-source solvers:  TSPOPF is a collection of three AC optimal power flow
+solvers, implemented in the C programming language and released as \matlab MEX
+files.  It includes the original implementation of the step-controlled interior
+point method from which MIPS was derived.  MINOPF provides an interface to the
+Fortran based MINOS\footnote{MINOS is trademark of Stanford Business Software,
+Inc.} solver, developed at the Systems Optimization Laboratory at Stanford
+University, and is available only for educational and research purposes. Since
+version 4.0b4 \matpower has also included an interface to IPOPT from the COIN-OR
+project that provides an alternative open source solution to MIPS.  DC optimal
+power flow problems can be solved with a Quadratic Programming interface to MIPS
+or using a MEX interface to BPMPD: a commercial interior point method for linear
+and quadratic programming.
 
 \matpower has an extensible optimal power flow formulation that allows users
 to introduce additional optimisation variables and problem constraints.  It is
@@ -118,7 +119,7 @@ Transmission \& Distribution, Inc.~Power Technologies International.} and the
 Power System Analysis Toolbox (See Section \ref{sec:psat}, below) and show good
 correspondence.
 
-\section{Power System Analysis Toolbox}
+\section{PSAT}
 \label{sec:psat}
 The Power System Analysis Toolbox (PSAT) is a \matlab toolbox for static and
 dynamic analysis of electric power systems developed by Federico Milano,
@@ -202,7 +203,7 @@ dynamic power system models.  It too is written in ANSI-C and is licensed for
 research purposes only.  An executable file for DOS is provided and the source
 package contains a simple example.
 
-\section*{Voltage Stability Toolbox}
+\section{VST}
 The Voltage Stability Toolbox (VST) is a \matlab toolbox, developed at the
 Center for Electric Power Engineering at Drexel University in Philidelphia, for
 investigating stability and bifurcation issues in power systems.  The source
@@ -221,7 +222,7 @@ the same goals for educational and research applications.  However, VST does
 not have the same quality of documentation, graphical user interface or such an
 active community of users and developers.
 
-\section{Distribution System Simulator}
+\section{OpenDSS}
 In November 2008, the Open Distribution System Simulator (OpenDSS) was released
 by the Electric Power Research Institute (EPRI) as open source.  Development of
 OpenDSS began in April 1997 and it has been used extensively in distributed
@@ -233,9 +234,9 @@ OpenDSS supports steady-state analysis in the frequency domain, including power
 flow, harmonics and dynamics.  Arbitrary $n$-phase unbalanced circuit analysis
 is supported using an object orientated data model.  Circuit elements are
 defined in Object Pascal and solutions are found using KLUSolve: a linear sparse
-matrix solver written in C and C++.  The OpenDSS Pascal code is available under
+matrix solver written in C and \CC.  The OpenDSS Pascal code is available under
 the Berkeley Software Distribution (BSD) license, which allows use for almost
-any purpose.  KLUSolve, is available under the GNU Lesser GPL.  Circuits are
+any purpose.  KLUSolve, is available under the \textsc{Gnu} Lesser GPL.  Circuits are
 defined in scripts, using a domain specific language, that may be executed
 through a graphical user interface or a Common Object Model (COM) interface. The
 user interface also provides circuit data editing, plotting and power flow
@@ -247,14 +248,38 @@ transformer models and fault conditions to be defined and three short-circuit
 analysis methods are provided.  The heritage of OpenDSS is in harmonics and
 dynamics analysis and it does not support system optimisation.
 
-\section*{GridLab-D}
-%TODO: GridLab-D review
+\section{GridLab-D}
+GridLAB-D is an energy system simulation and analysis tool
+designed to investigate the latest energy technologies.  The project was
+initiated by the U.S.~Department of Energy in 2004 and developed at Pacific
+Northwest National Laboratory.  It was released under a BSD-style license in
+September 2009 and has since been developed in collaboration with industry and
+acedemia.
 
-\section{Agent-based Modelling of Electricity Systems}
+A distributed simulation architecture is used to coordinate energy system
+component interactions over short and long timescales.  The core of GridLAB-D is
+made up of modules for simulating: distribution and transmission systems,
+commercial and residential buildings, energy markets, power system faults and
+meteorological systems.  GridLAB-D is written in \CC~and uses a domain specific
+language to define models.  Additional modules can be written in \CC~or Java and
+Python is under consideration.  It is designed for multicore/multiprocessor
+parallelism and the developers intend to simulate large areas of the
+U.S. on supercomputers with it.  The source code includes reports and data
+from the Olympic Peninsula Project: a futuristic energy pricing experiment that was used
+to provide a practical demonstration of GridLAB-D in operation.
+
+GridLAB-D is a unique simulation tool that has the potential to play an
+important role in future energy system development.  Its size and complexity
+can make for a steep learning curve, but extensive documentation is provided
+and training courses are run periodically.  Activity on the mailing lists is low,
+suggesting poor uptake, but they are actively supported and a new version is
+under development.
+
+\section{AMES}
 \label{sec:ames}
-The AMES (Agent-based Modeling of Electricity Systems) power market test bed is
+The AMES (Agent-based Modeling of Electricity Systems) power market testbed is
 a software package that models core features of the Wholesale Power Market
-Platform -- a market design proposed by the Federal Energy Regulatory
+Platform: a market design proposed by the Federal Energy Regulatory
 Commission (FERC) in April 2003 for common adoption in regions of the
 U.S.~\cite{tesfatsi:wpmp}. The market design features:
 \begin{itemize}
@@ -263,20 +288,20 @@ U.S.~\cite{tesfatsi:wpmp}. The market design features:
   \item Locational marginal pricing.
 \end{itemize}
 Learning agents represent load serving entities or generating companies and
-learn using Roth-Erev methods (see Section \ref{sec:rotherev})
-implemented with the Repast agent simulation toolkit \cite{gieseler:thesis}.
+learn using Roth-Erev reinforcement learning methods,
+implemented using the Repast agent simulation toolkit \cite{gieseler:thesis}.
 % The permissive license under which the source code for
 % these algorithms has been released allowed direct translation of them for use
 % in this study.
 Agents learn from the solutions of hourly bid/offer based
 DC-OPF problems formulated as quadratic programs using the DCOPFJ package
-\cite{tesfatsi:dcopf} described in Section \ref{sec:dcopfj}, below.
+\cite{tesfatsi:dcopf}, described in Section \ref{sec:dcopfj}, below.
 
 The capabilities of AMES are demonstrated using a 5-bus network model in
 \citeA{tesfatsi:pes09}.  The model is provided with AMES and a step-by-step
 tutorial describes how it may be used.  AMES comes with a
 Swing-based graphical user interface with plotting and table editor tools and
-is released under the the \textsc{Gnu} GPL version 2.
+is released under the \textsc{Gnu} GPL, version 2.
 
 \section{DCOPFJ}
 \label{sec:dcopfj}
@@ -284,11 +309,10 @@ To solve market problems defined in AMES, researchers at Iowa State University
 developed a stand-alone DC optimal power flow solver in Java named DCOPFJ.
 It formulates optimal power flow problems as convex quadratic programs
 which are solved using QuadProgJ.  The same researcher developed QuadProgJ as
-an independent solver that uses the dual active set strictly convex quadratic
+an independent solver that uses a dual active set strictly convex quadratic
 programming algorithm \cite{goldfarb:scqp}.  DCOPFJ requires
 generator costs to be modelled as polynomial functions, of second order or
-less and no sparse matrix techniques are employed to allow application to large
-systems.
+less, and does not use sparse matrices for application to large systems.
 
 \section{PYLON}
 \label{sec:pylon}
@@ -299,35 +323,38 @@ systems.
 % in this approach to development is not fading.
 
 \pylon is a translation of \matpower and Matdyn to the Python programming
-language.  It has extensions for agent-based electricity market simulation
-that provide features similar to those of AMES.  Both the DC and AC
-formulations of the extensible optimal power flow model \cite{zimmerman:mp_pes}
-from \matpower are implemented.  Either a Python version of MIPS or an
-interface to the cp solver from CVXOPT can be used to compute solutions.  The
-sparsity of the problems is exploited throughout the solution process using
-matrix packages from SciPy and bindings to SuperLU or UMFPACK for solver sparse
-set of linear equations and performing LU decomposition.  Scripts are provided
-for reading and writing data files in PSS/E, \matpower and PSAT format. A wide
-variety of learning methods are available in \pylon due to its use of the
-PyBrain machine learning library \cite{schaul:2010}.  PyBrain also provides
-the artificial neural network models used for policy function approximation
-and they may be accelerated using C extension modules from the ARAC project.
+language.  It has extensions for agent-based electricity market simulation that
+provide features similar to those of AMES.  Both the DC and AC formulations of
+the extensible optimal power flow model \cite{zimmerman:mp_pes} from \matpower
+are implemented.  Either a Python version of MIPS or an interface to IPOPT from
+COIN-OR can be used to compute solutions.  The sparsity of the problems is
+exploited throughout the solution process using matrix packages from SciPy and
+bindings to SuperLU or UMFPACK for solving sparse sets of linear equations.
+Scripts are provided for reading and writing data files in PSS/E, \matpower and
+PSAT format. A wide variety of learning methods are available in \pylon due to
+its use of the PyBrain machine learning library \cite{schaul:2010}.  PyBrain
+also provides the artificial neural network models used for policy function
+approximation, that may be accelerated using C extension modules from ARAC.
 
 In addition to its market simulation capabilities, \pylon also features solvers
-for power flow problems (using Newton's method or fast decoupled methods),
-state estimation, continuation power flow and time domain simulation.  \pylon
-includes a rudimentary GUI that uses the Tkinter library that is included
-with Python and thus imposes no additional dependencies.  A more feature
-rich GUI is provided by plug-ins for Puddle -- an extensible, GUI
-toolkit independent integrated development environment, created for the
-purposes of this thesis also.  The use of matrix libraries from NumPy and
-SciPy has allowed \pylon (with the permission of the \matpower developers) to
-be released under the Apache license, version 2.0. This allows \pylon to be
-used in the development of proprietary software as well as free and open
-source software since derivatives of the source code may be made available
-under more restrictive terms than the original Apache license.  This is in
-contrast to ``copyleft'' licenses, such as the GNU GPL, that require the same
-rights to be preserved in modified versions of the work.
+for power flow problems (using fast decoupled or Newton's method), state
+estimation, continuation power flow and time domain simulation.  \pylon includes
+both a text interface and a graphical user interface (GUI) that uses Tkinter,
+which is included with Python as standard and thus imposes no additional
+dependencies.  A more feature rich GUI is provided by plug-ins for Puddle:
+an extensible, GUI toolkit independent integrated development environment,
+developed for the purposes of this thesis.
+
+The use of matrix
+libraries from NumPy and SciPy has allowed \pylon (with the permission of the
+\matpower developers) to be released under the Apache license, version 2.0. This
+allows \pylon to be used as a library in proprietary software as well as
+free and open source tools since derivatives of the source code may be made
+available under more restrictive terms than the original Apache license.  This
+is in contrast to strong ``copyleft'' licenses, such as the \textsc{Gnu} GPL,
+that require the same rights to be preserved in modified versions of the work.
+
+\section{Summary}
 
 \chapter{Case Data}
 This appendix provides the data for the electric power system models used in

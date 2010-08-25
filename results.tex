@@ -352,6 +352,18 @@ each learning step.
 % in such simple environments.
 
 \section{Summary}
+By observing the state to which a multi-learning-agent system converges, it is
+possible to verify that algorithms produce the same Nash equilibrium that
+closed-form simulations provide.  The results presented in this chapter closely
+correspond with those from \citeA{krause:nash06} for Q-learning and show
+equivalent behaviour for the variant Roth-Erev method.  The simulations
+illustrate how challenging unsupervised learning in a continuous environment can
+be, even for simple problems. Tasks in which a large reward change can occur for
+a very small change in policy prove difficult for policy gradient methods to
+learn and require low learning rates and lengthy periods of exploration.  The
+operation of policy gradient methods with noisy, multi-dimensional state data
+is not examined in this chapter and deserves investigation.
+
 % This experiment confirms the convergence to a Nash equilibrium of the
 % Q-learning methods that is published in \citeA{krause:nash06} and, to a degree,
 % extends the conclusion to policy gradient methods.  The results show that
