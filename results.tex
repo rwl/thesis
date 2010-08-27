@@ -499,9 +499,9 @@ location of generators and loads is illustrated in Figure \ref{fig:ieee79rts}.
 
 \begin{table}
 \begin{center}
-\begin{tabular}{c|c|.{1.5}|.{3.4}|.{3.3}|c}
+\begin{tabular}{c|c|.{1.5}|.{2.4}|.{3.3}|c}
 \hline
-Code &$C_{down}$ &\multicolumn{1}{c}{$a$} &\multicolumn{1}{|c|}{$b$}
+Code &$c_{down}$ &\multicolumn{1}{c}{$a$} &\multicolumn{1}{|c|}{$b$}
 &\multicolumn{1}{c|}{$c$} &Type \\
 \hline\hline
 % U12 &0.0 &0.32841 &56.564 &86.385 &Oil \\
@@ -515,7 +515,8 @@ U350 &0	&0.00490	&11.8495	&665.109 &Coal \\
 U400 &0	&0.00021	&4.4231	&395.375 &Nuclear \\
 \hline
 \end{tabular}
-\caption{Cost parameters IEEE RTS generator types.}
+\caption{Generator types and cost parameters for the simplified IEEE
+Reliability Test System.}
 \label{tbl:ieee_rts_gencosts}
 \end{center}
 \end{table}
@@ -604,7 +605,7 @@ selection is used with $\tau=100$ and $d=0.99$.
 \hline
 \multirow{2}{*}{Agent} &U50 &U76 &U100 &U155 &U197 &U350 &U400 &Total \\
  &Hydro &Coal &Oil &Coal &Oil &Coal &Nuclear &(MW) \\
-\hline
+\hline\hline
 1 & &2$\times$ & &1$\times$ & & &1$\times$ &707 \\
 2 & &2$\times$ & &1$\times$ & & &1$\times$ &707 \\
 3 &6$\times$ & & & &3$\times$ & & &891 \\

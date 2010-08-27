@@ -251,11 +251,12 @@ the structure of which is derived from PyBrain's single player design.
 
 % In PyBrain, agents do not interact directly with their environment, but are
 % associated with a particular \textit{task}.
-This section describes discrete and continuous market environments,
-agent tasks and modules that are used for policy function approximation and
-storing state-action values or action propensities.  The process by which each
-agent's policy is updated by a learning algorithm is explained and the sequence of interactions
-between multiple agents and the market is described and illustrated.
+This section describes discrete and continuous market environments, agent tasks
+and modules that are used for policy function approximation and storing
+state-action values or action propensities.  The process by which each agent's
+policy is updated by a learning algorithm is explained and the sequence of
+interactions between multiple agents and the market is described and
+illustrated.
 
 \subsection{Market Environment}
 Each agent has a portfolio of $n_g$ generators associated their environment.
@@ -561,11 +562,11 @@ the agent's task.
 
 When all actions have been performed the offers are cleared by the market using
 the solution to a newly formed optimal power flow problem.  Figure
-\ref{fig:seq_action} illustrates the reward precess that follows.  The cleared offers associated with
-the generators in the task's environment are retrieved from the market and the
+\ref{fig:seq_action} illustrates the reward process that follows.  The cleared
+offers associated with the generators in the task's environment are retrieved from the market and the
 reward $r_t$ in \$ is computed from the difference between revenue and marginal
 cost at the total cleared quantity.  For each generator in the agent's portfolio
-that was previously online and is not dispatched, a shutdown cost $C_{down}$ is
+that was previously online and is not dispatched, a shutdown cost $c_{down}$ is
 subtracted from the reward.
 % \begin{equation} r_t = \mbox{revenue} - (c_{fixed} + c_{variable})
 % \end{equation}
