@@ -941,9 +941,10 @@ performance, the techniques do not need to be altered.
 Policy gradient methods are differentiated largely by the techniques used to
 obtain an estimate of the policy gradient $\partial Y / \partial \theta$.
 Some of the most successful real-world robotics results have been yielded by
-Williams' \textsc{Reinforce} likelihood ratio methods \cite{williams:reinforce}
-and natural policy gradient methods such as Natural Actor-Critic
-\cite{peters:enac}.
+likelihood ratio methods \cite{glynn87,aleksandrov68} such as Williams'
+\textsc{Reinforce} \cite{williams:reinforce} and natural policy gradient
+methods, such as the Episodic Natural Actor-Critic (ENAC) \cite{peters:enac}.
+For an overview of these methods the interested reader is referred to \citeA{petersScholar}.
 
 \subsubsection{Artificial Neural Networks}
 This subsection provides a very brief introduction to the theory of artificial
@@ -975,11 +976,10 @@ In an multi-layer neural network the output $y_j$ forms part of the input
 to the neurons in any following layer.  The activation function $g$ is
 typically either:
 \begin{itemize}
-  \item Linear, where the output is simply the weighted sum of inputs,
-  \item A threshold function, with an output of either 0 or 1,
-  \item Sigmoidal, such that the output is between 0 and 1,
-  \item A hyperbolic tangent function, where the output ranges between -1 and
-  1.
+  \item Linear, where $y_j = \sum_{i=0}^n w_ix_i$,
+  \item A threshold function, with $y_j \in [0,1]$,
+  \item Sigmoidal, where $0 \leq y_j \leq 1$, or
+  \item A hyperbolic tangent function, where $-1 \leq y_j \leq 1$.
 \end{itemize}
 The parameters of the activation functions could be adjusted along with the
 connection weights to tune the transfer function between input and output that
@@ -1049,6 +1049,7 @@ $a$ is associated with a value $q$ for the propensity of its selection.  In
 time period $t$, if agent $j$ performs action $a^\prime$ and receives a reward
 $r_{ja^\prime}(t)$ then the propensity value for action $a$ at time $t+1$ is
 \begin{equation}
+\label{eq:rotherev}
 q_{ja}(t+1) =
 \begin{cases}
 (1-\phi)q_{ia}(t) + r_{ja^\prime}(t)(1-\epsilon), & \text{$a = a^\prime$} \\
@@ -1093,6 +1094,7 @@ that
 Under the variant algorithm, the propensity for agent $j$ to select action $a$
 for interaction $t+1$ is:
 \begin{equation}
+\label{eq:modifiedre}
 q_{ja}(t+1) =
 \begin{cases}
 (1-\phi)q_{ia}(t) + r_{ja^\prime}(t)(1-\epsilon), & \text{$a = a^\prime$} \\
@@ -1104,6 +1106,22 @@ As with the original Roth-Erev algorithm, the propensity for selection of the
 action that the reward is associated with is adjusted by the experimentation
 parameter.  All other action propensities are adjusted by a small proportion of
 their current value.
+
+\subsubsection{Stateful Roth-Erev}
+\label{sec:stateful}
+The Roth-Erev technique maintains a single vector of propensities for each
+action.  State-value function based methods, such as Q-learning and Sarsa,
+typically update a matrix, or look-up table, where each row corresponds to an
+individual state.  In this thesis a \textit{Stateful Roth-Erev} method is
+proposed.  The method is a simple extension to the original and modified
+versions that maintains an action propensity matrix with a row corresponding to
+each discrete state.  Updates are done according to equation (\ref{eq:rotherev})
+or equation (\ref{eq:modifiedre}), but only action propensities for the current
+state are updated. The method allows for differentiation between states of the
+environment, but can greatly increase the number of propensity values that
+require updates.  It will be used to investigate the impact of not utilising
+environment state information when operating the Roth-Erev method
+in a dynamic electricity market environment.
 
 \section{Summary}
 The combination of electricity markets and electric power systems presents a
