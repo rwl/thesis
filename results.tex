@@ -669,7 +669,7 @@ results for Q-learning and ENAC are given.
 
 \section{Discussion and Critical Analysis}
 \label{sec:discuss}
-Agents with a discrete environment have X,XXX possible actions to choose from
+Agents with a discrete environment have 216 possible actions to choose from in each state
 when required to submit one offer per generator.  Figure \ref{fig:6_1} shows
 that, using Q-learning, the agents are able to learn an effective policy that
 yields greater profits that under passive behaviour for two different
@@ -694,8 +694,8 @@ to any advantage, but does learn a profitable policy.
 % further investigation.
 
 Simply changing the number of offers required to be submitted for each generator
-from 1 to 2, increases the total number of discrete action possibilities to
-140,000.  Figure \ref{fig:6_3} shows that Q-learning is stall able to achieve a
+from 1 to 2, increases the number of discrete action possibilities in each state to
+46,656.  Figure \ref{fig:6_3} shows that Q-learning is still able to achieve a
 level of reward the same as that achieved under the one offer case.  ENAC
 achieves lower average reward when required to produce a larger action vector
 and is not able to use the increased flexibility in its offer structure to any
