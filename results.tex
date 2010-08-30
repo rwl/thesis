@@ -608,14 +608,22 @@ and $\epsilon$-greedy action selection is used with $\epsilon=0.9$ and
 $d=0.999$. For Roth-Erev learning $\epsilon=0.55$, $\phi=0.3$ and Boltzmann
 action selection is used with $\tau=100$ and $d=0.999$.
 
+Two-layer neural networks with linear input and output nodes, no bias nodes and
+randomised initial connection weights are used for policy function
+approximation.  The initial exploration rate $\sigma=0$ for both policy
+gradient methods and decays according to Equation (\ref{eq:sigmadecay}) with
+$d=0.995$ and $\sigma_n=-0.5$.  Constant learning rates are used in each
+simulation with $\gamma=0.01$ for REINFORCE and $\gamma=0.005$ for ENAC.
+
 \section{Simulation Results}
-Rewards received by each agents are recorded for a simulated year of 364 trading
-episodes.  To compare algorithms, the reward for each hour of the trading day is
-averaged for each agent and plotted in the same figure.  Only results for agents
-1 and 4 are given as agents 1 and 2 have identical portfolios and most of agent
-3's portfolio consists of Hydro plant with zero cost.  The method of applying
-percentage markups on marginal cost does not work for this type of plant and
-almost identical results are found for all algorithms.
+Each agent's rewards are recorded for a simulated year of 364 trading episodes,
+each consisting of 24 interactions.  To compare algorithms, the average reward
+for each hour of the day is calculated for each agent and plotted in the
+same Figure.  Only results for agents 1 and 4 are given as agents 1 and 2 have
+identical portfolios and most of agent 3's portfolio consists of Hydro plant
+with zero cost.  The method of applying percentage markups on marginal cost does
+not work for generators with zero cost and almost identical results are found
+for all algorithms.
 
 \ifthenelse{\boolean{includefigures}}{
   \begin{figure}
@@ -626,9 +634,9 @@ almost identical results are found for all algorithms.
   \end{figure}
 }
 
-Figure \ref{fig:6_1} shows average rewards for each hour that compare the
-Modified Roth-Erev method with the Stateful Roth-Erev method.  Also shown are
-equivalent results for the Q-learning method.
+Figure \ref{fig:6_1} compares the Modified Roth-Erev method with the Stateful
+Roth-Erev method.  The plots show average rewards for agents 1 and 4 when
+using Q-learning and the two Roth-Erev variants.
 
 \ifthenelse{\boolean{includefigures}}{
   \begin{figure}
@@ -641,9 +649,9 @@ equivalent results for the Q-learning method.
 
 Figure \ref{fig:6_2} compares policy gradient methods under two state vector
 configurations.  The first two plots concern agent 1 and show the average
-reward received for pure demand forecast state and a combined forecast and
-bus voltage profile state.  The bottom two plots show the same data for
-Agent~4.
+reward received for a state vector consisting solely of a demand forecast and
+for a combined forecast and bus voltage profile state vector.  The bottom two
+plots show rewards for agent~4 under these configurations also.
 
 \ifthenelse{\boolean{includefigures}}{
   \begin{figure}
@@ -654,52 +662,56 @@ Agent~4.
   \end{figure}
 }
 
-Figure \ref{fig:6_3} shows results from a repeat of the simulation with bus
-voltage profile state, but with two offers required per generator.  Due to time
-constraints and limited simulation resources only results for Q-learning and
-ENAC are given.
+Figure \ref{fig:6_3} shows average rewards for agents 1 and 4 from a repeat of
+the bus voltage profile state simulation, but with two offers required per
+generator.  Due to time constraints and limited simulation resources only
+results for Q-learning and ENAC are given.
 
 \section{Discussion and Critical Analysis}
 \label{sec:discuss}
 Agents with a discrete environment have X,XXX possible actions to choose from
 when required to submit one offer per generator.  Figure \ref{fig:6_1} shows
-that Q-learning is able to learn an effective policy that yields greater
-profits that under passive behaviour for two different portfolios.  The
-importance of utilising environment state data in a dynamic electricity setting
-is illustrated by the differences in average reward received by the Modified
-Roth-Erev method and the Stateful Roth-Erev method.  The optimal action for an
-agent depends upon the current system load and Modified Roth-Erev is unable to
-interpret this.  Stateful Roth-Erev is able to achieve roughly the same
-performance as Q-learning.
+that, using Q-learning, the agents are able to learn an effective policy that
+yields greater profits that under passive behaviour for two different
+portfolios.  The importance of utilising environment state data in a dynamic
+electricity setting is illustrated by the differences in average reward received
+by the Modified Roth-Erev method and the Stateful Roth-Erev method.  The optimal
+action for an agent depends upon the current system load and Modified Roth-Erev
+is unable to interpret this.  Stateful Roth-Erev is able to achieve roughly the
+same performance as Q-learning.
 
 Including bus voltage constraint data in the state for a discrete environment
-would result in an impractical state space, but adding it a continuous
-environment was straight-forward.  The results show that ENAC achieves greater
-profits when presented with a combined demand forecast and bus voltage state
-vector.  REINFORCE performs less well than ENAC, but also shows improvement
-over the pure forecast case.  ENAC achieves equivalent, but not greater
-performance than Q-learning in all periods of the trading day.  In robotics,
-policy gradient methods are typically used with neural networks with more that
-one input node and the effect of this network structure deserves
-further investigation.
+would result in a state space of impractical size, but including it in a
+continuous environment was straight-forward.  The results show that ENAC
+achieves greater profits when presented with a combined demand forecast and bus
+voltage state vector.  REINFORCE performs less well than ENAC, but also shows
+improvement over the pure forecast case.  ENAC achieves equivalent, but not
+greater performance than Q-learning in all periods of the trading day when
+using the voltage data.  It is not able to use the additional state information
+to any advantage, but does learn a profitable policy.
+% In robotics, policy gradient methods are typically used with neural networks
+% with more that one input node and the effect of this network structure deserves
+% further investigation.
 
-Simply changing the number of offers required to be submitted for each
-generator from 1 to 2, increases the total number of discrete action
-possibilities to 140,000.  Figure \ref{fig:6_3} shows that Q-learning is not
-able to achieve the same level of reward as it is under the one offer case.
-ENAC produces the same results under both configurations, but is not able to
-use the increased flexibility in its offer structure to its advantage.
+Simply changing the number of offers required to be submitted for each generator
+from 1 to 2, increases the total number of discrete action possibilities to
+140,000.  Figure \ref{fig:6_3} shows that Q-learning is stall able to achieve a
+level of reward the same as that achieved under the one offer case.  ENAC
+achieves lower average reward when required to produce a larger action vector
+and is not able to use the increased flexibility in its offer structure to any
+advantage.
 
 \section{Summary}
 No evidence has been found to suggest that policy gradient methods can be used
-to exploit complex constraints in a power system model.  However, they have
-been shown to operate well with large state and action vectors.  Limitations of
-the Modified Roth-Erev method have been demonstrated and Q-learning has been
-outperformed by a policy gradient method when presented with a very large
-action space.
+to exploit complex constraints in a power system model.  However, they have been
+shown to operate well with a large state vectors.  Limitations of the Modified
+Roth-Erev method in an dynamic environment have been demonstrated.  Q-learning
+was able to produce an effective policy in all simulations, including one
+involving a relatively large action space that saw degraded performance from a
+policy gradient method.
 
-AC optimal power flow adds enormously to simulation times when analysing entire
-years of trading interactions.  The addition of bus voltage data to the state
-vector improved the performance of the policy gradient methods, but it has not
-been show if the same could not be achieve using perhaps on voltage angles from
-a DC optimal power flow.
+AC optimal power flow adds enormously to simulation times when analysing an
+entire year of trading interactions.  The addition of bus voltage data to the
+state vector improved the performance of the policy gradient methods, but it has
+not been show if the same could not be achieved by perhaps using bus voltage
+angles from a DC optimal power flow.
