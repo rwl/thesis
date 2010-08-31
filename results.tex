@@ -1,10 +1,10 @@
 \chapter{Nash Equilibrium Analysis}
 \label{ch:nashanalysis}
-This chapter presents a simulation that examines the convergence to a Nash
-equilibrium of agents competing to sell electricity.  Value
-function based and policy gradient reinforcement learning algorithms are
-compared in their convergence to an optimal policy using a six bus electric
-power system model.
+This chapter presents a simulation that examines a system of agents competing to
+sell electricity and its convergence to a Nash equilibrium.  Value function
+based and policy gradient reinforcement learning algorithms are compared in
+their convergence to an optimal policy using a six bus electric power system
+model.
 
 \section{Introduction}
 This thesis presents the first case of
@@ -25,9 +25,9 @@ model simple enough that it can be determined through exhaustive search.
 By observing the actions taken and the reward received by each agent over the
 initial simulation periods it is possible to compare the speed and consistency
 with which different algorithms converge to an optimal policy. In the following
-sections the objectives of the simulations are explicitly defined, the setup of
-the simulations is explained and simulation results, with discussion and
-critical analysis, are provided.
+sections the objectives of the simulation are defined, the simulation setup
+is explained and plots of results, with discussion and critical analysis, are
+provided.
 
 \section{Aims and Objectives}
 Some elements of the simulations reported in this chapter are similar to those
@@ -37,9 +37,8 @@ objectives are to show:
 \begin{itemize}
   \item That policy gradient methods converge to the same Nash equilibrium as
   value function based methods and tradtional closed-form simulations,
-  \item Differences in the characteristics of policy gradient and value
-  function based methods by examining the nature of their convergence to an
-  optimal policy.
+  \item Some the characteristics of policy gradient methods and how they differ
+  from value function based methods.
 %   \item The sensitivity of policy convergence to algorithm parameter choices
 %   and policy function approximation structure.
 \end{itemize}
@@ -75,7 +74,7 @@ environment for electricity trade with a small number of generators and branch
 flow constraints that slightly increase the complexity of the Nash equilibria.
 The buses are connected by eleven transmission lines at 230kV. The model
 contains three generating units with a total capacity of 440MW and loads at
-three locations, each of 70MW. The connectivity of the branches and the
+three locations, each 70MW in size. The connectivity of the branches and the
 locations of the generators and loads is shown in Figure~\ref{fig:case6ww}. Data
 for the power system model was taken from a case provided with \textsc{Matpower}
 and is listed in Appendix \ref{adx:case6ww}.
@@ -84,7 +83,7 @@ Two sets of quadratic generator operating cost functions, of the form
 $c(p_i)=ap_i^2+bp_i+c$ where $p_i$ is the output of generator $i$, are defined
 in order to create two different equilibria for investigation.  The coefficients
 $a$, $b$ and $c$ for cost configuration 1 are listed in Table
-\ref{tbl:case6ww_gencost1}.  This cost configuration defines two low cost
+\ref{tbl:case6ww_gencost1}.  This configuration defines two low cost
 generators that can not offer a price greater than the marginal cost of the most
 expensive generator when they apply the maximum possible markup. The set of
 coefficients for cost configuration 2 is listed in Table
@@ -161,10 +160,10 @@ with $\tau=100$ and $d=0.99$.
 
 Both REINFORCE and ENAC use a two-layer neural network with one linear input
 node, one linear output node, no bias nodes and with the connection weight
-initialised to zero.  A two-step episode is defined for the policy gradient methods and five
-episodes are performed per learning step.  The exploration paramter $\sigma$ for
-these methods is initialised to zero and adjusted manually after each episode
-such that:
+initialised to zero.  A two-step episode is defined for the policy gradient
+methods and five episodes are performed per learning step.  The exploration
+parameter $\sigma$ for these methods is initialised to zero and adjusted
+manually after each episode such that:
 \begin{equation}
 \label{eq:sigmadecay}
 \sigma_{t} = d(\sigma_{t-1}-\sigma_{n})+\sigma_{n}
@@ -176,8 +175,8 @@ configuration 2 where $\gamma=0.005$.  Both active agents use the same
 parameter values in each simulation.
 
 As in \citeA{krause:nash06}, the point of Nash equilibrium is established by
-computing each agent's reward for all possible combinations of markup.  The
-rewards for Agent 1 and Agent 2 under cost configuration 1 are given in Table
+computing each agent's reward for all possible combinations of discrete markup.
+The rewards for Agent 1 and Agent 2 under cost configuration 1 are given in Table
 \ref{tbl:nash1}.  The Nash equilibrium points are marked with a *.  The table
 shows that the optimal policy for each agent is to apply the maximum markup to
 each offer as their generators are always dispatched.
@@ -244,10 +243,10 @@ runs and $\bar{x}$ is the mean of the values.
 
 Figure \ref{fig:5_1_action_a1} shows the average markup on marginal cost and the
 standard deviation over the ten simulation runs for Agent 1 under price
-configuration 1 using the four learning methods.  The second $y$-axis in each
-plot realtes to the exploration parameter for each method.  Figure
-\ref{fig:5_1_action_a2} shows the same quantities for Agent 2.  Plots of reward
-are not given as generator prices and the market are configured such that an
+configuration 1, using the four learning methods.  The second $y$-axis in each
+plot relates to the exploration parameter for each method.  Figure
+\ref{fig:5_1_action_a2} shows the same information for Agent 2.  Plots of
+reward are not given as generator prices and the market are configured such that an
 agent's reward is directly proportional to its action.  The plots are vertically
 aligned and have equal $x$-axis limits to assist algorithm comparison.
 
@@ -272,8 +271,8 @@ markup and reward over ten simulation runs for Agent 1 and Agent 2,
 respectively, under price configuration 2 for the variant Roth-Erev,
 Q-learning learning methods.  The plots for REINFORCE and ENAC in these figures
 are for actual values in one simulation run as the number of interactions and
-variation in values makes the results difficult to observe otherwise.  Not all
-$x$-axis extents are equal in these two figures.
+variation in values makes the results difficult to observe otherwise.
+%Not all $x$-axis extents are equal in these two figures.
 
 \ifthenelse{\boolean{includefigures}}{
 	\begin{figure}
@@ -305,11 +304,11 @@ $x$-axis extents are equal in these two figures.
 \section{Discussion and Critical Analysis}
 Under cost configuration 1 the agents face a relatively simple control task and
 receive a clear reward signal that is directly proportional to their markup. The
-results show that all of the methods consistently converge to the Nash
-equilibrium point.  The variant Roth-Erev method shows very little variation
-around the mean once converged due to the use of Boltzmann exploration with a
+results show that all of the methods consistently converge to the point of Nash
+equilibrium.  The variant Roth-Erev method shows very little variation
+around the mean once converged, due to the use of Boltzmann exploration with a
 then low temperature parameter value.  The constant variation around the mean
-that can be seen for Q-learning once it has converged is due to the use of
+that can be seen for Q-learning once converged is due to the use of
 $\epsilon$-greedy action selection and can be removed if a Boltzmann explorer
 is used.
 
@@ -320,7 +319,7 @@ make several interactions per learning step and therefore a larger number of
 initial exploration steps are needed.  Policy gradient methods have also been
 found to be highly sensitive to the choice of learning rate.  High
 values cause large changes to policy parameters to be made at each step and
-may cause the algorithm to fail to converge, but low values cause the
+may cause the algorithm to not converge, but low values cause the
 algorithm to learn very slowly.
 
 Cost configuration 2 provides a more challenging control problem in which
@@ -332,12 +331,12 @@ passive agent, but methods with discrete actions are not able to exploit this
 and do not receive the additional profit.
 
 The results for the policy gradient methods under cost configuration 2 show that
-these methods learn to reduce their markup if their offer price starts to exceed
+they learn to reduce their markup if their offer price starts to exceed
 that of the passive agent and the reward signal drops.  However, a chattering
 effect below the Nash equilibrium point can be clearly seen for ENAC and the
 method does not learn to always undercut the other agent.  These methods also
 require a much larger number of simulation steps and for the exploration
-parameter to be decayed more slowly if they are to produce this behaviour.  This
+parameter to decay slowly if they are to produce this behaviour.  This
 is due to the need for a lower learning rate that ensures fine policy
 adjustments can be made and for several interactions to be performed between
 each learning step.
@@ -353,8 +352,8 @@ each learning step.
 
 \section{Summary}
 By observing the state to which a multi-learning-agent system converges, it is
-possible to verify that algorithms produce the same Nash equilibrium that
-closed-form simulations provide.  The results presented in this chapter closely
+possible to verify that learning algorithms produce the same Nash equilibrium
+that closed-form simulations provide.  The results presented in this chapter closely
 correspond with those from \citeA{krause:nash06} for Q-learning and show
 equivalent behaviour for the variant Roth-Erev method.  The simulations
 illustrate how challenging unsupervised learning in a continuous environment can
@@ -434,7 +433,7 @@ is not examined in this chapter and deserves investigation.
 This chapter explores the exploitation of constraints by learning agents in a
 dynamic electricity trading environment.  Value function based and policy
 gradient reinforcement learning methods are compared using a modified version
-of the 24-bus power system model from the IEEE Reliability Test System.
+of the IEEE Reliability Test System.
 
 \section{Introduction}
 Having examined the basic learning characterisitics of four algorithms in
@@ -444,11 +443,11 @@ policy gradient methods to operate with multi-dimensional, continuous state and
 action data in the context of \textit{learning to trade power}.
 
 A reference electric power system model from the IEEE Reliability Test System
-\cite{ieee79rts} provides a realistic environment in which agents compete with
-diverse portfolios of generating plant to supply dynamic demand.  System
+(RTS) \cite{ieee79rts} provides a realistic environment in which agents compete
+with diverse portfolios of generating plant to supply dynamic demand.  System
 constraints change as agents adjust their behaviour and loads follow a daily
 profile that is varied in shape over the course of a simulated year.  By
-observing profits at different times of day, the ability of methods to
+observing average profits at different times of day, the ability of methods to
 successfully observe and exploit constraints is examined.
 
 \section{Aims and Objectives}
@@ -474,19 +473,18 @@ agents. Some simplification of the state and action representations for value
 function based methods is required, but generation portfolios and load profiles
 are the same for each algorithm test.
 
-The IEEE Reliability Test System (RTS) provides a reference power system model
-and load profiles that are used in each simulation.  The model has 24 bus
-locations that are connected by 32 transmission lines, 4 transformers and 2 underground cables. The
-transformers tie a 230kV area to an area at 138kV.  The original model has 32
-generators of 9 different types with a total capacity of 3.45GW.  To reduce the
-size of the discrete action domain, five 12MW and four 20MW generators are
-removed.  This is deemed reasonable as their combined capacity is only 4.1\% of
-the original total generation capacity and the remaining capacity is more than
-sufficient to meet demand.  To further reduce action space sizes all generators
-of the same type at the same bus are aggregated into one generating unit.
-This can be considered to be the representation of each power station in the
-market, rather than each synchronous machine stage.  The model has
-loads at 17 locations and the total demand at system peak is 2.85GW.
+The RTS has 24 bus locations that are connected by 32 transmission lines, 4
+transformers and 2 underground cables. The transformers tie a 230kV area to an
+area at 138kV.  The original model has 32 generators of 9 different types with a
+total capacity of 3.45GW.  To reduce the size of the discrete action domain,
+five 12MW and four 20MW generators are removed.  This is deemed reasonable as
+their combined capacity is only 4.1\% of the original total generation capacity
+and the remaining capacity is more than sufficient to meet demand.  To further
+reduce action space sizes all generators of the same type at the same bus are
+aggregated into one generating unit. This can be considered to be the
+representation of each individual power station in the market, rather than each
+alternator stage.  The model has loads at 17 locations and the total demand at
+system peak is 2.85GW.
 
 Again, generator marginal costs are quadratic functions of output and are
 defined by the parameters in Table \ref{tbl:ieee_rts_gencosts}. Figure \ref{fig:ieee_rts_gencost_plot} shows
@@ -573,8 +571,8 @@ Markups on marginal cost are restricted a maximum of 30\% and discrete markups
 of 0, 15\% or 30\% are defined for value function based methods.  Upto 20\% of
 the total capacity of each generator can be withheld and discrete withholds of
 0~or~20\% are defined.  Initially only one offer per generator is required, but
-this is later increased to two in order to explore the effect of a larger
-action space.
+this is increased to two in order to explore the effect of increased offer
+flexibility.
 % Agent~3 has the largest discrete action space with XX
 % possible actions to be explored in each state.
 
@@ -584,20 +582,20 @@ profile that is adjusted according to the day of the week and the time of year.
 The profiles are taken from the RTS and are illustrated in Figure
 \ref{fig:ieee_rts_profiles}.  For tests of value function based methods and the
 Roth-Erev learning algorithm, the continuous state is divided into 3 discrete
-states, between minimum and maximum total system load, that correspond to low,
-medium and peak demand.
+states of equal size, that allow differentiation between low, medium and peak
+demand.
 
 To investigate the exploration of constraints, AC optimal power flow is used and
-the state vector for agents using policy gradient methods can be adjusted to
-contain a combination of voltage constraint Lagrangian multipliers for all
-generator buses and the voltage magnitude at all other buses.  Lagrangian
+the state vector for agents using policy gradient methods is optionally adjusted
+to combine the demand forecast with voltage constraint Lagrangian multipliers
+for all generator buses and the voltage magnitude at all other buses.  Lagrangian
 multipliers are used as generators typically fix the voltage at their associated
 bus.  Branch flows are not included in the state vector as the flow limits in
-the RTS are high and are not reached at peak demand.  Generator capacity limits
-are binding in most states of the RTS, but the output of other generators is
+the RTS are high and are typically not reached at peak demand.  Generator
+capacity limits are binding in most states of the RTS, but the output of other generators is
 deemed to be hidden from agents.
 
-The nodal marginal pricing scheme is used in which cleared offer prices are
+The nodal marginal pricing scheme is used and cleared offer prices are
 determined by the Lagrangian multiplier on the power balance constraint for the
 bus at which the generator associated with the offer is connected.
 
@@ -618,12 +616,11 @@ simulation with $\gamma=0.01$ for REINFORCE and $\gamma=0.005$ for ENAC.
 \section{Simulation Results}
 Each agent's rewards are recorded for a simulated year of 364 trading episodes,
 each consisting of 24 interactions.  To compare algorithms, the average reward
-for each hour of the day is calculated for each agent and plotted in the
-same Figure.  Only results for agents 1 and 4 are given as agents 1 and 2 have
-identical portfolios and most of agent 3's portfolio consists of Hydro plant
-with zero cost.  The method of applying percentage markups on marginal cost does
-not work for generators with zero cost and almost identical results are found
-for all algorithms.
+for each hour of the day is calculated for each agent and plotted.  Only results
+for agents 1 and 4 are given as agents 1 and 2 have identical portfolios and
+most of agent 3's portfolio consists of Hydro plant with zero cost.  The method
+of applying percentage markups on marginal cost does not work for generators
+with zero cost and almost identical results are found for all algorithms.
 
 \ifthenelse{\boolean{includefigures}}{
   \begin{figure}
@@ -634,7 +631,7 @@ for all algorithms.
   \end{figure}
 }
 
-Figure \ref{fig:6_1} compares the Modified Roth-Erev method with the Stateful
+Figure \ref{fig:6_1} compares the modified Roth-Erev method with the Stateful
 Roth-Erev method.  The plots show average rewards for agents 1 and 4 when
 using Q-learning and the two Roth-Erev variants.
 
@@ -645,20 +642,21 @@ using Q-learning and the two Roth-Erev variants.
     \caption{Average rewards for agent 1 under two state configurations.}
     \label{fig:6_2_a1}
   \end{figure}
-  
+
   \begin{figure}
     \centering
     \includegraphics{figures/fig6_2_a4}
     \caption{Average rewards for agent 4 under two state configurations.}
-    \label{fig:6_2_4}
+    \label{fig:6_2_a4}
   \end{figure}
 }
 
-Figure \ref{fig:6_2} compares policy gradient methods under two state vector
-configurations.  The first two plots concern agent 1 and show the average
-reward received for a state vector consisting solely of a demand forecast and
-for a combined forecast and bus voltage profile state vector.  The bottom two
-plots show rewards for agent~4 under these configurations also.
+Figure \ref{fig:6_2_a1} and Figure \ref{fig:6_2_a4} compare policy gradient
+methods under two state vector configurations.  Figure \ref{fig:6_2_a1} concerns
+agent 1 and show the average reward received for a state vector consisting
+solely of a demand forecast and for a combined demand forecast and bus voltage
+profile state vector.  Figure \ref{fig:6_2_a4} shows average rewards for
+agent~4 under the same configurations.
 
 \ifthenelse{\boolean{includefigures}}{
   \begin{figure}
@@ -676,16 +674,16 @@ results for Q-learning and ENAC are given.
 
 \section{Discussion and Critical Analysis}
 \label{sec:discuss}
-Agents with a discrete environment have 216 possible actions to choose from in each state
-when required to submit one offer per generator.  Figure \ref{fig:6_1} shows
-that, using Q-learning, the agents are able to learn an effective policy that
-yields greater profits that under passive behaviour for two different
-portfolios.  The importance of utilising environment state data in a dynamic
-electricity setting is illustrated by the differences in average reward received
-by the Modified Roth-Erev method and the Stateful Roth-Erev method.  The optimal
-action for an agent depends upon the current system load and Modified Roth-Erev
-is unable to interpret this.  Stateful Roth-Erev is able to achieve roughly the
-same performance as Q-learning.
+Agents with a discrete environment have 216 possible actions to choose from in
+each state when required to submit one offer per generator.  Figure
+\ref{fig:6_1} shows that, using Q-learning, the agents are able to learn an
+effective policy that yields increased profits using two different portfolios.
+The importance of utilising environment state data in a dynamic electricity
+setting is illustrated by the differences in average reward received by the
+modified Roth-Erev method and the Stateful Roth-Erev method.  The optimal action
+for an agent depends upon the current system load and the stateless Roth-Erev
+formulation is unable to interpret this.  Stateful Roth-Erev can be seen to
+achieve approximately the same performance as Q-learning.
 
 Including bus voltage constraint data in the state for a discrete environment
 would result in a state space of impractical size, but including it in a
@@ -695,30 +693,30 @@ voltage state vector.  REINFORCE performs less well than ENAC, but also shows
 improvement over the pure forecast case.  ENAC achieves equivalent, but not
 greater performance than Q-learning in all periods of the trading day when
 using the voltage data.  It is not able to use the additional state information
-to any advantage, but does learn a profitable policy.
+to any further advantage, but does learn a profitable policy.
 % In robotics, policy gradient methods are typically used with neural networks
 % with more that one input node and the effect of this network structure deserves
 % further investigation.
 
 Simply changing the number of offers required to be submitted for each generator
-from 1 to 2, increases the number of discrete action possibilities in each state to
-46,656.  Figure \ref{fig:6_3} shows that Q-learning is still able to achieve a
-level of reward the same as that achieved under the one offer case.  ENAC
-achieves lower average reward when required to produce a larger action vector
-and is not able to use the increased flexibility in its offer structure to any
-advantage.
+from 1 to 2, increases the number of discrete action possibilities in each state
+to 46,656.  Figure \ref{fig:6_3} shows that Q-learning is still able to achieve
+a similar level of reward that achieved under the one offer case.  The
+profitability for both methods is degraded, but ENAC receives significantly
+lower average reward when required to produce a larger action vector and is not
+able to use the increased flexibility in its offer structure to any advantage.
 
 \section{Summary}
 No evidence has been found to suggest that policy gradient methods can be used
 to exploit complex constraints in a power system model.  However, they have been
-shown to operate well with a large state vectors.  Limitations of the Modified
-Roth-Erev method in an dynamic environment have been demonstrated.  Q-learning
-was able to produce an effective policy in all simulations, including one
-involving a relatively large action space that saw degraded performance from a
-policy gradient method.
+shown to operate better with large state vectors.  Some limitations of the
+standard Roth-Erev formulation in an dynamic environment have been
+demonstrated. Q-learning was able to produce an effective policy in all simulations, including one
+involving a relatively large action space that saw severely degraded
+performance from a policy gradient method.
 
 AC optimal power flow adds enormously to simulation times when analysing an
-entire year of trading interactions.  The addition of bus voltage data to the
-state vector improved the performance of the policy gradient methods, but it has
+entire year of hourly trading interactions.  The addition of bus voltage data
+to the state vector improved the performance of the policy gradient methods, but it has
 not been show if the same could not be achieved by perhaps using bus voltage
 angles from a DC optimal power flow.
