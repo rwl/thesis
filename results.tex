@@ -81,7 +81,7 @@ for the power system model was taken from a case provided with \textsc{Matpower}
 and is listed in Appendix \ref{adx:case6ww}.
 
 Two sets of quadratic generator operating cost functions, of the form
-$c(p_i)=ap_i^2+bp_i+c$ where $p_i$ is the out put of generator $i$, are defined
+$c(p_i)=ap_i^2+bp_i+c$ where $p_i$ is the output of generator $i$, are defined
 in order to create two different equilibria for investigation.  The coefficients
 $a$, $b$ and $c$ for cost configuration 1 are listed in Table
 \ref{tbl:case6ww_gencost1}.  This cost configuration defines two low cost
@@ -641,9 +641,16 @@ using Q-learning and the two Roth-Erev variants.
 \ifthenelse{\boolean{includefigures}}{
   \begin{figure}
     \centering
-    \includegraphics{figures/fig6_2}
-    \caption{Average rewards for two state configurations.}
-    \label{fig:6_2}
+    \includegraphics{figures/fig6_2_a1}
+    \caption{Average rewards for agent 1 under two state configurations.}
+    \label{fig:6_2_a1}
+  \end{figure}
+  
+  \begin{figure}
+    \centering
+    \includegraphics{figures/fig6_2_a4}
+    \caption{Average rewards for agent 4 under two state configurations.}
+    \label{fig:6_2_4}
   \end{figure}
 }
 
