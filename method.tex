@@ -244,9 +244,9 @@ generators remain.
 %\newpage
 \section{Multi-Agent System}
 \label{sec:mas}
-Market participants are modelled with software agents from PyBrain that use
-reinforcement learning algorithms to adjust their behaviour \cite{schaul:2010}.
-Their interaction with the market is coordinated in multi-agent simulations,
+Market participants are modelled using software agents from PyBrain that use
+reinforcement learning algorithms to adjust their behaviour
+\cite{schaul:2010}. Their interaction with the market is coordinated in multi-agent simulations,
 the structure of which is derived from PyBrain's single player design.
 
 % In PyBrain, agents do not interact directly with their environment, but are
@@ -278,17 +278,17 @@ is defined. The environment produces a state $s$, where $s \in \mathbb{Z}^+$
 and $0\leq s < n_s$, at each simulation step and accepts an action $a$,
 where $a \in \mathbb{Z}^+$ and $0\leq a < n_a$.
 
-To keep the size of the state space reasonable, the state is derived only
+To keep the size of the state space reasonable, discrete states are derived only
 from the total system demand $d=\sum P_d$.  Each simulation episode of $n_t$
-steps has a demand profile vector $u$ of length $n_t$, where $0 \leq u_i \leq 1$.
-The load at each bus $P_{dt} = u_tP_{d0}$ in simulation period $t$, where
-$P_{d0}$ is the initial demand vector.  The state size $d_s =
-d(\max u - \min u)/n_s$ and the state space vector is $\mathscr{S}=d_si$ for
-$i=1\dotsc n_s$.  At simulation step $t$, the state returned by the
-environment $s_t = i$ if $\mathscr{S}_i \leq P_{dt} \leq \mathscr{S}_{i+1}$ for
-$i = 0\dotsc n_s$.  Informally, the state space is $n_s$ states
-between the minimum and maximum demand and the current state for the
-environment is the index of the state to which the current demand relates.
+steps has a demand profile vector $U$ of length $n_t$, where each element $0
+\leq u_i \leq 1$. The load at each bus $P_{dt} = u_tP_{d0}$ in simulation period
+$t$, where $P_{d0}$ is the initial demand vector.  The state size $d_s = d(\max
+U - \min U)/n_s$ and the state space vector is $\mathscr{S}=d_si$ for
+ $i=1\dotsc n_s$. At simulation step $t$, the state returned by the environment $s_t = i$ if
+$\mathscr{S}_i \leq P_{dt} \leq \mathscr{S}_{i+1}$ for $i = 0\dotsc n_s$.
+Informally, the state space is $n_s$ states between the minimum and maximum
+demand and the current state for the environment is the index of the state to
+which the current demand relates.
 
 The action space for a discrete environment is defined by a vector $m$, where
 $0 \leq m_i \leq 100$, of percentage markups on marginal cost with length
@@ -297,15 +297,15 @@ withholds with length $n_w$ and the number of offers $n_o$, where $n_o \in
 \mathbb{Z}^+$, to be submitted for each generator associated with the
 environment.
 
-A $n_a \times 2n_gn_o$ matrix that contains all permutations of markup and
-withhold for each offer that is to be submitted for each generator is computed.
-For example, Table \ref{tbl:example_actions} shows all possible actions when
-markups are restricted to 0, 10\% or 20\% and 0\% of capacity may be withheld
-from two generators with one offer submitted for each.  Each row corresponds to
-an action and the column values specify the percentage price markup and the
-percentage of capacity to be withheld for each of the $n_gn_o$ offers.  The
-size of the permutation matrix grows rapidly as $n_o$, $n_g$, $n_m$ and $n_w$
-increase.
+A $n_a \times 2n_gn_o$ matrix with all permutations of markup and withhold for
+each offer that is to be submitted for each generator is computed. As an
+example, Table \ref{tbl:example_actions} shows all possible actions when markups
+are restricted to 0, 10\% or 20\% and 0\% of capacity may be withheld from two
+generators, $n_g=2$, with one offer submitted for each, $n_o=1$.  Each row
+corresponds to an action and the column values specify the percentage price
+markup and the percentage of capacity to be withheld for each of the $n_gn_o$
+offers.  The size of the permutation matrix grows rapidly as $n_o$, $n_g$, $n_m$
+and $n_w$ increase.
 
 % For operation with learning methods that use look-up tables to store
 % state-action values, an environment with $n_s$ discrete states and $n_a$
@@ -341,25 +341,24 @@ increase.
 % size of the portfolio increases.
 
 \begin{table}
-\begin{center}
+\centering
 \begin{tabular}{c|c|c|c|c}
 \hline
-$a$ &$m_1$ &$m_2$ &$w_1$ &$w_2$ \\
+$a$ &$m_1$ &$w_1$ &$m_2$ &$w_2$ \\
 \hline
  0 &0 &0 &0 &0 \\
- 1 &0 &10 &0 &0 \\
- 2 &0 &20 &0 &0 \\
+ 1 &0 &0 &10 &0 \\
+ 2 &0 &0 &20 &0 \\
  3 &10 &0 &0 &0 \\
- 4 &10 &10 &0 &0 \\
- 5 &10 &20 &0 &0 \\
+ 4 &10 &0 &10 &0 \\
+ 5 &10 &0 &20 &0 \\
  6 &20 &0 &0 &0 \\
- 7 &20 &10 &0 &0 \\
- 8 &20 &20 &0 &0 \\
+ 7 &20 &0 &10 &0 \\
+ 8 &20 &0 &20 &0 \\
 \hline
 \end{tabular}
 \caption{Example discrete action domain.}
 \label{tbl:example_actions}
-\end{center}
 \end{table}
 
 \subsubsection{Continuous Market Environment}
@@ -422,25 +421,24 @@ $a$ &$m_1$ &$m_2$ &$w_1$ &$w_2$ \\
 
 A continuous market environment that outputs a state vector $s$, where $s_i
 \in \mathbb{R}$, and accepts an action vector $a$, where $a_i \in \mathbb{R}$,
-is defined for agents operating policy gradient methods.  Scalar variables
-$m_{max}$ and $w_{max}$ define the maximum allowable percentage markup on
-marginal cost and the maximum allowable percentage of capacity that can be
-withheld, respectively.  Again, $n_o$ defines the number of offers to be
+is defined for agents operating policy gradient methods.  Scalar variables $m_{u}$ and $w_{u}$ define the upper limit on the percentage
+markups on marginal cost and the upper limit on the percentage of capacity that
+can be withheld, respectively.  Again, $n_o$ defines the number of offers to be
 submitted for each generator associated with the environment.
 
-The state vector may consist of any data from the power system or market
+The state vector can be any set of variables from the power system or market
 model.  For example: bus voltages, branch power flows, generator limit
 Lagrangian multipliers etc.  Each element of the vector provides one input to the neural network used for policy function approximation.
 
 The action vector $a$ has length $2n_gn_o$.  Element $a_i$, where $0\leq a_i
-\leq m_{max}$, corresponds to the price markup and $a_{i+1}$, where $0\leq
-a_{i+1} \leq w_{max}$, to the withhold of capacity for the $(i/2)^{th}$ offer,
+\leq m_{u}$, corresponds to the price markup and $a_{i+1}$, where $0\leq
+a_{i+1} \leq w_{u}$, to the withhold of capacity for the $(i/2)^{th}$ offer,
 where $i=0,2,4,\dotsc,2n_gn_o$.
 
 Not having to discretize the state space and compute a matrix of action
 permutations greatly simplifies the implementation of a continuous environment
 and increases in $n_g$ and $n_o$ only impact the number of output nodes
-in the policy function approximator.
+of the policy function approximator.
 
 \subsection{Agent Task}
 To allow alternative goals, such a profit maximisation or the meeting some
@@ -450,7 +448,7 @@ paired with a particular \textit{task}. A task defines the reward returned to
 the agent and thus defines the agent's purpose.
 
 For all simulations in this thesis the goal of each agent is to maximise
-financial profit.  Rewards are defined as the sum of earnings from
+direct financial profit.  Rewards are defined as the sum of earnings from
 the previous period $t$ as determined by the difference between revenue from
 cleared offers and marginal cost at the total cleared quantity.  As explained in
 Section \ref{sec:moody}, utilising some measure of risk adjusted return might be
@@ -465,13 +463,13 @@ the environment.
 % \mathbb{Z}^+$.
 
 Agents with policy-gradient learning methods approximate their policy functions
-using artificial neural networks that are presented with input vector $v$ of
+using artificial neural networks that are presented with an input vector $v$ of
 length $n_s$ where $v_i \in \mathbb{R}$.  To condition the environment state
-before input to the connectionist system, where possible, a vector $s_{min}$
-of minimum sensor values and a vector $s_{max}$ of maxmimum sensor values is
+before input to the connectionist system, where possible, a vector $s_{l}$
+of lower sensor limts and a vector $s_{u}$ of upper sensor limits is
 defined.  These are used to calculated a normalised state vector
 \begin{equation}
-v = 2\left(\frac{s - s_{min}}{s_{max} - s_{min}}\right) - 1
+v = 2\left(\frac{s - s_{l}}{s_{u} - s_{l}}\right) - 1
 \end{equation}
 where $-1 \leq v_i \leq 1$.
 
@@ -479,9 +477,10 @@ The output from the policy function approximator $y$ is denormalized using
 vectors of minimum and maximum action limits, $a_{min}$ and $a_{max}$
 respectively, to give an action vector
 \begin{equation}
-a = \left(\frac{y + 1}{2}\right)(a_{max} - a_{min}) + a_{min}
+a = \left(\frac{y + 1}{2}\right)(a_{u} - a_{l}) + a_{l}
 \end{equation}
-with valid values for price markups and capacity withholding.
+where $0\leq a_i \leq m_{u}$ and $0\leq a_{i+1} \leq w_{u}$ for $i=0,2,4,
+\dotsc, 2n_gn_o$.
 
 \subsection{Market Participant Agent}
 Each agent is defined as an entity capable of producing an action $a$
@@ -498,8 +497,9 @@ Roth-Erev in the case of the diagram), a \textit{dataset} and an
 \ifthenelse{\boolean{includefigures}}{\input{tikz/cls_agent}}{}
 
 The module is used to determine the agent's policy for action selection and
-returns an action vector $a_m$ when activated with observation~$s$.  When
-using value function based methods the module is a $n_s \times n_a$ table:
+returns an action vector $a$ when activated with observation~$s$.  When
+using value function based methods the module is a $n_s \times n_a$ table of
+the form
 \begin{equation}
 \bordermatrix[{[]}]{%
  & a_0 & a_1 & & a_{n_a} \cr
@@ -509,8 +509,8 @@ s_1 & v_{1,0}& \ddots& & \vdots \cr
 s_{n_s} & v_{n,0} & \dotsb & \dotsb & v_{n_s,n_a}
 }
 \end{equation}
-where each element $v_{i,j}$ is the value associated with selecting action
-$j$ in state $i$.  When using a policy gradient method, the module is a
+where each element $v_{i,j}$ is the value in state $i$ associated with
+selecting action $j$.  When using a policy gradient method, the module is a
 multi-layer feed-forward artificial neural network that outputs a vector $a$
 when presented with observation~$s$.
 
@@ -522,7 +522,7 @@ learners when computing updates to the table values.  Policy gradient learners
 search directly in the space of the policy network parameters.
 
 Each learner has an association with an explorer that returns an explorative
-action $a_e$ when activated with the current state $s$ and action $a_m$ from
+action $a_e$ when activated with the current state $s$ and action $a$ from
 the module.  Softmax and $\epsilon$-greedy explorers are implemented for
 discrete action spaces.  Policy gradient methods use a module
 that adds Gaussian noise to the output of the policy function approximation
@@ -562,7 +562,7 @@ the agent's task.
 
 When all actions have been performed the offers are cleared by the market using
 the solution to a newly formed optimal power flow problem.  Figure
-\ref{fig:seq_action} illustrates the reward process that follows.  The cleared
+\ref{fig:seq_reward} illustrates the reward process that follows.  The cleared
 offers associated with the generators in the task's environment are retrieved from the market and the
 reward $r_t$ in \$ is computed from the difference between revenue and marginal
 cost at the total cleared quantity.  For each generator in the agent's portfolio

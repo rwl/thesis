@@ -581,8 +581,8 @@ total system demand for the next period.  The system demand follows an hourly
 profile that is adjusted according to the day of the week and the time of year.
 The profiles are taken from the RTS and are illustrated in Figure
 \ref{fig:ieee_rts_profiles}.  For tests of value function based methods and the
-Roth-Erev learning algorithm, the continuous state is divided into 3 discrete
-states of equal size, that allow differentiation between low, medium and peak
+Stateful Roth-Erev learning algorithm, the continuous state is divided into 3
+discrete states of equal size, that allow differentiation between low, medium and peak
 demand.
 
 To investigate the exploration of constraints, AC optimal power flow is used and
@@ -653,7 +653,7 @@ using Q-learning and the two Roth-Erev variants.
 
 Figure \ref{fig:6_2_a1} and Figure \ref{fig:6_2_a4} compare policy gradient
 methods under two state vector configurations.  Figure \ref{fig:6_2_a1} concerns
-agent 1 and show the average reward received for a state vector consisting
+agent 1 and shows the average reward received for a state vector consisting
 solely of a demand forecast and for a combined demand forecast and bus voltage
 profile state vector.  Figure \ref{fig:6_2_a4} shows average rewards for
 agent~4 under the same configurations.
@@ -682,26 +682,26 @@ The importance of utilising environment state data in a dynamic electricity
 setting is illustrated by the differences in average reward received by the
 modified Roth-Erev method and the Stateful Roth-Erev method.  The optimal action
 for an agent depends upon the current system load and the stateless Roth-Erev
-formulation is unable to interpret this.  Stateful Roth-Erev can be seen to
-achieve approximately the same performance as Q-learning.
+formulation is unable to interpret this.  The Stateful Roth-Erev method can be
+seen to achieve approximately the same performance as Q-learning.
 
 Including bus voltage constraint data in the state for a discrete environment
 would result in a state space of impractical size, but including it in a
 continuous environment was straight-forward.  The results show that ENAC
 achieves greater profits when presented with a combined demand forecast and bus
 voltage state vector.  REINFORCE performs less well than ENAC, but also shows
-improvement over the pure forecast case.  ENAC achieves equivalent, but not
-greater performance than Q-learning in all periods of the trading day when
+improvement over the pure demand forecast case.  ENAC achieves equivalent, but
+not greater performance than Q-learning in all periods of the trading day when
 using the voltage data.  It is not able to use the additional state information
 to any further advantage, but does learn a profitable policy.
 % In robotics, policy gradient methods are typically used with neural networks
 % with more that one input node and the effect of this network structure deserves
 % further investigation.
 
-Simply changing the number of offers required to be submitted for each generator
-from 1 to 2, increases the number of discrete action possibilities in each state
+Simply changing the number of offers that are required to be submitted for each
+generator from 1 to 2, increases the number of discrete action possibilities in each state
 to 46,656.  Figure \ref{fig:6_3} shows that Q-learning is still able to achieve
-a similar level of reward that achieved under the one offer case.  The
+a similar level of reward as under the one offer case.  The
 profitability for both methods is degraded, but ENAC receives significantly
 lower average reward when required to produce a larger action vector and is not
 able to use the increased flexibility in its offer structure to any advantage.
