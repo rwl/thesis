@@ -694,9 +694,6 @@ improvement over the pure demand forecast case.  ENAC achieves equivalent, but
 not greater performance than Q-learning in all periods of the trading day when
 using the voltage data.  It is not able to use the additional state information
 to any further advantage, but does learn a profitable policy.
-% In robotics, policy gradient methods are typically used with neural networks
-% with more that one input node and the effect of this network structure deserves
-% further investigation.
 
 Simply changing the number of offers that are required to be submitted for each
 generator from 1 to 2, increases the number of discrete action possibilities in each state
@@ -706,14 +703,54 @@ profitability for both methods is degraded, but ENAC receives significantly
 lower average reward when required to produce a larger action vector and is not
 able to use the increased flexibility in its offer structure to any advantage.
 
+With state and action spaces of this size, computing updates to an agent's
+look-up table or neural network begins to add considerably to the computational
+expense of a simulation.  Researchers wishing to apply these methods in
+larger problems must be willing to investigate program optimisation and
+parallel or distributed processing and to wait long periods of time for
+simulation results.  Studies not requiring this level of complexity are
+seemingly best using a state-value function based method, such as Q-learning or
+the Stateful Roth-Erev formulation.
+
+The lack of involvement from the hydro power plant largely negates the
+participation of agent 3 and is a significant shortcomming of the approach.
+This could be overcome by allowing specific additions, in dollars, to marginal
+cost.  Generation portfolios were configured such that agents would receive a
+mix of low-cost base load plant and expensive peak supply plant.  However, the
+cost differences between fuel types are such that an offer of power from a coal
+or nuclear power station can not exceed in price that from unit with a more
+expensive type of fuel.  Greater competition and more complex equilibria could
+introduced if fuel cost differences were less great or larger markups on price
+were permitted.  For example, in \citeA{cincotti:09} a 300\% markup limit is
+set.
+
+The dynamics of this simulation could also be greatly increased by introducing
+demand-side participation.  By giving agents more ways in which to compete, the
+complexity of their policy for action selection would greatly increase and
+further challenge the learning algorithms.
+
 \section{Summary}
-No evidence has been found to suggest that policy gradient methods can be used
-to exploit complex constraints in a power system model.  However, they have been
-shown to operate better with large state vectors.  Some limitations of the
-standard Roth-Erev formulation in an dynamic environment have been
-demonstrated. Q-learning was able to produce an effective policy in all simulations, including one
-involving a relatively large action space that saw severely degraded
-performance from a policy gradient method.
+In this chapter policy gradient reinforcement learning algorithms have been
+applied in a complex dynamic electricity trading simulation and assessed in
+their ability to exploit constraints in the system.  They were found to be a
+valid technique for \textit{learning to trade power}, but were outperformed by
+Q-learning in most configurations of environment state and action space.  This
+includes a simulation with very large action spaces, that were expected to be
+too large for Q-learning to explore.  Indeed, this is a general finding
+throughout reinforcement learning research, that despite great effort and the
+devlopment of many new algorithms, few surpass the traditional temporal
+difference methods from \citeA{suttonbarto:1998}.  Shortcommings in price
+markup methodology and competition levels have been identified and the
+implications of increased computational expense for further development of this
+work have been noted.
+
+% No evidence has been found to suggest that policy gradient methods can be used
+% to exploit complex constraints in a power system model.  However, they have been
+% shown to operate better with large state vectors.  Some limitations of the
+% standard Roth-Erev formulation in an dynamic environment have been
+% demonstrated. Q-learning was able to produce an effective policy in all simulations, including one
+% involving a relatively large action space that saw severely degraded
+% performance from a policy gradient method.
 
 AC optimal power flow adds enormously to simulation times when analysing an
 entire year of hourly trading interactions.  The addition of bus voltage data
