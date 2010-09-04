@@ -239,13 +239,13 @@ generators remain.
 % \end{algorithmic}
 % \end{algorithm}
 
-%\newpage
+% \newpage
 \section{Multi-Agent System}
 \label{sec:mas}
 Market participants are modelled using PyBrain software agents that use
-reinforcement learning algorithms to adjust their behaviour
-\cite{schaul:2010}. Their interaction with the market is coordinated in multi-agent simulations,
-the structure of which is derived from PyBrain's single player design.
+reinforcement learning algorithms to adjust their behaviour \cite{schaul:2010}.
+Their interaction with the market is coordinated in multi-agent simulations, the
+structure of which is derived from PyBrain's single player design.
 
 % In PyBrain, agents do not interact directly with their environment, but are
 % associated with a particular \textit{task}.
@@ -467,7 +467,7 @@ Agents with policy-gradient learning methods approximate their policy functions
 using artificial neural networks that are presented with an input vector $s_n$
 of length $n_s$ where $s_{n,i} \in \mathbb{R}$.  To condition the environment
 state before input to the connectionist system, where possible, a vector $s_{l}$
-of lower sensor limts and a vector $s_{u}$ of upper sensor limits is
+of lower sensor limits and a vector $s_{u}$ of upper sensor limits is
 defined.  These are used to calculated a normalised state vector
 \begin{equation}
 v = 2\left(\frac{s - s_{l}}{s_{u} - s_{l}}\right) - 1
@@ -552,10 +552,10 @@ experiment.  At the beginning of each simulation step (trading period) $t$ the
 market is initialised and all previous offers are removed.  Figure
 \ref{fig:seq_action} is a UML sequence diagram that illustrates the process of
 choosing and performing an action that follows.  For each task-agent tuple an
-observation $s_t$ is retrieved from the task and integrated into the agent.  When an action
-is requested from the agent its module is activated with $s_t$ and the action
-$a_{e,t}$ is returned.  Action $a_{e,t}$ is performed on the environment
-associated with the agent's task.
+observation $s_t$ is retrieved from the task and integrated into the agent.
+When an action is requested from the agent its module is activated with $s_t$
+and the action $a_{e,t}$ is returned.  Action $a_{e,t}$ is performed on the
+environment associated with the agent's task.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/seq_action}}{}
 \ifthenelse{\boolean{includefigures}}{\input{tikz/seq_reward}}{}
@@ -563,12 +563,11 @@ associated with the agent's task.
 When all actions have been performed the offers are cleared by the market using
 the solution to a newly formed optimal power flow problem.  Figure
 \ref{fig:seq_reward} illustrates the subsequent reward process.  The cleared
-offers associated with the generators in the task's environment are retrieved from the market and the
-reward $r_t$ is computed from the difference between revenue and marginal
-cost at the total cleared quantity.
-% For each generator in the agent's portfolio
-% that was previously online and is not dispatched, a shutdown cost $c_{down}$ is
-% subtracted from the reward.
+offers associated with the generators in the task's environment are retrieved
+from the market and the reward $r_t$ is computed from the difference between
+revenue and marginal cost at the total cleared quantity.
+% For each generator in the agent's portfolio that was previously online and is
+% not dispatched, a shutdown cost $c_{down}$ is subtracted from the reward.
 % \begin{equation} r_t = \mbox{revenue} - (c_{fixed} + c_{variable})
 % \end{equation}
 The reward $r_t$ is given to the associated agent and the value is stored, along

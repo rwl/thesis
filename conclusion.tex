@@ -40,13 +40,13 @@ and exploration rate decay parameters for complex equilibria to be approached.
 In a second simulation the framework was used to compare the same algorithms in
 a complex dynamic electricity trading environment.  A reference electric power
 system model, designed for reliability analysis, was used to provide a
-realisitic environment of a reasonable size.  The algorithms were compared in
+realistic environment of a reasonable size.  The algorithms were compared in
 their ability to observe and exploit constraints in the system as loads followed
 an hourly profile.  It was not found that policy gradient methods could use
 additional bus voltage data to achieve greater performance than a action-value
 function based method or a stateful variant of the Roth-Erev technique.
 However, they were shown to learn effective strategies under noisy dynamic
-conditions and to imporove performance using complex continuous state
+conditions and to improve performance using complex continuous state
 representations.
 
 In conclusion, policy gradient methods are a valid option for modelling the
@@ -54,7 +54,7 @@ strategies of electricity market participants.  They can use profit feedback
 from an electricity market model to adjust the parameters of a policy function
 approximator in the direction of increased reward.  Function approximators allow
 market participants to be modelled using agents that accept complex power system
-state data and produce offers for diverse portfilios of generators with
+state data and produce offers for diverse portfolios of generators with
 price markups applied and capacity withheld.  This thesis has compared
 a selection of techniques for participant modelling and provides guidance for
 algorithm and parameter selection.
@@ -68,7 +68,7 @@ algorithm and parameter selection.
 
 \section{Further Work}
 \label{sec:furtherwork}
-This final section highlights some of the shortcommings of the methodology
+This final section highlights some of the shortcomings of the methodology
 presented in this thesis and explains how the models could be further
 developed. It introduces some alternative learning algorithms that might also be used to
 simulate electricity market participant behaviour.
@@ -86,7 +86,7 @@ study of parameter sensitivity is performed.  Alternative function
 approximation and back-propagation techniques could also be investigated.
 Parameter sensitivity analysis is typically conducted by the algorithm
 developers using standard benchmark problems (such as mazes or pole balancing
-problems) that are familar to researchers in Artificial Intelligence and allow
+problems) that are familiar to researchers in Artificial Intelligence and allow
 results to be compared. The shortage of published results and lack of
 standardised electricity trading models might limit the benefits of using this
 problem for general parameter sensitivity analysis.
@@ -117,7 +117,7 @@ algorithms that attempt to overcome many of the problems experienced when implem
 Q-learning methods with value function approximation using neural networks.
 They store all transition experiences and perform off-line updates using
 supervised learning techniques such as RProp \cite{riedmiller93}.  The method
-has been shown to be robust against parameterization and to learn quickly in
+has been shown to be robust against parameterisation and to learn quickly in
 standard benchmark tests and real-world applications \cite{kietzmann09}.
 
 The GQ$(\lambda)$ algorithm by \citeA{maei10} is another extension of Q-learning
@@ -127,12 +127,12 @@ reinforcement learning applications.  A software implementation of GQ$(\lambda)$
 has been developed by the authors and recently made available as open source.
 
 Four new Natural Actor-Critic algorithms have been presented by
-\citeA{bhatnagar09}. Like ENAC, they use function
-approximation techniques and are suitable for large-scale applications of reinforcement learning.  Three
-of the algorithms are extensions to ENAC, but are fully
-incremental: the gradient computation is never reset while the policy is updated
-at every simulation step.  The authors state a need to assess the ultimate
-utility of these algorithms through application in real-world problems.
+\citeA{bhatnagar09}. Like ENAC, they use function approximation techniques and
+are suitable for large-scale applications of reinforcement learning.  Three of
+the algorithms are extensions to ENAC, but are fully incremental: the gradient
+computation is never reset while the policy is updated at every simulation step.
+ The authors state a need to assess the ultimate utility of these algorithms
+through application in real-world problems.
 
 This thesis provides a framework that would allow implementations of these
 algorithms to be assessed and used to research aspects of electricity

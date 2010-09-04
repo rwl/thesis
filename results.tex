@@ -11,8 +11,8 @@ This thesis presents the first case of policy gradient reinforcement learning
 methods being applied to simulated electricity trade.  As a first step it is
 necessary to confirm that when using these methods, a system of multiple agents
 will converge to the same Nash equilibrium\footnote{Informally, a Nash
-equlibrium is a point in a non-cooperative game at which no player is motivated
-to deviate from its strategy, as it would result in lower gain
+equilibrium is a point in a non-cooperative game at which no player is
+motivated to deviate from its strategy, as it would result in lower gain
 \cite{nash50,nash51}.} that a traditional closed-form simulation would produce.
 
 This is the same approach used by \citeA{krause:nash06} before performing the
@@ -35,7 +35,7 @@ reproduce their findings as a means of validating the approach.  The additional
 objectives are to show:
 \begin{itemize}
   \item That policy gradient methods converge to the same Nash equilibrium as
-  value function based methods and tradtional closed-form simulations,
+  value function based methods and traditional closed-form simulations,
   \item Some the characteristics of policy gradient methods and how they differ
   from value function based methods.
 %   \item The sensitivity of policy convergence to algorithm parameter choices
@@ -159,7 +159,7 @@ with $\tau=100$ and $d=0.99$.
 
 Both REINFORCE and ENAC use a two-layer neural network with one linear input
 node, one linear output node, no bias nodes and with the connection weight
-initialised to zero.  This is a typicaly PyBrain configuration taken from the
+initialised to zero.  This is a typically PyBrain configuration taken from the
 supplied examples. A two-step episode is defined for the policy gradient methods
 and five episodes are performed per learning step.  The exploration parameter
 $\sigma$ for these methods is initialised to zero and adjusted manually after
@@ -169,7 +169,7 @@ each episode such that:
 \sigma_{t} = d(\sigma_{t-1}-\sigma_{n})+\sigma_{n}
 \end{equation}
 where $d=0.998$ is a decay parameter and $\sigma_{n}=-0.5$ specifies the
-value that is converged to asymtotically.  In each simulation the learning rate
+value that is converged to asymptotically.  In each simulation the learning rate
 $\gamma=0.01$ for the policy gradient methods, apart from for ENAC under cost
 configuration 2 where $\gamma=0.005$.  Both active agents use the same
 parameter values in each simulation.
@@ -315,7 +315,7 @@ Empirical studies have also shown that the speed of convergence is largely
 determined by the rate at which the exploration parameter value is reduced.
 However, the episodic nature of the policy gradient methods requires them to
 make several interactions per learning step and therefore a larger number of
-initial exploration steps are required.  Policqy gradient methods have also
+initial exploration steps are required.  Policy gradient methods have also
 been found to be highly sensitive to the choice of learning rate.  High
 values cause large changes to policy parameters to be made at each step and
 may cause the algorithm to not converge, but low values cause the
@@ -434,7 +434,7 @@ gradient reinforcement learning methods are compared using a modified version
 of the IEEE Reliability Test System.
 
 \section{Introduction}
-Having examined the basic learning characterisitics of four algorithms in
+Having examined the basic learning characteristics of four algorithms in
 Chapter~\ref{ch:nashanalysis}, this chapter extends the approach to examine
 their operation in a complex dynamic environment.  It explores the ability of
 policy gradient methods to operate with multi-dimensional, continuous state and
@@ -567,13 +567,13 @@ unit can be dispatched to provide or absorb reactive power).
 \ifthenelse{\boolean{includefigures}}{\input{tikz/ieee79rts}}{}
 
 Markups on marginal cost are restricted to a maximum of 30\% and discrete
-markups of 0, 15\% or 30\% are defined for value function based methods.  Upto 20\% of
-the total capacity of each generator can be withheld and discrete withholds of
-0~or~20\% are defined.  Initially only one offer per generator is required, but
-this is increased to two in order to explore the effect of increased offer
-flexibility.
-% Agent~3 has the largest discrete action space with XX
-% possible actions to be explored in each state.
+markups of 0, 15\% or 30\% are defined for value function based methods.  Up to
+20\% of the total capacity of each generator can be withheld and discrete
+withholds of 0~or~20\% are defined.  Initially only one offer per generator is
+required, but this is increased to two in order to explore the effect of
+increased offer flexibility.
+% Agent~3 has the largest discrete action space with XX possible actions to be
+% explored in each state.
 
 The environment state for all algorithm tests consists of a forecast of the
 total system demand for the next period.  The system demand follows an hourly
@@ -599,7 +599,7 @@ determined by the Lagrangian multiplier on the power balance constraint for the
 bus at which the generator associated with the offer is connected.
 
 Typical parameter values are used for each of the algorithms.  Again, no attempt
-to study parameter sensistivity is made.  Learning rates are set low and
+to study parameter sensitivity is made.  Learning rates are set low and
 exploration parameters decay slowly due to the length and complexity of the
 simulation.  For Q-learning $\alpha=0.2$, $\gamma=0.99$ and $\epsilon$-greedy
 action selection is used with $\epsilon=0.9$ and $d=0.999$. For Roth-Erev
@@ -716,7 +716,7 @@ the Stateful Roth-Erev formulation.
 
 The lack of involvement in the market from the hydro-electric power plant
 largely negates the participation of Agent~3 and exposes one significant
-shortcomming of the approach. This could be overcome by allowing markups
+shortcoming of the approach. This could be overcome by allowing markups
 in dollars, rather than as a percentage of marginal cost.
 
 Generation portfolios were configured such that agents would receive a mix of
@@ -748,12 +748,12 @@ The addition of bus voltage sensor data in the state vector of agents operating
 policy gradient methods was found to improve their performance. However, no
 evidence was found to suggest that they could use this information to increase
 their profitability above that of agents operating the Q-learning or Stateful
-Roth-Erev method.  Indeed, it is beleived that this can be considered a general
+Roth-Erev method.  Indeed, it is believed that this can be considered a general
 finding in reinforcement learning research, that despite great effort and the
-devlopment of many new algorithms, few surpass the original temporal
+development of many new algorithms, few surpass the original temporal
 difference methods from \citeA{suttonbarto:1998}.
 
-Shortcommings in the price markup methodology and competition levels have been
+Shortcomings in the price markup methodology and competition levels have been
 identified and possible solutions proposed.  The implications of increased
 computational expense for further development of this work have also been noted.
 % No evidence has been found to suggest that policy gradient methods can be used

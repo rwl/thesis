@@ -52,7 +52,7 @@ UWPFLOW & C & & & & & & \stable & & & & \stable & & \\
 \section{MATPOWER}
 Since 1996, a team of researchers from the Power Systems Engineering Research
 Center (PSERC) at Cornell University have been developing \textsc{Matpower}: a
-package of Matlab\footnote{Matlab is a registered tradeamark of The Mathworks,
+package of Matlab\footnote{Matlab is a registered trademark of The Mathworks,
 Inc.} workspace files for solving power flow and optimal power flow problems
 \cite{zimmerman:mp_pes}. Initial development was part of the PowerWeb project in
 which the team created a power exchange auction market simulator that could be
@@ -64,16 +64,16 @@ General Public License (GPL), version 3. \matpower has become very popular in
 education and research and has an active mailing list that is moderated by Dr
 Ray Zimmerman of PSERC.
 
-\matpower includes five solvers for AC and DC power flow.  The
-default solver uses Newton's method \cite{tinney:67} with the full Jacobian
-matrix updated at each iteration.  Two variations on the fast decoupled method
-\cite{stott:74} described in \citeA{amerongen:89} provide quicker convergence
-for certain networks.  The standard Gauss-Seidel method \cite{glimn:57} is provided
-for academic purposes and the DC solver provides non-iterative
-solutions.  The properties of \matlab sparse matrices are exploited to
-allow solvers to scale well with very large systems.  All functions are run
-from the \matlab command-line or from within users programs and no graphical
-user interface is provided.
+\matpower includes five solvers for AC and DC power flow.  The default solver
+uses Newton's method \cite{tinney:67} with the full Jacobian matrix updated at
+each iteration.  Two variations on the fast decoupled method \cite{stott:74}
+described in \citeA{amerongen:89} provide quicker convergence for certain
+networks.  The standard Gauss-Seidel method \cite{glimn:57} is provided for
+academic purposes and the DC solver provides non-iterative solutions.  The
+properties of \matlab sparse matrices are exploited to allow solvers to scale
+well with very large systems.  All functions are run from the \matlab
+command-line or from within users programs and no graphical user interface is
+provided.
 
 Starting with version 4.0, \matpower includes the \matlab Interior Point Solver
 (MIPS) that can be used for solving DC and AC optimal power flow problems
@@ -81,17 +81,17 @@ Starting with version 4.0, \matpower includes the \matlab Interior Point Solver
 Toolbox\footnote{Optimization Toolbox is a registered trademark of The
 Mathworks, Inc.} was required or one of a suite of high performance
 closed-source solvers:  TSPOPF is a collection of three AC optimal power flow
-solvers, implemented in C and released as \matlab MEX
-files.  It includes the original implementation of the step-controlled interior
-point method from which MIPS was derived.  MINOPF provides an interface to the
-Fortran based MINOS\footnote{MINOS is trademark of Stanford Business Software,
-Inc.} solver, developed at the Systems Optimization Laboratory at Stanford
-University, and is available only for educational and research purposes. Since
-version 4.0b4 \matpower has also included an interface to IPOPT from the COIN-OR
-project that provides an alternative open source solution to MIPS.  DC optimal
-power flow problems can be solved with a Quadratic Programming interface to MIPS
-or using a MEX interface to BPMPD: a commercial interior point method for linear
-and quadratic programming.
+solvers, implemented in C and released as \matlab MEX files.  It includes the
+original implementation of the step-controlled interior point method from which
+MIPS was derived.  MINOPF provides an interface to the Fortran based
+MINOS\footnote{MINOS is trademark of Stanford Business Software, Inc.} solver,
+developed at the Systems Optimization Laboratory at Stanford University, and is
+available only for educational and research purposes. Since version 4.0b4
+\matpower has also included an interface to IPOPT from the COIN-OR project that
+provides an alternative open source solution to MIPS.  DC optimal power flow
+problems can be solved with a Quadratic Programming interface to MIPS or using a
+MEX interface to BPMPD: a commercial interior point method for linear and
+quadratic programming.
 
 \matpower has an extensible optimal power flow formulation that allows users
 to introduce additional optimisation variables and problem constraints.  It is
@@ -205,7 +205,7 @@ package contains a simple example.
 
 \section{VST}
 The Voltage Stability Toolbox (VST) is a \matlab toolbox, developed at the
-Center for Electric Power Engineering at Drexel University in Philidelphia, for
+Center for Electric Power Engineering at Drexel University in Philadelphia, for
 investigating stability and bifurcation issues in power systems.  The source
 is available for any purpose providing that the authors are suitably cited.
 VST features routines for:
@@ -255,7 +255,7 @@ designed to investigate the latest energy technologies.  The project was
 initiated by the U.S.~Department of Energy in 2004 and developed at Pacific
 Northwest National Laboratory.  It was released under a BSD-style license in
 September 2009 and has since been developed in collaboration with industry and
-acedemia.
+academia.
 
 A distributed simulation architecture is used to coordinate energy system
 component interactions over short and long timescales.  The core of GridLAB-D is
@@ -313,7 +313,7 @@ which are solved using QuadProgJ.  The same researcher developed QuadProgJ as
 an independent solver that uses a dual active set strictly convex quadratic
 programming algorithm \cite{goldfarb:scqp}.  DCOPFJ requires
 generator costs to be modelled as polynomial functions, of second order or
-less, and does not explot sparse matrix features.
+less, and does not exploit sparse matrix features.
 
 \section{PYLON}
 \label{sec:pylon}
@@ -341,7 +341,7 @@ accelerated using C extension modules from the ARAC sub-project.
 In addition to its market simulation capabilities, \pylon also features solvers
 for power flow problems (using fast decoupled or Newton's method), state
 estimation, continuation power flow and time domain simulation.  \pylon includes
-both a text interface and a graphical user interface (GUI) based on Tkinter:
+both a text interface and a graphical user interface (GUI) based on TkInter:
 which is included with Python and imposes no additional dependencies.  A feature
 rich GUI is provided by plug-ins for Puddle: an extensible, GUI toolkit
 independent integrated development environment, developed for the purposes of
