@@ -104,13 +104,13 @@ $\kern\wd\@ne\kern -\@tempdima\left\@firstoftwo#1%
 \setboolean{includefigures}{false}
 % Select chapters to build.
 \includeonly{
-% 	introduction,
+	introduction,
 %  	background,
 %  	related_work,
-% 	method,
-  	results,
-  	conclusion,
-%  	appendix
+%  	method,
+%   	results,
+%   	conclusion,
+%   	appendix
 }
 
 \ifpdf
@@ -158,31 +158,30 @@ Systems consortium under grant GR/T28836/01.
 \begin{abstract}
 In Electrical Power Engineering, learning algorithms can be used to model
 the strategies of electricity market participants.  The objective of this work
-is to establish if \textit{policy gradient} reinforcement learning methods can
-provide superior participant models than previously applied \textit{value
-function based} methods.
+is to establish if \textit{policy gradient} reinforcement learning algorithms
+can be used to create participant models superior to those using previously
+applied \textit{value function} based methods.
 
 % Electricity is an unique commodity.  It must be supplied at the presise moment
-% that it is demanded, as there are no practical methods for significant
-% levels of storage in most systems.  There are also few options for controlling
-% the direction in which power flows around networks, so generation or
-% consumption at one point in the system has an effect at all other points.
-Supply of electricity involves technology, money, people, natural resources
-and the environment.  All of these aspects are changing and electricity market
-designs must be suitably researched to ensure that they are fit
-for purpose.  In this thesis electricity markets are modelled as non-linear
-constrained optimisation problems that are solved with a primal-dual interior
-point method.  Policy gradient reinforcement learning algorithms are used to
-adjust the parameters of multi-layer feed-forward neural networks that
-approximate each market participant's policy for selecting power quantities
-and prices that are offered in a simulated marketplace.
+% that it is demanded, as there are no practical methods for significant levels
+% of storage in most systems.  There are also few options for controlling the
+% direction in which power flows around networks, so generation or consumption
+% at one point in the system has an effect at all other points.
+Supply of electricity involves technology, money, people, natural resources and
+the environment.  All of these aspects are changing and electricity market
+designs must be suitably researched to ensure that they are fit for purpose.  In
+this thesis electricity markets are modelled as non-linear constrained
+optimisation problems, which are solved using a primal-dual interior point
+method.  Policy gradient reinforcement learning algorithms are used to adjust
+the parameters of multi-layer feed-forward artificial neural networks that
+approximate each market participant's policy for selecting power quantities and
+prices that are offered in the simulated marketplace.
 
-Traditional reinforcement learning methods that learn a value function have
-been previously applied in simulated electricity trade, but are
-largely restricted to discrete representations of a market environment.
-Policy gradient methods have been proven to offer convergence guarantees in continuous environments,
-such as in robotic control applications, and avoid many of the problems that
-mar value function based methods.
+Traditional reinforcement learning methods that learn a value function have been
+previously applied in simulated electricity trade, but are largely restricted to
+discrete representations of a market environment. Policy gradient methods have
+been proven to offer convergence guarantees in continuous environments and avoid
+many of the problems that mar value function based methods.
 
 % The benefits of using policy gradient methods in electricity market simulation
 % are explored and the results demonstrate their superior trading ability when
