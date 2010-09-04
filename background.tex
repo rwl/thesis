@@ -1,29 +1,30 @@
 \chapter{Background}
 \label{ch:background}
-This chapter provides background information on electricity market and
-electric power system simulation. A brief introduction to national electricity supply is given along with a history of UK wholesale
-electricity market designs.  Approaches to market simulation, that account
-for transmission system constraints, are introduced and definitions of
-learning algorithms, later used to model market participant behaviour, are
-provided.
+This chapter provides background information on electricity market and electric
+power system simulation. A brief introduction to national electricity supply is
+given along with a history of UK wholesale electricity market designs.
+Approaches to market simulation that include transmission system
+constraints are introduced and definitions for the learning algorithms,
+that are later used to model market participant behaviour, are provided.
 
 \section{Electric Power Supply}
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/structure}}{}
 
 Generation and bulk movement of electricity in the UK takes place in a
-three-phase alternating current (AC) power system.  The \textit{phases} are
-high voltage, sinusoidal electrical waveforms, offset in time from each
-other by 120 degrees and oscillating at approximately 50Hz.
-Synchronous generators (sometimes known as Alternators), typically rotating at
-3000 or 1500 revolutions per minute, generate apparent power $S$ at a line
-voltage $V_l$ typically between 11kV and 25kV.  One of the principal reasons
-that AC, and not direct current (DC), systems are common in electricity supply is that they allow power to be transformed between voltages
-with very high efficiency. The output from a power station is typically
-stepped-up to 275kV or 400kV for transmission across the country.
-The apparent power conducted by a three-phase transmission line $l$ is the product of the line current $I_l$ and the line voltage
+three-phase alternating current (AC) power system.  The \textit{phases} are high
+voltage, sinusoidal electrical waveforms, offset in time from each other by 120
+degrees and oscillating at approximately 50Hz. Synchronous generators (sometimes
+known as alternators), typically rotating at 3000 or 1500 revolutions per
+minute, generate apparent power $S$ at a line voltage $V_l$ typically between
+11kV and 25kV.  One of the principal reasons that AC, and not direct current
+(DC), systems are common in electricity supply is that they allow power to be
+transformed between voltages with very high efficiency. The output from a power
+station is typically stepped-up to 275kV or 400kV for transmission over long
+distances. The apparent power conducted by a three-phase transmission line $l$
+is the product of the line current $I_l$ and the line voltage:
 \begin{equation}
-S = \sqrt{3} V_l I_l .
+S = \sqrt{3} V_l I_l
 \end{equation}
 Therefore the line current is inversely proportional to the voltage at which
 the power is transmitted. Ohmic heating losses are directly proportional to the
@@ -35,23 +36,23 @@ where $R$ is the resistance of the transmission line.  Hence, any reduction in
 line current dramatically reduces the amount of energy wasted through heating
 losses.  One consequence of high voltages is the larger extent and integrity
 of the insulation required between conductors, neutral and earth.  This is the
-reason that transmission towers are large and undergrounding systems is
-expensive.
+reason that transmission towers are typically large and undergrounding systems
+is expensive.
 
-The UK transmission system operates at 400kV and 275kV (and 132kV in
-Scotland), but systems with voltages up to and beyond 1000kV are used in
-larger countries such as Canada and China.  For transmission over very long
+The UK transmission system operates at 400kV and 275kV (and 132kV in Scotland),
+but systems with voltages up to and beyond 1000kV are used in larger countries
+such as Canada and China \cite{eletra:1000kV}.  For transmission over very long
 distances or undersea, high voltage DC (HVDC) systems have become economically
-viable in recent years.  The reactance of a transmission line is proportional
-to the frequency so the reactive power component in an HVDC system is nil and
-more active power flow can be transmitted in a line/cable of a certain
-diameter.
+viable in recent years.  The reactance of a transmission line is proportional to
+frequency so one advantage of an HVDC system is that the reactive power
+component in is nil and more active power flow can be transmitted in a
+line/cable of a certain diameter.
 
 The ability to transform power between voltages and transmit large volumes over
 long distances allows electricity generation to take place at high capacity
 power stations, which offer economies of scale and lower operating costs. It
 allows electricity to be transmitted across country borders and from renewable
-energy plant, such as hydro power stations, located in remote areas.
+energy plant, such as hydro-electric power stations, located in remote areas.
 % A HVDC interconnector between
 % Folkstone in the UK and Sangatte in France allows upto 2GW of
 % electricity to be imported/exported.  The Moyle HVDC interconnector can export
@@ -72,66 +73,69 @@ in northern England and gas supply terminals near Cardiff and London.
 	\end{figure}
 }{}
 
-For delivery to most consumers, electric energy is transferred at a
-substation from the transmission system to the grid supply point of a distribution
-system.  Distribution networks in the UK are also three-phase AC power systems,
-but typically operate at lower voltages and differ in their general
-structure (or topology) from transmission networks.  Transmission networks are
-typically highly interconnected, providing multiple paths for power flow.
-Whereas distribution networks in rural areas typically consist of long radial
-feeders (usually overhead lines) and in urban areas typically consist of many
-ring circuits (usually cables).  Three-phase transformers, that step the voltage
-down to levels more convenient for general use (typically from 11kV or 33kV to 400V), are
-spaced along feeders/rings. All three-phases at 400V may be provided for
-industrial and commercial loads or individual phases at 230V supply typical
-domestic and other commercial loads. Splitting of phases is usually planned so
-that each is loaded equally. This produces a balanced, symmetrical system that
-may be analysed, as explained in Section \ref{sec:pf_form}, as a
-\textit{single} phase circuit.  Figure \ref{fig:powersystem} illustrates the
-basic structure of a typical national electric power system \cite{blackout04}.
+For delivery to most consumers, electric energy is transferred at a substation
+from the transmission system to the grid supply point of a distribution system.
+Distribution networks in the UK are also three-phase AC power systems, but
+typically operate at lower voltages and differ in their general structure (or
+topology) from transmission networks.  Transmission networks are typically
+highly interconnected, providing multiple paths for power flow. Distribution
+networks in rural areas typically consist of long radial feeders (usually
+overhead lines) and in urban areas, of many ring circuits (usually cables).
+Three-phase transformers, that step the voltage down to levels more convenient
+for general use (typically from 11kV or 33kV to 400V), are spaced out on the
+feeders/rings. All three-phases at 400V may be provided for industrial and
+commercial loads or individual phases at 230V supply typical domestic and other
+commercial loads. Splitting of phases is usually planned so that each is loaded
+equally. If achieved, this produces a balanced, symmetrical system with zero
+current flow on the neutral and it can be analysed as a \textit{single} phase
+circuit (See Section Section \ref{sec:pf_form} below).  Figure
+\ref{fig:powersystem} illustrates the basic structure of a typical national
+electric power system \cite{blackout04}.
 
 \section{Electricity Markets}
 The UK was the first large country to privatise its electricity supply industry
-when it did so in the early 1990s.  The approach has been used as a model
-by other countries and the market structures that have since been implemented
-in the UK have utilised some of the main ideas for national electricity
-market design.
+when it did so in the early 1990s.  The approach has been used as a model by
+other countries and the market structures that have since been implemented in
+the UK have used many of the main concepts for national electricity market
+design.
 
 The England and Wales Electricity Pool was created in 1990 to break up the
 vertically integrated Central Electricity Generating Board (CEGB) and to
-gradually introduce competition in generation and retail supply.  Early
-adoption of electricity markets by the UK has lead to the country hosting many
-of the main European power and gas exchanges and the UK boasts a high degree
-of consumer switching compared to other European countries. The Pool has since
-been replaced by trading arrangements in which market outcomes are not
-centrally determined, but arise largely from bilateral agreements between
-producers and suppliers.
+gradually introduce competition in generation and retail supply.
+% Early adoption of electricity markets by the UK has lead to the country hosting
+% many of the main European power and gas exchanges and the UK boasts a high
+% degree of consumer switching compared to other European countries.
+The Pool has since been
+replaced by trading arrangements in which market outcomes are not centrally
+determined, but arise largely from bilateral agreements between producers and
+suppliers.
 
 \subsection{The England and Wales Electricity Pool}
 \label{sec:thepool}
-The Electric Lighting Act 1882 initiated the development of the UK's
-electricity supply industry by permitting persons, companies and local authorities to set
-up supply systems, principally at the time for the purposes of street lighting and
+The Electric Lighting Act 1882 initiated the development of the UK's electricity
+supply industry by permitting persons, companies and local authorities to set up
+supply systems, principally at the time for the purposes of street lighting and
 trams.  The Central Electricity Board started operating the first grid of
-interconnected regional networks (synchronised at 132kV, 50Hz) in 1933.
-This began operation as a national system five years later and was
-nationalised in 1947.  Over 600 electricity companies were merged in the
-process and the British Electricity Authority was created.  It was later
-dissolved and replaced with the CEGB and the Electricity Council under The
-Electricity Act 1957.  The CEGB was responsible for planning the network and
-generating sufficient electricity until the beginning of privatisation.
+interconnected regional networks (synchronised at 132kV, 50Hz) in 1933. This
+began operation as a national system five years later and was nationalised in
+1947.  Over 600 electricity companies were merged in the process and the British
+Electricity Authority was created.  It was later dissolved and replaced with the
+CEGB and the Electricity Council under The Electricity Act 1957.  The CEGB was
+responsible for planning the network and generating sufficient electricity until
+the beginning of privatisation.
 
 The UK electricity supply industry was privatised, and The England and Wales
-Electricity Pool created, in March 1990.  Control of the transmission
-system was transferred from the CEGB to the National Grid Company, which was
-originally owned by twelve regional electricity companies and has since become publicly listed.  The
-Pool was a multilateral contractual arrangement between generators and suppliers and did
-not itself buy or sell electricity.  Competition in generation was introduced
-gradually, by first entitling customers with consumption greater than or equal
-to 1MW (approximately 45\% of the non-domestic market \cite{decc:dukes09}) to
-purchase electricity form any listed supplier.  This limit was lowered in April
-1994 to included customers with peak loads of 100kW or more.  Finally, between
-September 1998 and March 1999 the market was opened to all customers.
+Electricity Pool created, in March 1990.  Control of the transmission system was
+transferred from the CEGB to the National Grid Company, which was originally
+owned by twelve regional electricity companies and has since become publicly
+listed.  The Pool was a multilateral contractual arrangement between generators
+and suppliers and did not itself buy or sell electricity.  Competition in
+generation was introduced gradually, by first entitling customers with
+consumption greater than or equal to 1MW (approximately 45\% of the non-domestic
+market \cite{decc:dukes09}) to purchase electricity form any listed supplier.
+This limit was lowered in April 1994 to include customers with peak loads of
+100kW or more.  Finally, between September 1998 and March 1999 the market was
+opened to all customers.
 
 Scheduling of generation was on a merit order basis (cheapest first) at a day
 ahead stage and set a wholesale electricity price for each half-hour period of
@@ -143,24 +147,24 @@ by 10AM on the day before the schedule day.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/cost_function}}{}
 
-Figure \ref{fig:poolbids} illustrates four of the five price parameters
-that would make up a bid.  A start-up price would also be stated, representing
-the cost of turning on the generator from cold.  The no-load price $c_{noload}$
-represents the cost in pounds of keeping the generator running regardless of output. Three
-incremental prices $c_1$, $c_2$ and $c_3$ specify the cost in \pounds/MWh of
-generation between set-points $p_1$, $p_2$ and $p_3$.
+Figure \ref{fig:poolbids} illustrates four of the five price parameters that
+would make up a bid.  A start-up price would also be stated, representing the
+cost of turning on the generator from cold.  The no-load price $c_{0}$
+represents the cost in pounds of keeping the generator running regardless of
+output. Three incremental prices $c_1$, $c_2$ and $c_3$ specify the cost in
+\pounds/MWh of generation between set-points $p_1$, $p_2$ and $p_3$.
 
-A settlement algorithm would determine an unconstrained schedule
-(with no account being taken for the physical limitations of the transmission
-system), meeting the forecast demand and requirements for reserve while minimising cost.
-Cheapest bids up to the marginal point would be accepted first and the bid
-price from the marginal generator would generally determine the system marginal
-price for each settlement period.  The system marginal price would form the
-basis of the prices paid by consumers and paid to generators, which would be
-adjusted such that that the costs of transmission are covered by the market and that the
+A settlement algorithm would determine an unconstrained schedule (with no
+account being taken for the physical limitations of the transmission system),
+meeting the forecast demand and requirements for reserve while minimising cost.
+Cheapest bids up to the marginal point would be accepted first and the bid price
+from the marginal generator would generally determine the system marginal price
+for each settlement period.  The system marginal price would form the basis of
+the prices paid by consumers and paid to generators, which would be adjusted
+such that the costs of transmission are covered by the market and that the
 availability of capacity is encouraged at certain times.
 
-Variations in demand and changes in plant availability were adjusted for by
+Variations in demand and changes in plant availability would be adjusted for by
 the grid operator between day close and physical delivery, producing a
 constrained schedule. Generators having submitted bids would be instructed to
 increase or reduce production as appropriate.  Alternatively, the grid operator
@@ -169,34 +173,33 @@ or instruct generators contracted to provide ancillary services to adjust
 production.
 
 \subsection{British Electricity Transmission and Trading Arrangements}
-%\subsection{New Electricity Trading Arragements}
+% \subsection{New Electricity Trading Arragements}
 \label{sec:betta}
 Concerns over the exploitation of market power in The England and Wales
-Electricity Pool and the effectiveness of the market in reducing consumer
+Electricity Pool and over the ability of the market to reduce consumer
 electricity prices prompted the introduction of New Electricity Trading
-Arrangements (NETA) in March 2001 \cite{martoccia:2005}.  The aim was to
-improve efficiency and provide greater choice to participants.  Control of the
-Scottish transmission system was included with the introduction of the
-nationwide British Electricity Transmission and Trading Arrangements (BETTA)
-in April 2005 under The Energy Act 2004.  While The Pool operated a single
-daily auction and dispatched plant centrally, under the new arrangements
-participants became self-dispatching and market positions became determined
-through continuous bilateral trading between generators, suppliers, traders
-and consumers.
+Arrangements (NETA) in March 2001 \cite{martoccia:2005}.  The aim was to improve
+efficiency and provide greater choice to participants.  Control of the Scottish
+transmission system was included with the introduction of the nationwide British
+Electricity Transmission and Trading Arrangements (BETTA) in April 2005 under
+The Energy Act 2004.  While The Pool operated a single daily auction and
+dispatched plant centrally, under the new arrangements participants became
+self-dispatching and market positions became determined through continuous
+bilateral trading between generators, suppliers, traders and consumers.
 
-The majority of power is traded under the BETTA through long-term contracts
-that are customised to the requirements of each party \cite{kirschen:book}.
-These instruments suit participants responsible for large power plant or those
-purchasing large volumes of power for many customers.  Sizeable amounts of time and
-effort are required for these long-term contracts to be formed and this results
-in a high associated transaction cost.  However, they reduce risk for large
-players and often include a degree of flexibility.
+The majority of power is traded under the BETTA through long-term contracts that
+are customised to the requirements of each party \cite{kirschen:book}. These
+instruments suit participants responsible for large power stations or those
+purchasing large volumes of power for many customers.  Sizeable amounts of time
+and effort are typically required for these long-term contracts to be initially
+formed and this results in a high associated transaction cost. However, they
+reduce risk for large players and often include a degree of flexibility.
 
 Electric power is also traded directly between participants through
-over-the-counter contracts that are usually of a standardised form.  Such contracts
-typically concern smaller volumes of power and have much lower associated
-transaction costs.  Often they are used by participants to refine their market
-position ahead of delivery time \cite{kirschen:book}.
+over-the-counter contracts that usually have a standardised form.  Such
+contracts typically concern smaller volumes of power and have lower
+associated transaction costs.  Often they are used by participants to refine
+their market position ahead of delivery time \cite{kirschen:book}.
 
 Trading facilities, such as power exchanges, provide a means for participants
 to fine-tune their positions further, through short-term transactions for
@@ -206,84 +209,83 @@ computerised and accept anonymous offers and bids submitted electronically.
 % system with compatible price and quantity values.  The details are then
 % displayed for traders to observe and to use in subsequent trading.
 
-All bilateral trading must be completed before ``gate-closure'', a
-point in time before delivery that gives the system operator an
-opportunity to balance supply and demand and mitigate potential breaches of
-system limits.  In keeping with the UK's free market philosophy, a competitive
-spot market \cite{schweppe:spot} is used in the balancing mechanism.  A
-generator that is not fully loaded may offer a price at which it is willing to
-increase its output by a specified quantity, stating the rate at which it is
-capable of doing so.  Certain loads may also offer demand reductions at a
-price which can typically be implemented very quickly.  Longer-term contracts
-for balancing services are also struck between the system operator and
-generators/suppliers in order to avoid the price volatility often associated
-with spot markets.
+All bilateral trading must be completed before ``gate-closure'': a point in time
+before delivery that gives the system operator an opportunity to balance supply
+and demand and mitigate potential breaches of system limits.  In keeping with
+the UK's free market philosophy, a competitive spot market \cite{schweppe:spot}
+forms part of the balancing mechanism.  A generator that is not fully loaded
+may offer a price at which it is willing to increase its output by a specified
+quantity, stating the rate at which it is capable of doing so.  Certain loads
+may also offer demand reductions at a price which can typically be implemented
+very quickly.  Longer-term contracts for balancing services are also struck
+between the system operator and generators/suppliers in order to avoid the price
+volatility often associated with spot markets.
 
 \section{Electricity Market Simulation}
-Previous sections have identified the importance of electricity to
-modern societies and explained how the majority of electricity supply in the UK
-is trusted to unadministered bilateral trade.  All aspects of electricity
-supply are constantly changing and electricity markets must be
-suitably researched to ensure that their designs are fit for purpose.  The
-value of electricity to society means that it is not practical to experiment
-with radical changes to trading arrangements on real systems.
+Previous sections have identified the importance of electricity to modern
+societies and explained how the majority of electricity supply in the UK is
+trusted to unadministered bilateral trade.  All aspects of electricity supply
+are constantly changing and electricity markets must be suitably researched to
+ensure that their designs are fit for purpose.  The value of electricity to
+society means that it is not practical to experiment with radical changes to
+trading arrangements on real systems.
 % A practical alternative is to study abstract mathematical models (with sets of
 % simplifying approximations and assumptions) and find analytical solutions,
 % where possible, by simulating them using computer programs.
 
-Game theory is the branch of applied mathematics in which behaviour in
-strategic situations is captured mathematically.  A common approach to doing
-this is to model the system and players as a mathematical optimisation
-problem.  Optimal power flow is a classical optimisation problem in the field
-of Electrical Power Engineering and variants of it are widely used in
-research of electricity markets.  In this thesis, optimal power flow is used in
-an \textit{agent-based} simulation: an alternative approach to the mathematics
-of games.
+Game theory is the branch of applied mathematics in which behaviour in strategic
+situations is captured mathematically.  A common approach to doing this is to
+model the system and players as a mathematical optimisation problem.  Optimal
+power flow is a classic optimisation problem in the field of Electrical Power
+Engineering and variants of it are widely used in electricity market research.
+In this thesis, optimal power flow forms part of an \textit{agent-based}
+simulation: an alternative approach to the mathematics of games.
 
 \subsection{Agent-Based Simulation}
 Social systems, such as electricity markets, are inherently complex and involve
-interactions between different types of individuals and between individuals
-and collective entities, such as organisations or groups, the behaviour of which
-is itself the product of individual interactions.  This complexity
-drives classical monolithic equilibrium models to their limits.  The models are
-often highly stylised and limited to small numbers of players with strong
-constraining assumptions made on their behaviour.
+interactions between different types of individual and between individuals and
+collective entities, such as organisations or groups, the behaviour of which is
+itself the product of individual interactions.  This complexity drives classical
+monolithic equilibrium models to their limits.  The models are often highly
+stylised and limited to small numbers of players with strong constraining
+assumptions made on their behaviour.
 
-Agent-based simulation involves modelling the simultaneous operations of and
-interactions between adaptive agents, then assessing their effect on the system
-as a whole.  Macro-level system properties arise from agent interactions, even
-those with simple behavioural rules, that could not be deduced by simply
-aggregating the agent's properties. % Game of Life
+Agent-based simulation involves modelling the simultaneous operations of, and
+interactions between adaptive agents and then assessing their effect on the
+system as a whole.  System properties arise from agent interactions, even those
+with simple behavioural rules, that could not be deduced by simply aggregating
+the agent's properties. % Game of Life
 
 Following \citeA{tesfatsi:handbook}, the objectives of agent-based modelling
 research fall roughly into four strands: empirical, normative, heuristic and
-methodological. The \textit{empirical} objectives are to understand how and why macro-level
-regularities have evolved from micro-level interactions when little or no
-top-down control is present.  Research with \textit{normative} goals aims
-to relate agent-based models to an ideal standard or optimal design.  The objective being
-to evaluate proposed designs for social policy, institutions or processes in
-their ability to produce socially desirable system performance.  The
+methodological. The \textit{empirical} objectives are to understand how and why
+macro-level regularities have evolved from micro-level interactions when little
+or no top-down control is present.  Research with \textit{normative} goals aims
+to relate agent-based models to an ideal standard or optimal design.  The
+objective being to evaluate proposed designs for social policy, institutions or
+processes in their ability to produce socially desirable system performance. The
 \textit{heuristic} strand aims to generate theories on the fundamental causal
-mechanisms in social systems that can be observed, even in simple systems, when there are
-alternative initial conditions.  This thesis aims to provide
-\textit{methodological} advancement.  Improvements in the tools and methods
-available will aid research with the former objectives.
+mechanisms in social systems that can be observed when there are alternative
+initial conditions.  This thesis aims to provide \textit{methodological}
+advancement.  Improvements in the tools and methods available aids research with
+the former objectives.
 
 \subsection{Optimal Power Flow}
 \label{sec:opf}
-Nationalised electricity supply industries were for many years planned,
-operated and controlled centrally.  A system operator would determine which
-generators must operate and the required output of the operating units such
-that demand and reserve requirements were met and the overall cost of
-production was minimised.  In Electric Power Engineering, this is termed the
-\textit{unit commitment} and \textit{economic dispatch} problem.
+Nationalised electricity supply industries were for many years planned, operated
+and controlled centrally.  A system operator would determine which generators
+must operate and the required output of the operating units such that demand and
+reserve requirements were met and the overall cost of production was minimised.
+In Electric Power Engineering, these are termed the \textit{unit commitment} and
+\textit{economic dispatch} problems.
 
-In 1962 a unit commitment formulation was published that incorporated
-electric power system constraints \cite{carpentier:opf}.  Optimal power
-flow is this combination of the economic and the power flow aspects of power
-systems into a mathematical optimisation problem.  The ability to use optimal power flow to solve centralised power system operation problems and determine prices in power
-pool markets has led to it being one of the most widely studied subjects in
-the electric power systems community.
+A formulation of the unit commitment problem was published in 1962 that
+incorporated electric power system constraints \cite{carpentier:opf}.  Optimal
+power flow is this combination of the economic and power flow aspects of power
+systems into one mathematical optimisation problem.  The ability of optimal
+power flow to solve centralised power system operation problems and determine
+prices in power pool markets has resulted in it becoming one of the most widely
+studied subjects in the electric power systems community.
 
 \subsubsection{Power Flow Formulation}
 \label{sec:pf_form}
@@ -295,22 +297,22 @@ complex voltage
 V_i = \vert V_i \vert \angle\delta_i = \vert
 V_i\vert(\cos\delta_i + j\sin\delta_i)
 \end{equation}
-at each node $i$ in the power system, from which branch flows may be calculated
+at each node $i$ in the power system, from which line flows may be calculated
 \cite{grainger:psa}.
 
 \paragraph{Nodal Admittance Matrix}
-The nodal admittance matrix describes the electrical network and its
-formulation is dependant upon the transmission line, transformer and shunt
-models employed.  A branch in a nodal representation of a power system is
-typically modelled as a medium length transmission line in series with a regulating
-transformer at the ``from'' end. A nominal-$\pi$
-model with total series admittance $y_s = 1/(r_s+jx_s)$ and total shunt
-capacitance $b_c$ is used to represent the transmission line.  The transformer
-is assumed to be ideal, phase-shifting and tap-changing, with the ratio between primary winding voltage $v_{f}$ and secondary winding voltage
-$N = \tau e^{j\theta_{ph}}$ where $\tau$ is the tap ratio and $\theta_{ph}$ is
-the phase shift angle. Figure \ref{fig:branch_model} diagrams this
-conventional branch model \cite[p.11]{pserc:mp_manual}.  From Kirchhoff's
-Current Law the current in the series impedance is
+The nodal admittance matrix describes the electrical network and its formulation
+is dependant upon the transmission line, transformer and shunt models employed.
+A branch in a nodal representation of a power system is typically modelled as a
+medium length transmission line in series with a regulating transformer at the
+``from'' end \cite[p.11]{pserc:mp_manual}. A nominal-$\pi$ model with total
+series admittance $y_s = 1/(r_s+jx_s)$ and total shunt capacitance $b_c$ is
+often to represent the transmission line.  The transformer may assumed to be
+ideal, phase-shifting and tap-changing, with the ratio between primary winding
+voltage $v_{f}$ and secondary winding voltage $N = \tau e^{j\theta_{ph}}$ where
+$\tau$ is the tap ratio and $\theta_{ph}$ is the phase shift angle. Figure
+\ref{fig:branch_model} diagrams this conventional branch model.  From
+Kirchhoff's Current Law the current in the series impedance is
 \begin{equation}
 \label{eq:iseries}
 i_s = \frac{b_c}{2}v_t - i_t
@@ -349,8 +351,8 @@ v_r \left(\frac{y_s}{\tau e^{-j\theta}}\right)
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/branch_model}}{}
 
-Combining equations (\ref{eq:ito}) and (\ref{eq:ifrom}), the \textit{from}
-and \textit{to} end complex current injections for branch $l$ are
+Combining equations (\ref{eq:ito}) and (\ref{eq:ifrom}), the \textit{from} and
+\textit{to} end complex current injections for branch $l$ are
 \begin{equation}
 \label{eq:ybranch}
 \begin{bmatrix}
@@ -382,8 +384,9 @@ Let $Y_{ff}$, $Y_{ft}$, $Y_{tf}$ and $Y_{tt}$ be $n_l \times 1$ vectors where
 the $l^{th}$ element of each corresponds to $y_{ff}^l$, $y_{ft}^l$,
 $y_{tf}^l$ and $y_{tt}^l$, respectively.  Furthermore, let $C_f$ and $C_t$ be the
 $n_l \times n_b$ branch-bus connection matrices, where $C_{fij} = 1$ and
-$C_{tik} = 1$ if branch $i$ connects from bus $j$ to bus $k$.  The
-$n_l \times n_b$ branch admittance matrices are
+$C_{tik} = 1$ if branch $i$ connects from bus $j$ to bus $k$
+\cite[p.12]{pserc:mp_manual}.  The $n_l \times n_b$ branch admittance matrices
+are
 \begin{eqnarray}
 Y_f& =& \diag(Y_{ff})C_f + \diag(Y_{ft})C_t\\
 Y_t& =& \diag(Y_{tf})C_f + \diag(Y_{tt})C_t
@@ -593,16 +596,16 @@ minimise deviation of an optimisation variable from a particular schedule
 \cite[\S18]{kallrath:2009}.
 
 \subsubsection{Nodal Marginal Prices}
-Many solution methods for optimal power flow have been developed
-since the problem was introduced by \citeA{carpentier:opf} and a review of the main
+Many solution methods for optimal power flow have been developed since the
+problem was introduced by \citeA{carpentier:opf} and a review of the main
 techniques can be found in \citeA{momoh:part1,momoh:part2}. One of the most
 robust strategies is to solve the Lagrangian function
 \begin{equation}
 \mathcal{L}(x) = f(x) + \lambda^\mathsf{T}g(x) + \mu^\mathsf{T}h(x),
 \end{equation}
 where $\lambda$ and $\mu$ are vectors of Lagrangian multipliers, using an
-Interior Point Method.  When solved, the Lagrangian multiplier for a constraint gives
-the rate of change of the objective function value with respect to the
+Interior Point Method \cite{cvxopt:2004}.  When solved, the Lagrangian
+multiplier for a constraint gives the rate of change of the objective function value with respect to the
 constraint variable.  If the objective function is equation (\ref{eq:objfunc}), the Lagrangian
 multipliers $\lambda^i_P$ and $\lambda^i_Q$ for the power balance constraint at
 each bus $i$, given by equations (\ref{eq:p_balance}) and (\ref{eq:q_balance}),
@@ -633,23 +636,20 @@ constrained areas of the power system.
 
 % Reinforcement learning starts with an interactive, goal-seeking individual
 % agent existing in an environment.  The agent requires the ability to;
-% \begin{itemize}
-%   \item Sense aspects of its environment,
-%   \item Perform actions that influence the state of its environment and
-%   \item be assigned rewards as a response to their chosen action.
-% \end{itemize}
-% An agent follows a particular \textit{policy} when mapping the perceived state
-% of its environment to an action choice.  Reinforcement learning methods adjust
-% the agent's policy.
+% \begin{itemize} \item Sense aspects of its environment, \item Perform actions
+% that influence the state of its environment and \item be assigned rewards as a
+% response to their chosen action. \end{itemize} An agent follows a particular
+% \textit{policy} when mapping the perceived state of its environment to an
+% action choice.  Reinforcement learning methods adjust the agent's policy.
 Reinforcement learning is learning from reward by mapping situations to actions
 when interacting with an uncertain environment \cite{suttonbarto:1998}.  An
 agent learns \textit{what} to do in order to achieve a task through
 trial-and-error using a numerical reward or a penalty signal without being
-instructed \textit{how} to achieve it.  Some actions may not
-yield immediate reward or may affect the next situation and all subsequent
-rewards.  Always, a compromise must be made between the exploitation of past
-experiences and the exploration of the environment through new action choices.
-In reinforcement learning an agent must be able to:
+instructed \textit{how} to achieve it.  Some actions may not yield immediate
+reward or may effect the next situation and all subsequent rewards.  Always, a
+compromise must be made between the exploitation of past experiences and the
+exploration of the environment through new action choices. In reinforcement
+learning an agent must be able to:
 \begin{itemize}
   \item Sense aspects of its environment,
   \item Take actions that influence its environment and,
@@ -662,7 +662,7 @@ in a sequence of discrete time steps $t = 1,2,3\dotsc$ an agent receives as
 input some form of the environment's state $s_t \in \mathscr{S}$, where
 $\mathscr{S}$ is the set of possible states.  From a set of actions
 $\mathscr{A}(s_t)$ available to the agent in state $s_t$ and the agent selects
-an action $a_t$ and performs it upon its environment.  The environment enters a
+an action $a_t$ and performs it in its environment.  The environment enters a
 new state $s_{t+1}$ in the next time step and the agent receives a scalar
 numerical reward $r_{t+1} \in \mathbb{R}$ in part as a result of its action.
 The agent then learns from the state representation, the
@@ -672,27 +672,22 @@ agent-environment interaction event sequence in reinforcement learning.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/seq_rl}}{}
 
-%\subsection{Markov Decision Processes}
-For a finite number of states $\mathscr{S}$, if all states are Markov, the
-agent interacts with a finite Markov decision process (MDP).  Informally,
-for a state to be Markov it must retain all relevant information about the
-complete sequence of positions leading up to the state, such that all future
-states and expected rewards can be predicted as well as would be possible given
-a complete history.  A particular MDP is defined for a discrete set of time
+% \subsection{Markov Decision Processes}
+For a finite number of states, if all states are Markov, the agent interacts
+with a finite Markov decision process (MDP).  Informally, for a state to be
+Markov it must retain all relevant information about the complete sequence of
+positions leading up to the state, such that all future states and expected
+rewards can be predicted as well as would be possible given a complete history
+\cite{suttonbarto:1998}.  A particular MDP is defined for a discrete set of time
 steps by a state set $\mathscr{S}$, an action set $\mathscr{A}$, a set of state
 transition probabilities $\mathscr{P}$ and a set of expected reward values
 $\mathscr{R}$.
-% Given a state $s$ and an action $a$, the probability of
-% transitioning to each possible next state $s^\prime$ is
-% \begin{equation}
-% \mathscr{P}^a_{ss^\prime} = \Pr \bigl\lbrace s_{t+1} = s^\prime \vert s_t=s,
-% a_t=a \bigr\rbrace .
-% \end{equation}
-% Given the next state $s^\prime$, the expected value of the next reward is
-% \begin{equation}
-% \mathscr{R}^a_{ss^\prime} = E \bigl\lbrace r_{t+1} \vert s_t=s, a_t=a,
-% s_{t+1}=s^\prime \bigr\rbrace .
-% \end{equation}
+% Given a state $s$ and an action $a$, the probability of transitioning to each
+% possible next state $s^\prime$ is \begin{equation} \mathscr{P}^a_{ss^\prime} =
+% \Pr \bigl\lbrace s_{t+1} = s^\prime \vert s_t=s, a_t=a \bigr\rbrace .
+% \end{equation} Given the next state $s^\prime$, the expected value of the next
+% reward is \begin{equation} \mathscr{R}^a_{ss^\prime} = E \bigl\lbrace r_{t+1}
+% \vert s_t=s, a_t=a, s_{t+1}=s^\prime \bigr\rbrace . \end{equation}
 In practice not all state signals are Markov, but should provide a good basis
 for predicting subsequent states, future rewards and selecting actions.
 
@@ -740,51 +735,22 @@ $\pi$.
 
 \subsubsection{Temporal-Difference Learning}
 Temporal Difference (TD) learning is a fundamental concept in reinforcement
-learning \cite{suttonbarto:1998}. TD methods do not attempt to estimate the
-state transition probabilities and expected rewards of the finite MDP, but estimate the value function directly.
-They learn to \textit{predict} the expected value of total reward returned by
-the state-value function (\ref{eq:statevalue}).  For an exploratory policy $\pi$
-and a non-terminal state $s$, an estimate of $V^\pi(s_t)$ at any given time step
-$t$ is updated using the estimate at the next time step $V^\pi(s_{t+1})$ and the
+learning that was introduced by \citeA{suttonbarto:1998}. TD methods do not
+attempt to estimate the state transition probabilities and expected rewards of
+the finite MDP, but estimate the value function directly. They learn to
+\textit{predict} the expected value of total reward returned by the state-value
+function (\ref{eq:statevalue}).  For an exploratory policy $\pi$ and a
+non-terminal state $s$, an estimate of $V^\pi(s_t)$ at any given time step $t$
+is updated using the estimate at the next time step $V^\pi(s_{t+1})$ and the
 observed reward $r_{t+1}$
 \begin{equation}
 V^\pi(s_t) = V^\pi(s_t) + \alpha \bigl[r_{t+1} + \gamma
 V^\pi(s_{t+1}) - V^\pi(s_t) \bigr]
 \end{equation}
 where $\alpha$ is the learning rate, with $0 \leq \alpha \leq 1$, which controls
-how much attention is paid to new data when updating $V^\pi$.  TD learning
-evaluates a particular policy and offers strong convergence guarantees, but does
-not learn better policies.
-
-\subsubsection{Sarsa}
-\label{sec:sarsa}
-% The SARSA algorithm is an on-policy Temporal Difference control method where
-% the policy is typically represented by a $M \times N$ table, where $M$ and $N$
-% are arbitrary positive numbers equal to the total number of feasible states and
-% actions respectively.  The action-value update for agent $j$ is defined by
-% \begin{equation}
-% Q_j(s_{jt},a_{jt}) + \alpha [r_{jt+1} + \gamma Q_j(s_{jt+1},a_{jt+1}) -
-% Q_j(s_{jt},a_{jt})]
-% \end{equation}
-% While the Q-learning method (See Section \ref{sec:qlearning}, below) updates
-% action-values using a greedy policy, which is a different policy to that being
-% followed, SARSA uses the discounted future reward of the next state-action
-% observation following the original policy.
-Sarsa (or modified Q-learning) is an on-policy TD control method that
-approximates the state-action value function in equation
-(\ref{eq:actionvalue}). Recall that the state-action value function for an
-agent returns the total expected reward for following a particular policy for
-selecting actions as a function of future states.  The function is updated
-according to the rule
-\begin{equation}
-\label{eq:sarsa}
-Q(s_t,a_t) = Q(s_t,a_t) + \alpha \bigl[r_{t+1} + \gamma
-Q(s_{t+1},a_{t+1}) - Q(s_t,a_t)\bigr].
-\end{equation}
-This update also uses the action from the next time step $a_{t+1}$ and the
-requirement to transition through state-action-reward-state-action for each
-time step gives the algorithm its name.  Sarsa is referred to
-as an on-policy method since it learns the same policy that it follows.
+how much attention is paid to new data when updating $V^\pi$.  Plain TD
+learning evaluates a particular policy and offers strong convergence
+guarantees, but does not learn better policies.
 
 \subsubsection{Q-Learning}
 \label{sec:qlearning}
@@ -829,6 +795,36 @@ The method is off-policy since the update function is independent of the policy
 being followed and only requires that all state-action pairs be continually
 updated.
 
+\subsubsection{Sarsa}
+\label{sec:sarsa}
+% The SARSA algorithm is an on-policy Temporal Difference control method where
+% the policy is typically represented by a $M \times N$ table, where $M$ and $N$
+% are arbitrary positive numbers equal to the total number of feasible states and
+% actions respectively.  The action-value update for agent $j$ is defined by
+% \begin{equation}
+% Q_j(s_{jt},a_{jt}) + \alpha [r_{jt+1} + \gamma Q_j(s_{jt+1},a_{jt+1}) -
+% Q_j(s_{jt},a_{jt})]
+% \end{equation}
+% While the Q-learning method (See Section \ref{sec:qlearning}, below) updates
+% action-values using a greedy policy, which is a different policy to that being
+% followed, SARSA uses the discounted future reward of the next state-action
+% observation following the original policy.
+Sarsa (or modified Q-learning) is an on-policy TD control method that
+approximates the state-action value function in equation
+(\ref{eq:actionvalue}). Recall that the state-action value function for an
+agent returns the total expected reward for following a particular policy for
+selecting actions as a function of future states.  The function is updated
+according to the rule
+\begin{equation}
+\label{eq:sarsa}
+Q(s_t,a_t) = Q(s_t,a_t) + \alpha \bigl[r_{t+1} + \gamma
+Q(s_{t+1},a_{t+1}) - Q(s_t,a_t)\bigr].
+\end{equation}
+This update also uses the action from the next time step $a_{t+1}$ and the
+requirement to transition through state-action-reward-state-action for each
+time step gives the algorithm its name.  Sarsa is referred to
+as an on-policy method since it learns the same policy that it follows.
+
 \subsubsection{Eligibility Traces}
 \label{sec:eligibility}
 With the TD methods described above, only the value for the immediately
@@ -853,11 +849,13 @@ and for $\lambda = 1$ all preceding state-values or state-action values are
 updated equally.
 
 \subsubsection{Action Selection}
-The $\epsilon$-greedy approach to action selection is defined by a randomness
-parameter $\epsilon$ and a decay parameter $d$.  A random number $x_r$ where
-$0 \leq x_r \leq 1$ is drawn for each selection.  If $x_r < \epsilon$ then a
-random action is selected, otherwise the perceived optimal action is chosen.
-After each selection the randomness is attenuated by $d$.
+A balance between exploration of the environment and exploitation of past
+experience must be struck when selecting actions.  The $\epsilon$-greedy
+approach to action selection is defined by a randomness parameter $\epsilon$ and
+a decay parameter $d$.  A random number $x_r$ where $0 \leq x_r \leq 1$ is drawn
+for each selection.  If $x_r < \epsilon$ then a random action is selected,
+otherwise the perceived optimal action is chosen. After each selection the
+randomness is attenuated by $d$.
 
 Action selection may also be accomplished using a form of the \textit{softmax}
 method \cite[\S2]{suttonbarto:1998} using the Gibbs (or
@@ -903,66 +901,59 @@ while low values promote exploitation of past experience.
 % application of these methods to small environments.  Many environments,
 % particularly from real applications, exhibit continuous sensor and/or action
 % spaces and require generalisation techniques to be employed to provide a more
-% compact policy representation.
-%
-% Policy-gradient methods use only the reward signal and search directly in the
-% space of the policy parameters.  The agent's policy function approximator is
-% updated according to the gradient of expected reward with respect to its
-% parameters.
+% compact policy representation.  Policy-gradient methods use only the reward
+% signal and search directly in the space of the policy parameters.  The agent's
+% policy function approximator is updated according to the gradient of expected
+% reward with respect to its parameters.
 Value function based methods have been successfully applied with discrete
-look-up table parameterization to many problems.  However, the number of
-discrete states required increases rapidly as the dimensions of the state
-space increase and if all possibly relevant situations are to be covered, these
-methods become subject to Bellman's Curse of Dimensionality
-\cite{bellman:1961}.  Value function based methods can be used in conjunction
-with function approximation techniques (artificial neural networks typically)
-to allow operation with continuous state and action spaces.  However, value
-function approximation has been shown to cause these methods to exhibit poor
-convergence or divergence characteristics, even in simple systems
+look-up table parameterization to many problems \cite{bertsekas:96}.  However,
+the number of discrete states required increases rapidly as the dimensions of
+the state space increase and if all possibly relevant situations are to be
+covered, these methods become subject to Bellman's Curse of Dimensionality
+\cite{bellman:1961}.
+ Value function based methods can be used in conjunction with function
+approximation techniques (artificial neural networks typically) to allow
+operation with continuous state and action spaces.  However, greedy action
+selection has been shown to cause these methods to exhibit poor convergence or
+divergence characteristics, even in simple systems
 \cite{tsitsiklis:94,peters:enac,gordon:95,baird:95}.
 
-These convergence problems have motivated research into alternative
-methods that can operate with continuous environments, such as policy
-gradient methods.  These algorithms make small incremental changes to the
+These convergence problems have motivated research into alternative learning
+methods (such as policy gradient algorithms) that can operate with function
+approximators.  Policy gradient algorithms make small incremental changes to the
 parameter vector $\theta$ of a policy function approximator.  Using artificial
-neural networks the parameters are the weights of the network
-connections. Policy gradient methods
-update $\theta$ in the direction of the gradient of some policy performance measure $Y$ with respect to the parameters
+neural networks the parameters are the weights of the network connections.
+Policy gradient methods update $\theta$ in the direction of steepest ascent of
+some policy performance measure $Y$ with respect to the parameters
 \begin{equation}
 \theta_{i+1} = \theta_i + \alpha \frac{\partial Y}{\partial \theta_i}
 \end{equation}
-where $\alpha$ is a positive definite step size learning rate.
-
-As well as working with continuous state and actions space, policy gradient
-methods offer strong convergence guarantees, do not require all states to be
-continually updated and although uncertainty in state data can degrade policy
-performance, the techniques do not need to be altered.
+where $\alpha$ is a positive definite step size learning rate.  Unlike look-up
+table based methods, they do not require all states to be continually updated.
+Uncertainty in state data can degrade policy performance, but the methods
+generally have strong convergence properties.
 
 Policy gradient methods are differentiated largely by the techniques used to
 obtain an estimate of the policy gradient $\partial Y / \partial \theta$. Some
-of the most successful real-world robotics results have been yielded by
-likelihood ratio methods \cite{glynn87,aleksandrov68} such as Williams'
+of the most successful real-world robotics results \cite{glynn87,aleksandrov68}
+have been yielded by likelihood ratio methods such as Williams'
 \textsc{Reinforce} \cite{williams:reinforce} and natural policy gradient
 methods, such as the Episodic Natural Actor-Critic (ENAC) \cite{peters:enac}.
-For an overview of these methods the interested reader is referred to
+These algoithms have lengthy derivations, but an overview has been published by
 \citeA{petersScholar}.
 
 \subsubsection{Artificial Neural Networks}
-This subsection provides a very brief introduction to the theory of artificial
-neural networks, concentrating on the aspects utilised in reinforcement
-learning.  These mathematical models mimic aspects of biological neural
-networks, such as the human brain, and are widely used in supervised learning
-applications.  A wealth of literature is available that covers the field
-in much greater depth \cite{bishop96ann,fausett94}.
-
+Artificial neural networks are mathematical models that mimic aspects of
+biological neural networks, such as the human brain, and are widely used in
+supervised learning applications \cite{bishop96ann,fausett94}.
 In reinforcement learning, the most widely used type of artificial neural
 network is the multi-layer feed-forward network (or multi-layer perceptron).
 This model consists of an input layer and an output layer of artificial neurons,
-plus any number of optional hidden layers.  Weighted connections link the
+plus any number of optional hidden layers.  Weighted connections link
 neurons, but unlike architectures such as the recurrent neural network, only
-neurons from adjacent layers connect.  Most commonly, a fully connected scheme
-is used in which all neurons from one layer are connected to all neurons in the
-next.  Figure \label{fig:perceptron} diagrams a fully connected three layer
+neurons from adjacent layers are connected.  Most commonly, a fully connected
+scheme is used in which all neurons from one layer are connected to all neurons in the
+next.  Figure \ref{fig:perceptron} diagrams a fully connected three layer
 feed-forward neural network.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/perceptron}}{}
@@ -978,16 +969,17 @@ to the neurons in any following layer.  The activation function $g$ is
 typically either:
 \begin{itemize}
   \item Linear, where $y_j = \sum_{i=0}^n w_ix_i$,
-  \item A threshold function, with $y_j \in [0,1]$,
+  \item A threshold function, with $y_j \in \lbrace 0,1 \rbrace$,
   \item Sigmoidal, where $0 \leq y_j \leq 1$, or
   \item A hyperbolic tangent function, where $-1 \leq y_j \leq 1$.
 \end{itemize}
-The parameters of the activation functions could be adjusted along with the
+
+The parameters of the activation functions can be adjusted along with the
 connection weights to tune the transfer function between input and output that
 the network provides.  To simplify this process a \textit{bias} node that always outputs 1
 may be added to a layer and connected to all neurons in the following layer.
 This can be shown to allow the activation function parameters to be removed and
-for network adjustment to occur using only connection weights.
+for network adjustment to be achieved using only connection weights.
 
 The output is obtained during the network's \textit{execution} phase by
 presenting an input to the input layer that propagates through.  It can be
@@ -1077,7 +1069,7 @@ Since $\sum_{l=0}^K q_{jl}(t+1)$ increases with $t$, a reward $r_{jk}(t)$ for
 performing action $k$ will have a greater effect on the probability
 $p_{jk}(t+1)$ during early interactions while $t$ is small.  This is intended
 to represent Psychology's Power Law of Practice in which it is qualitatively
-stated that, with practice, learning occurs at a decaying exponential rate and
+stated that with practice learning occurs at a decaying exponential rate and
 that a learning curve will eventually flatten out.
 
 \subsubsection{Modified Roth-Erev Method}
@@ -1111,26 +1103,24 @@ their current value.
 \subsubsection{Stateful Roth-Erev}
 \label{sec:stateful}
 The Roth-Erev technique maintains a single vector of propensities for each
-action.  State-value function based methods, such as Q-learning and Sarsa,
+action.  Action-value function based methods, such as Q-learning and Sarsa,
 typically update a matrix, or look-up table, where each row corresponds to an
 individual state.  In this thesis a \textit{Stateful Roth-Erev} method is
-proposed.  The method is a simple extension to the original and modified
-versions that maintains an action propensity matrix with a row corresponding to
+proposed.  The method is a simple extension to the original or modified version
+that maintains an action propensity \textit{matrix} with a row corresponding to
 each discrete state.  Updates are done according to equation (\ref{eq:rotherev})
 or equation (\ref{eq:modifiedre}), but only action propensities for the current
 state are updated. The method allows for differentiation between states of the
-environment, but can greatly increase the number of propensity values that
-require updates.  It will be used to investigate the impact of not utilising
-environment state information when operating the Roth-Erev method
-in a dynamic electricity market environment.
+environment, but can greatly increase the number of propensity values
+requiring updates.
 
 \section{Summary}
-The combination of electricity markets and electric power systems presents a
-complex dynamic environment to participants.  Network power flows are
+The combination of an electricity market and an electric power system presents
+a complex dynamic environment for participants.  Network power flows are
 non-linear functions of the bus voltages and thus one party's generation or
-consumption decisions effect all other parties.  Substantial modifications to
-the design of the UK's electricity trading arrangements have been required
-since the their introduction two decades ago.
+consumption decisions effect all other parties.
+% Substantial modifications to the design of the UK's electricity trading
+% arrangements have been required since the their introduction two decades ago.
 % further changes will likely be necessary if ambitious greenhouse gas emission
 % reduction commitments are to be met.
 
@@ -1138,17 +1128,17 @@ The main electricity trading mechanisms can be modelled using well established
 mathematical optimisation formulations.  Robust techniques exist for computing
 solutions to these problems, which also provide price information that reflects
 the network topology and conditions.
-
 The combination of non-linear optimisation problems and participant behavioural
 models is beyond the capabilities of conventional equilibrium approaches to
 market simulation when analysing large systems.  An alternative is to take a
-``bottom-up'' approach to modelling them and examine the system dynamics that
+``bottom-up'' modelling approach to them and examine the system dynamics that
 result from interactions between goal driven individuals.
 
-Reinforcement learning is an unsupervised machine learning technique that can
-be used to model the dynamic behaviour of these individuals.  Traditional
-methods associated a \textit{value} with each state and the available actions,
-but are limited to relatively small discrete problems.  Policy gradient
-methods that search directly in the space of the parameters of an action selection
-policy can operate in continuous environments and have been shown to
-exhibit good convergence properties.
+Reinforcement learning is an unsupervised machine learning technique that can be
+used to model the dynamic behaviour of these individuals.  Traditional methods
+associated a \textit{value} with each state and the available actions, but are
+limited to small discrete problem representations.  Policy gradient methods that
+search directly in the space of the parameters of an action selection policy can
+operate in continuous environments, have been shown to exhibit good convergence
+properties and have been sucessfully applied in laboratory and operational
+settings.
