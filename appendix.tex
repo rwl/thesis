@@ -395,6 +395,8 @@ data.
 %\ifthenelse{\boolean{includefigures}}{\input{tikz/case6ww2}}{}
 
 \begin{table}[h]
+\caption{6-bus case bus data.}
+\label{tbl:case6ww_bus}
 \begin{center}
 \begin{tabular}{c|c|c|c|c|c|c|c}
 \hline
@@ -403,12 +405,12 @@ Bus &$P_d$ &$Q_d$ &$G_s$ &$B_s$ &$V_{base}$ &$V_{max}$ &$V_{min}$\\
 \input{tables/case6ww_bus}
 \hline
 \end{tabular}
-\caption{6-bus case bus data.}
-\label{tbl:case6ww_bus}
 \end{center}
 \end{table}
 
 \begin{table}[h]
+\caption{6-bus case generator data.}
+\label{tbl:case6ww_gen}
 \begin{center}
 \begin{tabular}{c|c|c|c|c|c}
 \hline
@@ -417,12 +419,12 @@ Bus &$P_{max}$ &$P_{min}$ &$V_g$ &$Q_{max}$ &$Q_{min}$\\
 \input{tables/case6ww_gen}
 \hline
 \end{tabular}
-\caption{6-bus case generator data.}
-\label{tbl:case6ww_gen}
 \end{center}
 \end{table}
 
 \begin{table}[h]
+\caption{6-bus case branch data.}
+\label{tbl:case6ww_branch}
 \begin{center}
 \begin{tabular}{c|c|c|c|c|c|c|c}
 \hline
@@ -431,8 +433,6 @@ From &To &$r$ &$x$ &$b_c$ &$S_{max}$ &$\tau$ &$\theta_{ph}$\\
 \input{tables/case6ww_branch}
 \hline
 \end{tabular}
-\caption{6-bus case branch data.}
-\label{tbl:case6ww_branch}
 \end{center}
 \end{table}
 
@@ -453,6 +453,8 @@ Automation Laboratory.
 %\ifthenelse{\boolean{includefigures}}{\input{tikz/ieee79rts2}}{}
 
 \begin{table}[h]
+\caption{IEEE RTS bus data.}
+\label{tbl:rtsbus}
 \begin{center}
 \begin{tabular}{c|c|c|c|c|c|c|c}
 \hline
@@ -461,12 +463,12 @@ Bus &$P_d$ &$Q_d$ &$G_s$ &$B_s$ &$V_{base}$ &$V_{max}$ &$V_{min}$\\
 \input{tables/ieee_rts_bus}
 \hline
 \end{tabular}
-\caption{IEEE RTS bus data.}
-\label{tbl:rtsbus}
 \end{center}
 \end{table}
 
 \begin{table}[h]
+\caption{IEEE RTS generator data.}
+\label{tbl:rtsgen}
 \begin{center}
 \begin{tabular}{c|c|c|c|c|c|c}
 \hline
@@ -475,12 +477,12 @@ Bus &$P_{max}$ &$P_{min}$ &$V_g$ &$Q_{max}$ &$Q_{min}$ &Type\\
 \input{tables/ieee_rts_gen}
 \hline
 \end{tabular}
-\caption{IEEE RTS generator data.}
-\label{tbl:rtsgen}
 \end{center}
 \end{table}
 
 \begin{table}[h]
+\caption{IEEE RTS branch data.}
+\label{tbl:rtsbranch}
 \begin{center}
 \begin{tabular}{c|c|c|c|c|c|c|c}
 \hline
@@ -489,12 +491,12 @@ From &To &$r$ &$x$ &$b_c$ &$S_{max}$ &$\tau$ &$\theta_{ph}$\\
 \input{tables/ieee_rts_branch}
 \hline
 \end{tabular}
-\caption{IEEE RTS branch data.}
-\label{tbl:rtsbranch}
 \end{center}
 \end{table}
 
 \begin{table}[h]
+\caption{IEEE RTS generator cost data.}
+\label{tbl:rtsgencost}
 \begin{center}
 \begin{tabular}{c|c|c|c|c|c}
 \hline
@@ -503,7 +505,5 @@ Gen &$C_{up}$ &$a$ &$b$ &$c$ &Type\\
 \input{tables/ieee_rts_gencost}
 \hline
 \end{tabular}
-\caption{IEEE RTS generator cost data.}
-\label{tbl:rtsgencost}
 \end{center}
 \end{table}
