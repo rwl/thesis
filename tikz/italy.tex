@@ -9,6 +9,7 @@
   drop shadow,fill=white]; \tikzstyle{every pin edge}=[-,shorten <=1pt,thin];
   \tikzstyle{to}=[->,thin];
   \tikzstyle{from}=[<-,thin];
+  \tikzstyle{loadline}=[->,thick,>=stealth']
 
 \coordinate (csicily) at (0,3.5);
 \coordinate (cprgp) at (1.3,0);
@@ -22,19 +23,26 @@
 \coordinate (cmftv) at (8,14);
 \coordinate (cnorth) at (4,16);
 
-\node[vbus,minimum height=20mm,label=above:Sicily] (sicily) at (csicily) {};
-\node[hbus,label=above left:PRGP] (prgp) at (cprgp) {};
-\node[hbus,minimum width=20mm,label=left:ROSN] (rosn) at (crosn) {};
-\node[hbus,label=above right:BRNN] (brnn) at (cbrnn) {};
-\node[vbus,minimum height=25mm,label=above:South] (south) at (csouth) {};
-\node[vbus,minimum height=10mm,label=above:FOGN] (fogn) at (cfogn) {};
-\node[vbus,minimum height=20mm,label=above:Central South] (cs) at (ccs) {};
-\node[vbus,minimum height=30mm,label=above:Central North] (cn) at (ccn) {};
-\node[vbus,minimum height=20mm,label=above right:Sardinia] (sard) at
-(csardinia) {};
+\node[vbus,minimum height=20mm,label=above:\normalsize Sicily] (sicily) at
+(csicily) {};
+\node[hbus,label=above left:\normalsize PRGP] (prgp) at (cprgp) {};
+\node[hbus,minimum width=20mm,label=left:\normalsize ROSN] (rosn) at (crosn)
+{};
+\node[hbus,label=above right:\normalsize BRNN] (brnn) at (cbrnn) {};
+\node[vbus,minimum height=25mm,label=above:South] (south) at
+(csouth) {};
+\node[vbus,minimum height=10mm,label=above:FOGN] (fogn) at (cfogn)
+{};
+\node[vbus,minimum height=20mm,label=above:Central South] (cs) at
+(ccs) {};
+\node[vbus,minimum height=30mm,label=above:Central North] (cn) at
+(ccn) {};
+\node[vbus,minimum height=20mm,label=above:Sardinia] (sard)
+at (csardinia) {};
 \node[vbus,minimum height=15mm,label=above:MFTV] (mftv) at
 (cmftv) {};
-\node[hbus,minimum width=30mm,label=right:North] (north) at (cnorth) {};
+\node[hbus,minimum width=30mm,label=right:North] (north) at
+(cnorth) {};
 
 \draw[overhead] ([yshift=0mm] sicily.east) -- node (sicily-prgp) {}
 ++(1.3,0) -- (prgp.north);
@@ -49,7 +57,7 @@
 \draw[overhead] ([yshift=7.5mm] cn.west) -| ([xshift=-5mm] north.south);
 \draw[overhead] ([xshift=5mm] north.south) |- (mftv.west);
 
-\begin{small}
+\begin{scriptsize}
 % Generators @ Sicily.
 \node[genset,label=left:480 MW] (ccsicily) at ($(csicily)+(-0.5,0.8)$)
 {\sffamily\tiny CC};
@@ -179,7 +187,7 @@ node[below] {1870 MW};
 \draw[loadline] ([xshift=-10mm] north.south) -- ++(0,-1) node[left]
 {29483 MW};
 
-\end{small}
+\end{scriptsize}
 
 \begin{tiny}
 % Sicily - PRGP

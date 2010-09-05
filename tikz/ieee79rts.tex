@@ -9,6 +9,7 @@
 \centering
 \small
 \begin{tikzpicture}[thick,label distance=0mm]
+  \tikzstyle{loadline}=[->,thick,>=stealth']
   \tikzstyle{busbar} = [rectangle,draw,fill=black,inner sep=0pt,drop
   shadow];
   \tikzstyle{hbus} = [busbar,minimum width=10mm,minimum height=2pt];
@@ -182,7 +183,7 @@ left:3$\times$U197}}{A3};
 bus13.east) -- (gen4.south);
 % Generator @ Bus 14.
 \genunit{gen5}{4.3,11.8}{label={[text justified,text
-width=15mm]right:Synch. Cond.}}{A5};
+width=20mm]right:Synch. Cond.}}{A5};
 \draw[overhead] ([yshift=3mm] bus14.east) -- (gen5.west);
 % Generator @ Bus 15.
 \genunit{gen6}{0.5,11.2}{label={[text centered,text width=10mm]below:155
@@ -203,7 +204,7 @@ left:Nuclear}}{A1};
 6$\times$U50}}{A3};
 \draw[overhead] (bus22.north) -- (gen10.south);
 % Generator @ Bus 23.
-\genunit{gen11}{11.8,15.05}{label=below:660 MW,pin={[text centered,text
+\genunit{gen11}{11.85,15.05}{label=below:660 MW,pin={[text centered,text
 width=15mm]above:2$\times$U155 1$\times$U350}}{A4};
 \draw[overhead] ([yshift=5.05mm] bus23.east) -- (gen11.west);
 

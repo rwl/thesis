@@ -1,58 +1,6 @@
 \begin{figure}
 \centering
 \begin{tikzpicture}[thick,yscale=0.85]
-  \tikzstyle{incr}=[above,sloped,text width=30mm,text centered]
-
-  \coordinate (orig) at (0,0);
-  \coordinate (y) at (0,9);
-  \coordinate (x) at (10,0);
-
-  \coordinate (p0) at (0,1);
-  \coordinate (p1) at (4,1.8);
-  \coordinate (p2) at (7.5,4.2);
-  \coordinate (p3) at (9.5,8);
-
-  \draw[axis] (y) node[above]{\pounds/hour} -- (orig) -- (x) node[right]{MW};
-
-  \foreach \pnt in {p0,p1,p2,p3}
-    \node[circle,draw,minimum width=4pt,inner sep=0pt,fill=black] at (\pnt) {};
-
-%   \draw[line width=1.5pt] (p0) node[left]{$C_{noload}$} --
-%   node[incr]{{\small $1^{st}$ incremental price (\pounds/MWh)}} (p1) --
-%   node[incr]{{\small $2^{nd}$ incremental price (\pounds/MWh)}} (p2) --
-%   node[incr]{{\small $3^{rd}$ incremental price (\pounds/MWh)}} (p3);
-  \draw[line width=1.5pt] (p0) node[left]{$C_{noload}$} --
-  node[incr]{$C_1$~(\pounds/MWh)} (p1) --
-  node[incr]{$C_2$~(\pounds/MWh)} (p2) --
-  node[incr]{$C_3$~(\pounds/MWh)} (p3);
-
-  \draw[help lines] (p1 |- x) coordinate (cp1) -- (p1);
-  \draw[help lines] (p2 |- x) coordinate (cp2) -- (p2);
-  \draw[help lines] (p3 |- x) coordinate (cp3) -- (p3);
-
-  \coordinate (c1) at (intersection of orig--x and p1--cp1);
-  \coordinate (c2) at (intersection of orig--x and p2--cp2);
-  \coordinate (c3) at (intersection of orig--x and p3--cp3);
-  \coordinate (off) at (0,3mm);
-
-%  \fill[red] (c1) circle (2pt);
-  \draw[<->,thin] ($(orig)-(off)$) -- node[below]{$P_1$} ($(c1)-(off)$);
-  \draw[<->,thin] ($(c1)-(off)$) -- node[below]{$P_2$} ($(c2)-(off)$);
-  \draw[<->,thin] ($(c2)-(off)$) -- node[below]{$P_3$} ($(c3)-(off)$);
-
-  \foreach \pnt in {orig,c1,c2,c3}
-    \draw[-,thin,shorten <= 4pt] (\pnt) -- ($(\pnt)-2*(off)$);
-
-\end{tikzpicture}
-\caption{Pool bid structure.}
-\label{fig:poolbids}
-\end{figure}
-
-
-\begin{figure}
-\centering
-\begin{Large}
-\begin{tikzpicture}[thick,yscale=0.85]
 %  \draw[step=1.0cm,color=gray] (0,0) grid (8,5);
 %  \node at (4.5,9.5) {Active power cost function};
   \coordinate (y) at (0,9);
@@ -99,7 +47,6 @@
     \draw[->,line width=2pt] (\x,6.2) -- (\x,5);
   \node at (4.25,6.2) {$y$};
 \end{tikzpicture}
-\end{Large}
 \caption{Piecewise linear active power cost function with constrained cost
 variable minimsation illustrated.}
 \label{fig:ccv_function}

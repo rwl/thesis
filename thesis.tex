@@ -47,8 +47,6 @@ connection/.style={thick, dotted},
 % PGF/TikZ sequence diagrams.
 \usepackage[underline=true,rounded corners=false]{pgf-umlsd}
 
-\input{tikz/tikz_cmd}
-
 \newcolumntype{d}[1]{D{.}{\cdot}{#1}}
 \newcolumntype{.}[1]{D{.}{.}{#1}}
 
@@ -101,16 +99,16 @@ $\kern\wd\@ne\kern -\@tempdima\left\@firstoftwo#1%
 
 % Remove figures to speed up build (should be possible using 'draft').
 \newboolean{includefigures}
-\setboolean{includefigures}{false}
+\setboolean{includefigures}{true}
 % Select chapters to build.
 \includeonly{
-%	introduction,
+	introduction,
 %  	background,
 %  	related_work,
-%  	method,
-   	results,
-   	conclusion,
-   	appendix
+  	method,
+%   	results,
+%   	conclusion,
+%   	appendix
 }
 
 \ifpdf

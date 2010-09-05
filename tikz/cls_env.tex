@@ -3,6 +3,9 @@
   \begin{small}
   \begin{tikzpicture}[node distance=1.75cm,thick]
 
+  \tikzstyle{final}=[rectangle, draw, fill=white, text=black, drop shadow,
+    text width=3cm, text centered, rounded corners=2pt]
+
     \node (Mkt) [final, rectangle split, rectangle split parts=3,
     		      		 text width=4.2cm] {
       \textbf{SmartMarket}
@@ -56,7 +59,7 @@
     edge [->] node[near end,above,text width=10mm,xshift=-3mm] {market 1..1}
     (Mkt)
     edge [->] node[near end,above, text width=10mm,
-    xshift=1mm,yshift=3mm] {generators 1..*} (Gen);
+    xshift=1mm,yshift=4mm] {generators 1..*} (Gen);
 
     \node (Task) [final, rectangle split, rectangle split parts=3,
     		      		 text width=4.0cm,below=of Env] {

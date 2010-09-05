@@ -144,12 +144,14 @@ shown in Figure \ref{fig:ukgds_ehv3}.  A slightly modified version of PSAT that
 can be run from the \textsc{Gnu}/Octave command-line is also available.
 
 \ifthenelse{\boolean{includefigures}}{
+  \begin{landscape}
 	\begin{figure}
 	  \centering
-	  \includegraphics[width=20cm,angle=90]{figures/psat}
+	  \includegraphics[width=22cm]{figures/psat}
 	  \caption{UKGDS EHV3 model in PSAT Simulink network editor.}
 	  \label{fig:ukgds_ehv3}
 	\end{figure}
+  \end{landscape}
 }{}
 
 Optimal power flow problems are solved via an interface to the General Algebraic
@@ -492,16 +494,16 @@ From &To &$r$ &$x$ &$b_c$ &$S_{max}$ &$\tau$ &$\theta_{ph}$\\
 \end{center}
 \end{table}
 
-\begin{table}[h]
-\caption{IEEE RTS generator cost data.}
-\label{tbl:rtsgencost}
-\begin{center}
-\begin{tabular}{c|c|c|c|c|c}
-\hline
-Gen &$C_{up}$ &$a$ &$b$ &$c$ &Type\\
-\hline\hline
-\input{tables/ieee_rts_gencost}
-\hline
-\end{tabular}
-\end{center}
-\end{table}
+% \begin{table}[h]
+% \caption{IEEE RTS generator cost data.}
+% \label{tbl:rtsgencost}
+% \begin{center}
+% \begin{tabular}{c|c|c|c|c|c}
+% \hline
+% Gen &$C_{up}$ &$a$ &$b$ &$c$ &Type\\
+% \hline\hline
+% \input{tables/ieee_rts_gencost}
+% \hline
+% \end{tabular}
+% \end{center}
+% \end{table}

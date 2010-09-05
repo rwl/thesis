@@ -140,6 +140,8 @@ $i = 1,2,\dotsc n$, $m_i$ is the variable cost for segment $i$ in
 \$/MWh where $m_{i+1} \geq m_i$ and $p_{i+1} > p_i$, and $b_i$ is the
 $y$-intercept in \$, also for segment $i$.
 
+\ifthenelse{\boolean{includefigures}}{\input{tikz/cost_function}}{}
+
 Since these cost functions are non-differentiable, the constrained cost variable
 approach from \citeA{zimmerman:ccv} is used to make the optimisation problem
 smooth.  For each generator $j$ a helper cost variable $y_j$ is added to the
@@ -267,7 +269,7 @@ facilitate testing of value function based and policy gradient learning
 methods, both discrete and continuous representations of an electric power
 trading environment are defined.
 
-\ifthenelse{\boolean{includefigures}}{\input{tikz/cls_pyreto}}{}
+\ifthenelse{\boolean{includefigures}}{\input{tikz/cls_env}}{}
 
 \subsubsection{Discrete Market Environment}
 An environment with $n_s$ discrete states and $n_a$ discrete action

@@ -497,7 +497,10 @@ provided in Appendix \ref{adx:ieee_rts} and the connectivity of branches and the
 location of generators and loads is illustrated in Figure \ref{fig:ieee79rts}.
 
 \begin{table}
+\caption{Generator types and cost parameters for the simplified IEEE
+Reliability Test System.}
 \begin{center}
+\label{tbl:ieee_rts_gencosts}
 \begin{tabular}{c|c|.{1.5}|.{2.4}|.{3.3}|c}
 \hline
 Code &$c_{down}$ &\multicolumn{1}{c}{$a$} &\multicolumn{1}{|c|}{$b$}
@@ -514,9 +517,6 @@ U350 &0	&0.00490	&11.8495	&665.109 &Coal \\
 U400 &0	&0.00021	&4.4231	&395.375 &Nuclear \\
 \hline
 \end{tabular}
-\caption{Generator types and cost parameters for the simplified IEEE
-Reliability Test System.}
-\label{tbl:ieee_rts_gencosts}
 \end{center}
 \end{table}
 
@@ -539,7 +539,9 @@ Reliability Test System.}
 
 
 \begin{table}
-\centering
+\caption{Agent portfolios.}
+\label{tbl:agent_portfolios}
+\begin{center}
 \begin{tabular}{c|c|c|c|c|c|c|c|c}
 \hline
 \multirow{2}{*}{Agent} &U50 &U76 &U100 &U155 &U197 &U350 &U400 &Total \\
@@ -551,8 +553,7 @@ Reliability Test System.}
 4 & & &3$\times$ &2$\times$ & &1$\times$ & &960 \\
 \hline
 \end{tabular}
-\caption{Agent portfolios.}
-\label{tbl:agent_portfolios}
+\end{center}
 \end{table}
 
 The generating stock is divided into 4 portfolios (See Table

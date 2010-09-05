@@ -3,6 +3,9 @@
   \begin{small}
   \begin{tikzpicture}[thick]
 
+  \tikzstyle{final}=[rectangle, draw, fill=white, text=black, drop shadow,
+    text width=3cm, text centered, rounded corners=2pt]
+
     \node (Agent) [final, rectangle split, rectangle split parts=3,
     		       text width=5.0cm, node distance=5cm] {
       \textbf{LearningAgent}
@@ -44,8 +47,8 @@
 		\nodepart[text justified]{third}%
 		doEpisodes(number=1)
     }
-    edge [->] node[near end,left,xshift=-3mm,text width=6mm] {agents 1..*}
-    (Agent) edge [->] node[near end,right,xshift=2mm,text width=6mm] {tasks
+    edge [->] node[near end,left,xshift=-3mm,yshift=1mm,text width=6mm] {agents
+    1..*} (Agent) edge [->] node[near end,right,xshift=2mm,text width=6mm] {tasks
     1..*} (Task);
 
   \end{tikzpicture}

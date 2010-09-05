@@ -1,8 +1,16 @@
+
+\newcommand{\genset}[3]{
+  \node[circle,draw,thick,minimum width=6mm,inner sep=0pt,drop
+  shadow,fill=white,#3] (#1) at (#2) {};
+  \draw[thick] ($(#2)-(2mm,0)$) sin ++(1mm,1mm) cos ++(1mm,-1mm) sin
+  ++(1mm,-1mm) cos ++(1mm,1mm); }
+
 \begin{figure}
 \centering
-\begin{scriptsize}
 \begin{tikzpicture}[thick]
 
+\tikzstyle{line}=[-, thick]
+\tikzstyle{loadline}=[->,thick,>=stealth']
 \tikzstyle{busbar} = [rectangle,draw,fill=black,inner sep=0pt];
 \tikzstyle{hbus} = [busbar,minimum width=10mm,minimum height=2pt,drop shadow];
 
@@ -15,12 +23,14 @@
 \coordinate (over) at (0,3.75);
 
 
-\node[hbus,minimum width=20mm,label=left:Bus 1] (b1) at (c1) {};
-\node[hbus,minimum width=30mm,label=left:Bus 2] (b2) at (c2) {};
-\node[hbus,minimum width=20mm,label=right:Bus 3] (b3) at (c3) {};
-\node[hbus,minimum width=20mm,label=left:Bus 4] (b4) at (c4) {};
-\node[hbus,minimum width=30mm,label=left:Bus 5] (b5) at (c5) {};
-\node[hbus,minimum width=20mm,label=right:Bus 6] (b6) at (c6) {};
+\begin{footnotesize}
+\node[hbus,minimum width=16mm,label=left:Bus 1] (b1) at (c1) {};
+\node[hbus,minimum width=25mm,label=left:Bus 2] (b2) at (c2) {};
+\node[hbus,minimum width=16mm,label=right:Bus 3] (b3) at (c3) {};
+\node[hbus,minimum width=16mm,label=left:Bus 4] (b4) at (c4) {};
+\node[hbus,minimum width=25mm,label=left:Bus 5] (b5) at (c5) {};
+\node[hbus,minimum width=16mm,label=right:Bus 6] (b6) at (c6) {};
+\end{footnotesize}
 
 % \busbar{b1}{c1}{20mm}
 % \busbar{b2}{c2}{40mm}
@@ -88,7 +98,6 @@ width=10mm,below] {70 MW};
 % \draw[line] (l3.south) -- ([xshift=5mm] b6.south);
 
 \end{tikzpicture}
-\end{scriptsize}
 \caption{Single-line diagram for six bus power system model.}
 \label{fig:case6ww}
 \end{figure}

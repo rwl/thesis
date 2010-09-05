@@ -87,6 +87,7 @@
   inner sep=0pt,fill=black]{};
   \draw[line width=1.2pt] ($(bc1in)-(capw)$) -- ($(bc1in)+(capw)$);
   \draw[line width=1.2pt] ($(bc1out)-(capw)$) -- ($(bc1out)+(capw)$);
+  \draw ($(bc1) + (capw)$) node[anchor=west] {$\dfrac{b_c}{2}$};
 %   \draw[line width=1.2pt] ($(bc1out)$) .. controls ($(bc1out)+(capw)+(-2mm,0)$)
 %   .. ($(bc1out)+(capw)+(0,-2mm)$); \draw ($(bc1) + (capw)$) node[anchor=west] {$\dfrac{b_c}{2}$};
   % capacitor 2
@@ -104,14 +105,14 @@
   node[fill=white] {$\dfrac{v_f}{N}$} (vl+) node[below left] {$+$};
   \draw[->,shorten >=5pt,shorten <=5pt,thin] (vt0) node[above left] {$-$} --
   node[fill=white] {$v_t$} (vt+) node[below left] {$+$};
-  \node at ($(trx)-(0,2.4)$) {$N:1$};
+  \node at ($(trx)-(0,2.4)$) {\small$N:1$};
   \draw[->,thin] ($(vf+)+(rh)$) -- node[above]{$i_f$} ++(12mm,0);
   \draw[->,thin] ($(vf+s)+(rh)$) -- node[above]{$N^*i_f$} ++(12mm,0);
   \draw[->,thin] ($(vt+)+(rh)$) -- node[above]{$i_t$} ++(-12mm,0);
   \draw[->,thin] ($(lout)+(rh)$) -- node[above]{$i_l$} ++(8mm,0);
 
 \end{tikzpicture}
-\caption{Nominal-$\pi$ transmission line model in series with a phase
-shifting transformer model.}
+\caption{Nominal-$\pi$ medium length transmission line model in series with a
+phase shifting, tap changing transformer model.}
 \label{fig:branch_model}
 \end{figure}
