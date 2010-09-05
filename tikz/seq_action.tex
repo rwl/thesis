@@ -24,9 +24,9 @@
     \begin{call}{exp}{getAction()}{agt}{$a_e$}
       \begin{callself}{agt}{getLastObs()}{$s_t$}
       \end{callself}
-      \begin{call}{agt}{activate($s_t$)}{mod}{$a_m$}
+      \begin{call}{agt}{activate($s_t$)}{mod}{$a$}
       \end{call}
-      \begin{call}{agt}{activate($a_m$)}{epl}{$a_e$}
+      \begin{call}{agt}{activate($a$)}{epl}{$a_e$}
       \end{call}
       \begin{callself}{agt}{setLastAction()}{$a_e$}
       \end{callself}
@@ -41,6 +41,6 @@
 
   \end{sequencediagram}
   \end{small}
-  \caption{Sequence diagram for action selection process.}
+  \caption{Action selection sequence diagram.}
   \label{fig:seq_action}
 \end{figure}

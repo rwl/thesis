@@ -254,14 +254,16 @@ aligned and have equal $x$-axis limits to assist algorithm comparison.
 	\begin{figure}
 	  \centering
 	  \includegraphics{figures/fig5_1_action_a1}
-	  \caption{Average markup for agent 1 and standard deviation over 10 runs.}
+	  \caption{Average markup and standard deviation for Agent 1
+	  under cost configuration 1.}
 	  \label{fig:5_1_action_a1}
 	\end{figure}
 
 	\begin{figure}
 	  \centering
 	  \includegraphics{figures/fig5_1_action_a2}
-	  \caption{Average markup for agent 2 and standard deviation over 10 runs.}
+	  \caption{Average markup and standard deviation for Agent 2
+	  under cost configuration 1.}
 	  \label{fig:5_1_action_a2}
 	\end{figure}
 }{}
@@ -278,7 +280,8 @@ in values makes the results difficult to observe otherwise.
 	\begin{figure}
 	  \centering
 	  \includegraphics{figures/fig5_2_action_a1}
-	  \caption{Average markup for agent 1 and standard deviation.}
+	  \caption{Average markup and standard deviation for Agent 1 under cost
+	  configuration 2.}
 	  \label{fig:5_2_action_a1}
 	\end{figure}
 % 	\begin{figure}
@@ -290,7 +293,8 @@ in values makes the results difficult to observe otherwise.
 	\begin{figure}
 	  \centering
 	  \includegraphics{figures/fig5_2_reward_a1}
-	  \caption{Average reward for agent 1 and standard deviation.}
+	  \caption{Average reward and standard deviation for Agent 1 under cost
+	  configuration 2.}
 	  \label{fig:5_2_reward_a1}
 	\end{figure}
 % 	\begin{figure}
@@ -501,20 +505,20 @@ location of generators and loads is illustrated in Figure \ref{fig:ieee79rts}.
 Reliability Test System.}
 \begin{center}
 \label{tbl:ieee_rts_gencosts}
-\begin{tabular}{c|c|.{1.5}|.{2.4}|.{3.3}|c}
+\begin{tabular}{c|.{1.5}|.{2.4}|.{3.3}|c}
 \hline
-Code &$c_{down}$ &\multicolumn{1}{c}{$a$} &\multicolumn{1}{|c|}{$b$}
+Code &\multicolumn{1}{c}{$a$} &\multicolumn{1}{|c|}{$b$}
 &\multicolumn{1}{c|}{$c$} &Type \\
 \hline\hline
 % U12 &0.0 &0.32841 &56.564 &86.385 &Oil \\
 % U20 &0.0 &0.0 &130.0 &400.685 &Oil \\
-U50 &0 &0.0 &0.001 &0.001 &Hydro \\
-U76	 &0	&0.01414	&16.0811	&212.308 &Coal \\
-U100 &0	&0.05267	&43.6615	&781.521 &Oil \\
-U155 &0	&0.00834	&12.3883	&382.239 &Coal \\
-U197 &0	&0.00717	&48.5804	&832.758 &Oil \\
-U350 &0	&0.00490	&11.8495	&665.109 &Coal \\
-U400 &0	&0.00021	&4.4231	&395.375 &Nuclear \\
+U50 &0.0 &0.0010 &0.001 &Hydro \\
+U76	&0.01414	&16.0811	&212.308 &Coal \\
+U100	&0.05267	&43.6615	&781.521 &Oil \\
+U155	&0.00834	&12.3883	&382.239 &Coal \\
+U197	&0.00717	&48.5804	&832.758 &Oil \\
+U350	&0.00490	&11.8495	&665.109 &Coal \\
+U400	&0.00021	&4.4231	&395.375 &Nuclear \\
 \hline
 \end{tabular}
 \end{center}
@@ -629,7 +633,8 @@ all algorithms.
   \begin{figure}
     \centering
     \includegraphics{figures/fig6_1}
-    \caption{Modified Roth-Erev compared with Stateful Roth-Erev.}
+    \caption{Average rewards for Agent 1 and Agent 4, comparing the modified
+    and Stateful Roth-Erev methods.}
     \label{fig:6_1}
   \end{figure}
 }
@@ -642,14 +647,14 @@ using Q-learning and the two Roth-Erev variants.
   \begin{figure}
     \centering
     \includegraphics{figures/fig6_2_a1}
-    \caption{Average rewards for agent 1 under two state configurations.}
+    \caption{Average rewards for Agent 1 under two state configurations.}
     \label{fig:6_2_a1}
   \end{figure}
 
   \begin{figure}
     \centering
     \includegraphics{figures/fig6_2_a4}
-    \caption{Average rewards for agent 4 under two state configurations.}
+    \caption{Average rewards for Agent 4 under two state configurations.}
     \label{fig:6_2_a4}
   \end{figure}
 }
@@ -665,7 +670,8 @@ Agent~4 under the same configurations.
   \begin{figure}
     \centering
     \includegraphics{figures/fig6_3}
-    \caption{Average rewards for two offers per generator.}
+    \caption{Average rewards for Agent 1 and Agent 4 with two offers submitted
+    per generator.}
     \label{fig:6_3}
   \end{figure}
 }

@@ -13,13 +13,13 @@
         \begin{sdblock}{batchMode}{}
           \begin{call}{lrn}{getSample()}{dat}{$s$, $a$, $r$}
           \end{call}
-          \begin{call}{lrn}{getValue($s_{-1}$,$a_{-1}$)}{mod}{$q_v$}
+          \begin{call}{lrn}{getValue($s$,$a$)}{mod}{$q_v$}
           \end{call}
-          \begin{call}{lrn}{getValue($s$,$a$)}{mod}{$q_{+1}$}
-          \end{call}
-          \begin{callself}{lrn}{getQ($q_v$,$\alpha$,$r$,$\gamma$,$q_{+1}$)}{$q_u$}
+%          \begin{call}{lrn}{getValue($s$,$a$)}{mod}{$q_{+1}$}
+%          \end{call}
+          \begin{callself}{lrn}{getQ($q_v$,$\alpha$,$r$,$\gamma$)}{$q_u$}
           \end{callself}
-          \begin{call}{lrn}{updateValue($s_{-1}$,$a_{-1}$,$q_u$)}{mod}{}
+          \begin{call}{lrn}{updateValue($s$,$a$,$q_u$)}{mod}{}
           \end{call}
         \end{sdblock}
       \end{call}
@@ -27,6 +27,6 @@
 
   \end{sequencediagram}
   \end{small}
-  \caption{Sequence diagram for the SARSA learning process.}
+  \caption{Learning sequence diagram.}
   \label{fig:seq_learn}
 \end{figure}

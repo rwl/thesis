@@ -103,12 +103,12 @@ $\kern\wd\@ne\kern -\@tempdima\left\@firstoftwo#1%
 % Select chapters to build.
 \includeonly{
 	introduction,
-%  	background,
-%  	related_work,
-%  	method,
-%   	results,
-%   	conclusion,
-   	appendix
+    background,
+    related_work,
+    method,
+    results,
+    conclusion,
+    appendix
 }
 
 \ifpdf
@@ -137,16 +137,17 @@ I wish to thank Professor Jim McDonald for giving me the opportunity to study
 at The Institute for Energy and Environment and for giving me the freedom
 to pursue my own research interests.  I also wish to thank my supervisors,
 Professor~Graeme~Burt and Dr~Stuart~Galloway, for their guidance and
- scholarship.  I wish to offer very special thanks to my parents, my big
-brother and my little sister for all of their support throughout my PhD.
+scholarship.  Most of all, I wish to offer a very special thank you to my
+parents, my big brother and my little sister for all of their support
+throughout my PhD.
 
 This thesis makes extensive use of open source software projects developed by
 researchers from other institutions.  I wish to thank Dr Ray Zimmerman from
 Cornell University for his work on optimal power flow, researchers from the Dalle Molle Institute for
 Artificial Intelligence (IDSIA) and the Technical University of Munich for
-their work on reinforcement learning algorithms and artificial neural networks
-and Charles Gieseler from Iowa State University for his implementation of the
-Roth-Erev reinforcement learning method.
+their work on reinforcement learning algorithm and artificial neural network
+implementations and Charles Gieseler from Iowa State University for his
+implementation of the Roth-Erev method.
 
 This research was funded by the United Kingdom Engineering and Physical
 Sciences Research Council through the Supergen Highly Distributed Power
@@ -157,7 +158,7 @@ Systems consortium under grant GR/T28836/01.
 In Electrical Power Engineering, learning algorithms can be used to model
 the strategies of electricity market participants.  The objective of this work
 is to establish if \textit{policy gradient} reinforcement learning algorithms
-can be used to create participant models superior to those using previously
+can be used to create participant models superior to those involving previously
 applied \textit{value function} based methods.
 
 % Electricity is an unique commodity.  It must be supplied at the presise moment
@@ -175,11 +176,20 @@ the parameters of multi-layer feed-forward artificial neural networks that
 approximate each market participant's policy for selecting power quantities and
 prices that are offered in the simulated marketplace.
 
-Traditional reinforcement learning methods that learn a value function have been
-previously applied in simulated electricity trade, but are largely restricted to
-discrete representations of a market environment. Policy gradient methods have
-been proven to offer convergence guarantees in continuous environments and avoid
-many of the problems that mar value function based methods.
+Traditional reinforcement learning methods, that learn a value function, have
+been previously applied in simulated electricity trade, but they are mostly
+restricted to use with discrete representations of a market environment. Policy
+gradient methods have been proven to offer convergence guarantees in continuous
+environments and avoid many of the problems that mar value function based
+methods.
+
+Five types of learning algorithm are compared in a series of Nash equilibrium
+and constraint exploitation simulations. Policy gradient methods are found to be
+a valid option for modelling the strategies of electricity market participants,
+but they are outperformed by a traditional action-value function algorithm in
+all of the tests. Further development of this research could provide
+opportunities for advanced learning algorithms to be used in descision support
+and automated energy trade applications.
 
 % The benefits of using policy gradient methods in electricity market simulation
 % are explored and the results demonstrate their superior trading ability when
