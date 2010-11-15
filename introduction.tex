@@ -8,65 +8,73 @@ the principle research contributions are stated.
 % \section{Motivation for Electricity Market Research}
 Quality of life for a person is directly proportional to his or her electricity
 usage \cite{alam:qol}.  The world population is currently 6.7~billion and
-forecast to exceed 9~billion by 2050 \cite{un:pop}. Electricity
-production currently demands over one third of the annual primary energy
-extracted \cite{iea:2010} and as people endeavour to improve their quality of life, finite
-fuel resources will become increasingly scarce. Market mechanisms, such as
-auctions, where the final allocation is based upon the claimants' willingness
-to pay for the goods, provide a device for efficient allocation of resources in short supply.
+forecast to exceed 9~billion by 2050 \cite{un:pop}. Electricity production
+currently demands over one third of the annual primary energy extracted
+\cite{iea:2010} and as more people endeavour to improve their quality of life,
+finite fuel resources will become increasingly scarce. Market mechanisms, such
+as auctions, where the final allocation is based upon the claimants' willingness
+to pay for the goods, provide a device for efficient allocation of resources in
+short supply.  Two decades ago the UK became the first large industrialised
+country to introduce competitive markets for electricity generation.
 
-Commercialisation of large electricity supply industries began two
-decades ago in the UK. The inability to store electricity, once generated, in a
-commercially viable quantity prevents trade as a conventional commodity.
-Trading mechanisms must allow shortfalls in electric energy to be purchased at
-short notice from quickly dispatchable generators.
-% Different market structures
-% that facilitate this have been implemented in countries and states around the
-% world.
-Designed correctly, a competitive electricity market promotes
-efficiency and drives down costs to the consumer, while design errors can
-allow market power abuse and elevated market prices.
-% Electricity market designs are particularly
-% complicated due to the need to manage complex dynamic constraints imposed by
-% electric power systems.
+% Commercialisation of large electricity supply industries began two decades ago
+% in the UK.
+The inability to store electricity, once generated, in a commercially viable
+quantity prevents it from being traded as a conventional commodity. Trading
+mechanisms must allow shortfalls in electric energy to be purchased at short
+notice from quickly dispatchable generators.
+% Different market structures that facilitate this have been implemented in
+% countries and states around the world.
+Designed correctly, a competitive electricity market can promote efficiency and
+drive down costs to the consumer, while design errors can quickly allow market
+power to be abused and market prices to be elevated. It is essential
+to research electricity market architectures and ensure that their unique
+designs are fit for purpose.
+% Electricity market designs are particularly complicated due to the need to
+% manage complex dynamic constraints imposed by electric power systems.
 
+The value of electricity to society makes it impractical to
+experiment with radical changes to trading arrangements on real systems.
 The average total demand for electricity in the United Kingdom (UK) is
 approximately 45GW and the cost of buying 1MW for one hour is around
 \pounds40 \cite{decc:dukes09}. This equates to yearly transaction values of
-\pounds16 billion.  The value of electricity to society is particularly
+\pounds16 billion.  The value of electricity becomes particularly
 apparent when supply fails. The New York black-out in August 2003 involved
 a loss of 61.8GW of power supply to approximately 50 million consumers.
 The majority of supplies were restored within two days, but the event is
 estimated to have cost more than \$6~billion \cite{minkel:2008,icf:2003}.
 
-The value of electricity to society makes it impractical to
-experiment with radical changes to trading arrangements on real systems.  An
-alternative is to study abstract mathematical models with sets of
-simplifying approximations and assumptions and, where possible, to find
-analytical solutions using digital computer programs.  Competition is a
-fundamental part of all markets, but the strategies of human participants are
-difficult to model.  Reinforcement learning methods can be used to represent adaptive
-behaviour in competing players and are capable of learning complex strategies
-\cite{tesauro:gammon}.
+An alternative approach is to study abstract mathematical models of markets with
+sets of appropriate simplifying approximations and assumptions applied.  Market
+characteristics can established by simulating the models using digital computer
+programs. Competition between participants is a fundamental feature of all
+markets, but the strategies of humans can be difficult to model mathematically.
+One option is to use reinforcement learning algorithms from the field of
+artificial intelligence.  These methods can be used to represent adaptive
+behaviour in competing players and, when correctly configured, have been shown
+to be capable of learning highly complex strategies \cite{tesauro:gammon}.  This
+thesis makes advances in electricity market participant modelling through the
+application of a relatively new genre of reinforcement learning methods called
+policy gradient algorithms.
 
 \section{Problem Statement}% and Hypothesis}%/Aims \& Objectives}
 Individuals participating in an electricity market (be they representing
 generating companies, load serving entities, firms of traders etc.)~must utilise
-noisy, mostly continuous, multi-dimensional data to their advantage. Certain
-types of data, e.g.~demand forecasts, are uncertain and other types, e.g.~the
-bids of competitors, are hidden.  Reinforcement learning algorithms must
-operate with data of this kind if they are to successfully model participant
-strategies.
+multi-dimensional data to their advantage. This data may be noisy, sparse,
+corrupt, have a degree of uncertainty (e.g.~demand forecasts) or be hidden from
+the participant (e.g.~competitor bids).  Reinforcement learning algorithms must
+be capable of operating with this kind of data if they are to successfully model
+participant strategies.
 
-Traditional reinforcement learning methods attempt to find the \textit{value} of
-each available action in a given state.  When discrete state and action spaces
-are defined, these methods become restricted by Bellman's Curse of
-Dimensionality \cite{bellman:1961} and can not be applied to highly complex
-problems.  When used with function approximation techniques (e.g.~artificial
-neural networks) they can be applied to continuous representations of an
-environment.  However, the greedy updates used by most techniques have been
-shown to cause algorithms approximating a value function to not converge or
-even diverge \cite{tsitsiklis:94,peters:enac,gordon:95,baird:95}.
+Traditional reinforcement learning methods, such as Q-learning, attempt to find
+the \textit{value} of each available action in a given state.  When discrete
+state and action spaces are defined, these methods become restricted by
+Bellman's Curse of Dimensionality \cite{bellman:1961} and can not be readily
+applied to complex problems.  Function approximation techniques (e.g.~artificial
+neural networks) can be used to apply these methods to
+continuous environment representations, but have been shown to cause convergence
+or even diverge problems when approximating a value function
+\cite{tsitsiklis:94,peters:enac,gordon:95,baird:95}.
 
 Policy gradient reinforcement learning methods do not attempt to approximate a
 value function, but to approximate a \textit{policy-function} that, given the
