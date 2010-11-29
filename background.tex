@@ -1,11 +1,12 @@
 \chapter{Background}
 \label{ch:background}
-This chapter provides background information on electricity market and electric
-power system simulation. A brief introduction to national electricity supply
-and the history of UK wholesale electricity markets is given in order to
-describe the sytems that require modelling. Approaches to market simulation that
-include transmission system constraints are introduced and definitions for the learning algorithms,
-that are later used to model market participant behaviour, are provided.
+This chapter provides background information on electricity market and
+electrical power system simulation. A brief introduction to national electricity
+supply and the history of UK wholesale electricity markets is given in order to
+define the sytems that require modelling. Market simulation techniques that
+account for the constraints of transmission systems are described and
+definitions of the learning algorithms that are later used to model
+market participant behaviour are provided.
 
 \section{Electric Power Supply}
 
@@ -94,10 +95,10 @@ electric power system \cite{blackout04}.
 
 \section{Electricity Markets}
 The UK was the first large country to privatise its electricity supply industry
-when it did so in the early 1990s \cite{kirschen:book}.  The approach adopted
-has been used as a model by other countries and the market structures that have
-since been implemented in the UK have used many of the main concepts for
-national electricity market design.
+when it began restructuring in 1990 \cite{newbery:2005}.  The approach
+adopted has since been used as a model by other countries and the market
+structures that have been implemented in the UK have utilised the main
+concepts for national electricity market design.
 
 The England and Wales Electricity Pool was created in 1990 to break up the
 vertically integrated Central Electricity Generating Board (CEGB) and to
@@ -191,10 +192,11 @@ traders and consumers.
 The majority of power is traded under the BETTA through long-term contracts that
 are customised to the requirements of each party \cite{kirschen:book}. These
 instruments suit participants responsible for large power stations or those
-purchasing large volumes of power for many customers.  Relatively, large
-amounts of time and effort are typically required for these long-term contracts to be initially
-formed and this results in a high associated transaction cost. However, they
-reduce risk for large players and often include a degree of flexibility.
+purchasing large volumes of power for many customers.  Relatively, large amounts
+of time and effort are typically required for these long-term contracts to be
+initially formed and this results in a high associated transaction cost.
+However, they reduce risk for large players and often include a degree of
+flexibility.
 
 Electric power is also traded directly between participants through
 over-the-counter contracts that usually have a standardised form.  Such
@@ -227,19 +229,20 @@ volatility often associated with spot markets \cite{kirschen:book}.
 
 \section{Electricity Market Simulation}
 
-Previous sections have showed the importance of electricity to modern society
+Previous sections have showed the importance of electricity to modern societies
 and explained how supply in the UK is entrusted, almost entirely, to
 unadministered bilateral trade. It is not practical to experiment with
-alternative trading arrangements on actual systems, but Game Theory (a branch of
+alternative trading arrangements on actual systems, but game theory (a branch of
 applied mathematics that captures behaviour in strategic situations) can be used
-to simulate market dynamics.  This typically involves modelling trading systems
-and players as a closed-form mathematical optimisation problem and observing
-states of equilibrium that are encountered when the problem is solved.
+to create simulations of market dynamics.  This typically involves modelling
+trading systems and players as a closed-form mathematical optimisation problem
+and observing states of equilibrium that are encountered when the problem is
+solved.
 
 In this thesis an alternative approach is taken in which each market entity is
 modelled as an individual agent.  This section will describe the technique and
 define an optimisation problem, called optimal power flow, that will be used to
-model a centralised market/system operator.
+model a central market/system operator agent.
 
 % All aspects of electricity supply are constantly changing and electricity
 % markets must be suitably researched to ensure that their designs are fit for
@@ -289,19 +292,20 @@ Nationalised electricity supply industries were for many years planned, operated
 and controlled centrally.  A system operator would determine which generators
 must operate and the required output of the operating units such that demand and
 reserve requirements were met and the overall cost of production was minimised.
-In electric power engineering, these are termed the \textit{unit commitment} and
-\textit{economic dispatch} problems \cite{wood:pgoc}.
+In electric power engineering, this is termed the \textit{unit commitment} and
+\textit{economic dispatch} problem \cite{wood:pgoc}.
 
 A formulation of the unit commitment problem was published in 1962 that
 incorporated electric power system constraints \cite{carpentier:opf}. This has
 come to be known as the \textit{optimal power flow} problem and is the
 combination of economic and power flow aspects of power systems into one
 mathematical optimisation problem.  The ability of optimal power flow to solve
-centralised power system operation problems and to determine prices in power
-pool markets has resulted in it becoming one of the most widely studied subjects
-in the electric power systems community.  Many solution methods for optimal
-power flow have been developed since the problem was introduced and a review of
-the main techniques can be found in \citeA{momoh:part1,momoh:part2}.
+centralised power system operation problems and to determine prices in
+centralised power pool markets has resulted in it becoming one of the most
+widely studied subjects in the electric power systems community.  Many solution
+methods for optimal power flow have been developed since the problem was
+introduced and a review of the main techniques can be found in
+\citeA{momoh:part1,momoh:part2}.
 
 \subsubsection{Power Flow Formulation}
 \label{sec:pf_form}
@@ -321,8 +325,8 @@ The nodal admittance matrix describes the electrical network and its formulation
 is dependant upon the transmission line, transformer and shunt models employed.
 A branch in a nodal representation of a power system is typically modelled as a
 medium length transmission line in series with a regulating transformer at the
-``from'' end \cite[p.11]{pserc:mp_manual}. A nominal-$\pi$ model with total
-series admittance $y_s = 1/(r_s+jx_s)$ and total shunt capacitance $b_c$ is
+``from'' end \cite[p.11]{crow:2009,pserc:mp_manual}. A nominal-$\pi$ model with
+total series admittance $y_s = 1/(r_s+jx_s)$ and total shunt capacitance $b_c$ is
 often used to represent the transmission line.  The transformer may assumed to
 be ideal, phase-shifting and tap-changing, with the ratio between primary winding
 voltage $v_{f}$ and secondary winding voltage $N = \tau e^{j\theta_{ph}}$ where
@@ -638,15 +642,16 @@ in constrained areas of the power system.
 
 \subsection{Summary}
 The agent-based market simulation approach used in this thesis is an alternative
-to traditional closed-form equilibium analysis that can be scaled to much larger
-problems. It is a ``bottom-up'' approach in which each market participant is
-modelled individually and must develop a strategy for selecting the price and
-quantity of power to be bought or sold.  Cost functions and capacity limits can
-be derived from these selections and used in an optimal power flow problem that
-represents a system operator minimising the total system cost while adhering to
-all system constraints. Developing an optimal bidding strategy in a competitive
-environment is a non-trivial task and requires adaptive algorithms from the
-field of artificial intelligence.
+to traditional closed-form equilibium analysis that has the potential to scale
+to much larger problems. It is a ``bottom-up'' approach in which each market
+participant is modelled as an individual that must develop a strategy for
+selecting the price and quantity of power to be bought or sold.  Cost functions
+and generator capacity limits can be derived from these choices and used in an
+optimal power flow problem that can represent the process of a system operator
+minimising total system cost while adhering to system constraints.
+Developing an optimal bidding strategy in a competitive environment is a
+non-trivial task and requires advanced adaptive algorithms from the field of
+artificial intelligence.
 
 \newpage
 \section{Reinforcement Learning}
@@ -668,13 +673,13 @@ field of artificial intelligence.
 % action choice.  Reinforcement learning methods adjust the agent's policy.
 Reinforcement learning is learning from reward by mapping situations to actions
 when interacting with an uncertain environment
-\cite{suttonbarto:1998,bertsekas:96}.  An individual learns \textit{what} to do
-in order to achieve a task through trial-and-error using a numerical reward or a
-penalty signal without being instructed \textit{how} to achieve it.  Some
-actions may not yield immediate reward or may effect the next situation and all
-subsequent rewards.  A compromise must be made between the exploitation of past
-experiences and the exploration of the environment through new action choices.
-In reinforcement learning an agent must be able to:
+\cite{suttonbarto:1998,bertsekas:96,kaelbling:1996}.  An individual learns
+\textit{what} to do in order to achieve a task through trial-and-error using a
+numerical reward or a penalty signal without being instructed \textit{how} to
+achieve it.  Some actions may not yield immediate reward or may effect the next
+situation and all subsequent rewards.  A compromise must be made between the
+exploitation of past experiences and the exploration of the environment through
+new action choices. In reinforcement learning an agent must be able to:
 \begin{itemize}
   \item Sense aspects of its environment,
   \item Take actions that influence its environment and,
@@ -693,21 +698,22 @@ scalar numerical reward $r_{t+1} \in \mathbb{R}$ in part as a result of its
 action. The agent then learns from the state representation, the chosen action
 $a_t$ and the reinforcement signal $r_{t+1}$ before beginning its next
 interaction.  Figure \ref{fig:seq_rl} defines the classical agent-environment
-interaction event sequence in reinforcement learning with a UML sequence
-diagram \cite{alhir:1998}.
+interaction process in reinforcement learning using a UML (Unified Modeling
+Language) sequence diagram \cite{alhir:1998}.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/seq_rl}}{}
 
 % \subsection{Markov Decision Processes}
-For a finite number of states, if all states are Markov, the agent interacts
-with a finite Markov decision process (MDP) \cite{aima:2003}.  Informally, for a
-state to be Markov it must retain all relevant information about the complete
-sequence of positions leading up to the state, such that all future states and
-expected rewards can be predicted as well as would be possible given a complete
-history \cite{suttonbarto:1998}.  A particular MDP is defined for a discrete set
-of time steps by a state set $\mathscr{S}$, an action set $\mathscr{A}$, a set
-of state transition probabilities $\mathscr{P}$ and a set of expected reward
-values $\mathscr{R}$.
+For a finite number of states, if all states are Markov, the agent is
+interacting with a finite Markov decision process (MDP)
+\cite{howard:1964,aima:2003}. Informally, for a state to be Markov it must
+retain all relevant information about the complete sequence of positions leading
+up to the state, such that all future states and expected rewards can be
+predicted as well as would be possible given a complete history
+\cite{suttonbarto:1998}.  A particular MDP is defined for a discrete set of time
+steps by a state set $\mathscr{S}$, an action set $\mathscr{A}$, a set of state
+transition probabilities $\mathscr{P}$ and a set of expected reward values
+$\mathscr{R}$.
 % Given a state $s$ and an action $a$, the probability of transitioning to each
 % possible next state $s^\prime$ is \begin{equation} \mathscr{P}^a_{ss^\prime} =
 % \Pr \bigl\lbrace s_{t+1} = s^\prime \vert s_t=s, a_t=a \bigr\rbrace .
@@ -761,7 +767,7 @@ $\pi$ \cite{suttonbarto:1998}.
 
 \subsubsection{Temporal-Difference Learning}
 Temporal Difference (TD) learning is a fundamental concept in reinforcement
-learning that was introduced by \citeA{suttonbarto:1998}. TD methods do not
+learning that was introduced by \citeA{sutton:1998}. TD methods do not
 attempt to estimate the state transition probabilities and expected rewards of
 the finite MDP, but estimate the value function directly. They learn to
 \textit{predict} the expected value of total reward returned by the state-value
@@ -933,9 +939,9 @@ while low values promote exploitation of past experience.
 % policy function approximator is updated according to the gradient of expected
 % reward with respect to its parameters.
 Value function based methods have been successfully applied with discrete
-look-up table parameterisation to many problems \cite{bertsekas:96}.  However,
+look-up table parameterisation to many problems \cite{kaelbling:1996}.  However,
 the number of discrete states required increases rapidly as the dimensions of
-the state space increase.
+the problem increase.
 Value function based methods can be used in conjunction with function
 approximation techniques, such as artificial neural networks, to allow operation
 with continuous state and action spaces \cite{sutton:1996}.  However, greedy
@@ -944,8 +950,8 @@ convergence or divergence characteristics, even in simple systems
 \cite{tsitsiklis:94,peters:enac,gordon:95,baird:95}.
 
 These convergence problems have motivated research into alternative learning
-methods, such as policy gradient methods, that can operate successfully using
-function approximation \cite{peters:enac}. Policy gradient algorithms make small
+methods, such as policy gradient methods, that can operate successfully with
+function approximators \cite{peters:enac}. Policy gradient algorithms make small
 incremental changes to the parameter vector $\theta$ of a policy function
 approximator (using an artificial neural network these parameters are the
 weights of the network connections) \cite{sutton:2000}. Policy gradient methods
@@ -965,8 +971,8 @@ of the most successful real-world robotics results
 \cite{glynn87,aleksandrov68,benbrahim:1996} have been yielded by likelihood
 ratio methods such as Williams' \textsc{Reinforce} \cite{williams:reinforce} and
 natural policy gradient methods, such as the Episodic Natural Actor-Critic
-(ENAC) \cite{peters:enac}. These algorithms have lengthy derivations, but a
-useful overview has been published by \citeA{petersScholar}.
+(ENAC) \cite{peters:enac}. These algorithms have lengthy derivations, but
+\citeA{petersScholar} provides a concise overview.
 
 \subsubsection{Artificial Neural Networks}
 Artificial neural networks are mathematical models that mimic aspects of
@@ -983,7 +989,7 @@ next.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/perceptron}}{}
 
-\citeA{mcculloch43} conceived of an artificial neuron $j$ that
+\citeA{mcculloch43} first conceived of an artificial neuron $j$ that
 computes a function $g$ as a weighted sum of all $n$ inputs
 \begin{equation}
 y_j(x) = g \left(\sum_{i=0}^n w_ix_i\right)
@@ -1006,11 +1012,11 @@ may be added to a layer and connected to all neurons in the following layer.
 This can be shown to allow the activation function parameters to be removed and
 for network adjustment to be achieved using only connection weights. Figure
 \ref{fig:perceptron} shows a fully connected three layer feed-forward neural
-network, with bias nodes and activation functions $f$, $g$ and $h$.
+network, with bias nodes and separate activation functions $f$, $g$ and $h$.
 
 The output is obtained during the network's \textit{execution} phase by
-presenting an input to the input layer that propagates through.  It can be
-shown that a suitably configured feed-forward network with one hidden layer can
+presenting an input to the input layer that propagates through the network.  It
+can be shown that a suitably configured feed-forward network with one hidden layer can
 approximate any non-linear function.
 % However, this requires the weights
 % to be adjusted in the \textit{training} or \textit{learning} phase and it was
@@ -1171,7 +1177,7 @@ the literature to exhibit good convergence properties and have been successfully
 applied in laboratory and operational settings.
 
 The successful application of policy gradient methods in other fields suggests
-that it may be possible for them to be used to model participant strategies in
+that they may be used to model participant strategies in
 agent-based electricity market simulations.  First it must be established how
 these methods have been applied in similar contexts and what other methods have
-also been used.
+been used.
