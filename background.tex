@@ -238,8 +238,8 @@ states of equilibrium that are encountered when the problem is solved.
 
 In this thesis an alternative approach is taken in which each market entity is
 modelled as an individual agent.  This section will describe the technique and
-define an optimisation problem that is used to model a centralised market/system
-operator entity.
+define an optimisation problem, called optimal power flow, that will be used to
+model a centralised market/system operator.
 
 % All aspects of electricity supply are constantly changing and electricity
 % markets must be suitably researched to ensure that their designs are fit for
@@ -298,8 +298,10 @@ come to be known as the \textit{optimal power flow} problem and is the
 combination of economic and power flow aspects of power systems into one
 mathematical optimisation problem.  The ability of optimal power flow to solve
 centralised power system operation problems and to determine prices in power
-pool markets has resulted in it becoming one of the most widely studied subjects in
-the electric power systems community.
+pool markets has resulted in it becoming one of the most widely studied subjects
+in the electric power systems community.  Many solution methods for optimal
+power flow have been developed since the problem was introduced and a review of
+the main techniques can be found in \citeA{momoh:part1,momoh:part2}.
 
 \subsubsection{Power Flow Formulation}
 \label{sec:pf_form}
@@ -427,8 +429,7 @@ Y_{bus}& =& C_f^\mathsf{T} Y_f + C_t^\mathsf{T} Y_t .
 % \label{eq:mismatch}
 % S_{bus}(V) + S_d - S_g = 0
 % \end{equation}
-
-\paragraph{Power Balance}
+%\paragraph{Power Balance}
 % Importantly, the relationship between nodal voltages and power entering the
 % network is non-linear.
 For a network of $n_b$ nodes, the current injected at
@@ -567,7 +568,7 @@ h(x)& \leq& 0
 \end{eqnarray}
 where $x$ is the vector of optimisation variables, $f$ is the objective
 function and equations (\ref{eq:equality}) and (\ref{eq:inequality}) are sets
-of equality and inequality constraints, respectively, on $x$.
+of equality and inequality constraints on $x$, respectively.
 
 In optimal power flow, typical inequality
 constraints are bus voltage magnitude contingency state limits, generator
@@ -610,22 +611,20 @@ minimise deviation of an optimisation variable from a particular schedule
 \cite[\S18]{kallrath:2009}.
 
 \subsubsection{Nodal Marginal Prices}
-Many solution methods for optimal power flow have been developed since the
-problem was introduced by \citeA{carpentier:opf} and a review of the main
-techniques can be found in \citeA{momoh:part1,momoh:part2}. One of the most
-robust strategies is to solve the Lagrangian function
+One of the most robust solution strategies for optimal power flow is to solve
+the Lagrangian function
 \begin{equation}
 \mathcal{L}(x) = f(x) + \lambda^\mathsf{T}g(x) + \mu^\mathsf{T}h(x),
 \end{equation}
 where $\lambda$ and $\mu$ are vectors of Lagrangian multipliers, using an
 Interior Point Method \cite{cvxopt:2004}.  When solved, the Lagrangian
-multiplier for a constraint gives the rate of change of the objective function value with respect to the
-constraint variable.  If the objective function is equation (\ref{eq:objfunc}), the Lagrangian
-multipliers $\lambda^i_P$ and $\lambda^i_Q$ for the power balance constraint at
-each bus $i$, given by equations (\ref{eq:p_balance}) and (\ref{eq:q_balance}),
-are the nodal marginal prices and can be interpreted as the increase in the
-total system cost for and additional injection at $i$ of 1MW or 1MVAr,
-respectively.
+multiplier for a constraint gives the rate of change of the objective function
+value with respect to the constraint variable.  If the objective function is
+equation (\ref{eq:objfunc}), the Lagrangian multipliers $\lambda^i_P$ and
+$\lambda^i_Q$ for the power balance constraint at each bus $i$, given by
+equations (\ref{eq:p_balance}) and (\ref{eq:q_balance}), are the nodal marginal
+prices and can be interpreted as the increase in the total system cost for and
+additional injection at $i$ of 1MW or 1MVAr, respectively.
 
 For a case in which none of the inequality constraints $h(x)$
 (such as branch power flow or bus voltage limits) are binding, the nodal
@@ -634,8 +633,20 @@ marginal generating unit.  When the constraints \textit{are} binding, the nodal
 marginal prices are elevated for buses at which adjustments to power injection
 are required for the constraints to be satisfied.  Nodal marginal prices are
 commonly used in agent-based electricity market simulation to determine the
-revenue for generating units as they reflect the increased value of production in
-constrained areas of the power system.
+revenue for generating units as they reflect the increased value of production
+in constrained areas of the power system.
+
+\subsection{Summary}
+The agent-based market simulation approach used in this thesis is an alternative
+to traditional closed-form equilibium analysis that can be scaled to much larger
+problems. It is a ``bottom-up'' approach in which each market participant is
+modelled individually and must develop a strategy for selecting the price and
+quantity of power to be bought or sold.  Cost functions and capacity limits can
+be derived from these selections and used in an optimal power flow problem that
+represents a system operator minimising the total system cost while adhering to
+all system constraints. Developing an optimal bidding strategy in a competitive
+environment is a non-trivial task and requires adaptive algorithms from the
+field of artificial intelligence.
 
 \newpage
 \section{Reinforcement Learning}
@@ -656,14 +667,14 @@ constrained areas of the power system.
 % \textit{policy} when mapping the perceived state of its environment to an
 % action choice.  Reinforcement learning methods adjust the agent's policy.
 Reinforcement learning is learning from reward by mapping situations to actions
-when interacting with an uncertain environment \cite{suttonbarto:1998}.  An
-agent learns \textit{what} to do in order to achieve a task through
-trial-and-error using a numerical reward or a penalty signal without being
-instructed \textit{how} to achieve it.  Some actions may not yield immediate
-reward or may effect the next situation and all subsequent rewards.  Always, a
-compromise must be made between the exploitation of past experiences and the
-exploration of the environment through new action choices. In reinforcement
-learning an agent must be able to:
+when interacting with an uncertain environment
+\cite{suttonbarto:1998,bertsekas:96}.  An individual learns \textit{what} to do
+in order to achieve a task through trial-and-error using a numerical reward or a
+penalty signal without being instructed \textit{how} to achieve it.  Some
+actions may not yield immediate reward or may effect the next situation and all
+subsequent rewards.  A compromise must be made between the exploitation of past
+experiences and the exploration of the environment through new action choices.
+In reinforcement learning an agent must be able to:
 \begin{itemize}
   \item Sense aspects of its environment,
   \item Take actions that influence its environment and,
@@ -671,39 +682,40 @@ learning an agent must be able to:
   environment.
 \end{itemize}
 
-In the classical model of agent-environment interaction, at each time step $t$
-in a sequence of discrete time steps $t = 1,2,3\dotsc$ an agent receives as
-input some form of the environment's state $s_t \in \mathscr{S}$, where
-$\mathscr{S}$ is the set of possible states.  From a set of actions
-$\mathscr{A}(s_t)$ available to the agent in state $s_t$ and the agent selects
-an action $a_t$ and performs it in its environment.  The environment enters a
-new state $s_{t+1}$ in the next time step and the agent receives a scalar
-numerical reward $r_{t+1} \in \mathbb{R}$ in part as a result of its action.
-The agent then learns from the state representation, the
-chosen action $a_t$ and the reinforcement signal $r_{t+1}$ before beginning
-its next interaction.  Figure \ref{fig:seq_rl} diagrams the classical
-agent-environment interaction event sequence in reinforcement learning.
+In the classical model of agent-environment interaction \cite{suttonbarto:1998},
+at each time step $t$ in a sequence of discrete time steps $t = 1,2,3\dotsc$ an
+agent receives as input some form of the environment's state $s_t \in
+\mathscr{S}$, where $\mathscr{S}$ is the set of possible states.  From a set of
+actions $\mathscr{A}(s_t)$ available to the agent in state $s_t$ and the agent
+selects an action $a_t$ and performs it in its environment.  The environment
+enters a new state $s_{t+1}$ in the next time step and the agent receives a
+scalar numerical reward $r_{t+1} \in \mathbb{R}$ in part as a result of its
+action. The agent then learns from the state representation, the chosen action
+$a_t$ and the reinforcement signal $r_{t+1}$ before beginning its next
+interaction.  Figure \ref{fig:seq_rl} defines the classical agent-environment
+interaction event sequence in reinforcement learning with a UML sequence
+diagram \cite{alhir:1998}.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/seq_rl}}{}
 
 % \subsection{Markov Decision Processes}
 For a finite number of states, if all states are Markov, the agent interacts
-with a finite Markov decision process (MDP).  Informally, for a state to be
-Markov it must retain all relevant information about the complete sequence of
-positions leading up to the state, such that all future states and expected
-rewards can be predicted as well as would be possible given a complete history
-\cite{suttonbarto:1998}.  A particular MDP is defined for a discrete set of time
-steps by a state set $\mathscr{S}$, an action set $\mathscr{A}$, a set of state
-transition probabilities $\mathscr{P}$ and a set of expected reward values
-$\mathscr{R}$.
+with a finite Markov decision process (MDP) \cite{aima:2003}.  Informally, for a
+state to be Markov it must retain all relevant information about the complete
+sequence of positions leading up to the state, such that all future states and
+expected rewards can be predicted as well as would be possible given a complete
+history \cite{suttonbarto:1998}.  A particular MDP is defined for a discrete set
+of time steps by a state set $\mathscr{S}$, an action set $\mathscr{A}$, a set
+of state transition probabilities $\mathscr{P}$ and a set of expected reward
+values $\mathscr{R}$.
 % Given a state $s$ and an action $a$, the probability of transitioning to each
 % possible next state $s^\prime$ is \begin{equation} \mathscr{P}^a_{ss^\prime} =
 % \Pr \bigl\lbrace s_{t+1} = s^\prime \vert s_t=s, a_t=a \bigr\rbrace .
 % \end{equation} Given the next state $s^\prime$, the expected value of the next
 % reward is \begin{equation} \mathscr{R}^a_{ss^\prime} = E \bigl\lbrace r_{t+1}
 % \vert s_t=s, a_t=a, s_{t+1}=s^\prime \bigr\rbrace . \end{equation}
-In practice not all state signals are Markov, but should provide a good basis
-for predicting subsequent states, future rewards and selecting actions.
+In practice not all state signals are Markov, but they should provide a good
+basis for predicting subsequent states, future rewards and selecting actions.
 
 If the state transition probabilities and expected reward values are not known,
 only the states and actions, then samples from the MDP must be taken and a value
@@ -712,16 +724,16 @@ performing actions.
 
 \subsection{Value Function Methods}
 \label{sec:valuebased}
-% Value-based methods attempt to find the optimal policy by
-% approximating a \textit{value-function} which returns the total reward an
-% agent can expect to accumulate, given an initial state and following the
-% current policy thereafter.  The policy is adjusted using the reinforcing
-% signal and information from previous action choices.
+% Value-based methods attempt to find the optimal policy by approximating a
+% \textit{value-function} which returns the total reward an agent can expect to
+% accumulate, given an initial state and following the current policy
+% thereafter.  The policy is adjusted using the reinforcing signal and
+% information from previous action choices.
 Any method that can optimise control of a MDP may be considered a reinforcement
-learning method.  All search for an optimal policy $\pi^*$ that maps state
-$s \in \mathscr{S}$ and action $a \in \mathscr{A}$ to the probability
-$\pi^*(s,a)$ of taking $a$ in $s$ and maximises the sum of rewards over the
-agents lifetime.
+learning method.  All such methods search for an optimal
+policy $\pi^*$ that maps state $s \in \mathscr{S}$ and action $a \in
+\mathscr{A}$ to the probability $\pi^*(s,a)$ of taking action $a$ in state $s$
+and maximises the sum of rewards over the agents lifetime.
 
 Each state $s$ under policy $\pi$ may be associated with a \textit{value}
 $V^\pi(s)$ equal to the expected return from following policy $\pi$ from state
@@ -733,19 +745,19 @@ V^\pi(s) = E \Bigg\lbrace \sum^\infty_{t=0} \gamma^t r_t \Bigg\vert s_0 = s
 \Bigg\rbrace
 \end{equation}
 where $\gamma$ is a discount factor, with $0\leq \gamma \leq 1$ and $E$
-indicates that it is an estimate. Performing certain actions may result in no
-state change, creating a loop and causing the value of that action to be infinite for certain policies.
-The discount factor $\gamma$ prevents values from going unbounded and
-represents reduced trust in the reward $r_t$ as discrete time $t$
-increases.  Many reinforcement learning methods estimate the action-value
-function
+indicates that it is an estimate \cite{suttonbarto:1998}. Performing certain
+actions may result in no state change, creating a loop and causing the value of
+that action to be infinite for certain policies. The discount factor $\gamma$
+prevents values from going unbounded and represents reduced trust in the reward
+$r_t$ as discrete time $t$ increases.  Many reinforcement learning methods
+estimate the action-value function
 \begin{equation}
 \label{eq:actionvalue}
 Q^\pi(s,a) = E \Bigg\lbrace \sum^\infty_{t=0} \gamma^t r_t \Bigg\vert s_0 = s,
 a_0 = a \Bigg\rbrace
 \end{equation}
 which defines the value of taking action $a$ in state $s$ under fixed policy
-$\pi$.
+$\pi$ \cite{suttonbarto:1998}.
 
 \subsubsection{Temporal-Difference Learning}
 Temporal Difference (TD) learning is a fundamental concept in reinforcement
@@ -794,8 +806,8 @@ guarantees, but does not learn better policies.
 % determines the extent to which new rewards will override the effect of older
 % rewards.  The discount factor allows the balance between maximising immediate
 % rewards and future rewards to be set.
-Q-learning is an off-policy TD method that does not estimate the finite
-MDP directly, but iteratively approximates a state-action value
+Q-learning \cite{watkins:1989} is an off-policy TD method that does not estimate
+the finite MDP directly, but iteratively approximates a state-action value
 function which returns the value of taking action $a$ in state $s$ and
 following an \textit{optimal} policy thereafter. The same theorems used in
 defining the TD error also apply for state-action values that are updated
@@ -823,10 +835,10 @@ updated.
 % action-values using a greedy policy, which is a different policy to that being
 % followed, SARSA uses the discounted future reward of the next state-action
 % observation following the original policy.
-Sarsa (or modified Q-learning) is an on-policy TD control method that
-approximates the state-action value function in equation
-(\ref{eq:actionvalue}). Recall that the state-action value function for an
-agent returns the total expected reward for following a particular policy for
+Sarsa (or modified Q-learning) is an on-policy TD control
+method that approximates the state-action value function in equation
+(\ref{eq:actionvalue}) \cite{rummery:1994}. Recall that the state-action value
+function for an agent returns the total expected reward for following a particular policy for
 selecting actions as a function of future states.  The function is updated
 according to the rule
 \begin{equation}
@@ -842,10 +854,11 @@ as an on-policy method since it learns the same policy that it follows.
 \subsubsection{Eligibility Traces}
 \label{sec:eligibility}
 With the TD methods described above, only the value for the immediately
-preceding state or state-action pair is updated at each time step.  However,
-the prediction $V(s_{t+1})$ also provides information concerning earlier
-predictions and TD methods can be extended to update a set of values at each step.  An eligibility trace $e(s)$ represents how eligible the state $s$ is to receive
-credit or blame for the TD error:
+preceding state or state-action pair is updated at each time step.  However, the
+prediction $V(s_{t+1})$ also provides information concerning earlier predictions
+and TD methods can be extended to update a set of values at each step.  An
+eligibility trace $e(s)$ \cite{tanner:2005} represents how eligible the state
+$s$ is to receive credit or blame for the TD error:
 \begin{equation}
 \delta = r_{t+1} + \gamma V^\pi(s_{t+1}) - V^\pi(s_t)
 \end{equation}
@@ -866,10 +879,10 @@ updated equally.
 A balance between exploration of the environment and exploitation of past
 experience must be struck when selecting actions.  The $\epsilon$-greedy
 approach to action selection is defined by a randomness parameter $\epsilon$ and
-a decay parameter $d$.  A random number $x_r$ where $0 \leq x_r \leq 1$ is drawn
-for each selection.  If $x_r < \epsilon$ then a random action is selected,
-otherwise the perceived optimal action is chosen. After each selection the
-randomness is attenuated by $d$.
+a decay parameter $d$ \cite{rivest:1990}.  A random number $x_r$ where $0 \leq
+x_r \leq 1$ is drawn for each selection.  If $x_r < \epsilon$ then a random
+action is selected, otherwise the perceived optimal action is chosen. After each
+selection the randomness is attenuated by $d$.
 
 Action selection may also be accomplished using a form of the \textit{softmax}
 method \cite[\S2]{suttonbarto:1998} using the Gibbs (or
@@ -922,39 +935,38 @@ while low values promote exploitation of past experience.
 Value function based methods have been successfully applied with discrete
 look-up table parameterisation to many problems \cite{bertsekas:96}.  However,
 the number of discrete states required increases rapidly as the dimensions of
-the state space increase and if all possibly relevant situations are to be
-covered, these methods become subject to Bellman's Curse of Dimensionality
-\cite{bellman:1961}.
- Value function based methods can be used in conjunction with function
-approximation techniques (artificial neural networks typically) to allow
-operation with continuous state and action spaces.  However, greedy action
-selection has been shown to cause these methods to exhibit poor convergence or
-divergence characteristics, even in simple systems
+the state space increase.
+Value function based methods can be used in conjunction with function
+approximation techniques, such as artificial neural networks, to allow operation
+with continuous state and action spaces \cite{sutton:1996}.  However, greedy
+action selection has been shown to cause these methods to exhibit poor
+convergence or divergence characteristics, even in simple systems
 \cite{tsitsiklis:94,peters:enac,gordon:95,baird:95}.
 
 These convergence problems have motivated research into alternative learning
-methods (such as policy gradient algorithms) that can operate with function
-approximators.  Policy gradient algorithms make small incremental changes to the
-parameter vector $\theta$ of a policy function approximator.  Using artificial
-neural networks the parameters are the weights of the network connections.
-Policy gradient methods update $\theta$ in the direction of steepest ascent of
-some policy performance measure $Y$ with respect to the parameters
+methods, such as policy gradient methods, that can operate successfully using
+function approximation \cite{peters:enac}. Policy gradient algorithms make small
+incremental changes to the parameter vector $\theta$ of a policy function
+approximator (using an artificial neural network these parameters are the
+weights of the network connections) \cite{sutton:2000}. Policy gradient methods
+update $\theta$ in the direction of steepest ascent of some policy performance
+measure $Y$ with respect to the parameters
 \begin{equation}
 \theta_{i+1} = \theta_i + \alpha \frac{\partial Y}{\partial \theta_i}
 \end{equation}
 where $\alpha$ is a positive definite step size learning rate.  Unlike look-up
 table based methods, they do not require all states to be continually updated.
-Uncertainty in state data can degrade policy performance, but the methods
-generally have strong convergence properties.
+Uncertainty in state data can degrade policy performance, but these methods
+generally have strong convergence properties \cite{sutton:2000}.
 
 Policy gradient methods are differentiated largely by the techniques used to
 obtain an estimate of the policy gradient $\partial Y / \partial \theta$. Some
-of the most successful real-world robotics results \cite{glynn87,aleksandrov68}
-have been yielded by likelihood ratio methods such as Williams'
-\textsc{Reinforce} \cite{williams:reinforce} and natural policy gradient
-methods, such as the Episodic Natural Actor-Critic (ENAC) \cite{peters:enac}.
-These algorithms have lengthy derivations, but an overview has been published
-by \citeA{petersScholar}.
+of the most successful real-world robotics results
+\cite{glynn87,aleksandrov68,benbrahim:1996} have been yielded by likelihood
+ratio methods such as Williams' \textsc{Reinforce} \cite{williams:reinforce} and
+natural policy gradient methods, such as the Episodic Natural Actor-Critic
+(ENAC) \cite{peters:enac}. These algorithms have lengthy derivations, but a
+useful overview has been published by \citeA{petersScholar}.
 
 \subsubsection{Artificial Neural Networks}
 Artificial neural networks are mathematical models that mimic aspects of
@@ -967,8 +979,7 @@ plus any number of optional hidden layers.  Weighted connections link
 neurons, but unlike architectures such as the recurrent neural network, only
 neurons from adjacent layers are connected.  Most commonly, a fully connected
 scheme is used in which all neurons from one layer are connected to all neurons in the
-next.  Figure \ref{fig:perceptron} diagrams a fully connected three layer
-feed-forward neural network.
+next.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/perceptron}}{}
 
@@ -993,7 +1004,9 @@ connection weights to tune the transfer function between input and output that
 the network provides.  To simplify this process a \textit{bias} node that always outputs 1
 may be added to a layer and connected to all neurons in the following layer.
 This can be shown to allow the activation function parameters to be removed and
-for network adjustment to be achieved using only connection weights.
+for network adjustment to be achieved using only connection weights. Figure
+\ref{fig:perceptron} shows a fully connected three layer feed-forward neural
+network, with bias nodes and activation functions $f$, $g$ and $h$.
 
 The output is obtained during the network's \textit{execution} phase by
 presenting an input to the input layer that propagates through.  It can be
@@ -1072,8 +1085,8 @@ older action choices and to prioritise more recent experience.  The
 experimentation parameter prevents the probability of choosing an action from
 going to zero and encourages exploration of the action space.
 
-Erev and Roth proposed action selection according to a discrete probability
-distribution function, where action $k$ is selected for interaction $t+1$ with
+\citeA{roth:aer} proposed action selection according to a
+discrete probability distribution function, where action $k$ is selected for interaction $t+1$ with
 probability
 \begin{equation}
 \label{eq:re_prob}
@@ -1141,18 +1154,24 @@ consumption decisions effect all other parties.
 The main electricity trading mechanisms can be modelled using well established
 mathematical optimisation formulations.  Robust techniques exist for computing
 solutions to these problems, which also provide price information that reflects
-the network topology and conditions.
-The combination of non-linear optimisation problems and participant behavioural
-models is beyond the capabilities of conventional equilibrium approaches to
-market simulation when analysing large systems.  An alternative is to take a
-``bottom-up'' modelling approach to them and examine the system dynamics that
-result from interactions between goal driven individuals.
+the network topology and conditions. The combination of non-linear optimisation
+problems and complex participant behavioural models is likely beyond the
+capabilities of conventional closed-form equilibrium approaches when analysing
+large systems. An alternative is to take a ``bottom-up'' modelling approach and
+examine the system dynamics that result from interactions between goal driven
+individuals.
 
 Reinforcement learning is an unsupervised machine learning technique that can be
-used to model the dynamic behaviour of these individuals.  Traditional methods
-associated a \textit{value} with each state and the available actions, but are
-limited to small discrete problem representations.  Policy gradient methods that
-search directly in the space of the parameters of an action selection policy can
-operate in continuous environments, have been shown to exhibit good convergence
-properties and have been successfully applied in laboratory and operational
-settings.
+used to model the dynamic behaviour of competing individuals.  Traditional
+methods associated a \textit{value} with each state and the available actions,
+but they are limited to small discrete problem representations.  Policy gradient
+methods, that search directly in the space of the parameters of an action
+selection policy and can operate in continuous environments, have been shown in
+the literature to exhibit good convergence properties and have been successfully
+applied in laboratory and operational settings.
+
+The successful application of policy gradient methods in other fields suggests
+that it may be possible for them to be used to model participant strategies in
+agent-based electricity market simulations.  First it must be established how
+these methods have been applied in similar contexts and what other methods have
+also been used.
