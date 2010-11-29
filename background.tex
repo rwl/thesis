@@ -1,10 +1,10 @@
 \chapter{Background}
 \label{ch:background}
 This chapter provides background information on electricity market and electric
-power system simulation. A brief introduction to national electricity supply is
-given along with a history of UK wholesale electricity market designs.
-Approaches to market simulation that include transmission system
-constraints are introduced and definitions for the learning algorithms,
+power system simulation. A brief introduction to national electricity supply
+and the history of UK wholesale electricity markets is given in order to
+describe the sytems that require modelling. Approaches to market simulation that
+include transmission system constraints are introduced and definitions for the learning algorithms,
 that are later used to model market participant behaviour, are provided.
 
 \section{Electric Power Supply}
@@ -94,10 +94,10 @@ electric power system \cite{blackout04}.
 
 \section{Electricity Markets}
 The UK was the first large country to privatise its electricity supply industry
-when it did so in the early 1990s.  The approach has been used as a model by
-other countries and the market structures that have since been implemented in
-the UK have used many of the main concepts for national electricity market
-design.
+when it did so in the early 1990s \cite{kirschen:book}.  The approach adopted
+has been used as a model by other countries and the market structures that have
+since been implemented in the UK have used many of the main concepts for
+national electricity market design.
 
 The England and Wales Electricity Pool was created in 1990 to break up the
 vertically integrated Central Electricity Generating Board (CEGB) and to
@@ -164,13 +164,13 @@ the prices paid by consumers and paid to generators, which would be adjusted
 such that the costs of transmission are covered by the market and that the
 availability of capacity is encouraged at certain times.
 
-Variations in demand and changes in plant availability would be adjusted for by
+Variations in demand and changes in plant availability would be accounted for by
 the grid operator between day close and physical delivery, producing a
 constrained schedule. Generators having submitted bids would be instructed to
 increase or reduce production as appropriate.  Alternatively, the grid operator
-could instruct large customers with contracts to curtail their demand to do so
-or instruct generators contracted to provide ancillary services to adjust
-production.
+could instruct large customers with contracts to curtail their demand
+or generators contracted to provide ancillary services to adjust production.
+This market performed effectively for 11 years.
 
 \subsection{British Electricity Transmission and Trading Arrangements}
 % \subsection{New Electricity Trading Arragements}
@@ -179,13 +179,14 @@ Concerns over the exploitation of market power in The England and Wales
 Electricity Pool and over the ability of the market to reduce consumer
 electricity prices prompted the introduction of New Electricity Trading
 Arrangements (NETA) in March 2001 \cite{martoccia:2005}.  The aim was to improve
-efficiency and provide greater choice to participants.  Control of the Scottish
-transmission system was included with the introduction of the nationwide British
-Electricity Transmission and Trading Arrangements (BETTA) in April 2005 under
-The Energy Act 2004.  While The Pool operated a single daily auction and
-dispatched plant centrally, under the new arrangements participants became
-self-dispatching and market positions became determined through continuous
-bilateral trading between generators, suppliers, traders and consumers.
+efficiency, price transparency and provide greater choice to participants.
+Control of the Scottish transmission system was included with the introduction
+of the nationwide British Electricity Transmission and Trading Arrangements
+(BETTA) in April 2005 under The Energy Act 2004.  While The Pool operated a
+single daily day-ahead auction and dispatched plant centrally, under the new
+arrangements participants became self-dispatching and market positions became
+determined through continuous bilateral trading between generators, suppliers,
+traders and consumers.
 
 The majority of power is traded under the BETTA through long-term contracts that
 are customised to the requirements of each party \cite{kirschen:book}. These
@@ -201,10 +202,11 @@ contracts typically concern smaller volumes of power and have lower
 associated transaction costs.  Often they are used by participants to refine
 their market position ahead of delivery time \cite{kirschen:book}.
 
-Trading facilities, such as power exchanges, provide a means for participants
-to fine-tune their positions further, through short-term transactions for
-often relatively small quantities of energy.  Modern exchanges are
-computerised and accept anonymous offers and bids submitted electronically.
+Additional trading facilities, such as power exchanges, provide a means for
+participants to fine-tune their positions further, through short-term
+transactions for often relatively small quantities of energy.  Modern exchanges,
+such as APX, are computerised and accept anonymous offers and bids submitted
+electronically.
 % A submitted offer/bid will be paired with any outstanding bids/offers in the
 % system with compatible price and quantity values.  The details are then
 % displayed for traders to observe and to use in subsequent trading.
@@ -219,36 +221,47 @@ quantity, stating the rate at which it is capable of doing so.  Certain loads
 may also offer demand reductions at a price which can typically be implemented
 very quickly.  Longer-term contracts for balancing services are also struck
 between the system operator and generators/suppliers in order to avoid the price
-volatility often associated with spot markets.
+volatility often associated with spot markets \cite{kirschen:book}.
+
+% TODO: Section on international markets.
 
 \section{Electricity Market Simulation}
-Previous sections have identified the importance of electricity to modern
-societies and explained how the majority of electricity supply in the UK is
-trusted to unadministered bilateral trade.  All aspects of electricity supply
-are constantly changing and electricity markets must be suitably researched to
-ensure that their designs are fit for purpose.  The value of electricity to
-society means that it is not practical to experiment with radical changes to
-trading arrangements on real systems.
-% A practical alternative is to study abstract mathematical models (with sets of
-% simplifying approximations and assumptions) and find analytical solutions,
-% where possible, by simulating them using computer programs.
 
-Game theory is the branch of applied mathematics in which behaviour in strategic
-situations is captured mathematically.  A common approach to doing this is to
-model the system and players as a mathematical optimisation problem.  Optimal
-power flow is a classic optimisation problem in the field of Electrical Power
-Engineering and variants of it are widely used in electricity market research.
-In this thesis, optimal power flow forms part of an \textit{agent-based}
-simulation: an alternative approach to the mathematics of games.
+Previous sections have showed the importance of electricity to modern society
+and explained how supply in the UK is entrusted, almost entirely, to
+unadministered bilateral trade. It is not practical to experiment with
+alternative trading arrangements on actual systems, but Game Theory (a branch of
+applied mathematics that captures behaviour in strategic situations) can be used
+to simulate market dynamics.  This typically involves modelling trading systems
+and players as a closed-form mathematical optimisation problem and observing
+states of equilibrium that are encountered when the problem is solved.
+
+In this thesis an alternative approach is taken in which each market entity is
+modelled as an individual agent.  This section will describe the technique and
+define an optimisation problem that is used to model a centralised market/system
+operator entity.
+
+% All aspects of electricity supply are constantly changing and electricity
+% markets must be suitably researched to ensure that their designs are fit for
+% purpose.  The value of electricity to society means that it is not practical
+% to experiment with radical changes to trading arrangements on real systems.
+% Game theory is the branch of applied mathematics in which behaviour in
+% strategic situations is captured mathematically.  A common approach to doing
+% this is to model the system and players as a mathematical optimisation
+% problem.  Optimal power flow is a classic optimisation problem in the field of
+% Electrical Power Engineering and variants of it are widely used in electricity
+% market research. In this thesis, optimal power flow forms part of an
+% \textit{agent-based} simulation: an alternative approach to the mathematics of
+% games.
 
 \subsection{Agent-Based Simulation}
 Social systems, such as electricity markets, are inherently complex and involve
 interactions between different types of individual and between individuals and
 collective entities, such as organisations or groups, the behaviour of which is
-itself the product of individual interactions.  This complexity drives classical
-monolithic equilibrium models to their limits.  The models are often highly
-stylised and limited to small numbers of players with strong constraining
-assumptions made on their behaviour.
+itself the product of individual interactions \cite{rossiter:2010}.  This
+complexity drives traditional closed-form equilibrium models to their limits
+\cite{ehrenmann:2009}. The models are often highly stylised and limited to small
+numbers of players with strong constraining assumptions made on their behaviour.
 
 Agent-based simulation involves modelling the simultaneous operations of, and
 interactions between adaptive agents and then assessing their effect on the
@@ -267,8 +280,8 @@ processes in their ability to produce socially desirable system performance. The
 \textit{heuristic} strand aims to generate theories on the fundamental causal
 mechanisms in social systems that can be observed when there are alternative
 initial conditions.  This thesis aims to provide \textit{methodological}
-advancement.  Improvements in the tools and methods available aids research with
-the former objectives.
+advancement with repect to agent modelling research.  Improvements in the tools
+and methods available can aid research with the former objectives.
 
 \subsection{Optimal Power Flow}
 \label{sec:opf}
@@ -276,23 +289,24 @@ Nationalised electricity supply industries were for many years planned, operated
 and controlled centrally.  A system operator would determine which generators
 must operate and the required output of the operating units such that demand and
 reserve requirements were met and the overall cost of production was minimised.
-In Electric Power Engineering, these are termed the \textit{unit commitment} and
-\textit{economic dispatch} problems.
+In electric power engineering, these are termed the \textit{unit commitment} and
+\textit{economic dispatch} problems \cite{wood:pgoc}.
 
 A formulation of the unit commitment problem was published in 1962 that
-incorporated electric power system constraints \cite{carpentier:opf}.  Optimal
-power flow is this combination of the economic and power flow aspects of power
-systems into one mathematical optimisation problem.  The ability of optimal
-power flow to solve centralised power system operation problems and determine
-prices in power pool markets has resulted in it becoming one of the most widely
-studied subjects in the electric power systems community.
+incorporated electric power system constraints \cite{carpentier:opf}. This has
+come to be known as the \textit{optimal power flow} problem and is the
+combination of economic and power flow aspects of power systems into one
+mathematical optimisation problem.  The ability of optimal power flow to solve
+centralised power system operation problems and to determine prices in power
+pool markets has resulted in it becoming one of the most widely studied subjects in
+the electric power systems community.
 
 \subsubsection{Power Flow Formulation}
 \label{sec:pf_form}
 Optimal power flow derives its name from the power flow (or load flow)
-steady-state power system analysis technique.  Given sets of generator data,
-load data and a nodal admittance matrix, a power flow study determines the
-complex voltage
+steady-state power system analysis technique \cite[\S18]{kallrath:2009}.  Given
+sets of generator data, load data and a nodal admittance matrix, a power flow
+study determines the complex voltage
 \begin{equation}
 V_i = \vert V_i \vert \angle\delta_i = \vert
 V_i\vert(\cos\delta_i + j\sin\delta_i)
@@ -300,15 +314,15 @@ V_i\vert(\cos\delta_i + j\sin\delta_i)
 at each node $i$ in the power system, from which line flows may be calculated
 \cite{grainger:psa}.
 
-\paragraph{Nodal Admittance Matrix}
+%\paragraph{Nodal Admittance Matrix}
 The nodal admittance matrix describes the electrical network and its formulation
 is dependant upon the transmission line, transformer and shunt models employed.
 A branch in a nodal representation of a power system is typically modelled as a
 medium length transmission line in series with a regulating transformer at the
 ``from'' end \cite[p.11]{pserc:mp_manual}. A nominal-$\pi$ model with total
 series admittance $y_s = 1/(r_s+jx_s)$ and total shunt capacitance $b_c$ is
-often to represent the transmission line.  The transformer may assumed to be
-ideal, phase-shifting and tap-changing, with the ratio between primary winding
+often used to represent the transmission line.  The transformer may assumed to
+be ideal, phase-shifting and tap-changing, with the ratio between primary winding
 voltage $v_{f}$ and secondary winding voltage $N = \tau e^{j\theta_{ph}}$ where
 $\tau$ is the tap ratio and $\theta_{ph}$ is the phase shift angle. Figure
 \ref{fig:branch_model} diagrams this conventional branch model.  From
