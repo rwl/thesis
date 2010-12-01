@@ -1,13 +1,13 @@
 \chapter{Modelling Power Trade}
 \label{ch:method}
-This chapter defines the model used in chapters \ref{ch:nashanalysis} and
-\ref{ch:exploitation} to simulate competitive electric power trade and compare
-learning algorithms. The first section describes how optimal power flow
-solutions are used to clear offers submitted to a simulated power exchange
-auction market. The second section defines how market participants are modelled
-as agents that use the reinforcement learning algorithms to adjust their bidding
-behaviour. It explains the modular structure of a multi-agent system that
-coordinates interactions between the auction model and participant agents.
+This chapter defines the model to be used in subsequent chapters to simulate
+competitive electric power trade and compare learning algorithms. The first
+section describes how optimal power flow solutions are used to clear offers
+submitted to a simulated power exchange auction market. The second section
+defines how market participants are modelled as agents that use the
+reinforcement learning algorithms to adjust their bidding behaviour. It explains
+the modular structure of a multi-agent system that coordinates interactions
+between the auction model and participant agents.
 
 % Societies reliance on secure energy supplies and the high volumes of
 % electricity typically consumed render it impractical to experiment with
@@ -75,9 +75,9 @@ coordinates interactions between the auction model and participant agents.
 
 \section{Electricity Market Model}
 A power exchange auction market, based on SmartMarket by
-\citeA[p.92]{pserc:mp_manual}, is used in this thesis as a trading
-environment for comparing reinforcement learning algorithms.  In each trading
-period the auction accepts offers to sell blocks of power from participating
+\citeA[p.92]{pserc:mp_manual}, is used in this thesis as a trading environment
+for comparing reinforcement learning algorithms.  In each trading period the
+auction accepts offers to sell blocks of power from participating
 agents\footnote{A double-sided auction, in which bids to buy blocks of power may
 be submitted by agents associated with dispatchable loads, has also been
 implemented, but this feature is not used.}.
@@ -87,16 +87,15 @@ implemented, but this feature is not used.}.
 % to buy blocks of active or reactive power.  The offers/bids are submitted to a
 % power exchange auction market model based on SmartMarket from
 % \citeA[p.92]{pserc:mp_manual}.
-A clearing process begins by withholding offers above the price cap, along with
-those specifying non-positive quantities.  Valid offers for each generator are
-sorted into non-decreasing order with respect to price and converted into
-corresponding generator capacities and piecewise linear cost functions (See
-Section \ref{sec:pw_linear} below).  The newly configured units form an optimal
-power flow problem, the solution to which provides generator set-points and
-nodal marginal prices that are used to determine the proportion of each offer
-block that is cleared and the associated clearing price.  The cleared offers
-determine each agent's revenue and hence the profit used as a reward
-signal.
+A clearing process begins by withholding offers above a predefined price cap,
+along with those specifying non-positive quantities.  Valid offers for each
+generator are sorted into non-decreasing order with respect to price and
+converted into corresponding generator capacities and piecewise linear cost
+functions.  The newly configured units form an optimal power flow problem, the
+solution to which provides generator set-points and nodal marginal prices that
+are used to determine the proportion of each offer block that is cleared and the
+associated clearing price.  The cleared offers determine each agent's revenue
+and hence the profit used as a reward signal.
 
 % Pricing may be uniform,
 % where each offer/bid is cleared at the price of the marginal unit, or
@@ -114,12 +113,14 @@ used, but could be used in a detailed study of pricing schemes.
 \subsection{Optimal Power Flow}
 \label{sec:pw_linear}
 Bespoke implementations of both the DC and AC optimal power flow formulations
-from \matpower are used in the auction clearing process. The trade-offs between
-DC and AC formulations have been examined by \citeA{overbye:acdc}.  DC models
-were found suitable for most nodal marginal price calculations and are
-considerably less computationally expensive to solve.  The AC optimal power
-flow formulation is used to examine the exploitation of voltage
-constraints, that are not part of the DC formulation.
+from \matpower are used in this thesis as part of the auction clearing process.
+They are validated against \matpower results to ensure accuracy. The trade-offs
+between DC and AC formulations have been examined by \citeA{overbye:acdc}, in
+terms of nodal price accuracy. DC models were found to provide suitably accurate
+nodal marginal prices for most  calculations and to be considerably less
+computationally expensive when solving. The AC optimal power flow formulation is
+used in this thesis to examine the exploitation of voltage constraints, that are
+not part of the DC formulation.
 
 % A class diagram in the Unified Modelling Language (UML) for the
 % object-orientated power system model that is used to compute optimal power
@@ -149,7 +150,7 @@ vector of optimisation variables.  Figure~\ref{fig:ccv_function}
 \cite[Figure5-3]{pserc:mp_manual} illustrates how the additional inequality
 constraints
 \begin{equation}
-y_j \geq m_{j,i}(p-p_i) + c_i, \quad i = 1\dotsc n
+y_j \geq m_{j,i}(p-p_i) + b_i, \quad i = 1\dotsc n
 \end{equation}
 ensure that $y_j$ lies on or above $c^{(i)}(p)$ as the objective function
 minimises the sum of cost variables for all generators:
@@ -244,8 +245,8 @@ generators remain.
 % \newpage
 \section{Multi-Agent System}
 \label{sec:mas}
-Market participants are modelled using PyBrain software agents that use
-reinforcement learning algorithms to adjust their behaviour \cite{schaul:2010}.
+Market participants are modelled using PyBrain \cite{schaul:2010} software
+agents that use reinforcement learning algorithms to adjust their behaviour.
 Their interaction with the market is coordinated in multi-agent simulations, the
 structure of which is derived from PyBrain's single player design.
 
@@ -256,18 +257,18 @@ agent \textit{tasks} and \textit{modules} used for policy function
 approximation and storing state-action values or action propensities.  The
 process by which each agent's policy is updated by a \textit{learner} is
 explained and the sequence of interactions between multiple agents and the
-market is described and diagrammed.
+market is described and illustrated.
 
 \subsection{Market Environment}
-Each agent has a portfolio of $n_g$ generators associated their environment.
+Each agent has a portfolio of $n_g$ generators in their local environment.
 Figure \ref{fig:cls_pyreto} illustrates the association and how the environment
-references an instance of the auction market for offer submission.  Each
-environment is responsible for \begin{inparaenum}[(i)] \item returning a
-vector representation of its current state and \item accepting an action
-vector which transforms the environment into a new state. \end{inparaenum}  To
-facilitate testing of value function based and policy gradient learning
-methods, both discrete and continuous representations of an electric power
-trading environment are defined.
+references an instance of the auction market for offer submission. Each
+environment is responsible for \begin{inparaenum}[(i)] \item returning a vector
+representation of its current state and \item accepting an action vector which
+transforms the environment into a new state. \end{inparaenum}  To facilitate
+testing of value function based and policy gradient learning methods, both
+discrete and continuous representations of an electric power trading environment
+are defined.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/cls_env}}{}
 
@@ -280,16 +281,16 @@ and $0\leq s < n_s$, at each simulation step and accepts an action $a$, where $a
 
 To keep the size of the state space reasonable, discrete states are derived only
 from the total system demand $d=\sum P_d$ where $P_d$ is the vector of active
-power demand at each bus.  Informally, the state space is $n_s$ states between the minimum and maximum
-demand and the current state for the environment is the index of the state to
-which the current demand relates.  Each simulation episode of $n_t$ steps has a
-demand profile vector $U$ of length $n_t$, where each element $0 \leq u_i \leq 1$. The
-load at each bus $P_{dt} = u_tP_{d0}$ in simulation period $t$, where $P_{d0}$
-is the initial demand vector.  The state
-size $d_s = d(\max U - \min U)/n_s$ and the state space vector is $\mathscr{S}=d_si$ for
- $i=1\dotsc n_s$. At simulation step $t$, the state returned by the environment
- $s_t = i$ if
-$\mathscr{S}_i \leq P_{dt} \leq \mathscr{S}_{i+1}$ for $i = 0\dotsc n_s$.
+power demand at each bus.  Informally, the state space is given by $n_s$ states
+between the minimum and maximum demand and the current state for the environment
+is the index of the state to which the current demand relates.  Each simulation
+episode of $n_t$ steps has a demand profile vector $U$ of length $n_t$, where
+each element $0 \leq u_i \leq 1$. The load at each bus is $P_{dt} = u_tP_{d0}$
+in simulation period $t$, where $P_{d0}$ is the initial demand vector.  The
+state size $d_s = d(\max U - \min U)/n_s$ and the state space vector is
+$\mathscr{S}=d_si$ for $i=1,\dotsc n_s$. At simulation step $t$, the state
+returned by the environment $s_t = i$ if $\mathscr{S}_i \leq P_{dt} \leq
+\mathscr{S}_{i+1}$ for $i = 0,\dotsc n_s$.
 
 
 The action space for a discrete environment is defined by a vector $m$, where
@@ -304,10 +305,10 @@ each offer that is to be submitted for each generator is computed. As an
 example, Table \ref{tbl:example_actions} shows all possible actions when markups
 are restricted to 0, 10\% or 20\%, $m=\lbrace 0,10,20,30 \rbrace$, and 0\% of
 capacity may be withheld, $w=\lbrace 0 \rbrace$, from two generators, $n_g=2$,
-with one offer submitted for each, $n_o=1$.  Each row corresponds to an action and the column values specify the percentage price
-markup and the percentage of capacity to be withheld for each of the $n_gn_o$
-offers.  The size of the permutation matrix grows rapidly as $n_o$, $n_g$, $n_m$
-and $n_w$ increase.
+with one offer submitted for each, $n_o=1$.  Each row corresponds to an action
+and the column values specify the percentage price markup and the percentage of
+capacity to be withheld for each of the $n_gn_o$ offers.  The size of the
+permutation matrix grows rapidly as $n_o$, $n_g$, $n_m$ and $n_w$ increase.
 
 % For operation with learning methods that use look-up tables to store
 % state-action values, an environment with $n_s$ discrete states and $n_a$
@@ -444,7 +445,7 @@ and increases in $n_g$ and $n_o$ only impact the number of output nodes
 on the neural network.
 
 \subsection{Agent Task}
-To allow alternative goals (such a profit maximisation or the meeting some
+To allow alternative goals (such as profit maximisation or the meeting of some
 target level for plant utilisation) to be associated with a single type of
 environment, an agent does not interact \textit{directly} with its environment,
 but is paired with a particular \textit{task}. A task defines the reward
@@ -493,7 +494,7 @@ based on a previous observation $s$ of its environment.
 % $n_s$ is the total number of states and $n_a$ is the total number of actions.
 %Figure X shows in UML that
 The UML class diagram in Figure \ref{fig:cls_agent} illustrates how each agent
-in PyBrain is associated with a \textit{module}, a \textit{learner} (modified
+in PyBrain is associated with a \textit{module}, a \textit{learner} (variant
 Roth-Erev in the diagram), a \textit{dataset} and an
 \textit{explorer}.
 
