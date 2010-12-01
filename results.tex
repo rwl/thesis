@@ -19,7 +19,7 @@ This is the same approach used by \citeA{krause:nash06} before performing the
 study of congestion management techniques that is reviewed in Section
 \ref{sec:related_cong}.  Nash equilibria can be difficult
 to determine in complex systems so the experiment presented here utilises a
-model simple enough that it can be determined through exhaustive search.
+model simple enough that solutions can be determined through exhaustive search.
 
 By observing actions taken and rewards received by each agent over the
 initial simulation periods it is possible to compare the speed and consistency
@@ -42,8 +42,9 @@ objectives are to show:
 %   and policy function approximation structure.
 \end{itemize}
 Meeting these objectives aims to provide a basis for using policy gradient
-methods in more complex simulations, to show that they can \textit{learn to
-trade power} and to provide guidance for algorithm parameter selection.
+methods in more complex simulations, to show that they can be employed in
+\textit{learning to trade power} and to provide guidance for algorithm parameter
+selection.
 
 \section{Method of Simulation}
 % Each learning method is tested individually using a range of parameter
@@ -61,9 +62,9 @@ trade power} and to provide guidance for algorithm parameter selection.
 % marginal cost of the $l$ at full capacity, $p_{g,l}^{min}$.  The DC optimal
 % power flow formulation (See Section \ref{sec:opf}, above) is used to clear the
 % market and reactive power trade is omitted.
-Learning methods are compared in this chapter by repeating the same
-simulation and switching the algorithms used by the agents.  An alternative
-might be to use a combination of methods in the same simulation, but the
+Learning methods are compared in this chapter by utilising the same base
+simulation problem and switching the algorithms used by the agents.  An
+alternative might be to use a combination of methods in the same simulation, but the
 approach used here is intended to be an extension of the work by
 \citeA{krause:nash06}.
 
@@ -126,9 +127,9 @@ Gen &$a$ &$b$ &$c$ \\
 \end{center}
 \end{table}
 
-As in \citeA{krause:nash06}, no load profile is defined. The
-system load is assumed to be peak in all periods and only one state is defined
-for methods using look-up tables.  Each simulation step is assumed to be one
+As in \citeA{krause:nash06}, no specific load profile is defined. The
+system load is assumed to be at peak in all periods and only one state is
+defined for methods using look-up tables.  Each simulation step is assumed to be one
 hour in length.
 
 For all generators $P^{min}=0$ so as to simplify the equilbria and avoid the
@@ -159,11 +160,11 @@ with $\tau=100$ and $d=0.99$.
 
 Both REINFORCE and ENAC use a two-layer neural network with one linear input
 node, one linear output node, no bias nodes and with the connection weight
-initialised to zero.  This is a typically PyBrain configuration taken from the
-supplied examples. A two-step episode is defined for the policy gradient methods
-and five episodes are performed per learning step.  The exploration parameter
-$\sigma$ for these methods is initialised to zero and adjusted manually after
-each episode such that:
+initialised to zero.  This is a typical PyBrain configuration taken from the
+supplied examples \cite{schaul:2010}. A two-step episode is defined for the
+policy gradient methods and five episodes are performed per learning step.  The
+exploration parameter $\sigma$ for these methods is initialised to zero and
+adjusted manually after each episode such that:
 \begin{equation}
 \label{eq:sigmadecay}
 \sigma_{t} = d(\sigma_{t-1}-\sigma_{n})+\sigma_{n}
@@ -233,7 +234,7 @@ generator.
 
 \section{Simulation Results}
 Each action taken by an agent and the consequent reward is recorded for each
-simulation.  Values are averaged over the ten simulation runs and standard
+simulation.  Values are averaged over 10 simulation runs and standard
 deviations are calculated using the formula
 \begin{equation}
 SD = \sqrt{\frac{1}{N-1}\sum_{i=0}^{N}(x_i - \bar{x})^2}
@@ -242,7 +243,7 @@ where $x_i$ is the action or reward value in simulation $i$ of $N$ simulation
 runs and $\bar{x}$ is the mean of the values.
 
 Figure \ref{fig:5_1_action_a1} shows the average markup on marginal cost and the
-standard deviation over the ten simulation runs for Agent 1 under price
+standard deviation over 10 simulation runs for Agent 1 under price
 configuration 1, using the four learning methods.  The second $y$-axis in each
 plot relates to the exploration parameter for each method.  Figure
 \ref{fig:5_1_action_a2} shows the same information for Agent 2.  Plots of
@@ -269,7 +270,7 @@ aligned and have equal $x$-axis limits to assist algorithm comparison.
 }{}
 
 Figures \ref{fig:5_2_action_a1} and \ref{fig:5_2_reward_a1} plot the average
-markup and reward over ten simulation runs for Agent 1 and Agent 2,
+markup and reward over 10 simulation runs for Agent 1 and Agent 2,
 respectively, under price configuration 2 for the variant Roth-Erev, Q-learning
 learning methods.  The plots for REINFORCE and ENAC in these figures are for
 actual values in one simulation run as the number of interactions and variation
@@ -305,7 +306,7 @@ in values makes the results difficult to observe otherwise.
 % 	\end{figure}
 }{}
 
-\section{Discussion and Critical Analysis}
+\section{Interpretation and Discussion of Results}
 Under cost configuration 1 the agents face a relatively simple control task and
 receive a clear reward signal that is directly proportional to their markup. The
 results show that all of the methods consistently converge to the point of Nash
@@ -479,8 +480,8 @@ The RTS has 24 bus locations that are connected by 32 transmission lines, 4
 transformers and 2 underground cables. The transformers tie a 230kV area to a
 138kV area.  The original model has 32 generators of 9 different types with a
 total capacity of 3.45GW.  To reduce the size of the discrete action space, five
-12MW and four 20MW generators are removed.  This is deemed reasonable as it
-reduced the number of generators by 28\%, but their combined capacity is only
+12MW and four 20MW generators are removed.  This is deemed to be a minor
+change as it reduced the number of generators by 28\%, but their combined capacity is only
 4.1\% of the original total generation capacity and the remainder is
 more than sufficient to meet demand.  To further reduce action space sizes all
 generators of the same type at the same bus are aggregated into one generating
@@ -567,7 +568,8 @@ plant, approximately the same total generation capacity and generators in
 different areas of the network.  The generator labels in Figure
 \ref{fig:ieee79rts} specify the associated agent.  The synchronous condenser is
 associated with a passive agent that always offers 0 MW at 0~\$/MWh (the
-unit can be dispatched to provide or absorb reactive power).
+unit can be dispatched to provide or absorb reactive power within capacity
+limits).
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/ieee79rts}}{}
 
@@ -681,7 +683,7 @@ the bus voltage profile state simulation, but with two offers required per
 generator.  Due to time constraints and limited simulation resources only
 results for Q-learning and ENAC are given.
 
-\section{Discussion and Critical Analysis}
+\section{Interpretation and Discussion of Results}
 \label{sec:discuss}
 Agents with a discrete environment have 216 possible actions to choose from in
 each state when required to submit one offer per generator.  Figure

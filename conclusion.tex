@@ -1,8 +1,8 @@
 \chapter{Conclusions and Further Work}
 \label{ch:conclusion}
 This final chapter summarises the conclusions that can be drawn from the
-results presented in this thesis and gives some ideas for further development
-of the contributions that have been made.
+results presented in this thesis and gives some ideas for directing further
+research.
 
 \section{Summary Conclusions}
 This thesis has introduced the use of policy gradient reinforcement learning
@@ -31,11 +31,12 @@ environment in which agents can \textit{learn to trade power} competitively.
 
 The framework has first been used in a simulation that compares the convergence
 to Nash equilibria of four different learning algorithms.  The simulation
-reproduced the findings of \citeA{krause:nash06} and presented similar results
-for policy gradient methods.  They were found: to exhibit very different
-characteristics to value function based methods, to require a larger number of
-interactions before learning an optimal policy and to require low learning rate
-and exploration rate decay parameters for complex equilibria to be approached.
+structures reproduced the findings of \citeA{krause:nash06} and presented
+similar results for policy gradient methods.  Policy gradient methods were
+found: to exhibit very different characteristics to value function based
+methods, to require a larger number of interactions before learning an optimal
+policy and to require low learning rate and exploration rate decay parameters
+for complex equilibria to be approached.
 
 In a second simulation the framework was used to compare the same algorithms in
 a complex dynamic electricity trading environment.  A reference electric power
@@ -82,18 +83,18 @@ agent-based electric power market simulation.
 \subsection{Parameter Sensitivity and Delayed Reward}
 The simulations presented in this thesis use typical algorithm parameters that
 are either the default values from PyBrain or inspired by the literature. No
-study of parameter sensitivity is performed.  Alternative function
-approximation and back-propagation techniques could also be investigated.
-Parameter sensitivity analysis is typically conducted by the algorithm
-developers using standard benchmark problems (such as mazes or pole balancing
-problems) that are familiar to researchers in Artificial Intelligence and allow
-results to be compared. The shortage of published results and lack of
+study of parameter sensitivity is performed.  Alternative function approximation
+and back-propagation techniques could also be investigated. Parameter
+sensitivity analysis is often conducted by the algorithm developers using
+standard benchmark problems (such as mazes or pole balancing problems
+\cite{schaul:2010}) that are familiar to researchers in Artificial Intelligence
+and allow results to be compared. The shortage of published results and lack of
 standardised electricity trading models might limit the benefits of using this
 problem for general parameter sensitivity analysis.
 
 The reward signals received by agents in all of the simulations presented in
 this thesis result directly from the agent's previous action.  In
-reality, a market settlement process would introduce delays to payments for
+practice, a market settlement process would introduce delays to payments for
 electricity production. Time did not permit value function based methods with
 eligibility traces (See Section \ref{sec:eligibility}) to be compared with
 policy gradient methods, but the ability to learn under delayed reward is a
@@ -124,7 +125,8 @@ The GQ$(\lambda)$ algorithm by \citeA{maei10} is another extension of Q-learning
 for operation in continuous environments.  Convergence guarantees have been
 shown and the scaling properties suggest the method is suitable for large-scale
 reinforcement learning applications.  A software implementation of GQ$(\lambda)$
-has been developed by the authors and recently made available as open source.
+has been developed and recently made available as open source
+\cite{lincoln:pyreto}.
 
 Four new Natural Actor-Critic algorithms have been presented by
 \citeA{bhatnagar09}. Like ENAC, they use function approximation techniques and
@@ -292,7 +294,7 @@ in parallel with those for active power.  These could be open to agents
 associated with reactive compensation equipment such as that commonly needed for
 wind farm developments.  Traditionally, reactive power markets have been mostly
 of academic interest, but as the UK makes greater use of on and off-shore wind
-power, the topic could become of increasing interest and importance.
+power, the topic could become of increasing importance.
 
 Bus voltages are not all assumed to be 1~per-unit in AC optimal power flow
 problems, but are part of the vector of optimisation variables.  Adjusting
