@@ -63,9 +63,9 @@ algorithm and parameter selection.
 % state and action spaces that are too large for value function based methods to
 % explore. Policy gradient methods have been shown to produce consistent
 % behaviour in increasingly complex dynamic trading problems.
-% Further development of this research could provide an opportunity for advanced
-% learning methods to be used in descision support and automated energy trade
-% applications.
+Further development of the ideas in this thesis could allow advanced learning
+algorithms to be used to support the descisions made by traders in electricity
+markets or in fully automated energy trade.
 
 \section{Further Work}
 \label{sec:furtherwork}
@@ -83,14 +83,15 @@ agent-based electric power market simulation.
 \subsection{Parameter Sensitivity and Delayed Reward}
 The simulations presented in this thesis use typical algorithm parameters that
 are either the default values from PyBrain or inspired by the literature. No
-study of parameter sensitivity is performed.  Alternative function approximation
-and back-propagation techniques could also be investigated. Parameter
-sensitivity analysis is often conducted by the algorithm developers using
-standard benchmark problems (such as mazes or pole balancing problems
-\cite{schaul:2010}) that are familiar to researchers in Artificial Intelligence
-and allow results to be compared. The shortage of published results and lack of
-standardised electricity trading models might limit the benefits of using this
-problem for general parameter sensitivity analysis.
+study of parameter sensitivity is performed and alternative function
+approximation and back-propagation techniques could also be investigated. In
+reinforcement learning, parameter sensitivity analysis is often conducted by the
+algorithm developers using standard benchmark problems (such as mazes or pole
+balancing problems \cite{schaul:2010}) that are familiar to researchers in
+artificial intelligence and allow results to be compared. The shortage of
+published results and lack of standardised electricity trading models might
+limit the benefits of using this problem for general parameter sensitivity
+analysis.
 
 The reward signals received by agents in all of the simulations presented in
 this thesis result directly from the agent's previous action.  In
@@ -124,9 +125,9 @@ standard benchmark tests and real-world applications \cite{kietzmann09}.
 The GQ$(\lambda)$ algorithm by \citeA{maei10} is another extension of Q-learning
 for operation in continuous environments.  Convergence guarantees have been
 shown and the scaling properties suggest the method is suitable for large-scale
-reinforcement learning applications.  A software implementation of GQ$(\lambda)$
-has been developed and recently made available as open source
-\cite{lincoln:pyreto}.
+reinforcement learning applications.
+% A software implementation of GQ$(\lambda)$
+% has been developed and recently made available as open source.
 
 Four new Natural Actor-Critic algorithms have been presented by
 \citeA{bhatnagar09}. Like ENAC, they use function approximation techniques and
