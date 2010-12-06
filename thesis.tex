@@ -176,21 +176,31 @@ method.  Policy gradient reinforcement learning algorithms are used to adjust
 the parameters of multi-layer feed-forward artificial neural networks that
 approximate each market participant's policy for selecting power quantities and
 prices that are offered in the simulated marketplace.
-
 Traditional reinforcement learning methods, that learn a value function, have
 been previously applied in simulated electricity trade, but they are mostly
 restricted to use with discrete representations of a market environment. Policy
 gradient methods have been proven to offer convergence guarantees in continuous
-environments and avoid many of the problems that mar value function based
-methods.
+multi-dimensional environments and avoid many of the problems that mar value
+function based methods.
 
-Five types of learning algorithm are compared in a series of Nash equilibrium
-and constraint exploitation simulations. Policy gradient methods are found to be
-a valid option for modelling the strategies of electricity market participants,
-but they are outperformed by a traditional action-value function algorithm in
-all of the tests. Further development of this research could provide
-opportunities for advanced learning algorithms to be used in descision support
-and automated energy trade applications.
+This thesis presents the first application of unsupervised policy gradient
+reinforcement methods in simulated electricity trade.  It also presents the
+first use of a non-linear AC optimal power flow formulation in agent-based
+electricity market simulation.  Policy gradient methods are found to be a valid
+option for modelling participant strategies in complex and continuous
+multivariate market environments.  They are outperformed by traditional
+action-value function based algorithms in many of the tests conducted, but
+several possibilties for improving the approach taken are proposed.  Further
+development of this research could provide opportunities for advanced learning
+algorithms to be applied in descision support and automated energy trade.
+
+% Five types of learning algorithm are compared in a series of Nash equilibrium
+% and constraint exploitation simulations. Policy gradient methods are found to be
+% a valid option for modelling the strategies of electricity market participants,
+% but they are outperformed by a traditional action-value function algorithm in
+% all of the tests. Further development of this research could provide
+% opportunities for advanced learning algorithms to be used in descision support
+% and automated energy trade applications.
 
 % The benefits of using policy gradient methods in electricity market simulation
 % are explored and the results demonstrate their superior trading ability when
