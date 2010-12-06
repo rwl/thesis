@@ -1,10 +1,10 @@
 \chapter{Background}
 \label{ch:background}
 This chapter provides background information on electricity market and
-electrical power system simulation. A brief introduction to national electricity
-supply and the history of UK wholesale electricity markets is given in order to
-define the sytems that require modelling. Market simulation techniques that
-account for the constraints of transmission systems are described and
+electrical power system simulation. Brief introductions to national electricity
+supply and the history of UK wholesale electricity markets are given in order to
+broadly define the sytems that require modelling. Market simulation techniques
+that account for the constraints of transmission systems are described and
 definitions of the learning algorithms that are later used to model
 market participant behaviour are provided.
 
@@ -22,18 +22,18 @@ minute, generate apparent power $S$ at a line voltage $V_l$ typically between
 (DC), systems are common in electricity supply is that they allow power to be
 transformed between voltages with very high efficiency. The output from a power
 station is typically stepped-up to 275kV or 400kV for transmission over long
-distances. The apparent power conducted by a three-phase transmission line $l$
-is the product of the line current $I_l$ and the line voltage:
+distances. The apparent power $s$ conducted by a three-phase transmission line
+$l$ is the product of the line current $i_l$ and the line voltage $v_l$:
 \begin{equation}
-S = \sqrt{3} V_l I_l
+s = \sqrt{3} v_l i_l
 \end{equation}
 Therefore the line current is inversely proportional to the voltage at which
 the power is transmitted. Ohmic heating losses are directly proportional to the
 \textit{square} of the line current
 \begin{equation}
-P_{r} = 3 I_l^2 R
+p_{r} = 3 i_l^2 r_l
 \end{equation}
-where $R$ is the resistance of the transmission line.  Hence, any reduction in
+where $r_l$ is the resistance of the transmission line.  Hence, any reduction in
 line current dramatically reduces the amount of energy wasted through heating
 losses.  One consequence of high voltages is the larger extent and integrity
 of the insulation required between conductors, neutral and earth.  This is the
@@ -43,17 +43,17 @@ is expensive.
 The UK transmission system operates at 400kV and 275kV (and 132kV in Scotland),
 but systems with voltages up to and beyond 1000kV are used in larger countries
 such as Canada and China \cite{eletra:1000kV}.  For transmission over very long
-distances or undersea, high voltage DC (HVDC) systems have become economically
-viable in recent years.  The reactance of a transmission line is proportional to
-frequency so one advantage of an HVDC system is that the reactive power
-component in is nil and more active power flow can be transmitted in a
-line/cable of a certain diameter.
+distances or undersea, high voltage direct current (HVDC) systems have become
+economically viable in recent years.  The reactance of a transmission line is
+proportional to frequency, so one advantage of an HVDC system is that the
+reactive power component in is nil and more active power flow can be
+transmitted in a line/cable of a certain diameter.
 
-The ability to transform power between voltages and transmit large volumes over
-long distances allows electricity generation to take place at high capacity
-power stations, which offer economies of scale and lower operating costs. It
+The ability to transform power between voltages and transmit large volumes
+of power over long distances allows electricity generation to take place at high
+capacity power stations, which offer economies of scale and lower operating costs. It
 allows electricity to be transmitted across country borders and from renewable
-energy plant, such as hydro-electric power stations, located in remote areas.
+energy systems, such as hydro-electric power stations, located in remote areas.
 % A HVDC interconnector between
 % Folkstone in the UK and Sangatte in France allows upto 2GW of
 % electricity to be imported/exported.  The Moyle HVDC interconnector can export
@@ -75,9 +75,9 @@ in northern England and gas supply terminals near Cardiff and London.
 }{}
 
 For delivery to most consumers, electric energy is transferred at a substation
-from the transmission system to the grid supply point of a distribution system.
+from the transmission system to a distribution system.
 Distribution networks in the UK are also three-phase AC power systems, but
-typically operate at lower voltages and differ in their general structure (or
+operate at lower voltages and differ in their general structure (or
 topology) from transmission networks.  Transmission networks are typically
 highly interconnected, providing multiple paths for power flow. Distribution
 networks in rural areas typically consist of long radial feeders (usually
@@ -87,17 +87,17 @@ for general use (typically from 11kV or 33kV to 400V), are spaced out on the
 feeders/rings. All three-phases at 400V may be provided for industrial and
 commercial loads or individual phases at 230V supply typical domestic and other
 commercial loads. Splitting of phases is usually planned so that each is loaded
-equally. If achieved, this produces a balanced, symmetrical system with zero
-current flow on the neutral and it can be analysed as a \textit{single} phase
-circuit (See Section Section \ref{sec:pf_form} below).  Figure
+equally. If achieved, this produces a balanced, symmetrical system, with zero
+current flow on the neutral conductor, that can be analysed as a
+\textit{single} phase circuit (See Section Section \ref{sec:pf_form} below).  Figure
 \ref{fig:powersystem} illustrates the basic structure of a typical national
 electric power system \cite{blackout04}.
 
 \section{Electricity Markets}
 The UK was the first large country to privatise its electricity supply industry
-when it began restructuring in 1990 \cite{newbery:2005}.  The approach
+when restructuring took place in 1990 \cite{newbery:2005}.  The approach
 adopted has since been used as a model by other countries and the market
-structures that have been implemented in the UK have utilised the main
+structures that the UK has implemented have utilised many of the main
 concepts for national electricity market design.
 
 The England and Wales Electricity Pool was created in 1990 to break up the
@@ -229,18 +229,18 @@ volatility often associated with spot markets \cite{kirschen:book}.
 
 \section{Electricity Market Simulation}
 
-Previous sections have showed the importance of electricity to modern societies
+Previous sections have shown the importance of electricity to modern societies
 and explained how supply in the UK is entrusted, almost entirely, to
 unadministered bilateral trade. It is not practical to experiment with
 alternative trading arrangements on actual systems, but game theory (a branch of
 applied mathematics that captures behaviour in strategic situations) can be used
 to create simulations of market dynamics.  This typically involves modelling
 trading systems and players as a closed-form mathematical optimisation problem
-and observing states of equilibrium that are encountered when the problem is
+and observing states of equilibrium that form when the problem is
 solved.
 
 In this thesis an alternative approach is taken in which each market entity is
-modelled as an individual agent.  This section will describe the technique and
+modelled as an individual entity.  This section will describe the technique and
 define an optimisation problem, called optimal power flow, that will be used to
 model a central market/system operator agent.
 
@@ -266,7 +266,7 @@ complexity drives traditional closed-form equilibrium models to their limits
 \cite{ehrenmann:2009}. The models are often highly stylised and limited to small
 numbers of players with strong constraining assumptions made on their behaviour.
 
-Agent-based simulation involves modelling the simultaneous operations of, and
+Agent-based simulation involves modelling the simultaneous operations of and
 interactions between adaptive agents and then assessing their effect on the
 system as a whole.  System properties arise from agent interactions, even those
 with simple behavioural rules, that could not be deduced by simply aggregating
@@ -297,7 +297,7 @@ In electric power engineering, this is termed the \textit{unit commitment} and
 
 A formulation of the unit commitment problem was published in 1962 that
 incorporated electric power system constraints \cite{carpentier:opf}. This has
-come to be known as the \textit{optimal power flow} problem and is the
+come to be known as the \textit{optimal power flow} problem and involves the
 combination of economic and power flow aspects of power systems into one
 mathematical optimisation problem.  The ability of optimal power flow to solve
 centralised power system operation problems and to determine prices in
@@ -323,7 +323,7 @@ at each node $i$ in the power system, from which line flows may be calculated
 
 % \paragraph{Nodal Admittance Matrix}
 A network of $n_b$ buses is defined by a $n_b \times n_b$ nodal admittance
-matrix $Y$ \cite[p.11]{pserc:mp_manual}.  The current injected at bus $i$ is
+matrix $Y$.  The current injected at bus $i$ is
 \begin{equation}
 i_i = \sum_{j=1}^{n_b} y_{ij} v_j
 \end{equation}
@@ -334,12 +334,12 @@ or a transformer. A nominal-$\pi$ model can be used to represent medium length
 transmission lines \cite{grainger:psa} and transformers can be made
 \textit{regulating} by introducing a winding ratio $N$ that can be changed in
 response to the voltage on the load side \cite{crow:2009}. These two models may
-be put in series to form a single model used for all branches. The
-transmission line has total series admittance $y_s = 1/(r_s+jx_s)$, where $r_s$
-is the series resistance and $x_s$ is the series reactance, and total shunt
-capacitance $b_c$. If the winding ratio is complex then $N = \tau
-e^{j\theta_{shift}}$, where $\tau$ is the tap ratio and $\theta_{shift}$ is the
-phase shift angle.
+be put in series to form a single model used for all branches
+\cite[p.11]{pserc:mp_manual}. The transmission line has total series admittance
+$y_s = 1/(r_s+jx_s)$, where $r_s$ is the series resistance and $x_s$ is the
+series reactance, and total shunt capacitance $b_c$. If the winding ratio is
+complex then $N = \tau e^{j\theta_{shift}}$, where $\tau$ is the tap ratio and
+$\theta_{shift}$ is the phase shift angle.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/branch_model}}{}
 
@@ -637,7 +637,7 @@ the Lagrangian function
 \mathcal{L}(x) = f(x) + \lambda^\mathsf{T}g(x) + \mu^\mathsf{T}h(x),
 \end{equation}
 where $\lambda$ and $\mu$ are vectors of Lagrangian multipliers, using an
-Interior Point Method \cite{cvxopt:2004}.  When solved, the Lagrangian
+Interior Point Method \cite{cvxopt:2004,zimmerman:ccv}.  When solved, the Lagrangian
 multiplier for a constraint gives the rate of change of the objective function
 value with respect to the constraint variable.  If the objective function is
 equation (\ref{eq:objfunc}), the Lagrangian multipliers $\lambda^i_P$ and

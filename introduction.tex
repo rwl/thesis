@@ -45,27 +45,26 @@ The majority of supplies were restored within two days, but the event is
 estimated to have cost more than \$6~billion \cite{minkel:2008,icf:2003}.
 
 An alternative approach is to study abstract mathematical models of markets with
-sets of appropriate simplifying approximations and assumptions applied.
-Characteristics of market architectures and the consequences of proposed changes
-can be established by simulating the models using digital computer programs.
-Competition between participants is fundamental to all markets, but
-the strategies of humans can be difficult to model mathematically. One option is
-to use reinforcement learning algorithms from the field of artificial
-intelligence.  These methods can be used to represent adaptive behaviour in
-competing players and have been shown to be capable
-of learning highly complex strategies \cite{tesauro:gammon}.  This thesis makes
-advances in electricity market participant modelling through the application of
-a relatively new genre of reinforcement learning methods called policy gradient
-algorithms.
+sets of appropriate simplifying approximations and assumptions applied. Market
+architecture characteristics and the consequences of proposed changes can be
+established by simulating the models as digital computer programs. Competition
+between participants is fundamental to all markets, but the strategies of humans
+can be challenging to model mathematically. One available option is to use
+reinforcement learning algorithms from the field of artificial intelligence.
+These methods can be used to represent adaptive behaviour in competing players
+and have been shown to be able to learn highly complex strategies
+\cite{tesauro:gammon}.  This thesis makes advances in electricity market
+participant modelling through the application of a genre of reinforcement
+learning methods called policy gradient algorithms.
 
 \section{Problem Statement}% and Hypothesis}%/Aims \& Objectives}
 Individuals participating in an electricity market (be they representing
 generating companies, load serving entities, firms of traders etc.)~must utilise
-multi-dimensional data to their advantage. This data may be noisy, sparse,
-corrupt, have a degree of uncertainty (e.g.~demand forecasts) or be hidden from
-the participant (e.g.~competitor bids).  Reinforcement learning algorithms must
-be capable of operating with data of this kind if they are to successfully model
-participant strategies.
+complex multi-dimensional data to their advantage. This data may be noisy,
+sparse, corrupt, have a degree of uncertainty (e.g.~demand forecasts) or be
+hidden from the participant (e.g.~competitor bids).  Reinforcement learning
+algorithms must also be able to operate with data of this kind if they are
+to successfully model participant strategies.
 
 Traditional reinforcement learning methods, such as Q-learning, attempt to find
 the \textit{value} of each available action in a given state.  When discrete
@@ -144,13 +143,13 @@ electrical power engineering, artificial intelligence and economics.  The
 principle contributions made by this thesis are:
 \begin{enumerate}
   \item The first application of policy gradient reinforcement learning
-  methods in simulated electricity trade. A relatively new class of
-  unsupervised learning algorithms, designed for operation in multi-dimensional,
-  continuous, uncertain and noisy environments, are applied in dynamic
+  methods in simulated electricity trade.  A class of unsupervised learning
+  algorithms, designed for operation in multi-dimensional, continuous,
+  uncertain and noisy environments, are applied in a series of dynamic
   techo-economic simulations.
   \item The first application of a non-linear AC optimal power flow formulation
-  in agent based electricity market simulation. The constraining assumptions of
-  linearised DC models not being applied provides more accurate electric power
+  in agent based electricity market simulation.  Not applying the constraining
+  assumptions of linearised DC models provides more accurate electric power
   systems models in which reactive power flows and voltage magnitude constraints
   are considered.
   \item A new Stateful Roth-Erev reinforcement learning method for application
@@ -165,14 +164,14 @@ principle contributions made by this thesis are:
   superior multi-dimensional, continuous data handling abilities of policy
   gradient methods are tested by exploring their ability to observe voltage
   constraints and exploit them to achieve increased profits.
-  \item The delivery of an extensible open source multi-learning-agent-based
-  power exchange auction market simulator for electric power trade research.
-  Sharing software code can dramtically accelerate research of this kind and an
+  \item An extensible open source multi-learning-agent-based
+  power exchange auction market simulation framework for electric power trade
+  research. Sharing software code can dramtically accelerate research of this kind and an
   extensive suite of the tools developed for this thesis has been released
-  under a liberal open source license.
-  \item The concept of applying Neuro-Fitted Q-Iteration and GQ$(\lambda)$ in
-  simulations of competitive energy trade. New unsupervised learning algorithms
-  developed for operation in continuous environments could be utilised in
+  to the community.
+  \item The concept of applying the Neuro-Fitted Q-Iteration and GQ$(\lambda)$
+  methods in simulations of competitive energy trade. New unsupervised learning
+  algorithms developed for operation in continuous environments could be utilised in
   electric power trade simulation and some of the most promising examples have
   been identified.
 %   \item A formulation of optimal power flow as a reinforcement learning
@@ -184,6 +183,11 @@ principle contributions made by this thesis are:
 \end{enumerate}
 The publications that have resulted from this thesis are:
 %\citeA{lincoln:pyreto,lincoln:eem07,lincoln:upec}.
+
+\vspace{1pc}
+Lincoln, R., Stephen, B., Galloway, S., \& Burt, G. (Submitted for review).
+Automated Electrical Power Trade with Policy Gradient Reinforcement Learning. \ul{IEEE
+Transactions on Power Systems.}
 
 \vspace{1pc}
 Lincoln, R., Galloway, S., \& Burt, G. (2009, May 27-29). Open source,
@@ -266,7 +270,7 @@ context of previous work related in terms of application field and
 methodology.  Publications on agent based electricity market simulation are
 reviewed with emphasis on the participant behavioural models used. Previous
 applications of policy gradient learning methods in other types of market
-setting are also covered.  The chapter illustrates the movement in this field
+setting are also covered.  The chapter illustrates the trend in this field
 towards more complex participant behavioural models and highlights some of the
 gaps in the existing research that this thesis aims to fill.
 % Finally, the contribution made by releasing the source code developed for this
@@ -276,17 +280,17 @@ gaps in the existing research that this thesis aims to fill.
 Chapter \ref{ch:method} describes the power exchange auction market model and
 the multi-agent system used to simulate electricity trade.  It defines the
 association of learning agents with portfolios of generators, the process of
-offer submission and the reward process. The chapter describes the common
-components that are then applied in specific simulations.
+offer submission and the reward process. The chapter describes the components
+that are common to the specific simulations that are then described.
 % Finally, it explains how look-up tables, used with value function based
 % methods, and artificial neural networks, used for policy function
 % approximation, are are structured.
 
 Simulations that examine the convergence to a Nash equilibrium of systems of
-multiple electric power trading agents is reported in Chapter
+multiple electric power trading agents are reported in Chapter
 \ref{ch:nashanalysis}. A six bus test case is used and results for four learning
-algorithms under two cost configurations are presented and analysed. The chapter
-confirms that policy gradient methods can be used in electric power trade
+algorithms under two cost configurations are presented and discussed. The
+chapter confirms that policy gradient methods can be used in electric power trade
 simulations, in the same way as value function based methods and provides a
 foundation for their application in more complex experiments.
 
@@ -302,7 +306,7 @@ The primary conclusions drawn from the results in this thesis are summarised
 in Chapter \ref{ch:conclusion}.  Shortcomings of the approach are noted and
 the broader implications are addressed.  Some ideas for further work are also
 outlined, including alternative reinforcement learning methods and potential
-applications of a model of the UK transmission system.
+applications for a UK transmission system model developed for this thesis.
 
 % Free market democracy has underpinned the transformation of large western
 % economies in the post war era and continues to be relied upon.  Towards the
