@@ -7,7 +7,7 @@
     text width=3cm, text centered, rounded corners=2pt]
 
     \node (Agt) [final, rectangle split, rectangle split parts=3,
-    		      		 text width=4.2cm] {
+    		      		 text width=4.5cm] {
       \textbf{LearningAgent}
         \nodepart[text justified]{second}%
         learning: bool\newline
@@ -25,7 +25,7 @@
 
 
     \node (Mod) [final, rectangle split, rectangle split parts=3,
-    		     text width=5.2cm,below of=Agt,node distance=6cm] {
+    		     text width=5.6cm,below of=Agt,node distance=6cm] {
       \textbf{ActionValueTable}
         \nodepart[text justified]{second}%
         numActions: int\newline
@@ -55,7 +55,7 @@
 
 
     \node (Dat) [final, rectangle split, rectangle split parts=3,
-    		     text width=5.2cm,above of=Lrn,node distance=4cm] {
+    		     text width=5.6cm,above of=Lrn,node distance=4cm] {
       \textbf{ReinforcementDataSet}
         \nodepart[text justified]{second}%
         learning: bool\newline
