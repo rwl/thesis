@@ -143,12 +143,11 @@ little sister for all of their support throughout my PhD.
 
 This thesis leverages several open source software projects developed by
 researchers from other institutions.  I wish to thank the researchers from
-Cornell University, especially Dr Ray Zimmerman, for their work on optimal power
-flow, the researchers from the Dalle Molle Institute for Artificial Intelligence
-(IDSIA) and the Technical University of Munich for their work on reinforcement
-learning algorithm and artificial neural network implementations and Charles
-Gieseler from Iowa State University for his implementation of the Roth-Erev
-method.
+Cornell University involved in the development of the optimal power flow
+formulations in \textsc{Matpower}, most especially Dr Ray Zimmerman. I am
+similarly grateful for the work by researchers at Dalle Molle Institute for Artificial
+Intelligence (IDSIA) and the Technical University of Munich on reinforcement
+learning algorithm and artificial neural network implementations.
 
 This research was funded by the United Kingdom Engineering and Physical
 Sciences Research Council through the Supergen Highly Distributed Power
@@ -158,9 +157,9 @@ Systems consortium under grant GR/T28836/01.
 \begin{abstract}
 In electrical power engineering, learning algorithms can be used to model
 the strategies of electricity market participants.  The objective of this thesis
-is to establish if \textit{policy gradient} reinforcement learning algorithms
-can be used to create participant models superior to those involving previously
-applied \textit{value function} based methods.
+is to establish if policy gradient reinforcement learning algorithms
+can be used to create participant models superior to those using previously
+applied value function based methods.
 
 % Electricity is an unique commodity.  It must be supplied at the presise moment
 % that it is demanded, as there are no practical methods for significant levels
@@ -169,8 +168,8 @@ applied \textit{value function} based methods.
 % at one point in the system has an effect at all other points.
 Supply of electricity involves technology, money, people, natural resources and
 the environment.  All of these aspects are changing and electricity market
-designs must be suitably researched to ensure that they are fit for purpose.  In
-this thesis electricity markets are modelled as non-linear constrained
+architectures must be suitably researched to ensure that those used are fit for
+purpose. In this thesis electricity markets are modelled as non-linear constrained
 optimisation problems, which are solved using a primal-dual interior point
 method.  Policy gradient reinforcement learning algorithms are used to adjust
 the parameters of multi-layer feed-forward artificial neural networks that
@@ -179,7 +178,7 @@ prices that are offered in the simulated marketplace.
 Traditional reinforcement learning methods, that learn a value function, have
 been previously applied in simulated electricity trade, but they are mostly
 restricted to use with discrete representations of a market environment. Policy
-gradient methods have been proven to offer convergence guarantees in continuous
+gradient methods have been shown to offer convergence guarantees in continuous
 multi-dimensional environments and avoid many of the problems that mar value
 function based methods.
 
@@ -190,8 +189,8 @@ electricity market simulation.  Policy gradient methods are found to be a valid
 option for modelling participant strategies in complex and continuous
 multivariate market environments.  They are outperformed by traditional
 action-value function based algorithms in many of the tests conducted, but
-several possibilities for improving the approach taken are proposed.  Further
-development of this research could lead to unsupervised learning algorithms
+several possibilities for improving the approach taken are identified.
+Further development of this research could lead to unsupervised learning algorithms
 being used in new decision support applications and in automated energy trade.
 
 % Five types of learning algorithm are compared in a series of Nash equilibrium

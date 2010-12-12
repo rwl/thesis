@@ -698,13 +698,14 @@ seen to achieve approximately the same performance as Q-learning.
 
 Including bus voltage constraint data in the state for a discrete environment
 would result in a state space of impractical size, but including it in a
-continuous environment was straight-forward.  The results show that ENAC
-achieves greater profits when presented with a combined demand forecast and bus
-voltage state vector.  REINFORCE performs less well than ENAC, but also shows
-improvement over the pure demand forecast case.  ENAC achieves equivalent, but
-not greater performance than Q-learning in all periods of the trading day when
-using the voltage data.  ENAC is not able to use the additional state
-information to any further advantage, but does learn a profitable policy.
+continuous environment was straight-forward.  Figure \ref{fig:6_2_a1} and Figure
+\ref{fig:6_2_a4} show that ENAC achieves greater profits when presented with a
+combined demand forecast and bus voltage state vector.  REINFORCE performs less
+well than ENAC, but also shows improvement over the pure demand forecast case.
+ENAC achieves equivalent, but not greater performance than Q-learning in all
+periods of the trading day when using the voltage data.  ENAC is not able to use
+the additional state information to any further advantage, but does learn a
+profitable policy.
 
 Simply changing the number of offers that are required to be submitted for each
 generator from 1 to 2, increases the number of discrete action possibilities in
