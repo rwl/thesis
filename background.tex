@@ -46,7 +46,7 @@ such as Canada and China \cite{eletra:1000kV}.  For transmission over very long
 distances or undersea, high voltage direct current (HVDC) systems have become
 economically viable in recent years.  The reactance of a transmission line is
 proportional to frequency, so one advantage of an HVDC system is that the
-reactive power component in is nil and more active power flow can be
+reactive power component is nil and more active power flow can be
 transmitted in a line/cable of a certain diameter.
 
 The ability to transform power between voltages and transmit large volumes
@@ -295,7 +295,7 @@ reserve requirements were met and the overall cost of production was minimised.
 In electric power engineering, this is termed the \textit{unit commitment} and
 \textit{economic dispatch} problem \cite{wood:pgoc}.
 
-A formulation of the unit commitment problem was published in 1962 that
+A formulation of the economic dispatch problem was published in 1962 that
 incorporated electric power system constraints \cite{carpentier:opf}. This has
 come to be known as the \textit{optimal power flow} problem and involves the
 combination of economic and power flow aspects of power systems into one
@@ -323,7 +323,7 @@ at each node $i$ in the power system, from which line flows may be calculated
 
 % \paragraph{Nodal Admittance Matrix}
 A network of $n_b$ buses is defined by a $n_b \times n_b$ nodal admittance
-matrix $Y$.  The current injected at bus $i$ is
+matrix $Y$ \cite{wood:pgoc,gloversarma:psad}.  The current injected at bus $i$ is
 \begin{equation}
 i_i = \sum_{j=1}^{n_b} y_{ij} v_j
 \end{equation}
@@ -643,7 +643,7 @@ value with respect to the constraint variable.  If the objective function is
 equation (\ref{eq:objfunc}), the Lagrangian multipliers $\lambda^i_P$ and
 $\lambda^i_Q$ for the power balance constraint at each bus $i$, given by
 equations (\ref{eq:p_balance}) and (\ref{eq:q_balance}), are the nodal marginal
-prices and can be interpreted as the increase in the total system cost for and
+prices and can be interpreted as the increase in the total system cost for an
 additional injection at $i$ of 1MW or 1MVAr, respectively.
 
 For a case in which none of the inequality constraints $h(x)$
@@ -707,7 +707,7 @@ In the classical model of agent-environment interaction \cite{suttonbarto:1998},
 at each time step $t$ in a sequence of discrete time steps $t = 1,2,3\dotsc$ an
 agent receives as input some form of the environment's state $s_t \in
 \mathscr{S}$, where $\mathscr{S}$ is the set of possible states.  From a set of
-actions $\mathscr{A}(s_t)$ available to the agent in state $s_t$ and the agent
+actions $\mathscr{A}(s_t)$ available to the agent in state $s_t$ the agent
 selects an action $a_t$ and performs it in its environment.  The environment
 enters a new state $s_{t+1}$ in the next time step and the agent receives a
 scalar numerical reward $r_{t+1} \in \mathbb{R}$ in part as a result of its
@@ -752,10 +752,9 @@ performing actions.
 % thereafter.  The policy is adjusted using the reinforcing signal and
 % information from previous action choices.
 Any method that can optimise control of a MDP may be considered a reinforcement
-learning method.  All such methods search for an optimal
-policy $\pi^*$ that maps state $s \in \mathscr{S}$ and action $a \in
-\mathscr{A}$ to the probability $\pi^*(s,a)$ of taking action $a$ in state $s$
-and maximises the sum of rewards over the agents lifetime.
+learning method.  All agents have a policy $\pi$ for selecting actions given the
+state of the environment. Reinforcement learning methods search for an optimal
+policy $\pi^*$ that maximises the sum of rewards over the agents lifetime.
 
 Each state $s$ under policy $\pi$ may be associated with a \textit{value}
 $V^\pi(s)$ equal to the expected return from following policy $\pi$ from state

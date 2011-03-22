@@ -311,7 +311,7 @@ Under cost configuration 1 the agents face a relatively simple control task and
 receive a clear reward signal that is directly proportional to their markup. The
 results show that all of the methods consistently converge to the point of Nash
 equilibrium.  The variant Roth-Erev method shows very little variation around
-the mean once converged, due to the use of Boltzmann exploration with a then low
+the mean once converged, due to the use of Boltzmann exploration with a low
 temperature parameter value.  The constant variation around the mean that can be
 seen for Q-learning once converged is due to the use of $\epsilon$-greedy action
 selection and can be removed if a Boltzmann explorer is selected.
@@ -733,7 +733,7 @@ Generation portfolios were configured such that agents would receive a mix of
 low-cost base-load plant and expensive peak-supply plant.  However, the cost
 differences between fuel types are such that an offer of power from a coal or
 nuclear power station can not exceed in price that from a unit with a more
-expensive fuel type.  Greater competition and more complex equilibria could
+expensive fuel type.  Greater competition and more complex equilibria could be
 introduced to the simulation if fuel cost differences were not as large or
 maximum markups on price were greater.  In \citeA{cincotti:09}, for example, a
 300\% markup limit is set.
@@ -776,5 +776,5 @@ computational expense for further development of this work have also been noted.
 AC optimal power flow adds enormously to simulation times when analysing an
 entire year of hourly trading interactions.  The addition of bus voltage data
 was found to improve performance of the policy gradient methods, but it has not
-been show if the same could not be achieved by perhaps using bus voltage angles
+been shown if the same could not be achieved by perhaps using bus voltage angles
 from a DC optimal power flow formulation.
