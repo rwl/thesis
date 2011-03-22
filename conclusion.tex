@@ -4,7 +4,7 @@ This final chapter summarises the conclusions that can be drawn from the
 results presented in this thesis and gives some ideas for directing further
 research.
 
-\section{Summary Conclusions}
+\section{Conclusion}
 This thesis has introduced the use of policy gradient reinforcement learning
 algorithms in modelling strategies of electricity market participants. Over
 the last two decades, competitive markets have become an essential component of
@@ -16,39 +16,65 @@ can not be experimented with on real systems.
 
 Computational simulation is a well established technique for evaluating market
 design concepts and agent-based simulation is an approach that allows large
-complex systems to be modelled.  There are many examples of learning algorithms
-being used to model electricity market participants in the literature, but
-policy gradient methods have not been previously applied.  These
-methods use function approximation techniques to operate in environments
-with state and actions spaces that are continuous, discrete or mixed and have
-been successfully applied in robot control and other problems.
+complex systems to be modelled.  Unsupervised reinforcement learning algorithms
+allow competitive behaviour between agents to be modelled without the need to
+train agents on existing data or for agents be instilled with preconceived
+notions market participant response.
 
-To examine the properties of policy gradient methods and compare their
-performance with previously applied value function based methods, a modular
-simulation framework has been defined and implemented.  The framework uses a
-power exchange auction market model with nodal marginal pricing to provide an
-environment in which agents can \textit{learn to trade power} competitively.
+Value function based reinforcement learning methods have been used previously in
+agent based simulations of electricity markets, but these methods are largely
+restricted to discrete and relatively small environments.  Policy gradient
+methods are an alternative form of reinforcement learning algorithm that
+overcome some of the shortcommings of value function based methods. They use
+function approximation techniques to operate in environments with state and
+actions spaces that are continuous, discrete or mixed and have been successfully
+applied to robotic control, network routing and financial trading problems, but
+have not been previously applied in agent based electricity market simulation.
 
-The framework has first been used in a simulation that compares the convergence
+Electrical power systems provide a complex dynamic environment for
+\textit{learning to trade power}.  Existing research has either ignored the
+dynamics and constraints of the power system or used simplified linearised
+models to determine power flows and nodal prices.  To examine the properties of
+policy gradient methods and compare their performance with previously applied
+value function based methods, a modular simulation framework has been developed
+that uses optimal power flow to provide a power exchange auction market with
+nodal marginal pricing.
+
+The framework has been used in simulations that compare the convergence
 to Nash equilibria of four different learning algorithms.  The simulation
 structures reproduced the findings of \citeA{krause:nash06} and presented
 similar results for policy gradient methods.  Policy gradient methods were
-found: to exhibit very different characteristics to value function based
-methods, to require a larger number of interactions before learning an optimal
-policy and to require low learning rate and exploration rate decay parameters
-for complex equilibria to be approached.
+found to: exhibit different characteristics to value function based
+methods, require a larger number of interactions before learning an optimal
+policy and require low learning rate and exploration rate decay parameters
+for complex equilibria to be approached.  The simulations show that using policy
+gradient methods results in the system converging to the same Nash equilibria
+that traditional closed-form simulations provide.  They demonstrate that policy
+gradient methods are a valid option for market participant modelling, but
+illustrate how the learning problem is made more challenging when not
+restricted to discrete states and actions.
 
-In a second simulation the framework was used to compare the same algorithms in
-a complex dynamic electricity trading environment.  A reference electric power
-system model, designed for reliability analysis, was used to provide a
-realistic environment of a reasonable size.  The algorithms were compared in
-their ability to observe and exploit constraints in the system as loads followed
-an hourly profile.  It was not found that policy gradient methods could use
-additional bus voltage data to achieve greater performance than an action-value
-function based method or a stateful variant of the Roth-Erev technique.
-However, they were shown to learn effective strategies under noisy dynamic
-conditions and to improve performance using complex continuous state
-representations.
+In a second set of simulations the framework was used to compare the same
+algorithms in a complex dynamic electricity trading environment.  A reference
+electric power system model, designed for reliability analysis, was used to
+provide a realistic environment of a reasonable size.  The algorithms were
+compared in their ability to observe and exploit constraints in the system as
+loads followed an hourly profile.  It was not found that policy gradient methods
+could use additional bus voltage data to achieve greater performance than an
+action-value function based method or a stateful variant of the Roth-Erev
+technique. However, they were shown to learn effective strategies under noisy
+dynamic conditions and to improve performance using complex continuous state
+representations. The simulations showed that it is more straightforward to apply
+policy gradient methods complex dynamic simulations as discretisation of the
+state and action space is not required. While the simulations did not aim to
+compare computational performance of the methods, policy gradient methods
+combined with artificial neural networks have the potential to scale to larger
+problems as lookup table storage is not required.
+
+% Without indepth analysis of algorithms parameter selections
+% and function approximator choices it is not possible to conclude definitively as
+% to which type of method is superior for electricity market simulation. However,
+% policy gradient methods have
 
 In conclusion, policy gradient methods are a valid option for modelling the
 strategies of electricity market participants.  They can use profit feedback
