@@ -80,7 +80,10 @@ for comparing reinforcement learning algorithms.  In each trading period the
 auction accepts offers to sell blocks of power from participating
 agents\footnote{A double-sided auction, in which bids to buy blocks of power may
 be submitted by agents associated with dispatchable loads, has also been
-implemented, but this feature is not used.}.
+implemented, but this feature is not used. Dispatchable loads are defined as
+generators with negative minimum and zero maximum output. Negative cost curve
+values specify the maximum price the load will pay for supply between these
+limits.}.
 % \subsection{Clearing Process} To simulate electric power trade a model is used
 % in which agents representing market participants do not provide cost functions
 % for the generators in their portfolio, but submit offers to sell and/or bids
@@ -423,16 +426,18 @@ $a$ &$m_1$ &$w_1$ &$m_2$ &$w_2$ \\
 % the market model.
 % %If $q_e^i = 0$, then $qty = p_{max}/n_{in}$.
 
-A continuous market environment that outputs a state vector $s$, where $s_i
-\in \mathbb{R}$, and accepts an action vector $a$, where $a_i \in \mathbb{R}$,
-is defined for agents operating policy gradient methods.  Scalar variables $m_{u}$ and $w_{u}$ define the upper limit on the percentage
-markups on marginal cost and the upper limit on the percentage of capacity that
-can be withheld, respectively.  Again, $n_o$ defines the number of offers to be
-submitted for each generator associated with the environment.
+A continuous market environment that outputs a state vector $s$, where $s_i \in
+\mathbb{R}$, and accepts an action vector $a$, where $a_i \in \mathbb{R}$, is
+defined for agents operating policy gradient methods.  Scalar variables $m_{u}$
+and $w_{u}$ define the upper limit on the percentage markups on marginal cost
+and the upper limit on the percentage of capacity that can be withheld,
+respectively.  Again, $n_o$ defines the number of offers to be submitted for
+each generator associated with the environment.
 
 The state vector can be any set of variables from the power system or market
 model.  For example: bus voltages, branch power flows, generator limit
-Lagrangian multipliers etc.  Each element of the vector provides one input to the neural network used for policy function approximation.
+Lagrangian multipliers etc.  Each element of the vector provides one input to
+the neural network used for policy function approximation.
 
 The action vector $a$ has length $2n_gn_o$.  Element $a_i$, where $0\leq a_i
 \leq m_{u}$, corresponds to the percentage price markup and each element
@@ -524,12 +529,13 @@ reward. The dataset stores state-action-reward triples for each interaction betw
 agent and its environment.  The stored history is used by a learners when
 computing updates to the module.
 
-Each learner has an association with an explorer that returns an explorative
-action $a_e$ when activated with action $a$ from the module.  Softmax and
-$\epsilon$-greedy explorers are implemented for discrete action spaces.  Policy
-gradient methods use a module that adds Gaussian noise to $a_m$.  The explorer
-has a parameter $\sigma$ that relates to the standard deviation of the normal
-distribution.  The actual standard deviation
+Each learner has an association with an explorer that implements one of the
+action selection techniques described in Section \ref{sec:actionselection} and
+returns an explorative/exploitative action $a_e$ when activated with action $a$
+from the module. Softmax and $\epsilon$-greedy explorers are implemented for
+discrete action spaces.  Policy gradient methods use a module that adds Gaussian
+noise to $a_m$.  The explorer has a parameter $\sigma$ that relates to the
+standard deviation of the normal distribution.  The actual standard deviation
 \begin{equation}
 \sigma_e = \begin{cases}
 \ln(\sigma + 1) + 1 & \text{if $\sigma \geq 0$}\\

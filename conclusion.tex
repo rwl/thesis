@@ -44,7 +44,7 @@ system model, designed for reliability analysis, was used to provide a
 realistic environment of a reasonable size.  The algorithms were compared in
 their ability to observe and exploit constraints in the system as loads followed
 an hourly profile.  It was not found that policy gradient methods could use
-additional bus voltage data to achieve greater performance than a action-value
+additional bus voltage data to achieve greater performance than an action-value
 function based method or a stateful variant of the Roth-Erev technique.
 However, they were shown to learn effective strategies under noisy dynamic
 conditions and to improve performance using complex continuous state
@@ -70,28 +70,28 @@ markets or in fully automated energy trade.
 \section{Further Work}
 \label{sec:furtherwork}
 This final section highlights some of the shortcomings of the methodology
-presented in this thesis and explains how the models could be further
-developed. It introduces some alternative learning algorithms that might also be used to
+presented in this thesis and explains how the models could be further developed.
+It introduces some alternative learning algorithms that might also be used to
 simulate electricity market participant behaviour.
 % Also, two new reinforcement learning problem formulations are defined that
 % concern two highly pertinent issues in electric power Engineering.
-It explains is how a model formulated using data from National Grid
-Ltd.~could be used in practical simulations of the UK electricity market and
-describes some other possibilities for using AC optimal power flow in
-agent-based electric power market simulation.
+It explains how a model formulated using data from National Grid Ltd.~could be
+used in practical simulations of the UK electricity market and describes some
+other possibilities for using AC optimal power flow in agent-based electric
+power market simulation.
 
 \subsection{Parameter Sensitivity and Delayed Reward}
-The simulations presented in this thesis use typical algorithm parameters that
-are either the default values from PyBrain or inspired by the literature. No
-study of parameter sensitivity is performed and alternative function
-approximation and back-propagation techniques could also be investigated. In
-reinforcement learning, parameter sensitivity analysis is often conducted by the
-algorithm developers using standard benchmark problems (such as mazes or pole
-balancing problems \cite{schaul:2010}) that are familiar to researchers in
-artificial intelligence and allow results to be compared. The shortage of
-published results and lack of standardised electricity trading models might
-limit the benefits of using this problem for general parameter sensitivity
-analysis.
+The simulations presented in this thesis use typical algorithm parameter choices
+that are either the default values from PyBrain or inspired by the literature.
+Alternative function approximation and back-propagation techniques, such as
+decision trees, (neuro-)fuzzy methods \cite{jang93anfis} and RProp
+\cite{riedmiller93}, could be investigated in the future. In reinforcement
+learning, parameter sensitivity analysis is often conducted by the algorithm
+developers using standard benchmark problems (such as mazes or pole balancing
+problems \cite{schaul:2010}) that are familiar to researchers in artificial
+intelligence and allow results to be compared. The shortage of published results
+and lack of standardised electricity trading models might limit the benefits of
+using this problem for general parameter sensitivity analysis.
 
 The reward signals received by agents in all of the simulations presented in
 this thesis result directly from the agent's previous action.  In
@@ -139,7 +139,11 @@ through application in real-world problems.
 
 This thesis provides a framework that would allow implementations of these
 algorithms to be assessed and used to research aspects of electricity
-markets.
+markets.  As in the simulations described in this thesis, alternative algorithms
+could be investigated with the same algorithm being used by all agents at the
+same time.  Alternatively, a selection of algorithms could be cycled
+around each of the agents in a series of simulations and the ultimate overall
+performance examined.
 
 % \subsection{Learning to Optimise Power Flow}
 % Two important problems in electric power Engineering, to which to the

@@ -897,6 +897,7 @@ and for $\lambda = 1$ all preceding state-values or state-action values are
 updated equally.
 
 \subsubsection{Action Selection}
+\label{sec:actionselection}
 A balance between exploration of the environment and exploitation of past
 experience must be struck when selecting actions.  The $\epsilon$-greedy
 approach to action selection is defined by a randomness parameter $\epsilon$ and
@@ -968,10 +969,12 @@ These convergence problems have motivated research into alternative learning
 methods, such as policy gradient methods, that can operate successfully with
 function approximators \cite{peters:enac}. Policy gradient algorithms make small
 incremental changes to the parameter vector $\theta$ of a policy function
-approximator (using an artificial neural network these parameters are the
-weights of the network connections) \cite{sutton:2000}. Policy gradient methods
-update $\theta$ in the direction of steepest ascent of some policy performance
-measure $Y$ with respect to the parameters
+approximator \cite{sutton:2000}. Typically artificial neural networks are used
+where the parameters are the weights of the network connections. However,
+other forms of generalising function approximator, such as decision trees or
+instance-based methods, may be used \cite{barto:policy}.  Policy
+gradient methods update $\theta$ in the direction of steepest ascent of some
+policy performance measure $Y$ with respect to the parameters
 \begin{equation}
 \theta_{i+1} = \theta_i + \alpha \frac{\partial Y}{\partial \theta_i}
 \end{equation}
