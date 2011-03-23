@@ -170,10 +170,12 @@ adjusted manually after each episode such that:
 \sigma_{t} = d(\sigma_{t-1}-\sigma_{n})+\sigma_{n}
 \end{equation}
 where $d=0.998$ is a decay parameter and $\sigma_{n}=-0.5$ specifies the
-value that is converged to asymptotically.  In each simulation the learning rate
+value that is converged to asymptotically.  Initially, the learning rate
 $\gamma=0.01$ for the policy gradient methods, apart from for ENAC under cost
-configuration 2 where $\gamma=0.005$.  Both active agents use the same
-parameter values in each simulation.
+configuration 2 where $\gamma=0.005$.  To illustrate the effect of altering
+the learning rate, simulations under cost configuration 1 are repeated with
+$\gamma=0.05$ and $\gamma=0.005$.  Both active agents use the same parameter
+values in each simulation.
 
 As in \citeA{krause:nash06}, the point of Nash equilibrium is established by
 computing each agent's reward for all possible combinations of discrete markup.
@@ -251,6 +253,12 @@ reward are not given as generator prices and the market are configured such that
 agent's reward is directly proportional to its action.  The plots are vertically
 aligned and have equal $x$-axis limits to assist algorithm comparison.
 
+Figure \ref{fig:5_3_action_a2} shows the average markup on marginal cost and the
+standard deviation over 10 simulation runs for Agent 2 operating policy
+gradient methods under price configuration 1 with an increased learning rate of
+0.05. Figure \ref{fig:5_4_action_a2} shows the same infomation, but with a
+reduced learning rate of 0.005.
+
 \ifthenelse{\boolean{includefigures}}{
 	\begin{figure}
 	  \centering
@@ -267,6 +275,22 @@ aligned and have equal $x$-axis limits to assist algorithm comparison.
 	  under cost configuration 1.}
 	  \label{fig:5_1_action_a2}
 	\end{figure}
+
+    \begin{figure}
+      \centering
+      \includegraphics{figures/fig5_3_action_a2}
+      \caption{Average markup and standard deviation for Agent 2
+      under cost configuration 1 with higher policy gradient learning rate.}
+      \label{fig:5_3_action_a2}
+    \end{figure}
+
+    \begin{figure}
+      \centering
+      \includegraphics{figures/fig5_4_action_a2}
+      \caption{Average markup and standard deviation for Agent 2
+      under cost configuration 1 with lower policy gradient learning rate.}
+      \label{fig:5_4_action_a2}
+    \end{figure}
 }{}
 
 Figures \ref{fig:5_2_action_a1} and \ref{fig:5_2_reward_a1} plot the average
@@ -318,11 +342,13 @@ Empirical studies have also shown that the speed of convergence is largely
 determined by the rate at which the exploration parameter value is reduced.
 However, the episodic nature of the policy gradient methods requires them to
 make several interactions per learning step and therefore a larger number of
-initial exploration steps are required.  Policy gradient methods have also
-been found to be highly sensitive to the choice of learning rate.  High
-values cause large changes to policy parameters to be made at each step and
-may cause the algorithm to not converge, but low values cause the
-algorithm to learn very slowly.
+initial exploration steps are required.  Figures
+\ref{fig:5_1_action_a2}, \ref{fig:5_3_action_a2} and \ref{fig:5_4_action_a2}
+illustrate the effect on policy gradient methods of changes in learning rate.
+Higher values cause larger changes to be made to the policy parameters at each
+step.  Increasing the learning rate had a positive effect here, but high values
+can cause the algorithms to behave sporadically as the adjustments made are too
+great. Conversely, low values cause the algorithms to learn very slowly.
 
 Cost configuration 2 provides a more challenging control problem in which
 Agent~1 must learn to undercut the passive agent.  The results show that the

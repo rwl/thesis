@@ -339,8 +339,8 @@ be put in series to form a single model used for all branches
 \cite{zimmerman:matpower}. The transmission line has total series admittance
 $y_s = 1/(r_s+jx_s)$, where $r_s$ is the series resistance and $x_s$ is the
 series reactance, and total shunt capacitance $b_c$. The winding ratio
-$N = \tau e^{j\theta_{shift}}$ may be complex, where $\tau$ is the tap ratio and
-$\theta_{shift}$ is the phase shift angle.
+may be complex, thus $N = \tau e^{j\theta_{shift}}$, where $\tau$ is the tap
+ratio and $\theta_{shift}$ is the phase shift angle.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/branch_model}}{}
 
@@ -350,14 +350,14 @@ connected from bus $f$ to bus $t$. According to Kirchhoff's Current Law, the
 current in the series impedance is
 \begin{equation}
 \label{eq:iseries}
-i_f = \frac{b_c}{2}v_t - i_t
+i_s = \frac{b_c}{2}v_t - i_t
 \end{equation}
 and from Kirchhoff's Voltage Law the voltage across the secondary winding of
 the transformer is
 \begin{equation}
-\frac{v_{f}}{N} = v_t + \frac{i_f}{y_s}
+\frac{v_{f}}{N} = v_t + \frac{i_s}{y_s}
 \end{equation}
-Substituting $i_f$ from equation (\ref{eq:iseries}), gives
+Substituting $i_s$ from equation (\ref{eq:iseries}), gives
 \begin{equation}
 \label{eq:vfrom}
 \frac{v_{f}}{N} = v_t - \frac{i_t}{y_s} + v_t\frac{b_c}{2y_s}
@@ -370,7 +370,7 @@ v_t \left( y_s + \frac{b_c}{2} \right)
 \end{equation}
 The current through the secondary winding of the transformer is
 \begin{equation}
-N^*i_f = i_f + \frac{b_c}{2}\frac{v_{f}}{N}
+N^*i_f = i_s + \frac{b_c}{2}\frac{v_{f}}{N}
 \end{equation}
 Substituting $i_f$ from equation (\ref{eq:iseries}) again, gives
 \begin{equation}
@@ -779,7 +779,7 @@ learning methods estimate this action-value function
 Q^\pi(s,a) = E \Bigg\lbrace \sum^\infty_{t=0} \gamma^t r_t \Bigg\vert s_0 = s,
 a_0 = a \Bigg\rbrace
 \end{equation}
-which defines the value of taking action $a$ in state $s$ under fixed policy
+which defines the quality of an action $a$ in state $s$ under fixed policy
 $\pi$ \cite{suttonbarto:1998}.
 
 \subsubsection{Temporal-Difference Learning}
@@ -910,10 +910,10 @@ selection the randomness is attenuated by $d$.
 
 Action selection may also be accomplished using a form of the \textit{softmax}
 method \cite[\S2]{suttonbarto:1998} using the Gibbs (or
-Boltzmann) distribution to select action $a$ for the $(t)^{th}$ interaction in
+Boltzmann) distribution to select action $a$ for the $t^{th}$ interaction in
 state $s$ with probability
 \begin{equation}
-\frac{e^{Q_{a}(t)/\tau}}{\sum_{b=1}^n e^{Q_{b}(t)/\tau}}
+\frac{e^{Q_{t}(s,a)/\tau}}{\sum_{b=1}^n e^{Q_{t}(s,b)/\tau}}
 \end{equation}
 for $n$ possible actions, where $\tau$ is the \textit{temperature} parameter.
 This parameter may be lowered in value over the course of an experiment since
