@@ -28,7 +28,7 @@ $l$ is the product of the line current $i_l$ and the line voltage $v_l$:
 s = \sqrt{3} v_l i_l
 \end{equation}
 Therefore the line current is inversely proportional to the voltage at which
-the power is transmitted. Ohmic heating losses are directly proportional to the
+the power is transmitted. Ohmic heating losses $p_{r}$ are directly proportional to the
 \textit{square} of the line current
 \begin{equation}
 p_{r} = 3 i_l^2 r_l
@@ -318,27 +318,28 @@ determines the complex voltage
 v_i = \vert v_i \vert \angle\delta_i = \vert
 v_i\vert(\cos\delta_i + j\sin\delta_i)
 \end{equation}
-at each node $i$ in the power system, from which line flows may be calculated
-\cite{wood:pgoc}.
+at each node $i$ in the power system, where $\delta_i$ is the voltage phase
+angle at the node, from which line flows may be calculated \cite{wood:pgoc}.
 
 % \paragraph{Nodal Admittance Matrix}
 A network of $n_b$ buses is defined by a $n_b \times n_b$ nodal admittance
-matrix $Y$ \cite{wood:pgoc,gloversarma:psad}.  The current injected at bus $i$ is
+matrix $Y$ \cite{wood:pgoc,gloversarma:psad}.  The current injected into the
+network at bus $f$ is
 \begin{equation}
-i_i = \sum_{j=1}^{n_b} y_{ij} v_j
+i_f = \sum_{t=1}^{n_b} y_{ft} v_t
 \end{equation}
-where $y_{ij} = \vert y_{ij}\vert \angle\theta_{ij}$ is the $(i,j)^{th}$
-element of $Y$ and $v_j$ is voltage at bus $j$.
+where $y_{ft} = \vert y_{ft}\vert \angle\theta_{ft}$ is the $(f,t)^{th}$
+element of $Y$ and $v_t$ is voltage at bus $t$.
 Typically, each bus can be assumed to be connected by either a transmission line
 or a transformer. A nominal-$\pi$ model can be used to represent medium length
 transmission lines \cite{grainger:psa} and transformers can be made
 \textit{regulating} by introducing a winding ratio $N$ that can be changed in
 response to the voltage on the load side \cite{crow:2009}. These two models may
 be put in series to form a single model used for all branches
-\cite[p.11]{pserc:mp_manual}. The transmission line has total series admittance
+\cite{zimmerman:matpower}. The transmission line has total series admittance
 $y_s = 1/(r_s+jx_s)$, where $r_s$ is the series resistance and $x_s$ is the
-series reactance, and total shunt capacitance $b_c$. If the winding ratio is
-complex then $N = \tau e^{j\theta_{shift}}$, where $\tau$ is the tap ratio and
+series reactance, and total shunt capacitance $b_c$. The winding ratio
+$N = \tau e^{j\theta_{shift}}$ may be complex, where $\tau$ is the tap ratio and
 $\theta_{shift}$ is the phase shift angle.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/branch_model}}{}
@@ -349,14 +350,14 @@ connected from bus $f$ to bus $t$. According to Kirchhoff's Current Law, the
 current in the series impedance is
 \begin{equation}
 \label{eq:iseries}
-i_s = \frac{b_c}{2}v_t - i_t
+i_f = \frac{b_c}{2}v_t - i_t
 \end{equation}
 and from Kirchhoff's Voltage Law the voltage across the secondary winding of
 the transformer is
 \begin{equation}
-\frac{v_{f}}{N} = v_t + \frac{i_s}{y_s}
+\frac{v_{f}}{N} = v_t + \frac{i_f}{y_s}
 \end{equation}
-Substituting $i_s$ from equation (\ref{eq:iseries}), gives
+Substituting $i_f$ from equation (\ref{eq:iseries}), gives
 \begin{equation}
 \label{eq:vfrom}
 \frac{v_{f}}{N} = v_t - \frac{i_t}{y_s} + v_t\frac{b_c}{2y_s}
@@ -369,14 +370,14 @@ v_t \left( y_s + \frac{b_c}{2} \right)
 \end{equation}
 The current through the secondary winding of the transformer is
 \begin{equation}
-N^*i_f = i_s + \frac{b_c}{2}\frac{v_{f}}{N}
+N^*i_f = i_f + \frac{b_c}{2}\frac{v_{f}}{N}
 \end{equation}
-Substituting $i_s$ from equation (\ref{eq:iseries}) again, gives
+Substituting $i_f$ from equation (\ref{eq:iseries}) again, gives
 \begin{equation}
 N^*i_f = \frac{b_c}{2}v_t - i_t + \frac{b_c}{2}\frac{v_{f}}{N}
 \end{equation}
 and substituting $\frac{v_{f}}{N}$ from equation (\ref{eq:vfrom}) and
-rearranging in terms if $i_s$, gives
+rearranging in terms if $i_f$, gives
 \begin{equation}
 \label{eq:ifrom}
 i_s = v_f \left( \frac{1}{\tau^2} \left(y_s + \frac{b_c}{2}\right) \right) +
@@ -459,35 +460,35 @@ y_{tt}& =& y_s + \frac{b_c}{2}
 % Importantly, the relationship between nodal voltages and power entering the
 % network is non-linear.
 Recalling equation (\ref{eq:ybus}), the apparent power entering the network at
-bus $i$ is
+bus $f$ is
 \begin{equation}
-s_i = p_i+jq_i = v_i i_i^* = \sum_{j=1}^{n_b} \vert y_{ij}v_i v_j \vert \angle
-(\delta_i - \delta_j - \theta_{ij})
+s_f = p_f+jq_f = v_f i_f^* = \sum_{t=1}^{n_b} \vert y_{ft}v_f v_t \vert \angle
+(\delta_f - \delta_t - \theta_{ft})
 \end{equation}
 Converting to polar coordinates and separating the real and imaginary parts,
 the active power
 \begin{equation}
-p_i = \sum_{j=1}^{n_b} \vert y_{ij}v_i v_j \vert \cos(\delta_i - \delta_j -
-\theta_{ij})
+p_f = \sum_{t=1}^{n_b} \vert y_{ft}v_f v_t \vert \cos(\delta_f - \delta_t -
+\theta_{ft})
 \end{equation}
 and the reactive power
 \begin{equation}
-q_i = \sum_{j=1}^{n_b} \vert y_{ij}v_i v_j \vert \sin(\delta_i - \delta_j -
-\theta_{ij})
+q_f = \sum_{t=1}^{n_b} \vert y_{ft}v_f v_t \vert \sin(\delta_f - \delta_t -
+\theta_{ft})
 \end{equation}
-entering the network at bus $i$ are non-linear functions of voltage, as
+entering the network at bus $f$ are non-linear functions of voltage, as
 indicated by the presence of the sine and cosine terms.
 Kirchhoff's Current Law requires that the net complex power injection
 (generation - demand) at each bus must equal the sum of complex power flows on
 each branch connected to the bus.  The power balance equations
 \begin{equation}
 \label{eq:p_balance}
-p_g^i - p_d^i = p^i
+p_g^f - p_d^f = p^f
 \end{equation}
 and
 \begin{equation}
 \label{eq:q_balance}
-q_g^i - q_d^i = q^i,
+q_g^f - q_d^f = q^f,
 \end{equation}
 where the subscripts $g$ and $d$ indicate generation and demand
 respectively, form the principal non-linear constraints in the optimal power
@@ -640,11 +641,11 @@ where $\lambda$ and $\mu$ are vectors of Lagrangian multipliers, using an
 Interior Point Method \cite{cvxopt:2004,zimmerman:ccv}.  When solved, the Lagrangian
 multiplier for a constraint gives the rate of change of the objective function
 value with respect to the constraint variable.  If the objective function is
-equation (\ref{eq:objfunc}), the Lagrangian multipliers $\lambda^i_P$ and
-$\lambda^i_Q$ for the power balance constraint at each bus $i$, given by
+equation (\ref{eq:objfunc}), the Lagrangian multipliers $\lambda^f_P$ and
+$\lambda^f_Q$ for the power balance constraint at each bus $f$, given by
 equations (\ref{eq:p_balance}) and (\ref{eq:q_balance}), are the nodal marginal
 prices and can be interpreted as the increase in the total system cost for an
-additional injection at $i$ of 1MW or 1MVAr, respectively.
+additional injection at bus $f$ of 1MW or 1MVAr, respectively.
 
 For a case in which none of the inequality constraints $h(x)$
 (such as branch power flow or bus voltage limits) are binding, the nodal
@@ -770,8 +771,9 @@ indicates that it is an estimate \cite{suttonbarto:1998}. Performing certain
 actions may result in no state change, creating a loop and causing the value of
 that action to be infinite for certain policies. The discount factor $\gamma$
 prevents values from going unbounded and represents reduced trust in the reward
-$r_t$ as discrete time $t$ increases.  Many reinforcement learning methods
-estimate the action-value function
+$r_t$ as discrete time $t$ increases.  Each action $a$ in state $s$ may also
+be associated with a certain quality $Q^\pi(s,a)$ and many reinforcement
+learning methods estimate this action-value function
 \begin{equation}
 \label{eq:actionvalue}
 Q^\pi(s,a) = E \Bigg\lbrace \sum^\infty_{t=0} \gamma^t r_t \Bigg\vert s_0 = s,
@@ -879,7 +881,7 @@ preceding state or state-action pair is updated at each time step.  However, the
 prediction $V(s_{t+1})$ also provides information concerning earlier predictions
 and TD methods can be extended to update a set of values at each step.  An
 eligibility trace $e(s)$ \cite{tanner:2005} represents how eligible the state
-$s$ is to receive credit or blame for the TD error:
+$s$ is to receive credit or blame for the TD error
 \begin{equation}
 \delta = r_{t+1} + \gamma V^\pi(s_{t+1}) - V^\pi(s_t)
 \end{equation}
