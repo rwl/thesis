@@ -883,7 +883,7 @@ and TD methods can be extended to update a set of values at each step.  An
 eligibility trace $e(s)$ \cite{tanner:2005} represents how eligible the state
 $s$ is to receive credit or blame for the TD error
 \begin{equation}
-\delta = r_{t+1} + \gamma V^\pi(s_{t+1}) - V^\pi(s_t)
+\delta = r_{t+1} + \gamma V^\pi(s_{t+1}) - V^\pi(s_t).
 \end{equation}
 When extended with eligibility traces TD methods update values for all states
 \begin{equation}
@@ -910,14 +910,15 @@ selection the randomness is attenuated by $d$.
 
 Action selection may also be accomplished using a form of the \textit{softmax}
 method \cite[\S2]{suttonbarto:1998} using the Gibbs (or
-Boltzmann) distribution to select action $k$ for the $(t+1)^{th}$ interaction with probability
+Boltzmann) distribution to select action $a$ for the $(t)^{th}$ interaction in
+state $s$ with probability
 \begin{equation}
-p_{jk}(t+1) = \frac{e^{q_{jk}(t+1)/\tau}}{\sum_{l=0}^K e^{q_{jl}(t+1)/\tau}}
+\frac{e^{Q_{a}(t)/\tau}}{\sum_{b=1}^n e^{Q_{b}(t)/\tau}}
 \end{equation}
-where $\tau$ is the \textit{temperature} parameter.  This parameter may be
-lowered in value over the course of an experiment since high values give all
-actions similar probability and encourage exploration of the action space,
-while low values promote exploitation of past experience.
+for $n$ possible actions, where $\tau$ is the \textit{temperature} parameter.
+This parameter may be lowered in value over the course of an experiment since
+high values give all actions similar probability and encourage exploration of
+the action space, while low values promote exploitation of past experience.
 
 % \subsubsection{Q($\lambda$)}
 % \label{sec:qlambda}
@@ -978,7 +979,7 @@ instance-based methods, may be used \cite{barto:policy}.  Policy
 gradient methods update $\theta$ in the direction of steepest ascent of some
 policy performance measure $Y$ with respect to the parameters
 \begin{equation}
-\theta_{i+1} = \theta_i + \alpha \frac{\partial Y}{\partial \theta_i}
+\theta_{t+1} = \theta_t + \alpha \frac{\partial Y}{\partial \theta_t}
 \end{equation}
 where $\alpha$ is a positive definite step size learning rate.  Unlike look-up
 table based methods, they do not require all states to be continually updated.
@@ -1112,15 +1113,15 @@ experimentation parameter prevents the probability of choosing an action from
 going to zero and encourages exploration of the action space.
 
 \citeA{roth:aer} proposed action selection according to a
-discrete probability distribution function, where action $k$ is selected for interaction $t+1$ with
-probability
+discrete probability distribution function, where action $a$ is selected for
+interaction $t+1$ with probability
 \begin{equation}
 \label{eq:re_prob}
-p_{jk}(t+1) = \frac{q_{jk}(t+1)}{\sum_{l=0}^K q_{jl}(t+1)}
+p_{ja}(t+1) = \frac{q_{ja}(t+1)}{\sum_{b=0}^A q_{jb}(t+1)}
 \end{equation}
-Since $\sum_{l=0}^K q_{jl}(t+1)$ increases with $t$, a reward $r_{jk}(t)$ for
+Since $\sum_{b=0}^A q_{jl}(t+1)$ increases with $t$, a reward $r_{ja}(t)$ for
 performing action $k$ will have a greater effect on the probability
-$p_{jk}(t+1)$ during early interactions while $t$ is small.  This is intended
+$p_{ja}(t+1)$ during early interactions while $t$ is small.  This is intended
 to represent Psychology's Power Law of Practice in which it is qualitatively
 stated that with practice learning occurs at a decaying exponential rate and
 that a learning curve will eventually flatten out.
