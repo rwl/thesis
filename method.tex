@@ -264,10 +264,11 @@ market is described and illustrated.
 
 \subsection{Market Environment}
 Each agent has a portfolio of $n_g$ generators in their local environment.
-Figure \ref{fig:cls_pyreto} illustrates the association and how the environment
-references an instance of the auction market for offer submission. Each
-environment is responsible for \begin{inparaenum}[(i)] \item returning a vector
-representation of its current state and \item accepting an action vector which
+Figure \ref{fig:cls_pyreto} illustrates how each environment
+references one or more generator objects and one auction market to allow
+offers to be submitted. Each environment is responsible for
+\begin{inparaenum}[(i)]
+\item returning a vector representation of its current state and \item accepting an action vector which
 transforms the environment into a new state. \end{inparaenum}  To facilitate
 testing of value function based and policy gradient learning methods, both
 discrete and continuous representations of an electric power trading environment
@@ -452,9 +453,10 @@ on the neural network.
 \subsection{Agent Task}
 To allow alternative goals (such as profit maximisation or the meeting of some
 target level for plant utilisation) to be associated with a single type of
-environment, an agent does not interact \textit{directly} with its environment,
-but is paired with a particular \textit{task}. A task defines the reward
-returned to the agent and thus defines the agent's purpose.
+environment, an agent does not interact directly with its environment.
+Instead, interaction is through a particular \textit{task} that is associated
+with the environment, as illustrated in Figure~\ref{fig:cls_pyreto}. A task
+defines the reward returned to the agent and thus defines the agent's purpose.
 
 For all simulations in this thesis the goal of each agent is to maximise direct
 financial profit.  Rewards are defined as the sum of earnings from the previous
@@ -499,9 +501,11 @@ based on a previous observation $s$ of its environment.
 % $n_s$ is the total number of states and $n_a$ is the total number of actions.
 %Figure X shows in UML that
 The UML class diagram in Figure \ref{fig:cls_agent} illustrates how each agent
-in PyBrain is associated with a \textit{module}, a \textit{learner} (variant
-Roth-Erev in the diagram), a \textit{dataset} and an
-\textit{explorer}.
+in PyBrain is associated with a \textit{module} for storing action-values,
+propensities or function approximator parameters, a \textit{learner} (variant
+Roth-Erev in the diagram) that adjusts the values of the module, a
+\textit{dataset} for storing state, action, reward histories and an
+\textit{explorer} that adds a degree of exploration to action selections.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/cls_agent}}{}
 
@@ -555,24 +559,26 @@ adjusted during back-propagation.
 
 \subsection{Simulation Event Sequence}
 \ifthenelse{\boolean{includefigures}}{\input{tikz/cls_experiment}}{}
-Each simulation consists of one or more task-agent pairs.  Figure
-\ref{fig:cls_experiment} shows the class associations for a simulation
-experiment.  At the beginning of each simulation step (trading period) $t$ the
-market is initialised and all previous offers are removed.  Figure
-\ref{fig:seq_action} is a UML sequence diagram that illustrates the process of
-choosing and performing an action that follows.  For each task-agent tuple an
-observation $s_t$ is retrieved from the task and integrated into the agent.
-When an action is requested from the agent its module is activated with $s_t$
-and the action $a_{e,t}$ is returned.  Action $a_{e,t}$ is performed on the
-environment associated with the agent's task.
+In Figure~\ref{fig:cls_pyreto} and Figure~\ref{fig:cls_agent} it can be seen
+that an agent does not reference its environment, nor vice versa.  Interaction
+beteween the two is coordinated by a market \textit{experiment} that references
+one or more task-agent pairs, as illustrated in Figure \ref{fig:cls_experiment}.  At
+the beginning of each simulation step (trading period) $t$ the market is
+initialised and all previous offers are removed.  Figure \ref{fig:seq_action} is
+a UML sequence diagram that illustrates the process of choosing and performing
+an action that follows.  For each task-agent tuple a normalised observation
+$s_t$ is retrieved from the task and integrated into the agent. When an action is
+requested from the agent its module is activated with $s_t$ and the action
+$a_{e,t}$ is returned.  Action $a_{e,t}$ is denormalised by the task
+and performed on the environment associated with the agent's task.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/seq_action}}{}
 \ifthenelse{\boolean{includefigures}}{\input{tikz/seq_reward}}{}
 
 When all actions have been performed the offers are cleared by the market using
-the solution to a newly formed optimal power flow problem.  Figure
-\ref{fig:seq_reward} illustrates the subsequent reward process.  The cleared
-offers associated with the generators in the task's environment are retrieved
+the solution to a newly formed optimal power flow problem.  The sequence
+diagram in Figure \ref{fig:seq_reward} illustrates the subsequent reward
+process. The cleared offers associated with the generators in the task's environment are retrieved
 from the market and the reward $r_t$ is computed from the difference between
 revenue and marginal cost at the total cleared quantity.
 % For each generator in the agent's portfolio that was previously online and is
@@ -585,7 +591,7 @@ is the dataset.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/seq_learn}}{}
 
-The learning process is illustrated by the UML sequence diagram in Figure
+The learning process is illustrated by the sequence diagram in Figure
 \ref{fig:seq_learn}.  Each agent learns from its actions using $r_t$, at which
 point the values or parameters of the module associated with the agent are
 updated according to the output of the learner's algorithm.  Each agent is then
