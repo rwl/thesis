@@ -1,0 +1,39 @@
+\begin{figure}
+\centering
+\begin{tikzpicture}[xscale=0.9,yscale=0.9]
+
+
+%% Boundary drop shadow.
+\begin{scope}[xshift=1mm,yshift=-1mm]
+  \tikzstyle{shad} = [fill=black!100]
+  \tikzstyle{uk} = [shad];
+  \tikzstyle{ire} = [shad];
+
+  \input{data/boundaries}
+%  \input{data/boundaries-simple}
+\end{scope}
+
+%% UK boundary
+\begin{scope}
+  \tikzstyle{uk} = [fill=white];
+  \tikzstyle{ire} = [fill=white];
+
+  \input{data/boundaries}
+%  \input{data/boundaries-simple}
+\end{scope}
+
+%% UK power stations
+\input{data/generators}
+
+%% UK & Ireland cities
+\begin{scriptsize}
+  \tikzstyle{every pin edge}=[-,shorten <=1pt,thin];
+  \tikzstyle{city} = [fill=black, circle, minimum size=6pt, inner sep=1pt];
+  \input{data/gen_cities}
+\end{scriptsize}
+
+
+\end{tikzpicture}
+% \caption{UK National Grid}
+% \label{fig:uk_gen}
+\end{figure}

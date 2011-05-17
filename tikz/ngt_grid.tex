@@ -1,0 +1,75 @@
+% \newcommand{\OutlineText}[1]
+% {
+% \ifpdf
+%   % Couldn't find a nicer way of doing an outline font with TikZ
+%   % other than using pdfliteral 1 Tr
+%   %
+%   \pdfliteral direct {0.3 w 0 g}{#1}%
+%   \pdfliteral direct {1 w 1 g}%
+% \else
+%   % pstricks can do this with \pscharpath from pstricks
+%   %
+%   \pscharpath[shadow=false,
+%     fillstyle=solid,
+%     fillcolor=white,
+%     linestyle=solid,
+%     linecolor=black,
+%     linewidth=.2pt]{#1}
+% \fi
+% }
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[xscale=0.9,yscale=0.9]
+
+%% Boundary drop shadow.
+\begin{scope}[xshift=1mm,yshift=-1mm]
+  \tikzstyle{shad} = [fill=black!100]
+  \tikzstyle{uk} = [shad];
+  \tikzstyle{ire} = [shad];
+
+  \input{data/boundaries}
+%  \input{tikz/boundaries-simple}
+\end{scope}
+
+%% UK boundary
+\begin{scope}
+  \tikzstyle{uk} = [fill=white];
+  \tikzstyle{ire} = [fill=white];
+
+  \input{data/boundaries}
+%  \input{tikz/boundaries-simple}
+\end{scope}
+
+%% Transmission system
+\tikzstyle{trans} = [draw=black!60];
+
+\tikzstyle{line110} = [line width=0.75pt,trans,color=violet];
+\tikzstyle{line132} = [line width=0.75pt,trans,color=green!50!black];
+\tikzstyle{line220} = [line width=1pt,trans,color=red!70!black];
+\tikzstyle{line275} = [line width=1pt,trans,color=orange!90!black];
+\tikzstyle{line400} = [line width=1.5pt,trans,color=blue!80!black];
+\input{data/branches}
+
+%% UK & Ireland cities
+\begin{scriptsize}
+  \tikzstyle{every pin edge}=[-,shorten <=1pt,thin];
+  \tikzstyle{city} = [fill=black, circle, minimum size=6pt, inner sep=1pt];
+  \input{data/cities}
+
+\begin{scope}[xshift=-11cm,yshift=64.2cm]
+  %% Legend
+  \coordinate (ll) at (1,0);
+  \draw[line400] (0,1.6) -- ++(ll) node[right,color=black]{400kV};
+  \draw[line275] (0,1.2) -- ++(ll) node[right,color=black]{275kV};
+  \draw[line220] (0,0.8) -- ++(ll) node[right,color=black]{220kV};
+  \draw[line132] (0,0.4) -- ++(ll) node[right,color=black]{132kV};
+  \draw[line110] (0,0.0) -- ++(ll) node[right,color=black]{110kV};
+\end{scope}
+
+\end{scriptsize}
+
+\end{tikzpicture}
+% \caption{UK National Grid}
+% \label{fig:uk_gen}
+\end{figure}
