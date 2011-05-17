@@ -1,0 +1,46 @@
+======================================================================
+LEARNING TO TRADE POWER
+======================================================================
+
+A thesis by Richard Lincoln, presented in partial fulfilment of the
+requirements for the degree of Doctor of Philosophy at the University
+of Strathclyde in 2011.
+
+======================================================================
+BUILD INSTRUCTIONS
+======================================================================
+
+This thesis is written in LaTeX and can be built using the pdflatex
+command. PGF/TikZ is used to create certain diagrams and a recent
+build is required to exist on the texmf tree. Builds can usually be
+obtained from:
+
+  http://www.texample.net/tikz/builds/
+
+The UML sequence diagrams are built using pgf-umlsd and a working
+style file is included. Newer versions of the macros are usually
+available from:
+
+  http://code.google.com/p/pgf-umlsd/
+
+The simplest way to build the thesis is to just run:
+
+  $ make
+
+Auxillary and output files can be removed using:
+
+  $ make clean
+
+======================================================================
+COPYRIGHT
+======================================================================
+
+Copyright (C) 2011 Richard Lincoln
+
+The copyright of this thesis belongs to the author under the terms of
+the United Kingdom Copyright Acts as qualified by University of
+Strathclyde Regulation 3.50. Due acknowledgement must always be made
+of the use of any material contained in, or derived from, this thesis.
+
+======================================================================
+
