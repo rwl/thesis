@@ -3,8 +3,8 @@
 This chapter describes the research presented in this thesis in the context of
 similar work in the area.  It focuses on the learning methods and simulation
 models used in previously published research.  \citeA{weidlich:08} provide a
-similar review with greater emphasis on simulation results and conclusions
-drawn from them.
+similar review with greater emphasis on simulation results and conclusions drawn
+from them.
 % In the interests of repeatability, the software developed for this thesis has
 % been released as open source \cite{lincoln:pyreto}.  The second section in
 % this chapter describes the software project in the context of other open
@@ -78,17 +78,17 @@ submitted.  Active demand side participation is modelled and generator dynamic
 constraints are represented by limiting the number of off/on cycles per day.
 Again, transmission constraints and regional price variations are ignored.
 
-Supplier and generator agents are assigned an optimal value for
-exposure to the balancing mechanism that is set low due to high price and
-volume uncertainty.  The agents learn to maximise profit, but profits are
-penalised if the objective for balancing mechanism exposure is not
-achieved.  They learn policies for pricing markups on the bids submitted
-to the power exchange and the increments and decrements submitted to the
-balancing mechanism.  Markups in the power exchange are relative to prices
-from the previous day and markups on balancing mechanism bids are relative to
-power exchange bid prices on the same day.  Different markup
-ranges are specified for generators and suppliers in the power exchange and
-balancing mechanism and each is partitioned into ten discrete intervals.
+Supplier and generator agents are assigned an optimal value for exposure to the
+balancing mechanism that is set low due to high price and volume uncertainty.
+The agents learn to maximise profit, but profits are penalised if the objective
+for balancing mechanism exposure is not achieved.  They learn policies for
+pricing markups on the bids submitted to the power exchange and the increments
+and decrements submitted to the balancing mechanism.  Markups in the power
+exchange are relative to prices from the previous day and markups on balancing
+mechanism bids are relative to power exchange bid prices on the same day.
+Different markup ranges are specified for generators and suppliers in the power
+exchange and balancing mechanism and each is partitioned into ten discrete
+intervals.
 
 As with the Roth-Erev method, a probability for the selection of each markup is
 calculated by the learning method.  Daily profits and acceptance rates for
@@ -148,17 +148,17 @@ hour-ahead markets with inelastic load.  The hour-ahead simulation is repeated
 with elastic demand response.
 
 The number of if-then rules required to define participant strategies in this
-paper is demonstrates a drawback of implementing custom learning methods that
-is only exacerbated when defining multiple strategies.
+paper is demonstrates a drawback of implementing custom learning methods that is
+only exacerbated when defining multiple strategies.
 
 A similar custom learning method is compared with two other algorithms in
-\citeA{visud:thesis}.  The custom method is designed specifically for the
-power pool model that is used and employs separate policies for selecting bid
-quantities and prices according to several if-then rules that attempt to
-capture capacity withholding behaviour.  The method is compared with
-algorithms developed in \citeA{auer:03} for application to the $n$-armed
-bandit problem \cite[\S2.1]{robbins:53,suttonbarto:1998} and a method based on
-evaluative feedback with softmax action selection.
+\citeA{visud:thesis}.  The custom method is designed specifically for the power
+pool model that is used and employs separate policies for selecting bid
+quantities and prices according to several if-then rules that attempt to capture
+capacity withholding behaviour.  The method is compared with algorithms
+developed in \citeA{auer:03} for application to the $n$-armed bandit problem
+\cite[\S2.1]{robbins:53,suttonbarto:1998} and a method based on evaluative
+feedback with softmax action selection.
 
 In the algorithms from \citeA{auer:03} each action $i = 1,2,\dotsc K$, for $K$
 possible actions, is associated with a weight $w_t(i)$ in simulation period $t
@@ -236,8 +236,8 @@ previous stage.  If multiple bids are found to have the same value then the
 least expensive is selected.  In the first period, previous bids are assumed to
 be at marginal cost.
 
-Several case studies are examined, with different numbers of generators and
-line capacities, but few explicit conclusions are drawn.  Financial transmission
+Several case studies are examined, with different numbers of generators and line
+capacities, but few explicit conclusions are drawn.  Financial transmission
 rights are an important issue in electricity markets, but the learning algorithm
 and network model are perhaps overly simple for practical conclusions to be
 drawn.
@@ -249,11 +249,11 @@ drawn.
 Custom heuristic behavioural models have the advantage of allowing specific
 trading characteristics to be encapsulated and of being relatively
 straightforward to program. They have been used by senior researchers from
-respected institutions to tackle important and pertinent research
-questions. However, they try to model complex trading behaviour using relatively
-simple rules and are taylored to specific situations. Their successful
-application opens an opportunity to apply generic learning methods from
-the field of artificial intelligence.
+respected institutions to tackle important and pertinent research questions.
+However, they try to model complex trading behaviour using relatively simple
+rules and are taylored to specific situations. Their successful application
+opens an opportunity to apply generic learning methods from the field of
+artificial intelligence.
 
 % \section{Agent-Based Simulation}
 % Relative to the traditional closed-form equilibrium approaches, agent-based
@@ -424,19 +424,18 @@ Q-learning application and the impact of this deserves further investigation.
 The Q-learning method from \citeA{krause:nash04,krause:nash06} is used to
 analyse strategic behaviour in integrated electricity and gas markets in
 \citeA{krause:gas}.  Again, power flows are computed using a PTDF matrix.
-Pipeline losses in the gas network are approximated using using a cubic
-function of flow and three combined gas and electricity models are
-compared.
+Pipeline losses in the gas network are approximated using using a cubic function
+of flow and three combined gas and electricity models are compared.
 
 In the first model, operators of gas-fired power plant submit separate bid
 functions for gas and electricity.  Bids are then cleared as a single
 optimisation problem.  In model two, operators submit one offer for their
-capacity to convert gas to electricity.  In the third model, bids are
-submitted only to the electricity market, after which gas is purchased
-regardless of price.  Gas supply offers are modelled as a linear function with
-no strategic involvement.  The models are compared in terms of social welfare,
-using a three bus power system model with three non-gas-fired power plants and
-one gas-fired plant.
+capacity to convert gas to electricity.  In the third model, bids are submitted
+only to the electricity market, after which gas is purchased regardless of
+price.  Gas supply offers are modelled as a linear function with no strategic
+involvement.  The models are compared in terms of social welfare, using a three
+bus power system model with three non-gas-fired power plants and one gas-fired
+plant.
 
 The experimental results show little difference between electricity prices and
 social welfare prices between the models.  However, this research illustrates
@@ -480,20 +479,20 @@ the experimental results can not be generalised.  The authors cite further model
 validation and agent learning method improvements as necessary further work.
 
 The complexity of the combined electricity and emissions market model
-illustrates how the search spaces for learning methods can grow dramatically
-as models are enlarged.
+illustrates how the search spaces for learning methods can grow dramatically as
+models are enlarged.
 
 \subsection{Tacit Collusion}
-The SA-Q-learning method is also used in \citeA{tellidou:tacit} by
-researchers from the University of Thessaloniki to study capacity withholding
-and tacit collusion among electricity market participants.  A mandatory spot
-market is implemented, where bid quantities may be less than net capacity and
-bid prices may be marked up upon marginal cost by increasing the slope of a
-linear cost function.  Again the market is cleared using a DC optimal power flow
-formulation and locational marginal prices are used to calculate profits that
-are used as the reinforcement signal in the learning process.  Demand is assumed
-to be inelastic and transmission system parameters to be constant between
-simulation periods.
+The SA-Q-learning method is also used in \citeA{tellidou:tacit} by researchers
+from the University of Thessaloniki to study capacity withholding and tacit
+collusion among electricity market participants.  A mandatory spot market is
+implemented, where bid quantities may be less than net capacity and bid prices
+may be marked up upon marginal cost by increasing the slope of a linear cost
+function.  Again the market is cleared using a DC optimal power flow formulation
+and locational marginal prices are used to calculate profits that are used as
+the reinforcement signal in the learning process.  Demand is assumed to be
+inelastic and transmission system parameters to be constant between simulation
+periods.
 
 A simple two node power system model, containing two generators, is used in
 three test cases. In a reference case, each generator bids full capacity at
@@ -501,8 +500,8 @@ marginal cost.  In the second case, generators bid quantities in steps of 10MW
 and price markups in steps of \EUR{2}/MWh.  In the third case, the same
 generation capacity is split among eight identical generators to increase the
 level of competition. The experimental results show that generators learn to
-withhold capacity and develop tacit collusion strategies to capture
-congestion profits.
+withhold capacity and develop tacit collusion strategies to capture congestion
+profits.
 
 This work is similar to earlier research from other institutions
 \cite{wang:09,krause:nash06} and makes minimal further contribution.  It does
@@ -511,14 +510,14 @@ through increased collaboration and sharing of software source code.
 
 \section{Simulations Applying Roth-Erev}
 This section reviews work involving a reinforcement learning method from Roth
-and Erev that has received considerable attention from the agent-based electricity
-market simulation community.
+and Erev that has received considerable attention from the agent-based
+electricity market simulation community.
 
 \subsection{Market Power}
-In \citeA{nicolaisen:2001} an agent-based model of a wholesale electricity market
-with both supply and demand side participation is constructed.  It is used to
-study market power and short-run market efficiency under discriminatory pricing
-through systematic variation of concentration and capacity conditions.
+In \citeA{nicolaisen:2001} an agent-based model of a wholesale electricity
+market with both supply and demand side participation is constructed.  It is
+used to study market power and short-run market efficiency under discriminatory
+pricing through systematic variation of concentration and capacity conditions.
 
 To model the power system, each trader is assigned values of available
 transmission capability (ATC) with respect to each of the other traders. Offers
@@ -528,13 +527,13 @@ observed and a modified version that alleviates the issues (See Section
 \ref{sec:variant}) is proposed.
 
 A maximum markup (markdown) of \$40/MWh is specified for each seller (buyer).
-Traders are not able to make negative profits and the feasible price range
-is divided into 30 offer prices for 1000 auction rounds cases and 100 offer
-prices for 10000 auction round cases.  The parameters of the Roth-Erev method
-are calibrated using direct search within reasonable ranges.  Nine combinations of
+Traders are not able to make negative profits and the feasible price range is
+divided into 30 offer prices for 1000 auction rounds cases and 100 offer prices
+for 10000 auction round cases.  The parameters of the Roth-Erev method are
+calibrated using direct search within reasonable ranges.  Nine combinations of
 buyer and seller numbers and total trading capacities are tested using the
-calibrated parameter values and \textit{best-fit} values determined
-empirically in \citeA{roth:aer}.
+calibrated parameter values and \textit{best-fit} values determined empirically
+in \citeA{roth:aer}.
 
 The experimental results show that good market efficiency is achieved under all
 configurations and sensitivity to method parameter changes is low.  Levels of
@@ -545,8 +544,8 @@ are forced to bid at marginal cost.  The results are compared with those from
 conclude that the reinforcement learning approach leads to higher market
 efficiency due to the adaption according to \textit{individual} profits.
 
-Genetic algorithms were a popular option for participant strategy modelling
-in early agent-based electricity market research
+Genetic algorithms were a popular option for participant strategy modelling in
+early agent-based electricity market research
 \cite{richter:1998,petrov:2000,lane:2000}. \citeA{nicolaisen:2001} compares
 reinforcement learning and genetic algorithms and illustrates some of the
 reasons that perhaps explain why they have now been largely abandoned in this
@@ -564,8 +563,8 @@ represented by permitting traders to bid lower than true operating capacity and
 higher than true marginal costs.
 
 Comparing results from a benchmark case, in which true production costs are
-reported, but higher than marginal cost functions may be reported, with cases
-in which reported production limits may be less than the true values, the authors
+reported, but higher than marginal cost functions may be reported, with cases in
+which reported production limits may be less than the true values, the authors
 find that with sufficient capacity reserve there is no evidence to suggest
 potential for inducing higher net earnings through capacity withholding in the
 market design.
@@ -599,8 +598,9 @@ customised optimal power flow formulation. Agents are rewarded according to a
 uniform national price, computed as a weighted average of zonal prices with
 respect to zonal load.  Using actual hourly load data it is shown that in
 experiments in which agents \textit{learn} their optimal strategy, historical
-trends can be replicated in all but certain hours of peak load.  The authors state a desire
-to test different learning methods and perform further empirical validation.
+trends can be replicated in all but certain hours of peak load.  The authors
+state a desire to test different learning methods and perform further empirical
+validation.
 
 \subsection{Vertically Related Firms and Crossholding}
 In \citeA{micola:08} a multi-tier model of wholesale natural gas, wholesale
@@ -669,40 +669,40 @@ In \citeA{weidlich:06} the modified Roth-Erev method is used to study
 interrelationships between contracts markets and balancing markets.  Bids on the
 day-ahead contracts market consist of a price and a volume, which are assumed to
 be the same for each hour of the day.  Demand is assumed to be fixed and
-inelastic.  Bids on the balancing market consist of a reserve price, a
-work price and an offered quantity.  The reserve price is that which
-must be paid for the quantity to be kept on standby and the work price must be
-paid if that quantity is called upon for transmission system stabilisation. No
-optimal power flow formulation or power system model is defined.
+inelastic.  Bids on the balancing market consist of a reserve price, a work
+price and an offered quantity.  The reserve price is that which must be paid for
+the quantity to be kept on standby and the work price must be paid if that
+quantity is called upon for transmission system stabilisation. No optimal power
+flow formulation or power system model is defined.
 
 At the day-ahead stage, contract market and balancing market bids are cleared,
 according to reserve price, by stacking in order of ascending price until the
 forecast demand is met.  On the following day, accepted balancing bids are
-cleared according to work price such that requirements for reserve dispatch
-are met.
+cleared according to work price such that requirements for reserve dispatch are
+met.
 
-Bid prices on the contracts market are stratified into 21 discrete
-values between 0 and 100 and bid quantities into six discrete values between 0
-and maximum capacity, giving 126 possible actions.  Bid quantities on the
-balancing market equal the capacity remaining after contract market
-participation.  21 discrete capacity prices between 0 and 500 and 5 work prices
-between 0 and 100 are permitted, giving 105 possible actions in the balancing
-market.  Separate instances of the modified Roth-Erev method are used to learn
-bidding strategies for each agent in each of the markets.
+Bid prices on the contracts market are stratified into 21 discrete values
+between 0 and 100 and bid quantities into six discrete values between 0 and
+maximum capacity, giving 126 possible actions.  Bid quantities on the balancing
+market equal the capacity remaining after contract market participation.  21
+discrete capacity prices between 0 and 500 and 5 work prices between 0 and 100
+are permitted, giving 105 possible actions in the balancing market.  Separate
+instances of the modified Roth-Erev method are used to learn bidding strategies
+for each agent in each of the markets.
 
-Interrelationships between the markets are studied using four scenarios in
-which the order of market execution and the balancing market pricing mechanism
+Interrelationships between the markets are studied using four scenarios in which
+the order of market execution and the balancing market pricing mechanism
 (discriminatory or pay-as-bid) are changed.  Clearing prices in the market
-executed first are shown to have a marked effect on prices in the
-following market.  The authors find agent-based simulation to be a suitable
-tool for reproducing realistic market outcomes and recognise a need for more
-detailed participant models.
+executed first are shown to have a marked effect on prices in the following
+market.  The authors find agent-based simulation to be a suitable tool for
+reproducing realistic market outcomes and recognise a need for more detailed
+participant models.
 
 In the same year, the authors collaborated with Jian Yao and Shmuel Oren from
 the University of California to study the dynamics between two settlement
 markets using the modified Roth-Erev method \cite{viet:06}.  The markets are a
-forward contracts market, in which transmission constraints are ignored, and a spot
-market that is cleared using a DC optimal power flow formulation with line
+forward contracts market, in which transmission constraints are ignored, and a
+spot market that is cleared using a DC optimal power flow formulation with line
 flows calculated using a PTDF matrix.  The authors state that suppliers utility
 functions are to include aspects of risk aversion in future work.  The use of
 some measure of risk adjusted return to assess performance is commonplace in
@@ -710,24 +710,24 @@ economics research, but is currently lacking from the agent-based electricity
 market simulation literature.
 
 Zonal prices are set in the forward market as weighted averages of nodal prices
-with respect to historical load shares.  Profits are determined using the
-zonal prices and nodal prices from optimisation of the spot market.  Demand is assumed
+with respect to historical load shares.  Profits are determined using the zonal
+prices and nodal prices from optimisation of the spot market.  Demand is assumed
 inelastic to price, but different contingency states with peak and low demand
-levels are examined.  A stylised 53 bus model of the Belgian electricity
-system from \citeA{yao:07} and \citeA{yao:08} is used to validate the results
-against those obtained using equilibrium methods.  The nineteen generators are divided among
-two firms which learn strategies for bid price and quantity selection using the
-modified Roth-Erev method with a set of fixed parameter values taken from
-\citeA{roth:aer}.  The results show that the presence of a forward contracts
-market produces lower overall electricity prices and lower price volatility.
-The authors note that risk aversion is to be included in suppliers utility
-functions in future work.
+levels are examined.  A stylised 53 bus model of the Belgian electricity system
+from \citeA{yao:07} and \citeA{yao:08} is used to validate the results against
+those obtained using equilibrium methods.  The nineteen generators are divided
+among two firms which learn strategies for bid price and quantity selection
+using the modified Roth-Erev method with a set of fixed parameter values taken
+from \citeA{roth:aer}.  The results show that the presence of a forward
+contracts market produces lower overall electricity prices and lower price
+volatility. The authors note that risk aversion is to be included in suppliers
+utility functions in future work.
 
 \section{Policy Gradient Reinforcement Learning}
 Policy gradient reinforcement learning methods have been successfully applied in
 both laboratory and operational settings
-\cite{barto:policy,shaal:robots,peshkin:routing}.  This section reviews
-market related applications of these methods.
+\cite{barto:policy,shaal:robots,peshkin:routing}.  This section reviews market
+related applications of these methods.
 
 \subsection{Financial Decision Making}
 \label{sec:moody}
@@ -755,11 +755,12 @@ where $\rho$ is the learning rate.  Direct profit is the simplest performance
 function defined, but assumes traders are insensitive to risk.  Investors
 being sensitive to losses are, in general, willing to sacrifice potential gains
 for reduced risk of loss. To allow on-line learning and parameter updates at
-each time period, the authors define a \textit{differential} Sharpe ratio.  By maintaining an
-exponential moving average of the Sharpe ratio, the need to compute return
-averages and standard deviations for the entire trading history at each
-simulation period is avoided.  Alternative performance ratios, including the
-Information ratio, Appraisal ratio and Sterling ratio, are mentioned.
+each time period, the authors define a \textit{differential} Sharpe ratio.  By
+maintaining an exponential moving average of the Sharpe ratio, the need to
+compute return averages and standard deviations for the entire trading history
+at each simulation period is avoided.  Alternative performance ratios,
+including the Information ratio, Appraisal ratio and Sterling ratio, are
+mentioned.
 
 Simulations are conducted using artificial price data, equivalent to one year of
 hourly trade in a 24-hour market, and using 45 years of monthly data from the
@@ -807,12 +808,12 @@ Q(s_t,a_t) = \sum_{t=1}^T r(s_t,a_t) - \overline{r}_t
 \end{equation}
 and $\overline{r}_t$ is the current average reward.
 
-The authors recognise that their grid market model could be generalised to
-other multi-seller retail markets.  The experimental results show that if
-all grid service providers simultaneously use the learning algorithm then the
-process converges to a Nash equilibrium.  The results also showed that
-significant increases in profit were possible by offering both standard and
-premium services.
+The authors recognise that their grid market model could be generalised to other
+multi-seller retail markets.  The experimental results show that if all grid
+service providers simultaneously use the learning algorithm then the process
+converges to a Nash equilibrium.  The results also showed that significant
+increases in profit were possible by offering both standard and premium
+services.
 
 While this work applies policy gradient methods in a different domain, it shows
 how these methods can be used to set prices in a market and the author

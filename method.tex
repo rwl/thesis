@@ -165,52 +165,43 @@ The extended optimal power flow formulations from \textsc{Matpower} with
 user-defined cost functions and generator P-Q capability curves are not used,
 but could be applied in further development of this work.
 
-% \section{DC OPF Formulation}
-% Piecewise linear cost functions are also used to define generator active power
-% costs in the DC optimal power flow formulation.  Since the power flow equations
-% are linearised, following the assumptions in equations (\ref{eq:lossless}),
-% (\ref{eq:oneperunit}) and (\ref{eq:busangdiff}), the optimal power flow
-% problem simplifies to a linear program.  The voltage magnitude variables $V_m$
-% and generator reactive power set-point variable $Q_g$ are eliminated following
-% the assumption in equation (\ref{eq:busangdiff}) since branch reactive power
-% flows depend on bus voltage angle differences.  The objective function reduces to
-% \begin{equation}
-% \min_{\theta, P_g, y} \sum_{i=1}^{n_g}y_i
-% \end{equation}
-% Combining the nodal real power injections, expressed as a function of $\Theta$,
-% from equation (\ref{eq:bbus}), with active power generation $P_g$ and active
-% demand $P_d$, the power balance constraint is
-% \begin{equation}
-% B_{bus}\Theta + P_{bus,ph} + P_d - C_gP_g = 0
-% \end{equation}
-% Limits on branch active power flows $B_f\Theta$ and $B_t\Theta$ are enforced by
-% the inequality constraints
+% \section{DC OPF Formulation} Piecewise linear cost functions are also used to
+% define generator active power costs in the DC optimal power flow formulation.
+% Since the power flow equations are linearised, following the assumptions in
+% equations (\ref{eq:lossless}), (\ref{eq:oneperunit}) and
+% (\ref{eq:busangdiff}), the optimal power flow problem simplifies to a linear
+% program.  The voltage magnitude variables $V_m$ and generator reactive power
+% set-point variable $Q_g$ are eliminated following the assumption in equation
+% (\ref{eq:busangdiff}) since branch reactive power flows depend on bus voltage
+% angle differences.  The objective function reduces to \begin{equation}
+% \min_{\theta, P_g, y} \sum_{i=1}^{n_g}y_i \end{equation} Combining the nodal
+% real power injections, expressed as a function of $\Theta$, from equation
+% (\ref{eq:bbus}), with active power generation $P_g$ and active demand $P_d$,
+% the power balance constraint is \begin{equation} B_{bus}\Theta + P_{bus,ph} +
+% P_d - C_gP_g = 0 \end{equation} Limits on branch active power flows
+% $B_f\Theta$ and $B_t\Theta$ are enforced by the inequality constraints
 % \begin{eqnarray}
 % B_f\Theta + P_{f,ph} - F_{max}& \leq& 0\\
-% -B_f\Theta + P_{f,ph} - F_{max}& \leq& 0
-% \end{eqnarray}
-% The reference bus voltage angle equality constraint from
-% equation (\ref{eq:refbusang}) and the $p_g$ limit constraint from
-% (\ref{eq:pglim}) are also applied.
+% -B_f\Theta + P_{f,ph} - F_{max}& \leq& 0 \end{eqnarray} The reference bus
+% voltage angle equality constraint from equation (\ref{eq:refbusang}) and the
+% $p_g$ limit constraint from (\ref{eq:pglim}) are also applied.
 
 \subsection{Unit De-commitment}
 \label{sec:decommit}
-The optimal power flow formulations constrain generator set-points between
-upper and lower power limits.  The output of expensive generators can be
-reduced to the lower limit, but they can not be completely shutdown.  The
-online status of generators could be added to the vector of
-optimisation variables, but being Boolean the problems would be
-mixed-integer non-linear programs which are typically very difficult to
-solve.
+The optimal power flow formulations constrain generator set-points between upper
+and lower power limits.  The output of expensive generators can be reduced to
+the lower limit, but they can not be completely shutdown.  The online status of
+generators could be added to the vector of optimisation variables, but being
+Boolean the problems would be mixed-integer non-linear programs which are
+typically very difficult to solve.
 
-To compute a least cost commitment and dispatch the unit de-commitment
-algorithm from \citeA[p.57]{pserc:mp_manual} is used.  The algorithm
-involves shutting down the most expensive units until the
-minimum generation capacity is less than the total load capacity and then
-solving repeated optimal power flow problems with candidate generating units,
-that are at their minimum active power limit, deactivated.  The lowest cost
-solution is returned when no further improvement can be made and no candidate
-generators remain.
+To compute a least cost commitment and dispatch the unit de-commitment algorithm
+from \citeA[p.57]{pserc:mp_manual} is used.  The algorithm involves shutting
+down the most expensive units until the minimum generation capacity is less than
+the total load capacity and then solving repeated optimal power flow problems
+with candidate generating units, that are at their minimum active power limit,
+deactivated.  The lowest cost solution is returned when no further improvement
+can be made and no candidate generators remain.
 
 % \begin{algorithm}%[H]
 % \caption{Unit de-commitment}
@@ -256,23 +247,22 @@ structure of which is derived from PyBrain's single player design.
 % In PyBrain, agents do not interact directly with their environment, but are
 % associated with a particular \textit{task}.
 This section describes: discrete and continuous market \textit{environments},
-agent \textit{tasks} and \textit{modules} used for policy function
-approximation and storing state-action values or action propensities.  The
-process by which each agent's policy is updated by a \textit{learner} is
-explained and the sequence of interactions between multiple agents and the
-market is described and illustrated.
+agent \textit{tasks} and \textit{modules} used for policy function approximation
+and storing state-action values or action propensities.  The process by which
+each agent's policy is updated by a \textit{learner} is explained and the
+sequence of interactions between multiple agents and the market is described and
+illustrated.
 
 \subsection{Market Environment}
 Each agent has a portfolio of $n_g$ generators in their local environment.
-Figure \ref{fig:cls_pyreto} illustrates how each environment
-references one or more generator objects and one auction market to allow
-offers to be submitted. Each environment is responsible for
-\begin{inparaenum}[(i)]
-\item returning a vector representation of its current state and \item accepting an action vector which
-transforms the environment into a new state. \end{inparaenum}  To facilitate
-testing of value function based and policy gradient learning methods, both
-discrete and continuous representations of an electric power trading environment
-are defined.
+Figure \ref{fig:cls_pyreto} illustrates how each environment references one or
+more generator objects and one auction market to allow offers to be submitted.
+Each environment is responsible for \begin{inparaenum}[(i)] \item returning a
+vector representation of its current state and \item accepting an action vector
+which transforms the environment into a new state. \end{inparaenum}  To
+facilitate testing of value function based and policy gradient learning methods,
+both discrete and continuous representations of an electric power trading
+environment are defined.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/cls_env}}{}
 
@@ -297,12 +287,11 @@ returned by the environment $s_t = i$ if $\mathscr{S}_i \leq P_{dt} \leq
 \mathscr{S}_{i+1}$ for $i = 0,\dotsc n_s$.
 
 
-The action space for a discrete environment is defined by a vector $m$, where
-$0 \leq m_i \leq 100$, of percentage markups on marginal cost with length
-$n_m$, a vector $w$, where $0 \leq w_i \leq 100$, of percentage capacity
-withholds with length $n_w$ and a scalar number of offers $n_o$, where $n_o \in
-\mathbb{Z}^+$, to be submitted for each generator associated with the
-environment.
+The action space for a discrete environment is defined by a vector $m$, where $0
+\leq m_i \leq 100$, of percentage markups on marginal cost with length $n_m$, a
+vector $w$, where $0 \leq w_i \leq 100$, of percentage capacity withholds with
+length $n_w$ and a scalar number of offers $n_o$, where $n_o \in \mathbb{Z}^+$,
+to be submitted for each generator associated with the environment.
 
 A $n_a \times 2n_gn_o$ matrix with all permutations of markup and withhold for
 each offer that is to be submitted for each generator is computed. As an
@@ -317,20 +306,18 @@ permutation matrix grows rapidly as $n_o$, $n_g$, $n_m$ and $n_w$ increase.
 % For operation with learning methods that use look-up tables to store
 % state-action values, an environment with $n_s$ discrete states and $n_a$
 % discrete actions is defined.  An agent can not observe offers/bids submitted
-% by competitor agents, but may sense other aspects of the power system
-% model.  To ensure that the size of the environment state space is
-% kept reasonable, the agent is limited to observing a demand forecast.  The
-% initial demand at each bus $P_{d0}$, as defined in the original power system
-% model, is assumed to be peak and the demand can follow a profile at each
-% step $t$ of the simulation (See Chapter \ref{ch:exploitation}).  The state
-% space is divided into discrete steps of size $P_{step} = (P_{d0} - P_d^{min}) /
-% n_s$, where $P_d^{min}$ is the total demand at the lowest point of the profile.  The
-% environment computes the total system demand $P_{dt}$ at step $t$ and returns
-% an integer representation of the state
-% \begin{equation}
-% s_t = \frac{(P_{dt} - P_d^{min})}{P_{step}} + 1.
-% \end{equation}
-%
+% by competitor agents, but may sense other aspects of the power system model.
+% To ensure that the size of the environment state space is kept reasonable, the
+% agent is limited to observing a demand forecast.  The initial demand at each
+% bus $P_{d0}$, as defined in the original power system model, is assumed to be
+% peak and the demand can follow a profile at each step $t$ of the simulation
+% (See Chapter \ref{ch:exploitation}).  The state space is divided into discrete
+% steps of size $P_{step} = (P_{d0} - P_d^{min}) / n_s$, where $P_d^{min}$ is
+% the total demand at the lowest point of the profile.  The environment computes
+% the total system demand $P_{dt}$ at step $t$ and returns an integer
+% representation of the state \begin{equation} s_t = \frac{(P_{dt} -
+% P_d^{min})}{P_{step}} + 1. \end{equation}
+
 % To define the action space, a vector of percentage markups on marginal cost
 % $m_e$ is defined for each environment $e$ along with a variable $n_o \in
 % \mathbb{Z}^+$ which denotes the number of offers/bids to be submitted by the
@@ -413,19 +400,19 @@ $a$ &$m_1$ &$w_1$ &$m_2$ &$w_2$ \\
 
 % For agents operating policy gradient methods, continuous environments that
 % output $n_s$ sensors and accept $n_a$ actions are defined.  Each environment
-% may be configured for actions that specify just price or price and quantity.  If
-% $q_e^i = 0$ where $q_e^i \in (0,1)$ then the agent's action is price selection
-% and the offer/bid quantity is determined by the maximum rated capacity of the
-% generator in question divided by the number of offers being submitted for it.
-% The environment accepts an action vector $a_e$ of length $n_a$ if $q_e^i = 0$,
-% otherwise of length $2n_a$.  If $q_e^i = 0$, the $i$-th element of $a_e$ is
-% the offered/bid price in \$/MWh, where $i = 1,2,\dotsc n_{in}$.  If $q_e^i =
-% 1$, the $i$-th element of $a_e$ is the offered/bid price in \$/MWh, where $i =
-% 1,3,5,\dotsc n_{in}-1$ and the $j$-th element of $a_e$ is the offered/bid
-% quantity in MW where $j = 2,4,6,\dotsc n_{in}$.  The action vector passed to
-% the environment is converted into sets of offers/bids that are submitted to
-% the market model.
-% %If $q_e^i = 0$, then $qty = p_{max}/n_{in}$.
+% may be configured for actions that specify just price or price and quantity.
+% If $q_e^i = 0$ where $q_e^i \in (0,1)$ then the agent's action is price
+% selection and the offer/bid quantity is determined by the maximum rated
+% capacity of the generator in question divided by the number of offers being
+% submitted for it. The environment accepts an action vector $a_e$ of length
+% $n_a$ if $q_e^i = 0$, otherwise of length $2n_a$.  If $q_e^i = 0$, the $i$-th
+% element of $a_e$ is the offered/bid price in \$/MWh, where $i = 1,2,\dotsc
+% n_{in}$.  If $q_e^i = 1$, the $i$-th element of $a_e$ is the offered/bid price
+% in \$/MWh, where $i = 1,3,5,\dotsc n_{in}-1$ and the $j$-th element of $a_e$
+% is the offered/bid quantity in MW where $j = 2,4,6,\dotsc n_{in}$.  The action
+% vector passed to the environment is converted into sets of offers/bids that
+% are submitted to the market model. %If $q_e^i = 0$, then $qty =
+% p_{max}/n_{in}$.
 
 A continuous market environment that outputs a state vector $s$, where $s_i \in
 \mathbb{R}$, and accepts an action vector $a$, where $a_i \in \mathbb{R}$, is
@@ -442,21 +429,21 @@ the neural network used for policy function approximation.
 
 The action vector $a$ has length $2n_gn_o$.  Element $a_i$, where $0\leq a_i
 \leq m_{u}$, corresponds to the percentage price markup and each element
-$a_{i+1}$, where $0\leq a_{i+1} \leq w_{u}$, to the percentage of capacity
-to be withheld for the $(i/2)^{th}$ offer, where $i=0,2,4,\dotsc,2n_gn_o$.
+$a_{i+1}$, where $0\leq a_{i+1} \leq w_{u}$, to the percentage of capacity to be
+withheld for the $(i/2)^{th}$ offer, where $i=0,2,4,\dotsc,2n_gn_o$.
 
 Not having to discretize the state space and compute a matrix of action
 permutations greatly simplifies the implementation of a continuous environment
-and increases in $n_g$ and $n_o$ only impact the number of output nodes
-on the neural network.
+and increases in $n_g$ and $n_o$ only impact the number of output nodes on the
+neural network.
 
 \subsection{Agent Task}
 To allow alternative goals (such as profit maximisation or the meeting of some
 target level for plant utilisation) to be associated with a single type of
-environment, an agent does not interact directly with its environment.
-Instead, interaction is through a particular \textit{task} that is associated
-with the environment, as illustrated in Figure~\ref{fig:cls_pyreto}. A task
-defines the reward returned to the agent and thus defines the agent's purpose.
+environment, an agent does not interact directly with its environment. Instead,
+interaction is through a particular \textit{task} that is associated with the
+environment, as illustrated in Figure~\ref{fig:cls_pyreto}. A task defines the
+reward returned to the agent and thus defines the agent's purpose.
 
 For all simulations in this thesis the goal of each agent is to maximise direct
 financial profit.  Rewards are defined as the sum of earnings from the previous
@@ -477,8 +464,8 @@ Agents with policy-gradient learning methods approximate their policy functions
 using artificial neural networks that are presented with an input vector $s_n$
 of length $n_s$ where $s_{n,i} \in \mathbb{R}$.  To condition the environment
 state before input to the connectionist system, where possible, a vector $s_{l}$
-of lower sensor limits and a vector $s_{u}$ of upper sensor limits is
-defined.  These are used to calculated a normalised state vector
+of lower sensor limits and a vector $s_{u}$ of upper sensor limits is defined.
+These are used to calculated a normalised state vector
 \begin{equation}
 v = 2\left(\frac{s - s_{l}}{s_{u} - s_{l}}\right) - 1
 \end{equation}
@@ -494,12 +481,11 @@ where $0\leq a_i \leq m_{u}$ and $0\leq a_{i+1} \leq w_{u}$ for $i=0,2,4,
 \dotsc, 2n_gn_o$.
 
 \subsection{Market Participant Agent}
-Each agent is defined as an entity capable of producing an action $a$
-based on a previous observation $s$ of its environment.
-% , where $a_i$ and $s_i$
-% are vectors of length $n_a$ and $n_s$ respectively, where
-% $n_s$ is the total number of states and $n_a$ is the total number of actions.
-%Figure X shows in UML that
+Each agent is defined as an entity capable of producing an action $a$ based on a
+previous observation $s$ of its environment.
+% , where $a_i$ and $s_i$ are vectors of length $n_a$ and $n_s$ respectively,
+% where $n_s$ is the total number of states and $n_a$ is the total number of
+% actions. Figure X shows in UML that
 The UML class diagram in Figure \ref{fig:cls_agent} illustrates how each agent
 in PyBrain is associated with a \textit{module} for storing action-values,
 propensities or function approximator parameters, a \textit{learner} (variant
@@ -528,8 +514,8 @@ multi-layer feed-forward artificial neural network that outputs a vector $a$
 when presented with observation~$s_n$.
 
 The learner can be any reinforcement learning algorithm that modifies the
-values/propensities/parameters of the module to increase expected future
-reward. The dataset stores state-action-reward triples for each interaction between the
+values/propensities/parameters of the module to increase expected future reward.
+The dataset stores state-action-reward triples for each interaction between the
 agent and its environment.  The stored history is used by a learners when
 computing updates to the module.
 
@@ -551,36 +537,36 @@ adjusted during back-propagation.
 
 %TODO: PG explorer module.
 
-% For example, the $\epsilon$-greedy explorer
-% has a randomness parameter $\epsilon$ and a decay parameter $d$.  When the
-% $\epsilon$-greedy explorer is activated, a random number $x_r$ is drawn where
-% $0 \leq x_r \leq 1$.  If $x_r < \epsilon$ then a random vector of the same
-% length as $a_e$ is returned, otherwise $a_e = a_m$.
+% For example, the $\epsilon$-greedy explorer has a randomness parameter
+% $\epsilon$ and a decay parameter $d$.  When the $\epsilon$-greedy explorer is
+% activated, a random number $x_r$ is drawn where $0 \leq x_r \leq 1$.  If $x_r
+% < \epsilon$ then a random vector of the same length as $a_e$ is returned,
+% otherwise $a_e = a_m$.
 
 \subsection{Simulation Event Sequence}
 \ifthenelse{\boolean{includefigures}}{\input{tikz/cls_experiment}}{}
 In Figure~\ref{fig:cls_pyreto} and Figure~\ref{fig:cls_agent} it can be seen
 that an agent does not reference its environment, nor vice versa.  Interaction
 beteween the two is coordinated by a market \textit{experiment} that references
-one or more task-agent pairs, as illustrated in Figure \ref{fig:cls_experiment}.  At
-the beginning of each simulation step (trading period) $t$ the market is
+one or more task-agent pairs, as illustrated in Figure \ref{fig:cls_experiment}.
+ At the beginning of each simulation step (trading period) $t$ the market is
 initialised and all previous offers are removed.  Figure \ref{fig:seq_action} is
 a UML sequence diagram that illustrates the process of choosing and performing
 an action that follows.  For each task-agent tuple a normalised observation
-$s_t$ is retrieved from the task and integrated into the agent. When an action is
-requested from the agent its module is activated with $s_t$ and the action
-$a_{e,t}$ is returned.  Action $a_{e,t}$ is denormalised by the task
-and performed on the environment associated with the agent's task.
+$s_t$ is retrieved from the task and integrated into the agent. When an action
+is requested from the agent its module is activated with $s_t$ and the action
+$a_{e,t}$ is returned.  Action $a_{e,t}$ is denormalised by the task and
+performed on the environment associated with the agent's task.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/seq_action}}{}
 \ifthenelse{\boolean{includefigures}}{\input{tikz/seq_reward}}{}
 
 When all actions have been performed the offers are cleared by the market using
-the solution to a newly formed optimal power flow problem.  The sequence
-diagram in Figure \ref{fig:seq_reward} illustrates the subsequent reward
-process. The cleared offers associated with the generators in the task's environment are retrieved
-from the market and the reward $r_t$ is computed from the difference between
-revenue and marginal cost at the total cleared quantity.
+the solution to a newly formed optimal power flow problem.  The sequence diagram
+in Figure \ref{fig:seq_reward} illustrates the subsequent reward process. The
+cleared offers associated with the generators in the task's environment are
+retrieved from the market and the reward $r_t$ is computed from the difference
+between revenue and marginal cost at the total cleared quantity.
 % For each generator in the agent's portfolio that was previously online and is
 % not dispatched, a shutdown cost $c_{down}$ is subtracted from the reward.
 % \begin{equation} r_t = \mbox{revenue} - (c_{fixed} + c_{variable})

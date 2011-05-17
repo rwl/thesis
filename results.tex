@@ -7,7 +7,7 @@ their convergence to an optimal policy using a six bus electric power system
 model.
 
 \section{Introduction}
-This thesis presents the first case of policy gradient reinforcement learning
+This thesis presents the firqst case of policy gradient reinforcement learning
 methods being applied to simulated electricity trade.  As a first step it is
 necessary to confirm that when using these methods, a system of multiple agents
 will converge to the same Nash equilibrium\footnote{Informally, a Nash
@@ -17,15 +17,15 @@ motivated to deviate from its strategy, as it would result in lower gain
 
 This is the same approach used by \citeA{krause:nash06} before performing the
 study of congestion management techniques that is reviewed in Section
-\ref{sec:related_cong}.  Nash equilibria can be difficult
-to determine in complex systems so the experiment presented here utilises a
-model simple enough that solutions can be determined through exhaustive search.
+\ref{sec:related_cong}.  Nash equilibria can be difficult to determine in
+complex systems so the experiment presented here utilises a model simple enough
+that solutions can be determined through exhaustive search.
 
-By observing actions taken and rewards received by each agent over the
-initial simulation periods it is possible to compare the speed and consistency
-with which different algorithms converge to an optimal policy. In the following
-sections the objectives of the simulation are defined, the simulation setup
-is explained and plots of results, with discussion and critical analysis, are
+By observing actions taken and rewards received by each agent over the initial
+simulation periods it is possible to compare the speed and consistency with
+which different algorithms converge to an optimal policy. In the following
+sections the objectives of the simulation are defined, the simulation setup is
+explained and plots of results, with discussion and critical analysis, are
 provided.
 
 \section{Aims and Objectives}
@@ -48,24 +48,24 @@ selection.
 
 \section{Method of Simulation}
 % Each learning method is tested individually using a range of parameter
-% configurations.  A power system model with one bus, one generator $k$ and
-% one dispatchable load $l$.  In this
-% context, the market clearing process is equivalent to creating offer and bids
-% stacks and finding the point of intersection.  A passive agent is associated
-% with the dispatchable load.  This agent bids for $-p_{g,l}^{min}$ at marginal
-% cost each period regardless of environment state or reward signal.  A
-% dispathcable load is used instead of a constant load to allow a price to be
-% set. Generator $k$ is given sufficient capacity to supply the demand
-% of the dispatchable load, $p_{g,k}^{max} > -p_{g,l}^{min}$, and the marginal of
-% the $k$ is half that of the load $l$.  The generator and dispatchable load
-% attributes are given in Table X.  A price cap for the market is set to twice the
-% marginal cost of the $l$ at full capacity, $p_{g,l}^{min}$.  The DC optimal
-% power flow formulation (See Section \ref{sec:opf}, above) is used to clear the
-% market and reactive power trade is omitted.
+% configurations.  A power system model with one bus, one generator $k$ and one
+% dispatchable load $l$.  In this context, the market clearing process is
+% equivalent to creating offer and bids stacks and finding the point of
+% intersection.  A passive agent is associated with the dispatchable load.  This
+% agent bids for $-p_{g,l}^{min}$ at marginal cost each period regardless of
+% environment state or reward signal.  A dispathcable load is used instead of a
+% constant load to allow a price to be set. Generator $k$ is given sufficient
+% capacity to supply the demand of the dispatchable load, $p_{g,k}^{max} >
+% -p_{g,l}^{min}$, and the marginal of the $k$ is half that of the load $l$.
+% The generator and dispatchable load attributes are given in Table X.  A price
+% cap for the market is set to twice the marginal cost of the $l$ at full
+% capacity, $p_{g,l}^{min}$.  The DC optimal power flow formulation (See Section
+% \ref{sec:opf}, above) is used to clear the market and reactive power trade is
+% omitted.
 Learning methods are compared in this chapter by utilising the same base
 simulation problem and switching the algorithms used by the agents.  An
-alternative might be to use a combination of methods in the same simulation, but the
-approach used here is intended to be an extension of the work by
+alternative might be to use a combination of methods in the same simulation, but
+the approach used here is intended to be an extension of the work by
 \citeA{krause:nash06}.
 
 Each simulation uses a six bus electric power system model adapted from
@@ -83,15 +83,14 @@ Two sets of quadratic generator operating cost functions, of the form
 $c(p_i)=ap_i^2+bp_i+c$ where $p_i$ is the output of generator $i$, are defined
 in order to create two different equilibria for investigation.  The coefficients
 $a$, $b$ and $c$ for cost configuration 1 are listed in Table
-\ref{tbl:case6ww_gencost1}.  This configuration defines two low cost
-generators that can not offer a price greater than the marginal cost of the most
-expensive generator when they apply the maximum possible markup. The set of
-coefficients for cost configuration 2 is listed in Table
-\ref{tbl:case6ww_gencost2}.  This configuration narrows the cost differences
-such that offer prices may overlap and may exceed the marginal cost of the most
-expensive generator.
-% To strengthen the penalty for not being dispatched and
-% shutdown cost $C_{down}$ of \$100 is specified in this configuration.
+\ref{tbl:case6ww_gencost1}.  This configuration defines two low cost generators
+that can not offer a price greater than the marginal cost of the most expensive
+generator when they apply the maximum possible markup. The set of coefficients
+for cost configuration 2 is listed in Table \ref{tbl:case6ww_gencost2}.  This
+configuration narrows the cost differences such that offer prices may overlap
+and may exceed the marginal cost of the most expensive generator.
+% To strengthen the penalty for not being dispatched and shutdown cost
+% $C_{down}$ of \$100 is specified in this configuration.
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/case6ww}}{}
 
@@ -127,22 +126,23 @@ Gen &$a$ &$b$ &$c$ \\
 \end{center}
 \end{table}
 
-As in \citeA{krause:nash06}, no specific load profile is defined. The
-system load is assumed to be at peak in all periods and only one state is
-defined for methods using look-up tables.  Each simulation step is assumed to be one
-hour in length.
+As in \citeA{krause:nash06}, no specific load profile is defined. The system
+load is assumed to be at peak in all periods and only one state is defined for
+methods using look-up tables.  Each simulation step is assumed to be one hour in
+length.
 
 For all generators $P^{min}=0$ so as to simplify the equilbria and avoid the
 need for the unit de-commitment algorithm.  The maximum capacity for the most
-expensive generator $P^{max}_3=220$MW such that it may supply all of the
-load if dispatched, subject to branch flow limits.  This generator is
-associated with a passive agent that always offers full capacity at marginal cost.  For the less expensive generators
-$P^{max}_1=P^{max}_2=110$MW.  These two generators are each associated with an
-active learning agent whose activity in the market is restricted to one offer of
-maximum capacity in each period, at a price representing a markup of between 0
-and 30\% on marginal cost.  Methods restricted to discrete actions may markup in
-steps of 10\%, giving possible markup actions of 0, 10\%, 20\% and 30\%.  No
-capacity withholding is implemented.
+expensive generator $P^{max}_3=220$MW such that it may supply all of the load if
+dispatched, subject to branch flow limits.  This generator is associated with a
+passive agent that always offers full capacity at marginal cost.  For the less
+expensive generators $P^{max}_1=P^{max}_2=110$MW.  These two generators are each
+associated with an active learning agent whose activity in the market is
+restricted to one offer of maximum capacity in each period, at a price
+representing a markup of between 0 and 30\% on marginal cost.  Methods
+restricted to discrete actions may markup in steps of 10\%, giving possible
+markup actions of 0, 10\%, 20\% and 30\%.  No capacity withholding is
+implemented.
 % The market price cap is set such that it is never reached by any markup and
 % does not complicate the experiment.
 Discriminatory pricing (pay-as-bid) is used in order to provide a clearer reward
@@ -179,14 +179,13 @@ values in each simulation.
 
 As in \citeA{krause:nash06}, the point of Nash equilibrium is established by
 computing each agent's reward for all possible combinations of discrete markup.
-The rewards for Agent 1 and Agent 2 under cost configuration 1 are given in Table
-\ref{tbl:nash1}.  The Nash equilibrium points are marked with a *.  The table
-shows that the optimal policy for each agent is to apply the maximum markup to
-each offer as their generators are always dispatched.
-The rewards under cost configuration~2 are given in Table \ref{tbl:nash2}. This
-table shows that the optimal point occurs when Agent 2 applies its maximum
-markup and Agent 1 offers a price just below the marginal cost of the passive agent's
-generator.
+The rewards for Agent 1 and Agent 2 under cost configuration 1 are given in
+Table \ref{tbl:nash1}.  The Nash equilibrium points are marked with a *.  The
+table shows that the optimal policy for each agent is to apply the maximum
+markup to each offer as their generators are always dispatched. The rewards
+under cost configuration~2 are given in Table \ref{tbl:nash2}. This table shows
+that the optimal point occurs when Agent 2 applies its maximum markup and Agent
+1 offers a price just below the marginal cost of the passive agent's generator.
 
 \begin{table}
 \caption{Agent rewards under cost configuration~1}
@@ -197,14 +196,18 @@ generator.
 \cline{3-10}
  & &\multicolumn{8}{c|}{$G_1$} \\
 \cline{3-10}
- & &\multicolumn{2}{c|}{0.0\%} &\multicolumn{2}{c|}{10.0\%} &\multicolumn{2}{c|}{20.0\%} &\multicolumn{2}{c|}{30.0\%} \\
+ & &\multicolumn{2}{c|}{0.0\%} &\multicolumn{2}{c|}{10.0\%}
+ &\multicolumn{2}{c|}{20.0\%} &\multicolumn{2}{c|}{30.0\%} \\
  & &r_1 &r_2 &r_1 &r_2 &r_1 &r_2 &r_1 &r_2 \\
 \hline
-\multicolumn{1}{|c|}{\multirow{4}{*}{$G_2$}} &0.0\% &0.0 &0.0 &40.0 &0.0 &80.0 &0.0 &120.0 &0.0 \\
-\multicolumn{1}{|c|}{} &10.0\% &0.0 &33.0 &40.0 &33.0 &80.0 &33.0 &120.0 &33.0 \\
-\multicolumn{1}{|c|}{} &20.0\% &0.0 &66.0 &40.0 &66.0 &80.0 &66.0 &120.0 &66.0 \\
-\multicolumn{1}{|c|}{} &30.0\% &0.0 &99.0 &40.0 &99.0 &80.0 &99.0 &120.0^*
-&99.0^* \\
+\multicolumn{1}{|c|}{\multirow{4}{*}{$G_2$}}
+&0.0\% &0.0 &0.0 &40.0 &0.0 &80.0 &0.0 &120.0 &0.0 \\
+\multicolumn{1}{|c|}{}
+&10.0\% &0.0 &33.0 &40.0 &33.0 &80.0 &33.0 &120.0 &33.0 \\
+\multicolumn{1}{|c|}{}
+&20.0\% &0.0 &66.0 &40.0 &66.0 &80.0 &66.0 &120.0 &66.0 \\
+\multicolumn{1}{|c|}{}
+&30.0\% &0.0 &99.0 &40.0 &99.0 &80.0 &99.0 &120.0^* &99.0^* \\
 \hline
 \end{tabular}
 \end{small}
@@ -220,14 +223,18 @@ generator.
 \cline{3-10}
  & &\multicolumn{8}{c|}{$G_1$} \\
 \cline{3-10}
- & &\multicolumn{2}{c|}{0.0\%} &\multicolumn{2}{c|}{10.0\%} &\multicolumn{2}{c|}{20.0\%} &\multicolumn{2}{c|}{30.0\%} \\
+ & &\multicolumn{2}{c|}{0.0\%} &\multicolumn{2}{c|}{10.0\%}
+ &\multicolumn{2}{c|}{20.0\%} &\multicolumn{2}{c|}{30.0\%} \\
  & &r_1 &r_2 &r_1 &r_2 &r_1 &r_2 &r_1 &r_2 \\
 \hline
-\multicolumn{1}{|c|}{\multirow{4}{*}{$G_2$}} &0.0\% &0.0 &0.0 &51.0 &0.0 &0.0 &0.0 &0.0 &0.0 \\
-\multicolumn{1}{|c|}{} &10.0\% &0.0 &49.5 &51.0 &49.5 &0.0 &49.5 &0.0 &49.5 \\
-\multicolumn{1}{|c|}{} &20.0\% &0.0 &92.2 &51.0 &99.0 &0.0 &99.0 &0.0 &99.0 \\
-\multicolumn{1}{|c|}{} &30.0\% &0.0 &126.8 &54.8^* &138.4^* &0.0 &148.5 &0.0
-&148.5 \\
+\multicolumn{1}{|c|}{\multirow{4}{*}{$G_2$}}
+&0.0\% &0.0 &0.0 &51.0 &0.0 &0.0 &0.0 &0.0 &0.0 \\
+\multicolumn{1}{|c|}{}
+&10.0\% &0.0 &49.5 &51.0 &49.5 &0.0 &49.5 &0.0 &49.5 \\
+\multicolumn{1}{|c|}{}
+&20.0\% &0.0 &92.2 &51.0 &99.0 &0.0 &99.0 &0.0 &99.0 \\
+\multicolumn{1}{|c|}{}
+&30.0\% &0.0 &126.8 &54.8^* &138.4^* &0.0 &148.5 &0.0 &148.5 \\
 \hline
 \end{tabular}
 \end{small}
@@ -236,8 +243,8 @@ generator.
 
 \section{Simulation Results}
 Each action taken by an agent and the consequent reward is recorded for each
-simulation.  Values are averaged over 10 simulation runs and standard
-deviations are calculated using the formula
+simulation.  Values are averaged over 10 simulation runs and standard deviations
+are calculated using the formula
 \begin{equation}
 SD = \sqrt{\frac{1}{N-1}\sum_{i=0}^{N}(x_i - \bar{x})^2}
 \end{equation}
@@ -245,19 +252,19 @@ where $x_i$ is the action or reward value in simulation $i$ of $N$ simulation
 runs and $\bar{x}$ is the mean of the values.
 
 Figure \ref{fig:5_1_action_a1} shows the average markup on marginal cost and the
-standard deviation over 10 simulation runs for Agent 1 under price
-configuration 1, using the four learning methods.  The second $y$-axis in each
-plot relates to the exploration parameter for each method.  Figure
-\ref{fig:5_1_action_a2} shows the same information for Agent 2.  Plots of
-reward are not given as generator prices and the market are configured such that an
-agent's reward is directly proportional to its action.  The plots are vertically
-aligned and have equal $x$-axis limits to assist algorithm comparison.
+standard deviation over 10 simulation runs for Agent 1 under price configuration
+1, using the four learning methods.  The second $y$-axis in each plot relates to
+the exploration parameter for each method.  Figure \ref{fig:5_1_action_a2} shows
+the same information for Agent 2.  Plots of reward are not given as generator
+prices and the market are configured such that an agent's reward is directly
+proportional to its action.  The plots are vertically aligned and have equal
+$x$-axis limits to assist algorithm comparison.
 
 Figure \ref{fig:5_3_action_a2} shows the average markup on marginal cost and the
-standard deviation over 10 simulation runs for Agent 2 operating policy
-gradient methods under price configuration 1 with an increased learning rate of
-0.05. Figure \ref{fig:5_4_action_a2} shows the same infomation, but with a
-reduced learning rate of 0.005.
+standard deviation over 10 simulation runs for Agent 2 operating policy gradient
+methods under price configuration 1 with an increased learning rate of 0.05.
+Figure \ref{fig:5_4_action_a2} shows the same infomation, but with a reduced
+learning rate of 0.005.
 
 \ifthenelse{\boolean{includefigures}}{
 	\begin{figure}
@@ -294,11 +301,11 @@ reduced learning rate of 0.005.
 }{}
 
 Figures \ref{fig:5_2_action_a1} and \ref{fig:5_2_reward_a1} plot the average
-markup and reward over 10 simulation runs for Agent 1 and Agent 2,
-respectively, under price configuration 2 for the variant Roth-Erev, Q-learning
-learning methods.  The plots for REINFORCE and ENAC in these figures are for
-actual values in one simulation run as the number of interactions and variation
-in values makes the results difficult to observe otherwise.
+markup and reward over 10 simulation runs for Agent 1 and Agent 2, respectively,
+under price configuration 2 for the variant Roth-Erev, Q-learning learning
+methods.  The plots for REINFORCE and ENAC in these figures are for actual
+values in one simulation run as the number of interactions and variation in
+values makes the results difficult to observe otherwise.
 % Not all $x$-axis extents are equal in these two figures.
 
 \ifthenelse{\boolean{includefigures}}{
@@ -391,14 +398,14 @@ operation of policy gradient methods with noisy, multi-dimensional state data is
 not examined in this chapter and deserves investigation.
 
 % This experiment confirms the convergence to a Nash equilibrium of the
-% Q-learning methods that is published in \citeA{krause:nash06} and, to a degree,
-% extends the conclusion to policy gradient methods.  The results show that
-% while these methods do converge to the same or similar policies as the
+% Q-learning methods that is published in \citeA{krause:nash06} and, to a
+% degree, extends the conclusion to policy gradient methods.  The results show
+% that while these methods do converge to the same or similar policies as the
 % Q-learning and Roth-Erev methods, they do not exhibit the same level of
 % consistency.  Value function based methods or the Roth-Erev method may be the
 % most suitable choice of algorithm in the simple electricity market simulations
 % typically found in the literature.
-%
+
 % The simulations conducted here do not exploit any of the abilities of policy
 % gradient methods to utilise multi-dimensional continuous state information and
 % their behaviour in more complex electricity market environments deserves
@@ -423,30 +430,25 @@ not examined in this chapter and deserves investigation.
 %   \item Consistency of profit making and,
 %   \item Sensitivity to algorithm parameter changes.
 % \end{itemize}
-%
-% \section{Method of Simulation}
-% Figure X illustrates the structure of the six bus power system model, from
-% \cite{wood:pgoc}, with three generators and fixed demand at three of the buses
-% used to provide a dynamic environment with typical system values.  Bus,
-% branch and generator attribute values are stated in Tables X, Y, Z,
-% respectively.  Three learning methods are compared in six simulations
-% encapsulating all method--generator combinations.
-%
-% A price cap $c_{cap}$ of twice the marginal cost of the most expensive generator
-% at full capacity is set by the market.  The simulations are repeated for with agents
-% actions composing both price and quantity and with just price.  For the
-% value-function methods, the state is defined by the market clearing price from
-% the previous period, divided equally into $x_s$ discrete states between $0$ and
-% $c_{cap}$.  The state vector $s_t$ for the policy gradient methods consists of
-% the market clearing price and generator set-point from the previous period.
-% \begin{equation}
-% s_t =
-% \begin{bmatrix}
+
+% \section{Method of Simulation} Figure X illustrates the structure of the six
+% bus power system model, from \cite{wood:pgoc}, with three generators and fixed
+% demand at three of the buses used to provide a dynamic environment with
+% typical system values.  Bus, branch and generator attribute values are stated
+% in Tables X, Y, Z, respectively.  Three learning methods are compared in six
+% simulations encapsulating all method--generator combinations.
+
+% A price cap $c_{cap}$ of twice the marginal cost of the most expensive
+% generator at full capacity is set by the market.  The simulations are repeated
+% for with agents actions composing both price and quantity and with just price.
+%  For the value-function methods, the state is defined by the market clearing
+% price from the previous period, divided equally into $x_s$ discrete states
+% between $0$ and $c_{cap}$.  The state vector $s_t$ for the policy gradient
+% methods consists of the market clearing price and generator set-point from the
+% previous period. \begin{equation} s_t = \begin{bmatrix}
 % c_{mcp}\\
-% p_g
-% \end{bmatrix}
-% \end{equation}
-% The script used to conduct the simulation is provided in Listing X.
+% p_g \end{bmatrix} \end{equation} The script used to conduct the simulation is
+% provided in Listing X.
 
 \chapter{System Constraint Exploitation}
 \label{ch:exploitation}
@@ -459,8 +461,8 @@ not examined in this chapter and deserves investigation.
 % their total accumulated reward.
 This chapter explores the exploitation of constraints by learning agents in a
 dynamic electricity trading environment.  Value function based and policy
-gradient reinforcement learning methods are compared using a modified version
-of the IEEE Reliability Test System.
+gradient reinforcement learning methods are compared using a modified version of
+the IEEE Reliability Test System.
 
 \section{Introduction}
 Having examined the basic learning characteristics of four algorithms in
@@ -478,36 +480,36 @@ year. By observing average profits at each hour of the day, the ability of
 methods to successfully observe and exploit constraints is examined.
 
 \section{Aims and Objectives}
-This experiment aims to compare policy gradient and traditional
-reinforcement learning methods in a dynamic electricity trading environment.
-Specifically, the objectives are to determine:
+This experiment aims to compare policy gradient and traditional reinforcement
+learning methods in a dynamic electricity trading environment. Specifically, the
+objectives are to determine:
 \begin{itemize}
   \item If the policy gradient methods can achieve greater profitability
   under dynamic system constraints using a detailed state vector.
-%   \item If policy gradient methods can exploit outages and the resulting system
-%   constraints to further increased profit.
+%   \item If policy gradient methods can exploit outages and the resulting
+%   system constraints to further increased profit.
   \item The value of using an AC optimal power flow formulation in agent based
   electricity market simulation.
 \end{itemize}
 Meeting the first objective aims to demonstrate some of the value of using
-policy gradient methods in electricity market participant modelling and to determine
-if they warrant further research in this domain.
+policy gradient methods in electricity market participant modelling and to
+determine if they warrant further research in this domain.
 
 \section{Method of Simulation}
-Learning methods are again compared by repeating simulations of
-competitive electricity trade switching the algorithms used by the competing
-agents. Some simplification of the state and action representations for value
-function based methods is required, but generation portfolios and load profiles
-are identical for each algorithm test.
+Learning methods are again compared by repeating simulations of competitive
+electricity trade switching the algorithms used by the competing agents. Some
+simplification of the state and action representations for value function based
+methods is required, but generation portfolios and load profiles are identical
+for each algorithm test.
 
 The RTS has 24 bus locations that are connected by 32 transmission lines, 4
 transformers and 2 underground cables. The transformers tie a 230kV area to a
 138kV area.  The original model has 32 generators of 9 different types with a
 total capacity of 3.45GW.  To reduce the size of the discrete action space, five
-12MW and four 20MW generators are removed.  This is deemed to be a minor
-change as it reduced the number of generators by 28\%, but their combined capacity is only
-4.1\% of the original total generation capacity and the remainder is
-more than sufficient to meet demand.  To further reduce action space sizes all
+12MW and four 20MW generators are removed.  This is deemed to be a minor change
+as it reduced the number of generators by 28\%, but their combined capacity is
+only 4.1\% of the original total generation capacity and the remainder is more
+than sufficient to meet demand.  To further reduce action space sizes all
 generators of the same type at the same bus are aggregated into one generating
 unit. This can be considered to be the representation of each individual power
 station in the market, rather than each alternator stage.  The model has loads
@@ -521,9 +523,10 @@ cost function coefficients were taken from an RTS model by Georgia Tech Power
 Systems Control and Automation
 Laboratory\footnote{http://pscal.ece.gatech.edu/testsys/} which assumes Coal
 costs of 1.5~\$/MBtu\footnote{1 Btu (British thermal unit) $\approx$ 1055
-Joules}, Oil costs of 5.5~\$/MBtu and Uranium costs of 0.46~\$/MBtu.  Data for the modified model is
-provided in Appendix \ref{adx:ieee_rts} and the connectivity of branches and the
-location of generators and loads is illustrated in Figure \ref{fig:ieee79rts}.
+Joules}, Oil costs of 5.5~\$/MBtu and Uranium costs of 0.46~\$/MBtu.  Data for
+the modified model is provided in Appendix \ref{adx:ieee_rts} and the
+connectivity of branches and the location of generators and loads is illustrated
+in Figure \ref{fig:ieee79rts}.
 
 \begin{table}
 \caption{Generator types and cost parameters for the simplified IEEE
@@ -591,9 +594,8 @@ Portfolios were chosen such that each agent has: a mix of base load and peaking
 plant, approximately the same total generation capacity and generators in
 different areas of the network.  The generator labels in Figure
 \ref{fig:ieee79rts} specify the associated agent.  The synchronous condenser is
-associated with a passive agent that always offers 0 MW at 0~\$/MWh (the
-unit can be dispatched to provide or absorb reactive power within capacity
-limits).
+associated with a passive agent that always offers 0 MW at 0~\$/MWh (the unit
+can be dispatched to provide or absorb reactive power within capacity limits).
 
 \ifthenelse{\boolean{includefigures}}{\input{tikz/ieee79rts}}{}
 
@@ -618,12 +620,12 @@ and peak demand.
 To investigate the exploration of constraints, AC optimal power flow is used and
 the state vector for agents using policy gradient methods is optionally adjusted
 to combine the demand forecast with voltage constraint Lagrangian multipliers
-for all generator buses and the voltage magnitude at all other buses.
-Lagrangian multipliers are used for generator buses as generators typically fix
-the voltage at their associated bus.  Branch flows are not included in the state
-vector as flow limits in the RTS are high and are typically not reached at
-peak demand.  Generator capacity limits are binding in most states of the RTS,
-but the output of other generators is deemed to be hidden from agents.
+for all generator buses and the voltage magnitude at all other buses. Lagrangian
+multipliers are used for generator buses as generators typically fix the voltage
+at their associated bus.  Branch flows are not included in the state vector as
+flow limits in the RTS are high and are typically not reached at peak demand.
+Generator capacity limits are binding in most states of the RTS, but the output
+of other generators is deemed to be hidden from agents.
 
 The nodal marginal pricing scheme is used and cleared offer prices are
 determined by the Lagrangian multiplier on the power balance constraint for the
@@ -650,8 +652,8 @@ Each agent's rewards are recorded for a simulated year of 364 trading episodes,
 each consisting of 24 interactions.  To compare algorithms, the average reward
 for each hour of the day is calculated for each agent and plotted.  Only results
 for Agent~1 and Agent~4 are given as Agents~1 and Agent~2 have identical
-portfolios and most of Agent~3's portfolio consists of hydro-electric plant
-with zero cost.  The method of applying percentage markups on marginal cost has not
+portfolios and most of Agent~3's portfolio consists of hydro-electric plant with
+zero cost.  The method of applying percentage markups on marginal cost has not
 effect for generators with zero cost and almost identical results are found for
 all algorithms.
 
@@ -689,8 +691,8 @@ Figure \ref{fig:6_2_a1} and Figure \ref{fig:6_2_a4} compare policy gradient
 methods under two state vector configurations.  Figure \ref{fig:6_2_a1} concerns
 Agent~1 and shows the average reward received for a state vector consisting
 solely of a demand forecast and for a combined demand forecast and bus voltage
-profile state vector.  Figure \ref{fig:6_2_a4} shows average rewards for
-Agent~4 under the same configurations.
+profile state vector.  Figure \ref{fig:6_2_a4} shows average rewards for Agent~4
+under the same configurations.
 
 \ifthenelse{\boolean{includefigures}}{
   \begin{figure}
@@ -736,9 +738,9 @@ generator from 1 to 2, increases the number of discrete action possibilities in
 each state to 46,656.  Figure \ref{fig:6_3} shows that Q-learning is still able
 to achieve a similar level of reward as in the one offer case.  The
 profitability for both methods is degraded, but ENAC receives significantly
-lower average reward when the agent is required to produce an action
-vector of twice the size and is not able to use the increased flexibility in
-its offer structure to any advantage.
+lower average reward when the agent is required to produce an action vector of
+twice the size and is not able to use the increased flexibility in its offer
+structure to any advantage.
 
 With state and action spaces on this scale, computing updates to an agent's
 look-up table or neural network adds considerably to the computational expense
@@ -750,8 +752,8 @@ the Stateful Roth-Erev formulation.
 
 The lack of involvement in the market from the hydro-electric power plant
 largely negates the participation of Agent~3 and exposes one significant
-shortcoming of the approach. This could be overcome by allowing markups
-in dollars, rather than as a percentage of marginal cost.
+shortcoming of the approach. This could be overcome by allowing markups in
+dollars, rather than as a percentage of marginal cost.
 
 Generation portfolios were configured such that agents would receive a mix of
 low-cost base-load plant and expensive peak-supply plant.  However, the cost
@@ -764,9 +766,9 @@ maximum markups on price were greater.  In \citeA{cincotti:09}, for example, a
 
 The dynamics of this simulation could also be greatly increased by introducing
 demand-side participation.  It could allow agents to directly influence the
-state of the environment, through the demand forecast sensor.  It would
-also give agents more options for competition, increasing the complexity of
-their optimal policy and posing a greater challenge to the learning algorithms.
+state of the environment, through the demand forecast sensor.  It would also
+give agents more options for competition, increasing the complexity of their
+optimal policy and posing a greater challenge to the learning algorithms.
 
 \section{Summary}
 In this chapter policy gradient reinforcement learning algorithms have been
@@ -784,8 +786,8 @@ evidence was found to suggest that they could use this information to increase
 their profitability above that of agents operating the Q-learning or Stateful
 Roth-Erev method.  Indeed, it is believed that this can be considered a general
 finding in reinforcement learning research, that despite great effort and the
-development of many new algorithms, few surpass the original temporal
-difference methods from \citeA{suttonbarto:1998}.
+development of many new algorithms, few surpass the original temporal difference
+methods from \citeA{suttonbarto:1998}.
 
 Shortcomings in the price markup methodology and competition levels have been
 identified and possible solutions proposed.  The implications of increased
